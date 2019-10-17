@@ -1,0 +1,5 @@
+{
+    "prefix": ".",
+	"token": "paste_bot_token_here",
+	"google_api_key": "paste_google_api_key_here"
+  }
