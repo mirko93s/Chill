@@ -24,12 +24,15 @@ Typing ".help" in discord will give you a detailed explanation of each command.
 
 | Modules | Commands |
 | ------ | ------ |
-| Moderation | clear, kick , ban, mute, unmute, report |
-| Roles | addrole, removerole, rolelist |
-| Music | play, skip, pause, resume, stop, np, queue, volume |
-| Other | ping, server, bot, avatar, 8ball, flipcoin |
-| Administration | bc, addchannel, ga, setup |
-| Bot | project, ba |
+| Admin | addchannel, broadcast, giveaway, setup |
+| Bot | botinfo, bugreport, project |
+| Fun | 8ball, flipcoin, rockpaperscissors, ship, slotmachine, wouldyourather |
+| Info | avatar, help, serveremojis, serverinfo, whois |
+| Moderation | ban, kick, mute, purge, report, say, unmute |
+| Music | play, skip, resume, stop, nowplaying, queue, volume |
+| Other | calc, nick, percentage, ping, today, translator, urban, weather |
+| Owner | botactivity |
+| Roles| addrole, removerole, reoleinfo, rolelist |
 
 ### Todos
 
