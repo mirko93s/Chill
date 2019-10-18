@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/github/license/mirko93s/Chill)](https://opensource.org/licenses/Apache-2.0)
 ![Version](https://img.shields.io/github/package-json/v/mirko93s/Chill)
 ![Language](https://img.shields.io/github/languages/top/mirko93s/Chill)
-![Code-Quality](https://img.shields.io/codacy/grade/03f2e17b2b1b4e99985b21edddef7787)
+![Code-Quality](https://img.shields.io/codefactor/grade/github/mirko93s/Chill)
 ![Last-Commit](https://img.shields.io/github/last-commit/mirko93s/Chill)
 ![Build](https://img.shields.io/appveyor/ci/mirko93s/chill)
 
