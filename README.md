@@ -24,15 +24,15 @@ Typing ".help" in discord will give you a detailed explanation of each command.
 
 | Modules | Commands |
 | ------ | ------ |
-| Admin | addchannel, broadcast, giveaway, setup |
-| Bot | botinfo, bugreport, project |
-| Fun | 8ball, flipcoin, rockpaperscissors, ship, slotmachine, wouldyourather |
+| Admin | addchannel, broadcast, giveaway, poll, setup |
+| Bot | botinfo, bugreport, invite, project |
+| Fun | 8ball, flipcoin, rockpaperscissors, ship, slotmachine, suicide, wouldyourather |
 | Info | avatar, help, serveremojis, serverinfo, whois |
 | Moderation | ban, kick, mute, purge, report, say, unmute |
 | Music | play, skip, resume, stop, nowplaying, queue, volume |
 | Other | calc, nick, percentage, ping, today, translator, urban, weather |
 | Owner | botactivity |
-| Roles| addrole, removerole, reoleinfo, rolelist |
+| Roles | addrole, removerole, roleinfo, rolelist |
 
 ### Todos
 
