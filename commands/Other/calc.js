@@ -9,13 +9,25 @@ module.exports = {
     usage: "<expression>",
     run: async (client, msg, arg) => {
         msg.delete();
+
+        const noexpressionEmbed = new Discord.RichEmbed()
+            .setColor(`RED`)
+            .setTitle(`⛔ No expression provided`)
+
         const expression = arg.join(" ");
-        if (!expression) return msg.reply ("no expression");
+        if (!expression) return msg.channel.send (noexpressionEmbed).then(msg => {msg.delete(5000)});
         try {
             const solved = math.evaluate(expression).toString();
-            return msg.channel.send(":arrow_right: " + expression + " = " + solved);
+            let calcEmbed = new Discord.RichEmbed()
+                .setColor(`RANDOM`)
+                .setTitle(`Calc`)
+                .setDescription(`${expression} = **${solved}**`)
+            return msg.channel.send(calcEmbed);
         } catch (err) {
-            return msg.channel.send('Error: ' + err);
+            const errorEmbed = new Discord.RichEmbed()
+                .setColor(`RED`)
+                .setTitle(`⛔ ${err}`)
+            return msg.channel.send(errorEmbed).then(msg => {msg.delete(5000)});
         }
     }
 }

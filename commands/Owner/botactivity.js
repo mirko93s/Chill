@@ -6,15 +6,25 @@ module.exports = {
     category: "Owner",
     description: "Set Bot's activity",
     usage: "<message>",
+    permission: "DEV_ONLY",
     run: async (client, msg, arg) => {
         msg.delete();
-        if (msg.author.id !== '278380909588381698') return msg.reply("Sorry, you don't have permission to use this!")
+
+        const nopermEmbed = new Discord.RichEmbed()
+            .setColor(`RED`)
+            .setTitle(`⛔ You don't have permission to use this!`)
+        const nomsgEmbed = new Discord.RichEmbed()
+            .setColor(`RED`)
+            .setTitle(`⛔ Please provide a valid message`)
+
+        if (msg.author.id !== '278380909588381698') return msg.channel.send(nopermEmbed).then(msg => msg.delete(5000));
         let activity = arg.join(" ");
-        if (!activity) return msg.reply("Please provide a valid message")
+        if (!activity) return msg.channel.send(nomsgEmbed).then(msg => msg.delete(5000));
         let baEmbed = new Discord.RichEmbed()
+            .setColor(`RANDOM`)
             .setTitle("Bot Activity")
             .setDescription(activity)
-            .setColor("#00ff00")
-        client.user.setActivity(activity) && msg.channel.send(baEmbed)
+        client.user.setActivity(activity);
+        msg.channel.send(baEmbed).then(msg => msg.delete(5000))
     }
 }

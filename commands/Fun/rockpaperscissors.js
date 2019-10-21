@@ -7,13 +7,13 @@ module.exports = {
     name: "rockpaperscissors",
     aliases: ["rps"],
     category: "fun",
-    description: "Rock Paper Scissors game. React to one of the emojis to play the game.",
+    description: "Rock Paper Scissors game",
     run: async (client, message, args) => {
+        message.delete();
         const embed = new RichEmbed()
-            .setColor("#ffffff")
-            .setFooter(message.guild.me.displayName, client.user.displayAvatarURL)
-            .setDescription("Add a reaction to one of these emojis to play the game!")
-            .setTimestamp();
+            .setColor(`RANDOM`)
+            .setFooter(message.author.username, message.author.displayAvatarURL)
+            .setDescription("React to play!")
 
         const m = await message.channel.send(embed);
         // Wait for a reaction to be added

@@ -6,6 +6,7 @@ module.exports = {
     category: "Fun",
     description: "Waste some money on slots",
     run: async (client, msg, arg) => {
+        msg.delete();
         const slots = [':grapes:', ':cherries:', ':lemon:', ':tangerine:'];
         const slotOne = slots[Math.floor(Math.random() * slots.length)];
         const slotTwo = slots[Math.floor(Math.random() * slots.length)];
@@ -21,14 +22,14 @@ module.exports = {
                 .setColor(0x00A2E8)
                 .addField(`:slot_machine: **Chill Slot** :slot_machine:`,`${slotfour}|${slotfive}|${slotsix}`)
                 .addField(`${slotOne}|${slotTwo}|${slotThree}`, `${slotseven}|${sloteight}|${slotnine}`)
-                .setFooter("Wow! " + msg.author.username + " won great job!");
+                .setFooter("Wow! **" + msg.author.username + "** won great job!");
             msg.channel.send(won)
         } else {
             const lost = new Discord.RichEmbed()
                 .setColor(0x00A2E8)
                 .addField(`:slot_machine: **Chill Slot** :slot_machine:`,`${slotfour}|${slotfive}|${slotsix}`)
                 .addField(`${slotOne}|${slotTwo}|${slotThree}`, `${slotseven}|${sloteight}|${slotnine}`)
-                .setFooter("Awww " + msg.author.username + " lost that sucks!");
+                .setFooter("Awww **" + msg.author.username + "** lost that sucks!");
             msg.channel.send(lost)
         }
     }

@@ -8,15 +8,20 @@ module.exports = {
     usage: "<role name>",
     run: async (client, msg, arg) => {
         msg.delete();
+
+        const noroleEmbed = new Discord.RichEmbed()
+            .setColor(`RED`)
+            .setTitle(`⛔ Role not found`)
+
         let roletocheck = arg.join(" ")
         let role = client.guilds.get(msg.guild.id).roles.find('name', roletocheck);
-        if (!role) return msg.channel.send("Role wasnt found in the server.")
+        if (!role) return msg.channel.send(noroleEmbed).then(msg => msg.delete(5000));
             const embed = new Discord.RichEmbed()
             .setColor(0x00A2E8)
             .addField('Role name', `${role.name}`, true)
             .addField('Role ID', `${role.id}`, true)
             .addField('Created At', role.createdAt.toDateString())
             .addField("Mentionable: ", role.mentionable ? 'Yes' : 'No')
-            msg.channel.send({embed}) 
+            msg.channel.send(embed);
     }
 }

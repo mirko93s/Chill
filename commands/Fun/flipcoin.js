@@ -9,29 +9,29 @@ module.exports = {
         msg.delete();
         var coin = ["Heads","Tails"];
         const embed = new Discord.RichEmbed()
-        .setColor('RANDOM')
-        .setTitle("Coin Flip")
-        .setDescription("Flipping")
+            .setColor('RANDOM')
+            .setTitle("Coin Flip")
+            .setDescription("Flipping")
 
         const embed1 = new Discord.RichEmbed()
-        .setColor('RANDOM')
-        .setTitle("Coin Flip")
-        .setDescription("Flipping .")
+            .setColor('RANDOM')
+            .setTitle("Coin Flip")
+            .setDescription("Flipping .")
 
         const embed2 = new Discord.RichEmbed()
-        .setColor('RANDOM')
-        .setTitle("Coin Flip")
-        .setDescription("Flipping . .")
+            .setColor('RANDOM')
+            .setTitle("Coin Flip")
+            .setDescription("Flipping . .")
 
         const embed3 = new Discord.RichEmbed()
-        .setColor('RANDOM')
-        .setTitle("Coin Flip")
-        .setDescription("Flipping . . .")
+            .setColor('RANDOM')
+            .setTitle("Coin Flip")
+            .setDescription("Flipping . . .")
 
         const embed4 = new Discord.RichEmbed()
-        .setColor('RANDOM')
-        .setTitle("Coin Flip")
-        .setDescription(msg.author.toString() + " flipped: **" + (coin[Math.floor(Math.random() * coin.length)]) + "**")
+            .setColor('RANDOM')
+            .setTitle("Coin Flip")
+            .setDescription(msg.author.toString() + " flipped **" + (coin[Math.floor(Math.random() * coin.length)]) + "**")
 
         const m = await msg.channel.send(embed);
         m.edit(embed1);

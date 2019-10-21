@@ -6,30 +6,42 @@ module.exports = {
     category: "Admin",
     description: "Broadcast a message",
     usage: "<title> <description>",
+    permission: "ADMINISTRATOR",
     run: async (client, msg, arg) => {
         msg.delete();
+
+        let author = msg.author
+
         var filter = m => m.author.id === msg.author.id;
         var title;
         var description;
 
-        if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.reply("Sorry, you don't have permission to use this!")
+        const nobotpermEmbed = new Discord.RichEmbed()
+            .setColor(`RED`)
+            .setTitle(`⛔ I don't have permission to do this! Please check my permissions.`)
+        const nopermEmbed = new Discord.RichEmbed()
+            .setColor(`RED`)
+            .setTitle(`⛔ You don't have permission to use this!`)
+        const nochannelEmbed = new Discord.RichEmbed()
+            .setColor(`RED`)
+            .setTitle(`⛔ Broadcast channel not found!`)
+
+        if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.reply(nopermEmbed).then(msg => msg.delete(5000));
 
         const titleembed = new Discord.RichEmbed()
-        .setColor('GREEN')
-        .setTitle("🔴Broadcast")
-        .setDescription("Enter the title:")
-        .setFooter('max 256 characters');
-
+            .setColor('GREEN')
+            .setTitle("🔴Broadcast")
+            .setDescription("Enter the title:")
+            .setFooter('max 256 characters')
         const descriptionembed = new Discord.RichEmbed()
-        .setColor('GREEN')
-        .setTitle("🔴Broadcast")
-        .setDescription("Now enter the description:")
-        .setFooter('max 2048 characters');
-
+            .setColor('GREEN')
+            .setTitle("🔴Broadcast")
+            .setDescription("Now enter the description:")
+            .setFooter('max 2048 characters')
         const timeembed = new Discord.RichEmbed()
-        .setColor('RED')
-        .setTitle("🔴 Broadcast")
-        .setDescription("OUT OF TIME!")
+            .setColor('RED')
+            .setTitle("🔴 Broadcast")
+            .setDescription("OUT OF TIME!")
 
         msg.channel.send(titleembed)
             
@@ -49,18 +61,18 @@ module.exports = {
                             
                             try {//send broadcast
                                 let bcEmbed = new Discord.RichEmbed()
-                                .setTitle(title)
-                                .setDescription(description)
-                                .setColor("#00ff00")
-                                .setAuthor(msg.author.username, msg.author.displayAvatarURL)    
+                                    .setTitle(title)
+                                    .setDescription(description)
+                                    .setColor("#00ff00")
+                                    .setAuthor(author.username, author.displayAvatarURL)    
                                 let bcchannel = msg.guild.channels.find(bcchannel => bcchannel.name === "🔴broadcast");
-                                if(!bcchannel) return msg.channel.send("Can't find broadcast channel.");
+                                if(!bcchannel) return msg.channel.send(nochannelEmbed).then(msg => msg.delete(5000));
                                 bcchannel.send("@everyone");
                                 bcchannel.send(bcEmbed);
                                 } 
 
                                 catch(err) {//bot no perm error
-                                msg.channel.send(`:heavy_multiplication_x:| **I don't have permission**`);
+                                msg.channel.send(nobotpermEmbed).then(msg => msg.delete(5000));
                                 console.log(err);
                                 }
 

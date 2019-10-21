@@ -1,4 +1,4 @@
-const { RichEmbed } = require("discord.js");
+const Discord = require("discord.js");
 const { stripIndents } = require("common-tags");
 
 module.exports = {
@@ -7,23 +7,33 @@ module.exports = {
     description: "Reports a member",
     usage: "<mention, id>",
     run: async (client, message, args) => {
-        if (message.deletable) message.delete();
+        message.delete();
 
-        let rMember = message.mentions.members.first() || message.guild.members.get(args[0]);
+        const noargsEmbed = new Discord.RichEmbed()
+            .setColor(`RED`)
+            .setTitle(`⛔ Please mention a valid user of this server and provide a reason`)
+        const nochannelEmbed = new Discord.RichEmbed()
+            .setColor(`RED`)
+            .setTitle(`⛔ Reports channel not found`)
+        const nobotEmbed = new Discord.RichEmbed()
+            .setColor(`RED`)
+            .setTitle(`⛔ You can't report me`)
+        const thanksEmbed = new Discord.RichEmbed()
+            .setColor(`GREEN`)
+            .setTitle(`✅ Thanks for reporting this person.\nA staff member will take a decision as soon as possible`)
 
-        if (!rMember)
-            return message.reply("Please mention a member in order to report him").then(m => m.delete(5000));
+        let rMember = message.mentions.members.first();
 
-        // if (rMember.hasPermission("BAN_MEMBERS") || rMember.user.bot)
-        //     return message.channel.send("Can't report that member").then(m => m.delete(5000));
-
-        if (!args[1])
-            return message.channel.send("Please provide a reason for the report").then(m => m.delete(5000));
+        if (!rMember || args[1]) return message.channel.send(noargsEmbed).then(m => m.delete(5000));
+        if (rMember.user.bot) return message.channel.send(nobotEmbed).then(m => m.delete(5000));
         
-            let reportchannel = message.guild.channels.find(reportchannel => reportchannel.name === "🚨reports");
-            if(!reportchannel) return message.channel.send("Can't find report channel.").then(m => m.delete(5000));
+        let reportchannel = message.guild.channels.find(reportchannel => reportchannel.name === "🚨reports");
+        
+        if(!reportchannel) return message.channel.send(nochannelEmbed).then(m => m.delete(5000));
 
-        const embed = new RichEmbed()
+        message.channel.send(thanksEmbed).then(m => m.delete(5000));
+
+        const embed = new Discord.RichEmbed()
             .setColor("#ff0000")
             .setTimestamp()
             .setFooter(message.guild.name, message.guild.iconURL)

@@ -2,11 +2,11 @@ const Discord = require("discord.js");
 
 module.exports = {
     name: "wouldyourather",
-    aliases: ["wur"],
+    aliases: ["wyr"],
     category: "Fun",
     description: "Would you rather... ?",
     run: async (client, msg, arg) => {
-        if (!msg.guild.member(client.user).hasPermission('ADD_REACTIONS')) return msg.reply('Sorry, i dont have the perms to do this cmd i need ADD_REACTIONS. :x:')
+        msg.delete(5000);
         const superagent = require('superagent');
         const { body } = await superagent
             .get('http://www.rrrather.com/botapi');

@@ -1,72 +1,66 @@
-const { RichEmbed } = require("discord.js");
+const Discord = require("discord.js");
 const { stripIndents } = require("common-tags");
 const { promptMessage } = require("../../functions.js");
 
 module.exports = {
     name: "kick",
-    category: "moderation",
+    category: "Moderation",
     description: "Kicks the member",
     usage: "<id | mention>",
+    permission: "KICK_MEMBERS",
     run: async (client, message, args) => {
+        message.delete();
+
+        const nochannelEmbed = new Discord.RichEmbed()
+            .setColor(`RED`)
+            .setTitle(`⛔ Punishments channel not found`)
+        const nopermEmbed = new Discord.RichEmbed()
+            .setColor(`RED`)
+            .setTitle(`⛔ You don't have permission to use this!`)
+        const nobotpermEmbed = new Discord.RichEmbed()
+            .setColor(`RED`)
+            .setTitle(`⛔ I don't have permission to use this, please check my permissions`)
+        const noargsEmbed = new Discord.RichEmbed()
+            .setColor(`RED`)
+            .setTitle(`⛔ Please mention a valid user of this server and provide a reason`)
+        const nomemberEmbed = new Discord.RichEmbed()
+            .setColor(`RED`)
+            .setTitle(`⛔ Couldn't find that member`)
+        const noyourselfEmbed = new Discord.RichEmbed()
+            .setColor(`RED`)
+            .setTitle(`⛔ You can't kick yourself`)
+        const hierarchyEmbed = new Discord.RichEmbed()
+            .setColor(`RED`)
+            .setTitle(`⛔ I can't kick that person due to role hierarchy, I suppose`)
+        const canceledEmbed = new Discord.RichEmbed()
+            .setColor(`RED`)
+            .setTitle(`⛔ Kick canceled`)
+
         let puchannel = message.guild.channels.find(puchannel => puchannel.name === "🔨punishments");
-        if (!puchannel) return message.reply ("no puchannel found");
 
-        if (message.deletable) message.delete();
+        if (!message.member.hasPermission("KICK_MEMBERS")) return message.channel.send(nopermEmbed).then(m => m.delete(5000));
+        if (!message.guild.me.hasPermission("KICK_MEMBERS")) return message.channel.send(nobotpermEmbed).then(m => m.delete(5000));
+        if (!puchannel) return message.channel.send (nochannelEmbed).then(msg => msg.delete(5000));
+        if (!args[0] || !args[1]) return message.channel.send(noargsEmbed).then(m => m.delete(5000));
 
-        // No args
-        if (!args[0]) {
-            return message.reply("Please provide a person to kick.")
-                .then(m => m.delete(5000));
-        }
+        const toKick = message.mentions.members.first();
 
-        // No reason
-        if (!args[1]) {
-            return message.reply("Please provide a reason to kick.")
-                .then(m => m.delete(5000));
-        }
-
-        // No author permissions
-        if (!message.member.hasPermission("KICK_MEMBERS")) {
-            return message.reply("❌ You do not have permissions to kick members. Please contact a staff member")
-                .then(m => m.delete(5000));
-        }
-
-        // No bot permissions
-        if (!message.guild.me.hasPermission("KICK_MEMBERS")) {
-            return message.reply("❌ I do not have permissions to kick members. Please contact a staff member")
-                .then(m => m.delete(5000));
-        }
-
-        const toKick = message.mentions.members.first() || message.guild.members.get(args[0]);
-
-        // No member found
-        if (!toKick) {
-            return message.reply("Couldn't find that member, try again")
-                .then(m => m.delete(5000));
-        }
-
-        // Can't kick urself
-        if (toKick.id === message.author.id) {
-            return message.reply("You can't kick yourself...")
-                .then(m => m.delete(5000));
-        }
-
-        // Check if the user's kickable
-        if (!toKick.kickable) {
-            return message.reply("I can't kick that person due to role hierarchy, I suppose.")
-                .then(m => m.delete(5000));
-        }
+        if (!toKick) return message.channel.send(nomemberEmbed).then(m => m.delete(5000));
+        if (toKick.id === message.author.id) return message.channel.send(noyourselfEmbed).then(m => m.delete(5000));
+        if (!toKick.kickable) return message.channel.send(hierarchyEmbed).then(m => m.delete(5000));
                 
-        const embed = new RichEmbed()
-            .setColor("#ff0000")
+        const embed = new Discord.RichEmbed()
+            .setColor(`ORANGE`)
             .setThumbnail(toKick.user.displayAvatarURL)
-            .setFooter(message.member.displayName, message.author.displayAvatarURL)
             .setTimestamp()
-            .setDescription(stripIndents`**> Kicked member:** ${toKick} (${toKick.id})
-            **> Kicked by:** ${message.member} (${message.member.id})
-            **> Reason:** ${args.slice(1).join(" ")}`);
+            .setTitle(`KICK`)
+            .setDescription(`
+            **Member:** ${toKick.user.username}
+            \n**By:** ${message.member}
+            \n**Reason:** ${args.slice(1).join(" ")}
+            `);
 
-        const promptEmbed = new RichEmbed()
+        const promptEmbed = new Discord.RichEmbed()
             .setColor("GREEN")
             .setAuthor(`This verification becomes invalid after 30s.`)
             .setDescription(`Do you want to kick ${toKick}?`)
@@ -82,15 +76,16 @@ module.exports = {
 
                 toKick.kick(args.slice(1).join(" "))
                     .catch(err => {
-                        if (err) return message.channel.send(`Well.... the kick didn't work out. Here's the error ${err}`)
+                        const errorEmbed = new Discord.RichEmbed()
+                            .setColor(`RED`)
+                            .setTitle(`⛔ Error: **${err}**`)
+                        if (err) return message.channel.send(errorEmbed).then(msg => msg.delete(5000));
                     });
 
                 puchannel.send(embed);
             } else if (emoji === "❌") {
                 msg.delete();
-
-                message.reply(`Kick canceled.`)
-                    .then(m => m.delete(10000));
+                message.channel.send(canceledEmbed).then(m => m.delete(5000));
             }
         });
     }

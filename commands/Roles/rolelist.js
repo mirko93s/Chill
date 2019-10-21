@@ -7,9 +7,8 @@ module.exports = {
     run: async (client, msg, arg) => {
         const role = msg.guild.roles;
         const embed = new Discord.RichEmbed()
-            .setColor ("RANDOM")
+            .setColor (`RANDOM`)
             .addField("Server Roles", role.map((e) => e).join("\n"))
-        msg.channel.send({embed}) 
-
+        msg.channel.send(embed);
     }
 }
