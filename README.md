@@ -29,7 +29,7 @@ Typing ".help" in discord will give you a detailed explanation of each command.
 | Fun | 8ball, flipcoin, rockpaperscissors, ship, slotmachine, suicide, wouldyourather |
 | Info | avatar, help, serveremojis, serverinfo, whois |
 | Moderation | ban, kick, mute, purge, report, say, unmute |
-| Music | play, skip, resume, stop, nowplaying, queue, volume |
+| Music | play, skip, playskip, resume, stop, nowplaying, queue, summon, volume |
 | Other | calc, nick, percentage, ping, today, translator, urban, weather |
 | Owner | botactivity |
 | Roles | addrole, removerole, roleinfo, rolelist |
