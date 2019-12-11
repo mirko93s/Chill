@@ -16,6 +16,7 @@ Chill is a Discord bot with moderation, music and many other features.
 ### Installation
 
 Chill requires [Node.js](https://nodejs.org/) v10 to run.
+Reccomended 10.17.0
 
 ### Modules
 
