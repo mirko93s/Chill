@@ -42,7 +42,7 @@ function getAll(client, message) { //old help main page below-----------
             /* Fun */.addField(":game_die: Fun", "8ball, flipcoin, rockpaperscissors, ship, slotmachine, suicide, wouldyourather")
             /* Info */.addField(":information_source: Info", "avatar, help, serveremojis, serverinfo, whois")
             /* Moderation */.addField(":hammer: Moderation", "ban, kick, mute, purge, report, say, unmute")
-            /* Music */.addField(":musical_note: Music", "play, skip, pause, resume, stop, nowplaying, queue, volume")
+            /* Music */.addField(":musical_note: Music", "play, skip, playskip, pause, resume, stop, nowplaying, queue, summon, volume")
             /* Other */.addField(":bulb: Other", "calc, nick, percentage, ping, today, translator, urban, weather")
             /* Owner */.addField(":gear: Owner", "botactivity")
             /* Roles */.addField(":level_slider: Roles", "addrole, removerole, roleinfo, rolelist")

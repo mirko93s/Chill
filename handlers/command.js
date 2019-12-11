@@ -11,7 +11,6 @@ module.exports = (client) => {
     
         for (let file of commands) {
             let pull = require(`../commands/${dir}/${file}`);
-    
             if (pull.name) {
                 client.commands.set(pull.name, pull);
                 table.addRow(file, '✅');
@@ -25,4 +24,20 @@ module.exports = (client) => {
     });
     
     console.log(table.toString());
+    console.log(`\n`);
+    console.log(` ▄▄▄▄▄▄▄▄▄▄▄  ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄            ▄                                   `);
+    console.log(`▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░▌          ▐░▌                                  `);
+    console.log(`▐░█▀▀▀▀▀▀▀▀▀ ▐░▌       ▐░▌ ▀▀▀▀█░█▀▀▀▀ ▐░▌          ▐░▌                                  `);
+    console.log(`▐░▌          ▐░▌       ▐░▌     ▐░▌     ▐░▌          ▐░▌                                  `);
+    console.log(`▐░▌          ▐░█▄▄▄▄▄▄▄█░▌     ▐░▌     ▐░▌          ▐░▌                                  `);
+    console.log(`▐░▌          ▐░░░░░░░░░░░▌     ▐░▌     ▐░▌          ▐░▌                   ██████╗     ██╗`);
+    console.log(`▐░▌          ▐░█▀▀▀▀▀▀▀█░▌     ▐░▌     ▐░▌          ▐░▌                   ╚════██╗   ███║`);
+    console.log(`▐░▌          ▐░▌       ▐░▌     ▐░▌     ▐░▌          ▐░▌                    █████╔╝   ╚██║`);
+    console.log(`▐░█▄▄▄▄▄▄▄▄▄ ▐░▌       ▐░▌ ▄▄▄▄█░█▄▄▄▄ ▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄▄▄           ╚═══██╗    ██║`);
+    console.log(`▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌         ██████╔╝██╗ ██║`);
+    console.log(` ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀          ╚═════╝ ╚═╝ ╚═╝`);
+    console.log(`┬─┐┌─┐┌─┐┌┬┐┬ ┬`);
+    console.log(`├┬┘├┤ ├─┤ ││└┬┘`);
+    console.log(`┴└─└─┘┴ ┴─┴┘ ┴ `);
+    console.log(`\n`);
 }

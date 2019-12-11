@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["p"],
     category: "Music",
     description: "Play a song",
-    usage: "<song name | link>",
+    usage: "<name | yt link | yt playlist>",
     run: async (client, msg, arg) => {
 
     }

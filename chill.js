@@ -20,9 +20,8 @@ client.categories = fs.readdirSync("./commands/");
 
 client.on('warn', console.warn);
 client.on('error', console.error);
-//client.on('ready', () => {console.log("Chill BOT Ready!"); client.user.setActivity(`${client.users.size} users`, {type: `WATCHING`});});
 client.on('ready', () => {
-	setInterval(async () => {
+	setInterval(async () => { //auto update activity every 30 mins, users counter
 	  	let users = 0;
 	  	for (let g of client.guilds.array()) users += (g.members.size - 1);
 	  	await client.user.setActivity(`${users} user${users !== 1 ? 's' : ''}`, {type: 'WATCHING'});
@@ -170,6 +169,77 @@ const notinvcEmbed = new Discord.RichEmbed()
     } else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete(5000));
   }
 
+  //PLAYSKIP
+  if (command === 'playskip' || command === 'ps') {
+	msg.delete();
+    if (msg.member.roles.some(role => role.name === 'DJ')) {
+		if (!msg.member.voiceChannel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete(5000));
+		if (!serverQueue) return msg.channel.send(noplayingEmbed).then(msg => msg.delete(5000));
+		
+		const nourlEmbed = new Discord.RichEmbed()
+			.setColor('PURPLE')
+			.setTitle(":musical_note: Music")
+			.setDescription("⛔ No song or link provided")
+		const novcEmbed = new Discord.RichEmbed()
+			.setColor('PURPLE')
+			.setTitle(":musical_note: Music")
+			.setDescription("⛔ You need to be in a voice channel to play music")
+		const noconnectpermEmbed = new Discord.RichEmbed()
+			.setColor('PURPLE')
+			.setTitle(":musical_note: Music")
+			.setDescription("⛔ I can't connect to your voice channel, make sure I have the proper permission")
+		const nospeakpermEmbed = new Discord.RichEmbed()
+			.setColor('PURPLE')
+			.setTitle(":musical_note: Music")
+			.setDescription("⛔ I can't speak in this voice channel, make sure i Have the proper permission")
+		const noresultEmbed = new Discord.RichEmbed()
+			.setColor('PURPLE')
+			.setTitle(":musical_note: Music")
+			.setDescription(`⛔ I could not obtain any search results.`)
+
+		if (!url) return msg.channel.send(nourlEmbed).then(msg => msg.delete(5000));
+		const voiceChannel = msg.member.voiceChannel;
+		if (!voiceChannel) return msg.channel.send(novcEmbed).then(msg => msg.delete(5000));
+		const permissions = voiceChannel.permissionsFor(msg.client.user);
+		if (!permissions.has('CONNECT')) return msg.channel.send(noconnectpermEmbed).then(msg => msg.delete(5000));
+		if (!permissions.has('SPEAK')) return msg.channel.send(nospeakpermEmbed).then(msg => msg.delete(5000));
+
+    	if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
+			const playlist = await youtube.getPlaylist(url);
+			const videos = await playlist.getVideos();
+			for (const video of Object.values(videos)) {
+				const video2 = await youtube.getVideoByID(video.id); // eslint-disable-line no-await-in-loop
+				await handleVideo(video2, msg, voiceChannel, true); // eslint-disable-line no-await-in-loop
+				
+				const addtoqueueEmbed = new Discord.RichEmbed()
+					.setColor('PURPLE')
+					.setTitle(":musical_note: Music")
+					.setDescription(`✅ **${playlist.title}** has been added to the queue`)
+
+			}return msg.channel.send(addtoqueueEmbed);
+		} else {
+			try {
+				var video = await youtube.getVideo(url);
+			} catch (error) {
+				try {
+					var videos = await youtube.searchVideos(searchString, 10);
+					let index = 0;
+					// eslint-disable-next-line max-depth
+					const videoIndex = 1;
+					var video = await youtube.getVideoByID(videos[videoIndex - 1].id);
+				} catch (err) {
+					console.error(err);
+					return msg.channel.send(noresultEmbed).then(msg => msg.delete(5000));
+				}
+			}
+			handleVideo(video, msg, voiceChannel);
+			serverQueue.songs = serverQueue.songs.slice(-2); //clear queue except last 2 songs
+			serverQueue.connection.dispatcher.end('Skipall command has been used!'); //skip to next-last song
+		}
+		
+  	} else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete(5000));
+  }
+
   //STOP
   if (command === 'stop') {
     msg.delete();
@@ -288,6 +358,16 @@ const notinvcEmbed = new Discord.RichEmbed()
     	return msg.channel.send(noplayingEmbed).then(msg => msg.delete(5000));
     } else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete(5000));
 	} 
+
+  //SUMMON
+  if (command === 'summon') {
+	msg.delete();
+	if (msg.member.roles.some(role => role.name === 'DJ')) {
+		if (!msg.member.voiceChannel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete(5000));
+		let memberVoiceChannel = msg.member.voiceChannel;
+		memberVoiceChannel.join();
+	} else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete(5000));
+  }
 
 }); //end of main
 

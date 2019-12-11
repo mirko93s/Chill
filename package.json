@@ -28,6 +28,8 @@
     "opusscript": "0.0.6",
     "or": "^0.2.0",
     "os": "^0.1.1",
+    "parse-ms": "^2.1.0",
+    "quick.db": "^7.0.0-b22",
     "request": "^2.88.0",
     "simple-youtube-api": "^5.2.1",
     "superagent": "^5.1.0",
