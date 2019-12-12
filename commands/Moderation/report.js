@@ -5,7 +5,7 @@ module.exports = {
     name: "report",
     category: "moderation",
     description: "Reports a member",
-    usage: "<mention, id>",
+    usage: "<mention, id> <reason>",
     run: async (client, message, args) => {
         message.delete();
 
@@ -24,7 +24,7 @@ module.exports = {
 
         let rMember = message.mentions.members.first();
 
-        if (!rMember || args[1]) return message.channel.send(noargsEmbed).then(m => m.delete(5000));
+        if (!rMember || !args[1]) return message.channel.send(noargsEmbed).then(m => m.delete(5000));
         if (rMember.user.bot) return message.channel.send(nobotEmbed).then(m => m.delete(5000));
         
         let reportchannel = message.guild.channels.find(reportchannel => reportchannel.name === "🚨reports");

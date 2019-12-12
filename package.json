@@ -1,8 +1,8 @@
 {
   "name": "Chill",
-  "version": "3.1.0",
+  "version": "3.3.0",
   "description": "",
-  "main": "main.js",
+  "main": "chill.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -23,7 +23,6 @@
     "moment": "^2.24.0",
     "ms": "^2.1.2",
     "node-opus": "^0.3.2",
-    "nodemon": "^1.19.4",
     "npm": "^6.10.2",
     "opusscript": "0.0.6",
     "or": "^0.2.0",

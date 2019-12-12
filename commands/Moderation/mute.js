@@ -56,7 +56,7 @@ module.exports = {
 
         const embed = new Discord.RichEmbed()
             .setColor(`GOLD`)
-            .setThumbnail(toUnmute.user.displayAvatarURL)
+            .setThumbnail(toMute.user.displayAvatarURL)
             .setTimestamp()
             .setTitle(`MUTE`)
             .setDescription(`

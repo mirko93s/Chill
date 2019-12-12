@@ -31,6 +31,23 @@ client.on('ready', () => {
 client.on('disconnect', () => console.log('Chill BOT Disconnected! Trying to reconnect...'));
 client.on('reconnecting', () => console.log('Chill BOT Reconnecting!'));
 
+//message guild owner when invited
+client.on('guildCreate', (guild) => {
+	const dmonweronjoinEmbed = new Discord.RichEmbed()
+		.setColor(`RANDOM`)
+		.setAuthor(`Chill - Discord Bot`)
+		.setURL(`https://www.mirko93s.it/`)
+		.setThumbnail(client.user.avatarURL)
+		.setTitle(`Thanks for inviting my bot!`)
+		.setDescription(`⚠️ Follow these instructions to set the Bot ⚠️
+		\n1️⃣ Type **.setup** \n> It will create required channels and roles.
+		\n2️⃣ Set your role hierarchy\n> **Chill** (bot) role must be just below the owner/admin role.\n> **Muted** role must be above any other role that your members have.
+		\n3️⃣ Extra settings\n> Sometimes you might need to adjust channel permissions to avoid "Muted" members can still send messages.
+		\n4️⃣ Music\n> Don't forget to give **DJ** role to your members to make sure they can use Music commands.`)
+		.setFooter(`©️ 2019 by mirko93s`,`https://cdn.discordapp.com/avatars/278380909588381698/029d0578df3fa298132b3d85dd06bf3c.png?size=128`)
+	guild.owner.send(dmonweronjoinEmbed);
+});
+
 //BOT-MENTION
 client.on('message', message=> {
   if (message.author.bot) return;
