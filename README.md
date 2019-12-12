@@ -21,7 +21,7 @@ Reccomended 10.17.0
 ### Modules
 
 Chill is currently extended with the following modules.
-Typing ".help" in discord will give you a detailed explanation of each command.
+Typing ".help" or ".help <command> in discord will give you a detailed explanation of each command.
 
 | Modules | Commands |
 | ------ | ------ |
@@ -31,7 +31,7 @@ Typing ".help" in discord will give you a detailed explanation of each command.
 | Info | avatar, help, serveremojis, serverinfo, whois |
 | Moderation | ban, kick, mute, purge, report, say, unmute |
 | Music | play, skip, playskip, resume, stop, nowplaying, queue, summon, volume |
-| Other | calc, nick, percentage, ping, today, translator, urban, weather |
+| Other | calc, instagram, mcstat, nick, percentage, ping, today, translator, urban, weather |
 | Owner | botactivity |
 | Roles | addrole, removerole, roleinfo, rolelist |
 
