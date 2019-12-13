@@ -9,6 +9,8 @@ const GOOGLE_API_KEY = config.google_api_key
 const client = new Client({ disableEveryone: false });
 const youtube = new YouTube(GOOGLE_API_KEY);
 const queue = new Map();
+const SQLite = require("better-sqlite3");
+const sql = new SQLite('./scores.sqlite');
 
 client.commands = new Collection();
 client.aliases = new Collection();
@@ -21,6 +23,16 @@ client.categories = fs.readdirSync("./commands/");
 client.on('warn', console.warn);
 client.on('error', console.error);
 client.on('ready', () => {
+	const table = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'scores';").get();
+  	if (!table['count(*)']) {
+		sql.prepare("CREATE TABLE scores (id TEXT PRIMARY KEY, user TEXT, guild TEXT, points INTEGER, level INTEGER);").run(); //create table if not exist
+		sql.prepare("CREATE UNIQUE INDEX idx_scores_id ON scores (id);").run();	// Ensure that the id row is always unique and indexed.
+		sql.pragma("synchronous = 1");
+		sql.pragma("journal_mode = wal");
+  	}
+	client.getScore = sql.prepare("SELECT * FROM scores WHERE user = ? AND guild = ?");
+	client.setScore = sql.prepare("INSERT OR REPLACE INTO scores (id, user, guild, points, level) VALUES (@id, @user, @guild, @points, @level);");
+
 	setInterval(async () => { //auto update activity every 30 mins, users counter
 	  	let users = 0;
 	  	for (let g of client.guilds.array()) users += (g.members.size - 1);
@@ -67,6 +79,31 @@ client.on('message', message=> {
   }
 });
 
+//--------------------Xp-add-----------------------
+client.on(`message`, async xpmsg => {
+	if (xpmsg.author.bot) return;
+	if (xpmsg.content.startsWith(PREFIX)) return;
+	let score;
+	if (xpmsg.guild) {
+		score = client.getScore.get(xpmsg.author.id, xpmsg.guild.id);
+		if (!score) {
+			score = { id: `${xpmsg.guild.id}-${xpmsg.author.id}`, user: xpmsg.author.id, guild: xpmsg.guild.id, points: 0, level: 0 }
+		}
+		score.points++;
+		const curLevel = Math.floor(0.3163 * Math.sqrt(score.points));
+		if(score.level < curLevel) {
+			score.level = curLevel;
+			const newlevelembed = new Discord.RichEmbed()
+				.setColor(`RANDOM`)
+				.setAuthor(xpmsg.author.username, xpmsg.author.avatarURL)
+				.setTitle(`Congratulations!`)
+				.setDescription(`You leveled up to Lvl **${curLevel}**!`)
+			xpmsg.channel.send(newlevelembed);
+		}
+		client.setScore.run(score);
+	}
+});
+
 //main
 client.on('message', async msg => {
   	if (msg.author.bot) return;
@@ -88,6 +125,105 @@ client.on('message', async msg => {
   	let commandh = client.commands.get(cmd);
     if (!commandh) commandh = client.commands.get(client.aliases.get(cmd));
     if (commandh) commandh.run(client, msg, arg);
+
+
+
+//--------------------Xp-cmds---------------
+	let score;
+	score = client.getScore.get(msg.author.id, msg.guild.id);
+		if (!score) {
+			score = { id: `${msg.guild.id}-${msg.author.id}`, user: msg.author.id, guild: msg.guild.id, points: 0, level: 0 }
+		}
+  	if(command === "level") {
+		msg.delete();
+		let fixedpoints = score.points;
+		if(fixedpoints >= 1000 && fixedpoints <10000) fixedpoints = `${parseFloat(fixedpoints/1000).toFixed(1)} K`
+			else if(fixedpoints >= 10000 && fixedpoints < 1000000) fixedpoints = `${Math.floor(fixedpoints/1000)} K`
+				else if(fixedpoints >= 1000000 && fixedpoints < 10000000) fixedpoints = `${parseFloat(fixedpoints/1000000).toFixed(1)} M`
+					else if(fixedpoints >= 10000000) fixedpoints = `${Math.floor(fixedpoints/1000000)} M`
+		const levelembed = new Discord.RichEmbed()
+			.setColor(`RANDOM`)
+			.setAuthor(msg.author.username, msg.author.avatarURL)
+			.setTitle(`Lvl ${score.level}`)
+			.setDescription(`${fixedpoints} points`)
+		return msg.channel.send(levelembed);
+	}
+
+  	if(command === "xp") {
+		msg.delete();
+		const nopermEmbed = new Discord.RichEmbed()
+			.setColor(`RED`)
+			.setTitle(`⛔ You don't have permission to use this!`)
+		const noargsEmbed = new Discord.RichEmbed()
+            .setColor(`RED`)
+			.setTitle(`⛔ Please mention a valid user of this server and provide mode and amount.`)
+		const nonegativeEmbed = new Discord.RichEmbed()
+			.setColor(`RED`)
+			.setTitle(`⛔ Points can't be negative!`)
+		if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.channel.send(nopermEmbed).then(m => m.delete(5000));
+		let user = msg.mentions.users.first() || client.users.get(arg[0]);
+		if(!user) return msg.channel.send(noargsEmbed).then(m => m.delete(5000));
+		let mode = arg[1];
+		if(!mode) return msg.channel.send(noargsEmbed).then(m => m.delete(5000));
+			else if(mode !== "take" && mode !== "give" && mode !== "set") return msg.channel.send(noargsEmbed).then(m => m.delete(5000));
+		let pointsToAdd = parseInt(arg[2], 10);
+		if(arg[2] == 0) pointsToAdd = 0;
+			else if (!pointsToAdd) return msg.channel.send(noargsEmbed).then(m => m.delete(5000));
+		let userscore = client.getScore.get(user.id, msg.guild.id);
+		if (!userscore) {
+			userscore = { id: `${msg.guild.id}-${user.id}`, user: user.id, guild: msg.guild.id, points: 0, level: 0 }
+		}
+		let xpmsg;
+		if(mode == "give") {
+			userscore.points += pointsToAdd;
+			xpmsg = "+";
+			let userLevel = Math.floor(0.2 * Math.sqrt(userscore.points));
+			userscore.level = userLevel;
+			client.setScore.run(userscore);
+		}		
+		if(mode == "take") {
+			if(userscore.points-pointsToAdd < 0) return msg.channel.send(nonegativeEmbed).then(m => m.delete(5000));
+			userscore.points -= pointsToAdd;
+			xpmsg = "-";
+			let userLevel = Math.floor(0.2 * Math.sqrt(userscore.points));
+			userscore.level = userLevel;
+			client.setScore.run(userscore);
+		}
+		if(mode == "set") {
+			userscore.points = pointsToAdd;
+			xpmsg = "Set to";
+			let userLevel = Math.floor(0.2 * Math.sqrt(userscore.points));
+			userscore.level = userLevel;
+			client.setScore.run(userscore);
+		}
+		const xpcmdembed = new Discord.RichEmbed()
+			.setColor(`RANDOM`)
+			.setAuthor(user.username, user.avatarURL)
+			.setTitle(`${xpmsg} ${pointsToAdd} points`)
+			.setDescription(`by ${msg.author.username}`)
+		return msg.channel.send(xpcmdembed);
+	}
+
+  	if(command === "leaderboard" || command === "lb") {
+		msg.delete();
+		const top10 = sql.prepare("SELECT * FROM scores WHERE guild = ? ORDER BY points DESC LIMIT 10;").all(msg.guild.id);
+		let emojiposition = 0;
+		const embed = new Discord.RichEmbed()
+			.setTitle("🏆 Leaderboard 🏆")
+			.setAuthor(msg.guild.name, msg.guild.iconURL)
+			.setDescription("Top 10")
+			.setColor(0x00AE86);
+		var emoji = ["🥇","🥈","🥉","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"];
+		for(const data of top10) {
+			if(data.points >= 1000 && data.points <10000) data.points = `${parseFloat(data.points/1000).toFixed(1)} K`
+				else if(data.points >= 10000 && data.points < 1000000) data.points = `${Math.floor(data.points/1000)} K`
+					else if(data.points >= 1000000 && data.points < 10000000) data.points = `${parseFloat(data.points/1000000).toFixed(1)} M`
+						else if(data.points >= 10000000) data.points = `${Math.floor(data.points/1000000)} M`
+			embed.addField(`${emoji[emojiposition]}**${client.users.get(data.user).username}**`, `> ${data.points} | Lvl ${data.level}`, true);
+			emojiposition++;
+		}
+		return msg.channel.send(embed);
+  	}
 
 //--------------------Music--------------------
 

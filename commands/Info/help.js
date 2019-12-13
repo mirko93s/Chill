@@ -46,6 +46,7 @@ function getAll(client, message) { //old help main page below-----------
             /* Other */.addField(":bulb: Other", "calc, instagram, mcstat, nick, percentage, ping, today, translator, urban, weather")
             /* Owner */.addField(":gear: Owner", "botactivity")
             /* Roles */.addField(":level_slider: Roles", "addrole, removerole, roleinfo, rolelist")
+            /* Xp */.addField(":trophy: Xp", "leaderboard, level, xp")
 
     return message.channel.send(helpembed);
 }
