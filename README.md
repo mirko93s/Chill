@@ -34,6 +34,7 @@ Typing ".help" or ".help <command> in discord will give you a detailed explanati
 | Other | calc, instagram, mcstat, nick, percentage, ping, today, translator, urban, weather |
 | Owner | botactivity |
 | Roles | addrole, removerole, roleinfo, rolelist |
+| Xp | leaderboard, level, xp |
 
 ### Todos
 
