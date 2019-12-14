@@ -21,7 +21,7 @@ Reccomended 10.17.0
 ### Modules
 
 Chill is currently extended with the following modules.
-Typing ".help" or ".help <command> in discord will give you a detailed explanation of each command.
+Typing ".help" or ".help (command) in discord will give you a detailed explanation of each command.
 
 | Modules | Commands |
 | ------ | ------ |
