@@ -19,12 +19,23 @@ module.exports = {
             .setFooter(`Message must be longer than 10 characters`)
         const thanksEmbed = new Discord.RichEmbed()
             .setColor(`GREEN`)
-            .setTitle(`✅ Your report has been sent. Thanks!`)
+            .setTitle(`✅ Your bug report has been sent. Thanks!`)
 
         if (talkedRecently.has(msg.author.id)) return msg.channel.send(cooldownEmbed).then(msg => msg.delete(5000));
                         let feedback = arg.join(' ');
                             if (feedback.length < 10) return msg.reply(tooshortEmbed).then(msg => msg.delete(5000));
-                        client.users.get("278380909588381698").send(":bug: BUG: " + feedback + "\nReported by " + msg.author.username);
+
+                        const bugembed = new Discord.RichEmbed()
+                        .setColor(`RED`)
+                        .setAuthor(`🐛Bug Report`)
+                        .setTitle(`> ${feedback}`)
+                        .setDescription(`*by: ${msg.author.tag}*`)
+
+                        client.guilds.get(`604535617841266708`).channels.get(`655345220791304192`).send(bugembed).then(sentEmbed => {
+                            sentEmbed.react("✅")
+                            .then (() => sentEmbed.react("❔"))
+                            .then (() => sentEmbed.react("❌"))
+                        });
                             msg.reply(thanksEmbed).then(msg => {msg.delete(5000)});
                     talkedRecently.add(msg.author.id);
                     setTimeout(() => {
