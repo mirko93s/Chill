@@ -31,7 +31,7 @@ Type ".help" or ".help (command) in discord will give you a detailed explanation
 | Roles | addrole, removerole, roleinfo, rolelist |
 | Xp | leaderboard, level, xp |
 
-## Todos
+## To do
 
  - ...
 
