@@ -30,6 +30,7 @@ module.exports = {
                         .setAuthor(`🐛Bug Report`)
                         .setTitle(`> ${feedback}`)
                         .setDescription(`*by: ${msg.author.tag}*`)
+                        .setTimestamp()
 
                         client.guilds.get(`604535617841266708`).channels.get(`655345220791304192`).send(bugembed).then(sentEmbed => {
                             sentEmbed.react("✅")
