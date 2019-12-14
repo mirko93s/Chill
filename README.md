@@ -10,7 +10,7 @@
 ![N|Solid](https://cdn.discordapp.com/avatars/605894942275141672/444631c52d3b76e6c3ed70be25cf0222.png?size=128)
 
 ## Invite
-Click <a href="https://www.mirko93s.it" target="_blank">HERE</a> to invite Chill to your server.
+Click [HERE](https://www.mitko93s.it/) to invite Chill to your server.
 
 
 ## [Wiki](https://github.com/mirko93s/Chill/wiki)
