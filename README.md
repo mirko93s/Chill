@@ -9,19 +9,13 @@
 
 ![N|Solid](https://cdn.discordapp.com/avatars/605894942275141672/444631c52d3b76e6c3ed70be25cf0222.png?size=128)
 
-Chill is a Discord bot with moderation, music and many other features.
+## Invite
+Click [HERE](https://www.mirko93s.it/) to invite Chill to your server.
 
 ## [Wiki](https://github.com/mirko93s/Chill/wiki)
 
-### Installation
-
-Chill requires [Node.js](https://nodejs.org/dist/latest-v10.x/) v10 to run.
-Reccomended 10.17.0
-
-### Modules
-
-Chill is currently extended with the following modules.
-Typing ".help" or ".help (command) in discord will give you a detailed explanation of each command.
+## Modules
+Type ".help" or ".help (command) in discord will give you a detailed explanation of each command.
 
 | Modules | Commands |
 | ------ | ------ |
@@ -36,10 +30,8 @@ Typing ".help" or ".help (command) in discord will give you a detailed explanati
 | Roles | addrole, removerole, roleinfo, rolelist |
 | Xp | leaderboard, level, xp |
 
-### Todos
+## Todos
 
  - ...
 
 [//]: # (Hidden stuff)
-
-   [node.js]: <http://nodejs.org>
