@@ -34,6 +34,7 @@ Type ".help" or ".help (command) in discord will give you a detailed explanation
 
 ## To do
 
- - ...
+ - Cleaning dependencies  
+ - Fixing some minor bug
 
 [//]: # (Hidden stuff)
