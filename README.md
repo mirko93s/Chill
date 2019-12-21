@@ -39,3 +39,8 @@ Type ".help" or ".help (command) in discord will give you a detailed explanation
  - Update node.js and all the dependencies
 
 [//]: # (Hidden stuff)
+
+## Support on Beerpay
+Hey dude! Help me out for a couple of :beers:!
+
+[![Beerpay](https://beerpay.io/mirko93s/Chill/badge.svg?style=beer-square)](https://beerpay.io/mirko93s/Chill)  [![Beerpay](https://beerpay.io/mirko93s/Chill/make-wish.svg?style=flat-square)](https://beerpay.io/mirko93s/Chill?focus=wish)
