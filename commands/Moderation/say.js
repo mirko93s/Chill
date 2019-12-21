@@ -1,4 +1,4 @@
-const { RichEmbed } = require("discord.js");
+const Discord = require("discord.js");
 
 module.exports = {
     name: "say",
@@ -16,10 +16,9 @@ module.exports = {
             .setTitle(`⛔ Please provide a message`)
 
         if (!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send(nopermEmbed).then(m => m.delete(5000));
-        if (args.length < 0) return message.channel.send(nomsgEmbed).then(m => m.delete(5000));
-
-        if (args[0].toLowerCase() === "embed") {
-            const embed = new RichEmbed()
+        if (!args[0]) return message.channel.send(nomsgEmbed).then(m => m.delete(5000));
+        if (args[0] === "embed") {
+            const embed = new Discord.RichEmbed()
                 .setColor(`RANDOM`)
                 .setDescription(args.slice(1).join(" "))
 
