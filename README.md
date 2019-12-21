@@ -21,7 +21,7 @@ Not public at the moment.
 ## [Wiki](https://github.com/mirko93s/Chill/wiki) (w.i.p)
 
 ## Modules
-Type ".help" or ".help (command) in discord will give you a detailed explanation of each command.
+Type ".help" or ".help (command)" in discord will give you a detailed explanation of each command.
 
 | Modules | Commands |
 | ------ | ------ |
