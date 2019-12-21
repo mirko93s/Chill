@@ -13,9 +13,8 @@
 Not public at the moment.
 
 ## [Download lastest release](https://github.com/mirko93s/Chill/releases/latest)
-## [Installation](https://github.com/mirko93s/Chill/wiki/Installation)
-
-## [Wiki](https://github.com/mirko93s/Chill/wiki)
+## [Installation guide](https://github.com/mirko93s/Chill/wiki/Installation)
+## [Wiki](https://github.com/mirko93s/Chill/wiki) (w.i.p)
 
 ## Modules
 Type ".help" or ".help (command) in discord will give you a detailed explanation of each command.
