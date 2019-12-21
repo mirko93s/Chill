@@ -38,8 +38,8 @@ Type ".help" or ".help (command)" in discord will give you a detailed explanatio
 
 ## To do
 
- - Cleaning dependencies
- - Fixing some minor bug
+ - Clean dependencies
+ - Fix minor bug
  - Update node.js and all the dependencies
 
 [//]: # (Hidden stuff)
