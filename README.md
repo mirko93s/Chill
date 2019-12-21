@@ -12,6 +12,7 @@
 ## Invite
 Not public at the moment.
 
+## [Download lastest release](https://github.com/mirko93s/Chill/releases/latest)
 ## [Installation](https://github.com/mirko93s/Chill/wiki/Installation)
 
 ## [Wiki](https://github.com/mirko93s/Chill/wiki)
