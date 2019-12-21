@@ -32,7 +32,7 @@ module.exports = {
                         .setDescription(`*by: ${msg.author.tag}*`)
                         .setTimestamp()
 
-                        client.guilds.get(`604535617841266708`).channels.get(`655345220791304192`).send(bugembed).then(sentEmbed => {
+                        client.guilds.get(`paste-guild-id-here`).channels.get(`paste-channel-id-here`).send(bugembed).then(sentEmbed => {
                             sentEmbed.react("✅")
                             .then (() => sentEmbed.react("❔"))
                             .then (() => sentEmbed.react("❌"))
