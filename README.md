@@ -11,7 +11,7 @@
 
 ## Support on Beerpay
 Hey dude! Help me out for a couple of :beers:!  
-[![Beerpay](https://beerpay.io/mirko93s/Chill/badge.svg?style=beer-square)](https://beerpay.io/mirko93s/Chill)
+[![Beerpay](https://beerpay.io/mirko93s/Chill/badge.svg?style=beer)](https://beerpay.io/mirko93s/Chill)
 
 ## Invite
 Not public at the moment.
