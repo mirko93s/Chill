@@ -10,8 +10,9 @@
 ![N|Solid](https://cdn.discordapp.com/avatars/605894942275141672/444631c52d3b76e6c3ed70be25cf0222.png?size=128)
 
 ## Invite
-Click [HERE] to invite Chill to your server.
+Not public at the moment.
 
+## [Installation](https://github.com/mirko93s/Chill/wiki/Installation)
 
 ## [Wiki](https://github.com/mirko93s/Chill/wiki)
 
