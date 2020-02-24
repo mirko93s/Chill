@@ -11,6 +11,7 @@ const youtube = new YouTube(GOOGLE_API_KEY);
 const queue = new Map();
 const SQLite = require("better-sqlite3");
 const sql = new SQLite('./scores.sqlite');
+var videoid;
 
 client.commands = new Collection();
 client.aliases = new Collection();
@@ -533,6 +534,8 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 		title: Util.escapeMarkdown(video.title),
 		url: `https://www.youtube.com/watch?v=${video.id}`
 	};
+	videoid = song.id;
+
 	if (!serverQueue) {
 		const queueConstruct = {
 			textChannel: msg.channel,
@@ -597,8 +600,9 @@ function play(guild, song) {
 	dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
 	
 	const playEmbed = new Discord.RichEmbed()
+		.setImage(`https://i.ytimg.com/vi/${videoid}/maxresdefault.jpg`)
 		.setColor('PURPLE')
-		.setTitle(":musical_note: Music")
+		.setTitle(`:musical_note: Music`)
 		.setDescription(`:arrow_forward: **${song.title}**`)
 
 	serverQueue.textChannel.send(playEmbed);
