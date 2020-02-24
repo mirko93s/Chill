@@ -9,10 +9,6 @@
 
 ![N|Solid](https://cdn.discordapp.com/avatars/605894942275141672/444631c52d3b76e6c3ed70be25cf0222.png?size=128)
 
-## Support on Beerpay
-Hey dude! Help me out for a couple of :beers:!  
-[![Beerpay](https://beerpay.io/mirko93s/Chill/badge.svg?style=beer)](https://beerpay.io/mirko93s/Chill)
-
 ## [Download lastest release](https://github.com/mirko93s/Chill/releases/latest)
 ## [Installation guide](https://github.com/mirko93s/Chill/wiki/Installation)
 ## [Wiki](https://github.com/mirko93s/Chill/wiki) (w.i.p)
@@ -36,3 +32,6 @@ Type ".help" or ".help (command)" in discord to get a detailed explanation of ea
 ## To do
 
 [//]: # (Hidden stuff)
+## Support on Beerpay
+Hey dude! Help me out for a couple of :beers:!  
+[![Beerpay](https://beerpay.io/mirko93s/Chill/badge.svg?style=beer)](https://beerpay.io/mirko93s/Chill)
