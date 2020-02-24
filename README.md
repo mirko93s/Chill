@@ -18,7 +18,7 @@ Hey dude! Help me out for a couple of :beers:!
 ## [Wiki](https://github.com/mirko93s/Chill/wiki) (w.i.p)
 
 ## Modules
-Type ".help" or ".help (command)" in discord will give you a detailed explanation of each command.
+Type ".help" or ".help (command)" in discord to get a detailed explanation of each command.
 
 | Modules | Commands |
 | ------ | ------ |
