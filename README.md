@@ -13,9 +13,6 @@
 Hey dude! Help me out for a couple of :beers:!  
 [![Beerpay](https://beerpay.io/mirko93s/Chill/badge.svg?style=beer)](https://beerpay.io/mirko93s/Chill)
 
-## Invite
-Not public at the moment.
-
 ## [Download lastest release](https://github.com/mirko93s/Chill/releases/latest)
 ## [Installation guide](https://github.com/mirko93s/Chill/wiki/Installation)
 ## [Wiki](https://github.com/mirko93s/Chill/wiki) (w.i.p)
