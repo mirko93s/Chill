@@ -1,13 +1,12 @@
 {
   "name": "Chill",
-  "version": "4.0.0",
-  "description": "",
+  "version": "4.0.2",
+  "description": "Just Another Discord Bot",
   "main": "chill.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "author": "mirko93s",
   "license": "ISC",
   "dependencies": {
     "ascii-table": "0.0.9",
@@ -15,21 +14,12 @@
     "common-tags": "^1.8.0",
     "cpu-stat": "^2.0.1",
     "discord.js": "^11.5.1",
-    "install": "^0.13.0",
-    "mathjs": "^6.2.3",
-    "moment": "^2.24.0",
-    "ms": "^2.1.2",
-    "node-opus": "^0.3.2",
-    "npm": "^6.10.2",
-    "opusscript": "0.0.6",
-    "or": "^0.2.0",
-    "os": "^0.1.1",
-    "parse-ms": "^2.1.0",
-    "request": "^2.88.0",
+    "ffmpeg-binaries": "^4.0.0",
+    "mathjs": "^6.6.0",
+    "node-opus": "^0.3.3",
     "simple-youtube-api": "^5.2.1",
-    "superagent": "^5.1.0",
+    "superagent": "^5.2.2",
     "weather-js": "^2.0.0",
-    "ytdl-core": "^0.29.4",
-    "ytdl-core-discord": "^1.0.3"
+    "ytdl-core": "^1.0.9"
   }
 }
