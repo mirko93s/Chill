@@ -32,6 +32,8 @@ Type ".help" or ".help (command)" in discord to get a detailed explanation of ea
 ## To do
 
 [//]: # (Hidden stuff)
+<!--
 ## Support on Beerpay
 Hey dude! Help me out for a couple of :beers:!  
 [![Beerpay](https://beerpay.io/mirko93s/Chill/badge.svg?style=beer)](https://beerpay.io/mirko93s/Chill)
+-->
