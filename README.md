@@ -22,7 +22,7 @@ Type ".help" or ".help (command)" in discord to get a detailed explanation of ea
 | Bot | botinfo, bugreport, invite, project |
 | Fun | 8ball, flipcoin, rockpaperscissors, ship, slotmachine, suicide, wouldyourather |
 | Info | avatar, help, serveremojis, serverinfo, whois |
-| Moderation | ban, kick, mute, purge, report, say, unmute |
+| Moderation | ban, kick, mute, purge, report, say, ticket, unmute |
 | Music | play, skip, playskip, resume, stop, nowplaying, queue, summon, volume |
 | Other | calc, instagram, mcstat, nick, percentage, ping, today, translator, urban, weather |
 | Owner | botactivity |
@@ -30,6 +30,8 @@ Type ".help" or ".help (command)" in discord to get a detailed explanation of ea
 | Xp | leaderboard, level, xp |
 
 ## To do
+Update discord.js to v12
+Update node.js to v12
 
 [//]: # (Hidden stuff)
 <!--
