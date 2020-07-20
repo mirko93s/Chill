@@ -4,7 +4,7 @@ const os = require('os')
 const cpuStat = require("cpu-stat");
 
 const discordjs_version = "v11.5.1"
-const bot_version = "v4.0"
+const bot_version = "v4.1"
 
 module.exports = {
     name: "botinfo",
