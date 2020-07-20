@@ -10,7 +10,7 @@ module.exports = {
             .setColor(`RANDOM`)
             .setThumbnail(client.user.avatarURL)
             .setTitle(`**Chill - Discord Bot**`)
-            .setURL(`paste-website-link-here`)
+            .setURL(`http://www.mirko93s.it/`)
             .setDescription(`Just another discord bot!`)
 
         msg.channel.send(embed)

@@ -17,7 +17,7 @@ module.exports = {
             .setColor(`RED`)
             .setTitle(`⛔ Please provide a valid message`)
 
-        if (msg.author.id !== 'paste-your-ID-here') return msg.channel.send(nopermEmbed).then(msg => msg.delete(5000));
+        if (msg.author.id !== '278380909588381698') return msg.channel.send(nopermEmbed).then(msg => msg.delete(5000));
         let activity = arg.join(" ");
         if (!activity) return msg.channel.send(nomsgEmbed).then(msg => msg.delete(5000));
         let baEmbed = new Discord.RichEmbed()

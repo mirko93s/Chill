@@ -13,15 +13,22 @@ module.exports = {
             .setTitle(`⛔ You don't have permission to use this!`)
 
         if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.reply(nopermEmbed).then(msg => msg.delete(5000));
+
         let bcchannel = msg.guild.channels.find(bcchannel => bcchannel.name === '🔴broadcast');
         let puchannel = msg.guild.channels.find(puchannel => puchannel.name === '🔨punishments');
         let reportchannel = msg.guild.channels.find(reportchannel => reportchannel.name === '🚨reports');
         let gachannel = msg.guild.channels.find(gachannel => gachannel.name === '🎉giveaway');
         let pollchannel = msg.guild.channels.find(pollchannel => pollchannel.name === `💡poll`);
+
+        let ticketcategory = msg.guild.channels.find(ticketcategory => ticketcategory.name === `tickets`);
+
         let mutedrole = msg.guild.roles.find(mutedrole => mutedrole.name === "Muted");
         let djrole = msg.guild.roles.find(djrole => djrole.name === "DJ");
+        let supportrole = msg.guild.roles.find(supportrole => supportrole.name === "Support");
+
         const created = "✅"
         const already = "❌"
+
         if(!bcchannel) {
             msg.guild.createChannel('🔴broadcast', {type: 'text', 
                 permissionOverwrites: [{id: msg.guild.defaultRole.id, 
@@ -57,6 +64,11 @@ module.exports = {
             ]}]})
             pollmsg = created
         } else pollmsg = already
+        if(!ticketcategory) {
+            msg.guild.createChannel("tickets", {type: 'category', 
+            })
+            ticketmsg = created
+        } else ticketmsg = already
         if (!mutedrole) {
             msg.guild.createRole({name: 'Muted',color: '525252'})
             mutedmsg = created
@@ -65,6 +77,10 @@ module.exports = {
             msg.guild.createRole({name: 'DJ',permissions: ['CONNECT'], color: 'D00091'})
             djmsg = created
         } else djmsg = already
+        if (!supportrole) {
+            msg.guild.createRole({name: 'Support', color: 'FC72F3'})
+            supportmsg = created
+        } else supportmsg = already
         let setupembed = new Discord.RichEmbed()
             .setTitle("**SETUP**")
             .setColor(`RANDOM`)
@@ -76,10 +92,13 @@ module.exports = {
                     \n${reportmsg} | 🚨reports
                     \n${gamsg} | 🎉giveaway
                     \n${pollmsg} | 💡poll
+                    \n**Categories**
+                    \n${ticketmsg} | tickets
                     \n**Roles**
                     \n${mutedmsg} | Muted
                     \n${djmsg} | DJ
-                    \n*${created} Created ${already} Already exists*
+                    \n${supportmsg} | Support
+                    \n\n*${created} Created ${already} Already exists*
                 `)
         msg.channel.send(setupembed);
     }

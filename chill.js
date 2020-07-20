@@ -34,6 +34,9 @@ client.on('ready', () => {
 	client.getScore = sql.prepare("SELECT * FROM scores WHERE user = ? AND guild = ?");
 	client.setScore = sql.prepare("INSERT OR REPLACE INTO scores (id, user, guild, points, level) VALUES (@id, @user, @guild, @points, @level);");
 
+	let users = 0;
+	client.user.setActivity(`${users} user${users !== 1 ? 's' : ''}`, {type: 'WATCHING'});
+
 	setInterval(async () => { //auto update activity every 30 mins, users counter
 	  	let users = 0;
 	  	for (let g of client.guilds.array()) users += (g.members.size - 1);

@@ -41,7 +41,7 @@ function getAll(client, message) { //old help main page below-----------
             /* Bot */.addField(":robot: Bot", "botinfo, bugreport, invite, project, website")
             /* Fun */.addField(":game_die: Fun", "8ball, flipcoin, rockpaperscissors, ship, slotmachine, suicide, wouldyourather")
             /* Info */.addField(":information_source: Info", "avatar, help, serveremojis, serverinfo, whois")
-            /* Moderation */.addField(":hammer: Moderation", "ban, kick, mute, purge, report, say, unmute")
+            /* Moderation */.addField(":hammer: Moderation", "ban, kick, mute, purge, report, say, unmute, ticket")
             /* Music */.addField(":musical_note: Music", "play, skip, playskip, pause, resume, stop, nowplaying, queue, summon, volume")
             /* Other */.addField(":bulb: Other", "calc, instagram, mcstat, nick, percentage, ping, today, translator, urban, weather")
             /* Owner */.addField(":gear: Owner", "botactivity")

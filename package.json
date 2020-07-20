@@ -1,6 +1,6 @@
 {
   "name": "Chill",
-  "version": "4.0.2",
+  "version": "4.1",
   "description": "Just Another Discord Bot",
   "main": "chill.js",
   "scripts": {
@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "ascii-table": "0.0.9",
-    "better-sqlite3": "^5.4.3",
+    "better-sqlite3": "^7.1.0",
     "common-tags": "^1.8.0",
     "cpu-stat": "^2.0.1",
     "discord.js": "^11.5.1",
@@ -18,8 +18,8 @@
     "mathjs": "^6.6.0",
     "node-opus": "^0.3.3",
     "simple-youtube-api": "^5.2.1",
-    "superagent": "^5.2.2",
+    "superagent": "^5.3.1",
     "weather-js": "^2.0.0",
-    "ytdl-core": "^1.0.9"
+    "ytdl-core": "^3.1.2"
   }
 }
