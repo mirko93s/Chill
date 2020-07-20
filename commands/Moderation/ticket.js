@@ -4,7 +4,7 @@ module.exports = {
     name: "ticket",
     category: "Moderation",
     description: "Create a ticket",
-    usage: "ticket [close]",
+    usage: "ticket [close-delete]",
     run: async (client, msg, arg) => {
         msg.delete();
 
