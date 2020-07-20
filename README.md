@@ -31,6 +31,7 @@ Type ".help" or ".help (command)" in discord to get a detailed explanation of ea
 
 ## To do
 Update discord.js to v12
+
 Update node.js to v12
 
 [//]: # (Hidden stuff)
