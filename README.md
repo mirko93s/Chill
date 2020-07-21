@@ -8,9 +8,13 @@
 
 <img src="https://s7.gifyu.com/images/chill.gif" data-canonical-src="https://s7.gifyu.com/images/chill.gif" />
 
-## [Download lastest release](https://github.com/mirko93s/Chill/releases/latest)
-## [Installation guide](https://github.com/mirko93s/Chill/wiki/Installation)
-## [Wiki](https://github.com/mirko93s/Chill/wiki) (w.i.p)
+# [TRY ME!](https://discord.gg/2ktWcAb)
+
+[Download lastest release](https://github.com/mirko93s/Chill/releases/latest)
+
+[Installation guide](https://github.com/mirko93s/Chill/wiki/Installation)
+
+[Wiki](https://github.com/mirko93s/Chill/wiki) (w.i.p)
 
 ## Modules
 Type ".help" or ".help (command)" in discord to get a detailed explanation of each command.
