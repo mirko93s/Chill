@@ -1,5 +1,5 @@
 [![License](https://img.shields.io/github/license/mirko93s/Chill)](https://opensource.org/licenses/Apache-2.0)
-![Version](https://img.shields.io/github/package-json/v/mirko93s/Chill)
+![Version](https://img.shields.io/github/v/release/mirko93s/Chill?color=8A2BE2)
 ![Language](https://img.shields.io/github/languages/top/mirko93s/Chill)
 ![Code-Quality](https://img.shields.io/codefactor/grade/github/mirko93s/Chill)
 ![Last-Commit](https://img.shields.io/github/last-commit/mirko93s/Chill)
