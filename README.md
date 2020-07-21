@@ -30,9 +30,7 @@ Type ".help" or ".help (command)" in discord to get a detailed explanation of ea
 | Xp | leaderboard, level, xp |
 
 ## To do
-Update discord.js to v12
-
-Update node.js to v12
+Update discord.js and node.js to v12
 
 [//]: # (Hidden stuff)
 <!--
