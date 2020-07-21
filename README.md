@@ -1,5 +1,3 @@
-# Chill
-
 [![License](https://img.shields.io/github/license/mirko93s/Chill)](https://opensource.org/licenses/Apache-2.0)
 ![Version](https://img.shields.io/github/package-json/v/mirko93s/Chill)
 ![Language](https://img.shields.io/github/languages/top/mirko93s/Chill)
@@ -7,7 +5,7 @@
 ![Last-Commit](https://img.shields.io/github/last-commit/mirko93s/Chill)
 ![Build](https://img.shields.io/appveyor/ci/mirko93s/chill)
 
-![N|Solid](https://cdn.discordapp.com/avatars/605894942275141672/444631c52d3b76e6c3ed70be25cf0222.png?size=128)
+<img src="https://s7.gifyu.com/images/chill.gif" data-canonical-src="https://s7.gifyu.com/images/chill.gif" />
 
 ## [Download lastest release](https://github.com/mirko93s/Chill/releases/latest)
 ## [Installation guide](https://github.com/mirko93s/Chill/wiki/Installation)
