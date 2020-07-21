@@ -8,7 +8,9 @@
 
 <img src="https://s7.gifyu.com/images/chill.gif" data-canonical-src="https://s7.gifyu.com/images/chill.gif" />
 
-# [TRY ME!](https://discord.gg/2ktWcAb)
+[<img src="https://i.imgur.com/nqbHjTr.png">](https://discord.com/oauth2/authorize?client_id=605894942275141672&permissions=8&scope=bot)
+
+# [TRY ME!](https://discord.gg/2ktWcAb) (test server)
 
 [Download lastest release](https://github.com/mirko93s/Chill/releases/latest)
 
