@@ -8,7 +8,7 @@
 
 <img src="https://s7.gifyu.com/images/chill.gif" data-canonical-src="https://s7.gifyu.com/images/chill.gif" />
 
-[<img src="https://i.imgur.com/nqbHjTr.png">](https://discord.com/oauth2/authorize?client_id=605894942275141672&permissions=8&scope=bot)
+[<img src="https://i.imgur.com/nqbHjTr.png">](https://www.mirko93s.it)
 
 # [TRY ME!](https://discord.gg/2ktWcAb) (test server)
 
