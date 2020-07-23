@@ -12,7 +12,7 @@
 
 # [TRY ME!](https://discord.gg/2ktWcAb) (test server)
 
-[Download lastest release](https://github.com/mirko93s/Chill/releases/latest)
+[Download lastest release](https://github.com/mirko93s/Chill/releases)
 
 [Installation guide](https://github.com/mirko93s/Chill/wiki/Installation)
 
@@ -32,6 +32,7 @@ Type ".help" or ".help (command)" in discord to get a detailed explanation of ea
 | Other | calc, instagram, mcstat, nick, percentage, ping, today, translator, urban, weather |
 | Owner | botactivity |
 | Roles | addrole, removerole, roleinfo, rolelist |
+| Settings| resetconfig, setconfig, showconfig |
 | Xp | leaderboard, level, xp |
 
 ## To do
