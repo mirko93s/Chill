@@ -2,9 +2,7 @@ const Discord = require("discord.js");
 const fs = require("fs")
 const os = require('os')
 const cpuStat = require("cpu-stat");
-
-const discordjs_version = "v11.5.1"
-const bot_version = "v5.0"
+const package = require('../../package.json');
 
 module.exports = {
     name: "botinfo",
@@ -25,9 +23,9 @@ module.exports = {
                 .addField('Total Servers', Math.ceil(client.guilds.size), true)
                 .addField('Total Users', `${client.users.size}`, true)
                 .addField('Total Channels:', `${client.channels.size}`, true)
-                .addField('Library', `discord.js ${discordjs_version}`, true)//
+                .addField('Library', `discord.js v${package.dependencies["discord.js"]}`, true)//
                 .addField('Node.js Version', process.version, true)
-                .addField('Bot Version', `${bot_version}`, true)
+                .addField('Bot Version', `${package.version}`, true)
                 .addField("CPU", `\`\`\`${os.cpus().map(i => `${i.model}`)[0]}\`\`\``, true)//
                 .addField("CPU usage", `\`${percent.toFixed(2)}%\``,true)//
                 .addField("RAM", `\`${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB\``, true)
