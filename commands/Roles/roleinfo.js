@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["rinfo"],
     category: "Roles",
     description: "Returns role info",
-    usage: "<role name>",
+    usage: "roleinfo <role name>\n**e.g.**\n\`roleinfo DJ\`\n> will return few info about the \"DJ\" role\n> Keep in mind, role names are case-sensitive",
     run: async (client, msg, arg) => {
         msg.delete();
 

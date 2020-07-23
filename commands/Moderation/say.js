@@ -3,7 +3,7 @@ const Discord = require("discord.js");
 module.exports = {
     name: "say",
     description: "Let the Bot say something for you",
-    usage: "[embed] <message>",
+    usage: "say [embed] <message>\n**e.g.**\n\`say hello\`\n> The Bot will send a normal \"hello\" message\n\`say embed hello\`\n> The Bot will send an embedded \"hello\" message",
     permission: "MANAGE_MESSAGES",
     run: (client, message, args) => {
         message.delete();

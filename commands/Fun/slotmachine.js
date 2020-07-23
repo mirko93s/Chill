@@ -4,7 +4,8 @@ module.exports = {
     name: "slotmachine",
     aliases: ["slot"],
     category: "Fun",
-    description: "Waste some money on slots",
+    description: "Play a slot machine",
+    usage: "slotmachine\n**e.g.**\n\`slotmachine\`\n> No real money are used :D",
     run: async (client, msg, arg) => {
         msg.delete();
         const slots = [':grapes:', ':cherries:', ':lemon:', ':tangerine:'];

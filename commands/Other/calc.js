@@ -6,7 +6,7 @@ module.exports = {
     aliases: ["math"],
     category: "Other",
     description: "Calculator",
-    usage: "<expression>",
+    usage: "calc <expression>\n**e.g.**\n\`calc 2+2\`\n> will return 4\n\`calc (2+2)*3\`\n> will return 12\n> It is able to solve very complex calculations\n> more info at https://www.npmjs.com/package/mathjs",
     run: async (client, msg, arg) => {
         msg.delete();
 

@@ -5,8 +5,8 @@ const { promptMessage } = require("../../functions.js");
 module.exports = {
     name: "ban",
     category: "Moderation",
-    description: "bans the member",
-    usage: "<id | mention>",
+    description: "Ban a member in your server",
+    usage: "ban <id | mention> <reason>\n**e.g.**\n\`ban @mirko93s reason\`\n> will ban mirko93s from your server\n> The ban will be logged in the punishments channel",
     permission: "BAN_MEMBERS",
     run: async (client, message, args) => {
         message.delete();
@@ -36,7 +36,7 @@ module.exports = {
             .setColor(`RED`)
             .setTitle(`⛔ Ban canceled`)
 
-        let puchannel = message.guild.channels.find(puchannel => puchannel.name === "🔨punishments");
+        let puchannel = message.guild.channels.find(puchannel => puchannel.name === (client.settings.get(message.guild.id, "puchannel")));
 
         if (!message.member.hasPermission("BAN_MEMBERS")) return message.channel.send(nopermEmbed).then(m => m.delete(5000));
         if (!message.guild.me.hasPermission("BAN_MEMBERS")) return message.channel.send(nobotpermEmbed).then(m => m.delete(5000));

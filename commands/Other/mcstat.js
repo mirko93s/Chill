@@ -1,12 +1,12 @@
 const Discord = require("discord.js");
-const mirko_ip = (`mc.mirko93s.it`);
+const mirko_ip = (`beta.mirko93s.it`);
 
 module.exports = {
     name: "mcstat",
     aliases: ["mc", "minecraft"],
     category: "Other",
     description: "Get Minecraft server banner",
-    usage: "<ip | ip:port | host address | blank for default server>",
+    usage: "mcstat [ip | ip:port | host address]\n**e.g.**\n\`mcstat\`\n> will return the test server banner, set in the command file\n\`mcstat play.randomminecraftserver.com\`\n> will return the banner of that server\n> You can use ips, ips:port, addresses",
     run: async (client, msg, arg) => {
         msg.delete();
         let serverip = msg.content.split(' ').splice(1).join(' ');

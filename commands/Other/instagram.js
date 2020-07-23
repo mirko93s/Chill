@@ -7,7 +7,7 @@ module.exports = {
     aliases: ["insta"],
     category: "Other",
     description: "Find out some nice instagram statistics",
-    usage: "<name>",
+    usage: "instagram <username>\n**e.g.**\n\`instagram randomusername\`\n> will show some info about an instagram profile",
     run: async (client, msg, arg) => {
         msg.delete();
         const name = arg.join(" ");

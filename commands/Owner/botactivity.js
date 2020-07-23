@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["ba"],
     category: "Owner",
     description: "Set Bot's activity",
-    usage: "<message>",
+    usage: "botactivity <message>\n**e.g.**\n\`botactivity cat videos\`\n> will change the bot activity to \"watching cat videos\"\n> It is limited to the Bot Dev only, because the set activity is shared between all servers the bot is a part of\n> Also the acitvity is automatically updated every 30 minutes to count the number of servers, so the change will only be temporary",
     permission: "DEV_ONLY",
     run: async (client, msg, arg) => {
         msg.delete();

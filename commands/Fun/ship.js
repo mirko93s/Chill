@@ -4,7 +4,7 @@ module.exports = {
     name: "ship",
     category: "Fun",
     description: "Ship 2 members",
-    usage: "<name1> <name2>",
+    usage: "ship <name1> <name2>\n**e.g.**\n\`ship name_1 name_2\`\n> Check the affinity between 2 people",
     run: async (client, msg, arg) => {
         msg.delete();
 

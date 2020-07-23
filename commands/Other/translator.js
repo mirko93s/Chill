@@ -8,7 +8,7 @@ module.exports = {
     aliases: ["translate"],
     category: "Other",
     description: "Translate something",
-    usage: "[no arguments returns language codes list] <from> <to> <text>",
+    usage: "translator [no arguments = language list] <from> <to> <message>\n**e.g.**\n\`translator\`\n> get the list of all available languages\n\`translator en it hello I am a robot\`\n> will translate the sentence \"hello i am a robot\" from english to italian",
     run: async (client, msg, arg) => {
         msg.delete();
 
@@ -19,7 +19,7 @@ module.exports = {
         const errorEmbed = new Discord.RichEmbed()
             .setColor(`RED`)
             .setTitle(`⛔ Error: 400 Bad Request`)
-            .setFooter(`Something went wrong or probably you typed wrong codes.\nPlease try again.`)
+            .setFooter(`Something went wrong or you probably typed wrong codes.\nPlease try again.`)
 
         var codes = {
             "az": "Azerbaijan","sq": "Albanian","am": "Amharic","en": "English","ar": "Arabic","hy": "Armenian","af": "Afrikaans","eu": "Basque",

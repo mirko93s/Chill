@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["revoke"],
     category: "Roles",
     description: "Revoke a role from users",
-    usage: "<user-mention> <role>",
+    usage: "removerole <user-mention> <role>\n**e.g.**\n\`removerole @mirko93s DJ\`\n> will remove the \"DJ\" role from the user mirko93s",
     permission: "MANAGE_ROLES",
     run: async (client, msg, arg) => {
         msg.delete();

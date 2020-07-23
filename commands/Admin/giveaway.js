@@ -4,8 +4,8 @@ module.exports = {
     name: "giveaway",
     aliases: ["ga"],
     category: "Admin",
-    description: "Start a giveaway",
-    usage: "Follow instructions",
+    description: "Start a giveaway in the preset channel",
+    usage: "giveaway\n**e.g.**\n\`giveaway\`\n> Follow the instructions\n> Bot will ask you to enter a time and a prize",
     permission: "MANAGE_GUILD",
     run: async (client, msg, arg) => {
 
@@ -37,7 +37,7 @@ module.exports = {
             .setDescription(`**Now send the prize**`)
 
         if(!msg.guild.member(msg.author).hasPermission('MANAGE_GUILD')) return msg.channel.send(nopermEmbed).then(msg => msg.delete(5000));
-        let gachannel = msg.guild.channels.find(gachannel => gachannel.name === "🎉giveaway");
+        let gachannel = msg.guild.channels.find(gachannel => gachannel.name === (client.settings.get(msg.guild.id, "gachannel")));
         if(!gachannel) return msg.reply(nochannelEmbed).then(msg => msg.delete(5000));
         msg.channel.send(sendtimeEmbed).then(msg => {//collect duration
         msg.channel.awaitMessages(filter, {max: 1,time: 20000,errors: ['time']}).then(collected => {
@@ -54,11 +54,31 @@ module.exports = {
                         .setColor(`RANDOM`)
                         .setTitle(`🎉Giveaway Started`)
                         .setDescription(`*React With 🎉 To Enter!*`)
-                        .addField(`Prize: **${prize}**`, `Duration: **${duration}**`)
+                        .addField(`Prize: **${prize}**`, `Time Left: **${duration}**`)
                         .setFooter("Created at:")
                         .setTimestamp()
                     gachannel.send(startEmbed).then(m => {
                         let re = m.react('🎉');
+                        //update time left
+                        let live = ms(duration);
+                        var livetest = setInterval (liveupdate, 5000);
+                        function liveupdate() {
+                            live -= 5000;
+                            if (live > 0) {
+                                let liveEmbed = new Discord.RichEmbed()
+                                    .setColor(`RANDOM`)
+                                    .setTitle(`🎉Giveaway Started`)
+                                    .setDescription(`*React With 🎉 To Enter!*`)
+                                    .addField(`Prize: **${prize}**`, `Time Left: **${ms(live)}**`)
+                                    .setFooter("Created at:")
+                                    .setTimestamp()
+                                m.edit({embed: liveEmbed});
+                            } else {
+                                clearInterval(livetest);
+                                return;
+                                }
+                        }
+                        //set timeout
                         setTimeout(() => {
                             let users = m.reactions.get("🎉").users
                             let list = users.array().filter(u => u.id !== client.user.id);

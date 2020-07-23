@@ -5,8 +5,8 @@ module.exports = {
     name: "help",
     aliases: ["h"],
     category: "info",
-    description: "Returns all commands, or one specific command info",
-    usage: "[command | alias]",
+    description: "Show help for a specific command",
+    usage: "help [command | alias]\n**e.g.**\n\`help\`\n> shows a list with all the available commands\n\`help ping\`\n> shows help about the ping command and how to use it",
     run: async (client, message, args) => {
         message.delete();
         if (args[0]) {
@@ -41,11 +41,12 @@ function getAll(client, message) { //old help main page below-----------
             /* Bot */.addField(":robot: Bot", "botinfo, bugreport, invite, project, website")
             /* Fun */.addField(":game_die: Fun", "8ball, flipcoin, rockpaperscissors, ship, slotmachine, suicide, wouldyourather")
             /* Info */.addField(":information_source: Info", "avatar, help, serveremojis, serverinfo, whois")
-            /* Moderation */.addField(":hammer: Moderation", "ban, kick, mute, purge, report, say, unmute, ticket")
+            /* Moderation */.addField(":hammer: Moderation", "ban, kick, mute, purge, report, say, ticket, unmute")
             /* Music */.addField(":musical_note: Music", "play, skip, playskip, pause, resume, stop, nowplaying, queue, summon, volume")
             /* Other */.addField(":bulb: Other", "calc, instagram, mcstat, nick, percentage, ping, today, translator, urban, weather")
             /* Owner */.addField(":gear: Owner", "botactivity")
             /* Roles */.addField(":level_slider: Roles", "addrole, removerole, roleinfo, rolelist")
+            /* Settings */.addField(":floppy_disk: Settings", "resetconfig, setconfig, showconfig")
             /* Xp */.addField(":trophy: Xp", "leaderboard, level, xp")
 
     return message.channel.send(helpembed);
@@ -68,7 +69,7 @@ function getCMD(client, message, input) {
     else info += `\n**Description**: ${cmd.description}`;
     if (cmd.usage) {
         info += `\n**Usage**: ${cmd.usage}`;
-        embed.setFooter(`Syntax: <> = required, [] = optional`);
+        embed.setFooter(`Syntax: <> = required, [] = optional, | = or`);
     }
     if (cmd.permission) info += `\n\n**Permission**: \`\`\`${cmd.permission}\`\`\``;
 

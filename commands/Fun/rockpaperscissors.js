@@ -6,8 +6,9 @@ const chooseArr = ["🗻", "📰", "✂"];
 module.exports = {
     name: "rockpaperscissors",
     aliases: ["rps"],
-    category: "fun",
-    description: "Rock Paper Scissors game",
+    category: "Fun",
+    description: "Rock Paper Scissors",
+    usage: "rockpaperscissors\n**e.g.**\n\`rockpaperscissors\`\n> Play a rock-paper-scissors game with the Bot",
     run: async (client, message, args) => {
         message.delete();
         const embed = new RichEmbed()

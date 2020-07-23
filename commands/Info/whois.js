@@ -6,8 +6,8 @@ module.exports = {
     name: "whois",
     aliases: ["who", "user"],
     category: "Info",
-    description: "Returns user information",
-    usage: "[username | id | mention]",
+    description: "Returns user info",
+    usage: "whois [name | id | mention]\n**e.g.**\n\`whois mirko\`\n> will return the closest username found on the server\n\`whois @mirko93s\`\n> will return the mentioned user\n> whois shows some info about that user",
     run: (client, message, args) => {
         const member = getMember(message, args.join(" "));
 

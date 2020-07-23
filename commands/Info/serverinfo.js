@@ -4,7 +4,8 @@ module.exports = {
     name: "serverinfo",
     aliases: ["server"],
     category: "Other",
-    description: "Returns server info",
+    description: "Shows server stats",
+    usage: "serverinfo\n**e.g.**\n\`serverinfo\`\n> Get some useful stat about this server",
     run: async (client, msg, arg) => {
         msg.delete();
         const role = msg.guild.roles.size;

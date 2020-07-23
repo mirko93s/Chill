@@ -5,9 +5,10 @@ module.exports = {
     aliases: ["nick"],
     category: "Other",
     description: "Change a member's nickname",
-    usage: "<mention> <new nickname>",
+    usage: "nickname <mention> <new nickname>\n**e.g.**\n\`nickname @mirko93s newnick\`\n> will nick the user mirko93s to \"newnick\"",
     permission: "MANAGE_NICKNAMES",
     run: async (client, msg, arg) => {
+        msg.delete();
 
         const nopermEmbed = new Discord.RichEmbed()
             .setColor(`RED`)

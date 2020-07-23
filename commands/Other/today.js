@@ -5,6 +5,7 @@ module.exports = {
     name: "today",
     category: "Other",
     description: "History lessons",
+    usage: "today\n**e.g.**\n\`today\`\n> Get a random fact that took place today",
     run: async (client, msg, arg) => {
         msg.delete();
         const { text } = await snekfetch

@@ -5,8 +5,8 @@ module.exports = {
     name: "bugreport",
     aliases: ["bug"],
     category: "Bot",
-    description: "Report a bug",
-    usage: "<msg>",
+    description: "Report a bug to the dev",
+    usage: "bugreport <message>\n**e.g.**\n\`bugreport ping command is not working\`\n> It will send an embed to the dev's discord server with your message\n> Please provide a good explanation of the bug and if you can the steps to reproduce it.",
     run: async (client, msg, arg) => {
         msg.delete();
 

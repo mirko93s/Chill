@@ -3,8 +3,8 @@ const Discord = require("discord.js");
 module.exports = {
     name: "poll",
     category: "Admin",
-    description: "Start a poll",
-    usage: "<question>",
+    description: "Start a poll in the preset channel",
+    usage: "poll <question>\n**e.g.**\n\`poll is this a question?\`\n> It will create a poll in the \"poll-channel\" with the question \"is this a question ?\"\n> Then people can choose between 3 reactions",
     permission: "MANAGE_GUILD",
     run: async (client, msg, arg) => {
         msg.delete();
@@ -21,7 +21,7 @@ module.exports = {
             .setFooter(`Question must be longer than 10 characters`)
 
         if(!msg.guild.member(msg.author).hasPermission('MANAGE_GUILD')) return msg.channel.send(nopermEmbed).then(msg => msg.delete(5000));
-        let pollchannel = msg.guild.channels.find(pollchannel => pollchannel.name === `💡poll`);
+        let pollchannel = msg.guild.channels.find(pollchannel => pollchannel.name === (client.settings.get(msg.guild.id, "pollchannel")));
         if(!pollchannel) return msg.channel.send(nochannelEmbed).then(msg => msg.delete(5000));
         let question = arg.join(' ');
         if(!question || question < 10) return msg.channel.send(noquestionEmbed).then(msg => msg.delete(5000));

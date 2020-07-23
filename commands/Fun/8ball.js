@@ -4,8 +4,8 @@ module.exports = {
     name: "8ball",
     aliases: ["8b"],
     category: "Fun",
-    description: "Ask a yes-or-no question to the bot",
-    usage: "<question>",
+    description: "Ask a question, the Bot will answer you",
+    usage: "8ball <question>\n**e.g.**\n\`8ball is this bot cool?\`\n> For better results you should only ask questions which can be answered with a simple yes or no\n> Based on the popular 1950 Magic 8-Ball game",
     run: async (client, msg, arg) => {
 
         msg.delete();

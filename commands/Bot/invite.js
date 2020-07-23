@@ -4,6 +4,7 @@ module.exports = {
     name: "invite",
     category: "Bot",
     description: "Bot's invite link",
+    usage: "invite\n**e.g.**\n\`invite\`\n> Returns a link to Invite the bot on another server",
     run: async (client, msg, arg) => {
         msg.delete();
         const embed = new Discord.RichEmbed()

@@ -5,8 +5,8 @@ const { promptMessage } = require("../../functions.js");
 module.exports = {
     name: "mute",
     category: "Moderation",
-    description: "mutes the member",
-    usage: "<mention> <reason>",
+    description: "Mute a member",
+    usage: "mute <mention> <reason>\n**e.g.**\n\`mute @mirko93s reason\`\n> will mute mirko93s\n> The mute will be logged in the punishments channel",
     permission: "MANAGE_ROLES",
     run: async (client, message, args) => {
         message.delete();
@@ -39,8 +39,8 @@ module.exports = {
             .setColor(`RED`)
             .setTitle(`⛔ Mute canceled`)
 
-        let mutedrole = message.guild.roles.find(grole => grole.name === "Muted");
-        let puchannel = message.guild.channels.find(puchannel => puchannel.name === "🔨punishments");
+        let mutedrole = message.guild.roles.find(mutedrole => mutedrole.name === (client.settings.get(message.guild.id, "mutedrole")));
+        let puchannel = message.guild.channels.find(puchannel => puchannel.name === (client.settings.get(message.guild.id, "puchannel")));
 
         if (!message.member.hasPermission("MANAGE_ROLES")) return message.channel.send(nopermEmbed).then(m => m.delete(5000));
         if (!message.guild.me.hasPermission("MANAGE_ROLES")) return message.channel.send(nobotpermEmbed).then(m => m.delete(5000));

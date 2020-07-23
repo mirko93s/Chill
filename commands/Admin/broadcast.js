@@ -4,8 +4,8 @@ module.exports = {
     name: "broadcast",
     aliases: ["bc"],
     category: "Admin",
-    description: "Broadcast a message",
-    usage: "<title> <description>",
+    description: "Broadcast a message in the preset channel tagging @everyone in the server",
+    usage: "broadcast\n**e.g.**\n\`broadcast\`\n> Follow the instructions\n> Bot will ask you a title and a description/message\n> Title can be max 256 char long, Description can be max 2048 char long",
     permission: "ADMINISTRATOR",
     run: async (client, msg, arg) => {
         msg.delete();
@@ -65,7 +65,7 @@ module.exports = {
                                     .setDescription(description)
                                     .setColor("#00ff00")
                                     .setAuthor(author.username, author.displayAvatarURL)    
-                                let bcchannel = msg.guild.channels.find(bcchannel => bcchannel.name === "🔴broadcast");
+                                let bcchannel = msg.guild.channels.find(bcchannel => bcchannel.name === (client.settings.get(msg.guild.id, "bcchannel")));
                                 if(!bcchannel) return msg.channel.send(nochannelEmbed).then(msg => msg.delete(5000));
                                 bcchannel.send("@everyone");
                                 bcchannel.send(bcEmbed);

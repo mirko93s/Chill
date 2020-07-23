@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["newchannel", "createchannel"],
     category: "Admin",
     description: "Creates a new channel",
-    usage: "<text-or-voice> <name>",
+    usage: "addchannel <text | voice> <name>\n**e.g.**\n\`addchannel text textchannelname\`\n> will create a text channel named \"textchannelname\"\n\`addchannel voice voicechannelname\`\n> will create a voice channel named voicechannelname ",
     permission: "MANAGE_CHANNELS",
     run: async (client, msg, arg) => {
         msg.delete();

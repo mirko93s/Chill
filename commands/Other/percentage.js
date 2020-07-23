@@ -6,7 +6,7 @@ module.exports = {
     aliases: ["%"],
     category: "Other",
     description: "Calculate a percentage",
-    usage: "<amount> <maximum>",
+    usage: "percentage <amount> <maximum>\n**e.g.**\n\`percentage 2 100\`\n> will return 50%",
     run: async (client, msg, arg) => {
         msg.delete();
 

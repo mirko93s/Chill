@@ -5,6 +5,7 @@ module.exports = {
     aliases: ["wyr"],
     category: "Fun",
     description: "Would you rather... ?",
+    usage: "wouldyourather\n**e.g.**\n\`wouldyourather\`\n> Get a random question and answer using reactions",
     run: async (client, msg, arg) => {
         msg.delete(5000);
         const superagent = require('superagent');

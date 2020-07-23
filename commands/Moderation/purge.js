@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["clear"],
     category: "Moderation",
     description: "Get rid of many messages with one command",
-    usage: "<2-100>",
+    usage: "purge <2 to 100>\n**e.g.**\n\`purge 25\`\n> will delete the last 25 messages in the channel\n> Due to Discord API limitations you can only bulk delete a number of messages between 2 and 100",
     permission: "MANAGE_MESSAGES",
     run: async (client, msg, arg) => {
         await msg.delete();

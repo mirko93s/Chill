@@ -4,8 +4,8 @@ const weather = require('weather-js');
 module.exports = {
     name: "weather",
     category: "Other",
-    description: "get weather info",
-    usage: "<city>",
+    description: "Check the weather",
+    usage: "weather <city>\n**e.g.**\n\`weather Tokyo\`\n> will return weather info about Tokyo",
     run: async (client, msg, arg) => {
         msg.delete();
 

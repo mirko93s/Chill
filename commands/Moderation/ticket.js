@@ -4,7 +4,8 @@ module.exports = {
     name: "ticket",
     category: "Moderation",
     description: "Create a ticket",
-    usage: "ticket [close-delete]",
+    usage: "ticket [close-delete]\n**e.g.**\n\`ticket\`\n> will create a ticket\n> It will create a new private channel\n> Only you and the @Support team can view and send messages in that channel\n\`ticket close\`\n> @Support can use this command to lock the channel\n> You won't be able to send messages anymore but you can still read them\n\`ticket delete\`\n> @Support can use this command to simply delete the channel after some time",
+    permission: "@everyone | @Support",
     run: async (client, msg, arg) => {
         msg.delete();
 
@@ -23,8 +24,8 @@ module.exports = {
             if (ticketalready) return msg.reply(alreadyEmbed).then(msg => msg.delete(5000));
     
             let channelname = `ticket-${msg.author.username}`
-            let channelcategory = msg.guild.channels.find(channelcategory => channelcategory.name === 'tickets');
-            let supportrole = msg.guild.roles.find(supportrole => supportrole.name === "Support");
+            let channelcategory = msg.guild.channels.find(channelcategory => channelcategory.name === (client.settings.get(message.guild.id, "ticketcategory")));
+            let supportrole = msg.guild.roles.find(supportrole => supportrole.name === (client.settings.get(msg.guild.id, "supportrole")));
     
             msg.guild.createChannel(channelname, {type: 'text'}).then((channel) => {
     

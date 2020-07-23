@@ -5,8 +5,8 @@ const types = ['top'];
 module.exports = {
     name: "urban",
     category: "Fun",
-    description: "Returns meaning of an urban word",
-    usage: "<word>",
+    description: "Learn the meaning of urban words",
+    usage: "urban <word | sentence>\n**e.g.**\n\`urban LOL\`\n> will explain you what \"LOL\" means",
     run: async (client, msg, arg) => {
         msg.delete();
 

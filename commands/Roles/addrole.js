@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["grant"],
     category: "Roles",
     description: "Grant a role to users",
-    usage: "<user-mention> <role>",
+    usage: "addrole <user-mention> <role>\n**e.g.**\n\`addrole @mirko93s DJ\`\n> will give the \"DJ\" role to the user mirko93s",
     permission: "MANAGE_ROLES",
     run: async (client, msg, arg) => {
         msg.delete();
