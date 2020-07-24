@@ -7,7 +7,8 @@ module.exports = {
     description: "Would you rather... ?",
     usage: "wouldyourather\n**e.g.**\n\`wouldyourather\`\n> Get a random question and answer using reactions",
     run: async (client, msg, arg) => {
-        msg.delete(5000);
+        msg.delete();
+        return msg.reply("This command is currently disabled.").then(msg => msg.delete(5000));
         const superagent = require('superagent');
         const { body } = await superagent
             .get('http://www.rrrather.com/botapi');

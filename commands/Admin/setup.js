@@ -119,7 +119,7 @@ module.exports = {
             supportmsg = created
         } else supportmsg = already
         if (!roleonjoin) {
-            msg.guild.createRole({name: client.settings.get(msg.guild.id, "roleonjoin"),permissions: ['VIEW_CHANNELS'], color: '33FFFF'})
+            msg.guild.createRole({name: client.settings.get(msg.guild.id, "roleonjoin"),permissions: ['VIEW_CHANNEL'], color: '33FFFF'})
             roleonmsg = created
         } else roleonmsg = already
 
@@ -146,7 +146,7 @@ module.exports = {
                     \`${djmsg} | ${client.settings.get(msg.guild.id, "djrole")}\`
                     \`${musictempmsg} | ${client.settings.get(msg.guild.id, "musictemprole")}\`
                     \`${supportmsg} | ${client.settings.get(msg.guild.id, "supportrole")}\`
-                    \`${roleonmsg} | ${client.settings.get(msg.guild.id, "reolonjoin")}\`
+                    \`${roleonmsg} | ${client.settings.get(msg.guild.id, "roleonjoin")}\`
                     \n\`${created} Created\`
                     \`${already} Already exists\`
                 `)

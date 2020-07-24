@@ -31,7 +31,7 @@ client.settings = new Enmap({
   });
 
 const defaultSettings = {
-	prefix: "-",
+	prefix: ".",
 	welcomechannel: "👋welcome",
 	bcchannel: "🔴broadcast",
 	puchannel: "🔨punishments",
@@ -41,7 +41,6 @@ const defaultSettings = {
 	musicvocalchannel: "🔊music",
 	musictextchannel: "🎵song-request",
 	musictemprole: "Listening",
-	musicvolume: "5", //check default value, it is logarithmic
 	ticketcategory: "tickets",
 	mutedrole: "Muted",
 	djrole: "DJ",

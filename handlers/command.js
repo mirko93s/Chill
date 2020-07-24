@@ -39,4 +39,5 @@ module.exports = (client) => {
     setTimeout(() => {console.log(`┬─┐┌─┐┌─┐┌┬┐┬ ┬`);}, 1200);
     setTimeout(() => {console.log(`├┬┘├┤ ├─┤ ││└┬┘`);}, 1300);
     setTimeout(() => {console.log(`┴└─└─┘┴ ┴─┴┘ ┴ `);}, 1400);
+    console.log(`\n`);
 }

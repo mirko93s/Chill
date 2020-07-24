@@ -22,14 +22,17 @@ module.exports = {
         const hierarchyEmbed = new Discord.RichEmbed()
             .setColor(`RED`)
             .setTitle(`⛔ I can't change that member's nickname due to role hierarchy, I suppose`)
+        const nomemberEmbed = new Discord.RichEmbed()
+            .setColor(`RED`)
+            .setTitle(`⛔ Couldn't find that member`)
 
         if (!msg.member.hasPermission("MANAGE_NICKNAMES")) return msg.channel.send(nopermEmbed).then(msg => msg.delete(5000));
         if (!msg.guild.member(client.user).hasPermission('MANAGE_NICKNAMES')) return msg.channel.send(nobotpermEmbed).then(msg => msg.delete(5000));
-        if (!msg.mentions.users.size < 1) return msg.channel.send(noargsEmbed).then(msg => msg.delete(5000));
-        let user = msg.guild.member(msg.mentions.users.first());
-        if (user.highestRole.position >= msg.member.highestRole.position ) return msg.channel.send(hierarchyEmbed).then(msg => msg.delete(5000));
+        if (!arg[0] || !arg[1]) return msg.channel.send(noargsEmbed).then(m => m.delete(5000));
+        const user = msg.mentions.members.first();
+        if (!user) return msg.channel.send(nomemberEmbed).then(m => m.delete(5000));
+        if (user.highestRole.position >= msg.guild.me.highestRole.position || user.id === msg.guild.ownerID) return msg.channel.send(hierarchyEmbed).then(msg => msg.delete(5000));
         let newusername = arg.slice(1).join(' ')
-        if (newusername.length < 1) return msg.channel.send(noargsEmbed).then(msg => msg.delete(5000));
         msg.guild.members.get(user.user.id).setNickname(newusername);
         const embed = new Discord.RichEmbed()
             .setColor(`RANDOM`)
