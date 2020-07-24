@@ -11,6 +11,7 @@ module.exports = {
     description: "Shows some bot statistics",
     usage: "botinfo\n**e.g.**\n> \`botinfo\`\n> It will show you some cool satistics, such cpu/ram usage, number of servers/users, etc...",
     run: async (client, msg, arg) => {
+        msg.delete();
         cpuStat.usagePercent(function(err, percent, seconds) {
             if (err) {
               return console.log(err);
