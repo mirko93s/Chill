@@ -24,7 +24,7 @@ module.exports = {
             if (ticketalready) return msg.reply(alreadyEmbed).then(msg => msg.delete(5000));
     
             let channelname = `ticket-${msg.author.username}`
-            let channelcategory = msg.guild.channels.find(channelcategory => channelcategory.name === (client.settings.get(message.guild.id, "ticketcategory")));
+            let channelcategory = msg.guild.channels.find(channelcategory => channelcategory.name === (client.settings.get(msg.guild.id, "ticketcategory")));
             let supportrole = msg.guild.roles.find(supportrole => supportrole.name === (client.settings.get(msg.guild.id, "supportrole")));
     
             msg.guild.createChannel(channelname, {type: 'text'}).then((channel) => {

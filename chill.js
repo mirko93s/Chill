@@ -123,10 +123,12 @@ client.on("guildMemberAdd", member => {
 client.on("voiceStateUpdate", (oldMember, newMember) => {
 	const channel = newMember.guild.channels.find(channel => channel.name === (client.settings.get(newMember.guild.id, "musicvocalchannel")));
 	const role = newMember.guild.roles.find(role => role.name === (client.settings.get(newMember.guild.id, "musictemprole")));
-	let newUserChannel = newMember.voiceChannel;	
-	if (newUserChannel === undefined) return newMember.removeRole(role);
-	if (newUserChannel.name === channel.name) return newMember.addRole(role);
-	if (newUserChannel.name !== channel.name) return newMember.removeRole(role);
+	if (channel && role) {
+		let newUserChannel = newMember.voiceChannel;	
+		if (newUserChannel === undefined) return newMember.removeRole(role);
+		if (newUserChannel.name === channel.name) return newMember.addRole(role);
+		if (newUserChannel.name !== channel.name) return newMember.removeRole(role);
+	}
 });
 
 //BOT-MENTION

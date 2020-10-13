@@ -37,6 +37,31 @@ module.exports = {
         const created = "✅"
         const already = "❌"
 
+        if(!ticketcategory) {
+            msg.guild.createChannel(client.settings.get(msg.guild.id, "ticketcategory"), {type: 'category', 
+            })
+            ticketmsg = created
+        } else ticketmsg = already
+        if (!mutedrole) {
+            msg.guild.createRole({name: client.settings.get(msg.guild.id, "mutedrole"),color: '525252'})
+            mutedmsg = created
+        } else mutedmsg = already
+        if (!djrole) {
+            msg.guild.createRole({name: client.settings.get(msg.guild.id, "djrole"),permissions: ['CONNECT'], color: 'D00091'})
+            djmsg = created
+        } else djmsg = already
+        if (!musictemprole) {
+            msg.guild.createRole({name: client.settings.get(msg.guild.id, "musictemprole"), color: 'CCCC00'})
+            musictempmsg = created
+        } else musictempmsg = already
+        if (!supportrole) {
+            msg.guild.createRole({name: client.settings.get(msg.guild.id, "supportrole"), color: 'FC72F3'})
+            supportmsg = created
+        } else supportmsg = already
+        if (!roleonjoin) {
+            msg.guild.createRole({name: client.settings.get(msg.guild.id, "roleonjoin"),permissions: ['VIEW_CHANNEL'], color: '33FFFF'})
+            roleonmsg = created
+        } else roleonmsg = already
         if(!welcomechannel) {
             msg.guild.createChannel(client.settings.get(msg.guild.id, "welcomechannel"), {type: 'text', 
                 permissionOverwrites: [{id: msg.guild.defaultRole.id, 
@@ -80,7 +105,7 @@ module.exports = {
             pollmsg = created
         } else pollmsg = already
         if(!musicvocalchannel) {
-            msg.guild.createChannel(client.settings.get(msg.guild.id, "musicvocalchannel"), {type: 'vocal',
+            msg.guild.createChannel(client.settings.get(msg.guild.id, "musicvocalchannel"), {type: 'voice',
             permissionOverwrites: [
                 {id: msg.guild.defaultRole.id, 
                 deny: ['SPEAK']}]
@@ -97,31 +122,6 @@ module.exports = {
             })
             musictextmsg = created
         } else musictextmsg = already
-        if(!ticketcategory) {
-            msg.guild.createChannel(client.settings.get(msg.guild.id, "ticketcategory"), {type: 'category', 
-            })
-            ticketmsg = created
-        } else ticketmsg = already
-        if (!mutedrole) {
-            msg.guild.createRole({name: client.settings.get(msg.guild.id, "mutedrole"),color: '525252'})
-            mutedmsg = created
-        } else mutedmsg = already
-        if (!djrole) {
-            msg.guild.createRole({name: client.settings.get(msg.guild.id, "djrole"),permissions: ['CONNECT'], color: 'D00091'})
-            djmsg = created
-        } else djmsg = already
-        if (!musictemprole) {
-            msg.guild.createRole({name: client.settings.get(msg.guild.id, "musictemprole"), color: 'CCCC00'})
-            musictempmsg = created
-        } else musictempmsg = already
-        if (!supportrole) {
-            msg.guild.createRole({name: client.settings.get(msg.guild.id, "supportrole"), color: 'FC72F3'})
-            supportmsg = created
-        } else supportmsg = already
-        if (!roleonjoin) {
-            msg.guild.createRole({name: client.settings.get(msg.guild.id, "roleonjoin"),permissions: ['VIEW_CHANNEL'], color: '33FFFF'})
-            roleonmsg = created
-        } else roleonmsg = already
 
         let setupembed = new Discord.RichEmbed()
             .setTitle("**SETUP**")

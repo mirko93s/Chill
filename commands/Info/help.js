@@ -39,7 +39,7 @@ function getAll(client, message) { //old help main page below-----------
             .setThumbnail(client.user.displayAvatarURL)
             /* Admin */.addField(":no_entry_sign: Admin", "addchannel, broadcast, giveaway, poll, setup")
             /* Bot */.addField(":robot: Bot", "botinfo, bugreport, invite, project, website")
-            /* Fun */.addField(":game_die: Fun", "8ball, flipcoin, rockpaperscissors, ship, slotmachine, suicide")
+            /* Fun */.addField(":game_die: Fun", "8ball, flipcoin, respawn, rockpaperscissors, ship, slotmachine, wouldyourather")
             /* Info */.addField(":information_source: Info", "avatar, help, serveremojis, serverinfo, whois")
             /* Moderation */.addField(":hammer: Moderation", "ban, kick, mute, purge, report, say, ticket, unmute")
             /* Music */.addField(":musical_note: Music", "play, skip, playskip, pause, resume, stop, nowplaying, queue, summon, volume")
