@@ -191,15 +191,21 @@ client.on('message', async msg => {
 	PREFIX = client.settings.get(msg.guild.id, "prefix");
   	if (msg.author.bot) return;
   	if (!msg.guild) return;
-	if (!msg.content.startsWith(PREFIX)) return;
+	if (!msg.content.startsWith(PREFIX) && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return;
   	if (!msg.member) msg.member = await msg.guild.fetchMember(msg);
   	//music stuff
 	const args = msg.content.split(' ');
-	const searchString = args.slice(1).join(' ');
+	let searchString = args.slice(1).join(' ');
 	let url = args[1] ? args[1].replace(/<(.+)>/g, '$1') : '';
   	const serverQueue = queue.get(msg.guild.id);
   	let command = msg.content.toLowerCase().split(' ')[0];
 	command = command.slice(PREFIX.length)
+	//music-text-channel no need for .play command
+	if (msg.channel.name === client.settings.get(msg.guild.id, "musictextchannel") && !msg.content.startsWith(PREFIX)) {
+		searchString = args.slice(0).join(' ');
+		url = args[0] ? args[0].replace(/<(.+)>/g, '$1') : '';
+		command = "play";
+	}
   	//commands stuff
   	const arg = msg.content.slice(PREFIX.length).trim().split(/ +/g);
   	const cmd = arg.shift().toLowerCase();
@@ -335,7 +341,7 @@ const nosummonEmbed = new Discord.RichEmbed()
 	
   //PLAY
 	if (command === 'play' || command === 'p') {
-    msg.delete();
+	msg.delete();
     if (msg.member.roles.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
 		
 		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete(5000));

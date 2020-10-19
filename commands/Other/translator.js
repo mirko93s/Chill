@@ -42,7 +42,7 @@ module.exports = {
             .setColor(`RANDOM`)
             .setTitle(`🗣️ Translator`)
             .setThumbnail(`https://camo.githubusercontent.com/f2ec5a009334a6dfafe485313689b137b8dbfd90/68747470733a2f2f692e696d6775722e636f6d2f34597a504270372e706e67`)
-            .setDescription(`Click on the image or open the link below\n\n[**Codes List**](https://github.com/mirko93s/Chill/wiki/Translator-Code-List)`);
+            .setDescription(`Click on the image or open the link below\n\n[**Codes List**](https://camo.githubusercontent.com/f2ec5a009334a6dfafe485313689b137b8dbfd90/68747470733a2f2f692e696d6775722e636f6d2f34597a504270372e706e67)`);
 
         if (!arg[0] && !arg[1] && !arg[2]) return msg.channel.send(translatorcodesEmbed).then(msg => msg.delete(30000));
         if (arg[0] === arg[1] || !arg[2]) return msg.channel.send (noargsEmbed).then(msg => msg.delete(5000));

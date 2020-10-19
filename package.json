@@ -1,6 +1,6 @@
 {
   "name": "Chill",
-  "version": "5.0",
+  "version": "5.1",
   "description": "Just Another Discord Bot",
   "main": "chill.js",
   "scripts": {
@@ -15,7 +15,7 @@
     "cpu-stat": "^2.0.1",
     "discord.js": "^11.6.4",
     "enmap": "^5.8.0",
-    "ffmpeg-binaries": "^4.0.0",
+    "ffmpeg-static": "^4.2.7",
     "mathjs": "^7.5.1",
     "node-opus": "^0.3.3",
     "simple-youtube-api": "^5.2.1",
