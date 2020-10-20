@@ -12,9 +12,9 @@
 
 # [TRY ME!](https://discord.gg/2ktWcAb) (test server)
 
-[Download lastest release](https://github.com/mirko93s/Chill/releases)
+### [Download lastest release](https://github.com/mirko93s/Chill/releases)
 
-[Installation guide](https://github.com/mirko93s/Chill/wiki/Installation)
+[Installation guide](https://github.com/mirko93s/Chill/wiki/Installation) (outdated)
 
 [Wiki](https://github.com/mirko93s/Chill/wiki) (w.i.p)
 
