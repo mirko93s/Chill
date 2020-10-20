@@ -35,8 +35,6 @@ Type ".help" or ".help (command)" in discord to get a detailed explanation of ea
 | Settings| resetconfig, setconfig, showconfig |
 | Xp | leaderboard, level, xp |
 
-## To do
-Update discord.js and node.js to v12
 
 [//]: # (Hidden stuff)
 <!--
