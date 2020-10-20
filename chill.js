@@ -139,20 +139,20 @@ client.on('message', message=> {
   	if (message.isMentioned(client.user)) {
     	message.reply('Hey! Type .help for more info! :smiley:');
 		if(message.member.hasPermission("ADMINISTRATOR")){
-			let welcomechannel = msg.guild.channels.find(welcomechannel => welcomechannel.name === (client.settings.get(msg.guild.id, "welcomechannel")));
-			let bcchannel = msg.guild.channels.find(bcchannel => bcchannel.name === (client.settings.get(msg.guild.id, "bcchannel")));
-			let puchannel = msg.guild.channels.find(puchannel => puchannel.name === (client.settings.get(msg.guild.id, "puchannel")));
-			let reportchannel = msg.guild.channels.find(reportchannel => reportchannel.name === (client.settings.get(msg.guild.id, "reportchannel")));
-			let gachannel = msg.guild.channels.find(gachannel => gachannel.name === (client.settings.get(msg.guild.id, "gachannel")));
-			let pollchannel = msg.guild.channels.find(pollchannel => pollchannel.name === (client.settings.get(msg.guild.id, "pollchannel")));
-			let musicvocalchannel = msg.guild.channels.find(musicvocalchannel => musicvocalchannel.name === (client.settings.get(msg.guild.id, "musicvocalchannel")));
-			let musictextchannel = msg.guild.channels.find(musictextchannel => musictextchannel.name === (client.settings.get(msg.guild.id, "musictextchannel")));
-			let ticketcategory = msg.guild.channels.find(ticketcategory => ticketcategory.name === (client.settings.get(msg.guild.id, "ticketcategory")));
-			let musictemprole = msg.guild.roles.find(musictemprole => musictemprole.name === (client.settings.get(msg.guild.id, "musictemprole")));
-			let mutedrole = msg.guild.roles.find(mutedrole => mutedrole.name === (client.settings.get(msg.guild.id, "mutedrole")));
-			let djrole = msg.guild.roles.find(djrole => djrole.name === (client.settings.get(msg.guild.id, "djrole")));
-			let supportrole = msg.guild.roles.find(supportrole => supportrole.name === (client.settings.get(msg.guild.id, "supportrole")));
-			let roleonjoin = msg.guild.roles.find(roleonjoin => roleonjoin.name === (client.settings.get(msg.guild.id, "roleonjoin")));	
+			let welcomechannel = message.guild.channels.find(welcomechannel => welcomechannel.name === (client.settings.get(message.guild.id, "welcomechannel")));
+			let bcchannel = message.guild.channels.find(bcchannel => bcchannel.name === (client.settings.get(message.guild.id, "bcchannel")));
+			let puchannel = message.guild.channels.find(puchannel => puchannel.name === (client.settings.get(message.guild.id, "puchannel")));
+			let reportchannel = message.guild.channels.find(reportchannel => reportchannel.name === (client.settings.get(message.guild.id, "reportchannel")));
+			let gachannel = message.guild.channels.find(gachannel => gachannel.name === (client.settings.get(message.guild.id, "gachannel")));
+			let pollchannel = message.guild.channels.find(pollchannel => pollchannel.name === (client.settings.get(message.guild.id, "pollchannel")));
+			let musicvocalchannel = message.guild.channels.find(musicvocalchannel => musicvocalchannel.name === (client.settings.get(message.guild.id, "musicvocalchannel")));
+			let musictextchannel = message.guild.channels.find(musictextchannel => musictextchannel.name === (client.settings.get(message.guild.id, "musictextchannel")));
+			let ticketcategory = message.guild.channels.find(ticketcategory => ticketcategory.name === (client.settings.get(message.guild.id, "ticketcategory")));
+			let musictemprole = message.guild.roles.find(musictemprole => musictemprole.name === (client.settings.get(message.guild.id, "musictemprole")));
+			let mutedrole = message.guild.roles.find(mutedrole => mutedrole.name === (client.settings.get(message.guild.id, "mutedrole")));
+			let djrole = message.guild.roles.find(djrole => djrole.name === (client.settings.get(message.guild.id, "djrole")));
+			let supportrole = message.guild.roles.find(supportrole => supportrole.name === (client.settings.get(message.guild.id, "supportrole")));
+			let roleonjoin = message.guild.roles.find(roleonjoin => roleonjoin.name === (client.settings.get(message.guild.id, "roleonjoin")));	
 			if(!bcchannel || !puchannel || !reportchannel || !gachannel || !pollchannel|| !mutedrole || !djrole || !welcomechannel || !musicvocalchannel || !musictextchannel || !ticketcategory || !musictemprole || !supportrole || !roleonjoin)
 			return message.channel.send (":warning: Ops! It looks like you didn't complete the setup. Type .setup to create preset channels, roles, channel categories, etc...\nDon't worry you can later rename them.")
 		}
