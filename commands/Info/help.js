@@ -43,7 +43,7 @@ function getAll(client, message) { //old help main page below-----------
             /* Info */.addField(":information_source: Info", "avatar, help, serveremojis, serverinfo, whois")
             /* Moderation */.addField(":hammer: Moderation", "ban, kick, mute, purge, report, say, ticket, unmute")
             /* Music */.addField(":musical_note: Music", "play, skip, playskip, pause, resume, stop, nowplaying, queue, summon, volume")
-            /* Other */.addField(":bulb: Other", "calc, instagram, mcstat, nick, percentage, ping, today, translator, urban, weather")
+            /* Other */.addField(":bulb: Other", "calc, instagram, mcstat, nick, percentage, ping, remindme, today, translator, urban, weather")
             /* Owner */.addField(":gear: Owner", "botactivity")
             /* Roles */.addField(":level_slider: Roles", "addrole, removerole, roleinfo, rolelist")
             /* Settings */.addField(":floppy_disk: Settings", "resetconfig, setconfig, showconfig")
