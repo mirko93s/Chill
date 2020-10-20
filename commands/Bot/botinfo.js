@@ -50,7 +50,7 @@ module.exports = {
                 .addField('System', `\`\`\`asciidoc\n${system}\`\`\``, false)
                 .setTimestamp()
                 .setFooter(client.user.username, client.user.avatarURL);
-            msg.channel.send({embed}) 
+            msg.channel.send({embed}).then(msg => msg.delete(30000));
         })
     }
 }

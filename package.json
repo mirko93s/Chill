@@ -1,6 +1,6 @@
 {
   "name": "Chill",
-  "version": "5.1",
+  "version": "5.2",
   "description": "Just Another Discord Bot",
   "main": "chill.js",
   "scripts": {
@@ -21,6 +21,6 @@
     "simple-youtube-api": "^5.2.1",
     "superagent": "^6.1.0",
     "weather-js": "^2.0.0",
-    "ytdl-core": "^3.3.0"
+    "ytdl-core": "^3.4.1"
   }
 }

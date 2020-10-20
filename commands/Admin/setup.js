@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const { stripIndent } = require('common-tags');
 
 module.exports = {
     name: "setup",
@@ -31,8 +32,6 @@ module.exports = {
         let djrole = msg.guild.roles.find(djrole => djrole.name === (client.settings.get(msg.guild.id, "djrole")));
         let supportrole = msg.guild.roles.find(supportrole => supportrole.name === (client.settings.get(msg.guild.id, "supportrole")));
         let roleonjoin = msg.guild.roles.find(roleonjoin => roleonjoin.name === (client.settings.get(msg.guild.id, "roleonjoin")));
-
-        let musicchannelonly = client.settings.get(msg.guild.id, "musicchannelonly");
 
         const created = "✅"
         const already = "❌"
@@ -123,33 +122,38 @@ module.exports = {
             musictextmsg = created
         } else musictextmsg = already
 
+        const channels = stripIndent`
+        ${welcomemsg} | ${client.settings.get(msg.guild.id, "welcomechannel")}
+        ${bcmsg} | ${client.settings.get(msg.guild.id, "bcchannel")}
+        ${pumsg} | ${client.settings.get(msg.guild.id, "puchannel")}
+        ${reportmsg} | ${client.settings.get(msg.guild.id, "reportchannel")}
+        ${gamsg} | ${client.settings.get(msg.guild.id, "gachannel")}
+        ${pollmsg} | ${client.settings.get(msg.guild.id, "pollchannel")}
+        ${musicvocalmsg} | ${client.settings.get(msg.guild.id, "musicvocalchannel")}
+        ${musictextmsg} | ${client.settings.get(msg.guild.id, "musictextchannel")}
+        `;
+        
+        const roles = stripIndent`
+        ${mutedmsg} | ${client.settings.get(msg.guild.id, "mutedrole")}
+        ${djmsg} | ${client.settings.get(msg.guild.id, "djrole")}
+        ${musictempmsg} | ${client.settings.get(msg.guild.id, "musictemprole")}
+        ${supportmsg} | ${client.settings.get(msg.guild.id, "supportrole")}
+        ${roleonmsg} | ${client.settings.get(msg.guild.id, "roleonjoin")}
+        `;
+        
+        const categories = stripIndent`
+		${ticketmsg} | ${client.settings.get(msg.guild.id, "ticketcategory")}
+		`;
+
         let setupembed = new Discord.RichEmbed()
             .setTitle("**SETUP**")
             .setColor(`RANDOM`)
             .setThumbnail(client.user.displayAvatarURL)
-            .setDescription(`
-                    **Prefix** | \`${client.settings.get(msg.guild.id, "prefix")}\`
-                    \n**Music Channel Only** | \`${client.settings.get(msg.guild.id, "musicchannelonly")}\`
-                    \n**Channels**
-                    \`${welcomemsg} | ${client.settings.get(msg.guild.id, "welcomechannel")}\`
-                    \`${bcmsg} | ${client.settings.get(msg.guild.id, "bcchannel")}\`
-                    \`${pumsg} | ${client.settings.get(msg.guild.id, "puchannel")}\`
-                    \`${reportmsg} | ${client.settings.get(msg.guild.id, "reportchannel")}\`
-                    \`${gamsg} | ${client.settings.get(msg.guild.id, "gachannel")}\`
-                    \`${pollmsg} | ${client.settings.get(msg.guild.id, "pollchannel")}\`
-                    \`${musicvocalmsg} | ${client.settings.get(msg.guild.id, "musicvocalchannel")}\`
-                    \`${musictextmsg} | ${client.settings.get(msg.guild.id, "musictextchannel")}\`                 
-                    \n**Categories**
-                    \`${ticketmsg} | ${client.settings.get(msg.guild.id, "ticketcategory")}\`
-                    \n**Roles**
-                    \`${mutedmsg} | ${client.settings.get(msg.guild.id, "mutedrole")}\`
-                    \`${djmsg} | ${client.settings.get(msg.guild.id, "djrole")}\`
-                    \`${musictempmsg} | ${client.settings.get(msg.guild.id, "musictemprole")}\`
-                    \`${supportmsg} | ${client.settings.get(msg.guild.id, "supportrole")}\`
-                    \`${roleonmsg} | ${client.settings.get(msg.guild.id, "roleonjoin")}\`
-                    \n\`${created} Created\`
-                    \`${already} Already exists\`
-                `)
+            .setDescription(`**Prefix** | \`${client.settings.get(msg.guild.id, "prefix")}\``)
+            .addField(`**Channels**`, `\`\`\`${channels}\`\`\``, false)
+            .addField(`**Roles**`, `\`\`\`${roles}\`\`\``, false)
+            .addField(`**Categories**`, `\`\`\`${categories}\`\`\``, false)
+            .setFooter(`${created} Created\n${already} Already exists`)
         msg.channel.send(setupembed);
     }
 }

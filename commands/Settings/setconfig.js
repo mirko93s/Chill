@@ -21,6 +21,16 @@ module.exports = {
 		.setTitle("💾Guild Settings")
 		.setDescription(`⛔ You didn't provide any key and/or value!`)
 
+		const truefalseEmbed = new Discord.RichEmbed()
+		.setColor(`RED`)
+		.setTitle("💾Guild Settings")
+		.setDescription(`⛔ That key can only be set to **true** or **false**`)
+
+		const cooldownEmbed = new Discord.RichEmbed()
+		.setColor(`RED`)
+		.setTitle("💾Guild Settings")
+		.setDescription(`⛔ That key can only be set to a number between **0-60**`)
+
 		const nokeyEmbed = new Discord.RichEmbed()
 		.setColor(`RED`)
 		.setTitle("💾Guild Settings")
@@ -34,15 +44,25 @@ module.exports = {
 			return msg.reply(nokeyEmbed).then(msg => msg.delete(5000));
 		  }
 
-		if (arg[0].includes("channel") || arg[0].includes("category")) {
-			const channelold = prop;
-			const channelnew = value.join(" ");
-			const channelmodify = msg.guild.channels.find(channelmodify => channelmodify.name === (client.settings.get(msg.guild.id, channelold)));
-			if (!channelmodify) channelrenamed = 0;
-				else {channelrenamed = 1;
-					channelmodify.setName(channelnew);
-				}
+		if (arg[0].includes("only")) {
+			if (arg.slice(1).join('') !== "true" && arg.slice(1).join('') !== "false") return msg.channel.send(truefalseEmbed).then(msg => msg.delete(5000));
 		}
+		if (arg[0].includes("cooldown")) {
+			if (isNaN(arg.slice(1).join('')) || arg[1] > 60 || arg[1] < 0) return msg.channel.send(cooldownEmbed).then(msg => msg.delete(5000));
+		}
+
+		if (arg[0].includes("channel") || arg[0].includes("category")) {
+			if (!arg[0].includes("only")) {
+				const channelold = prop;
+				const channelnew = value.join(" ");
+				const channelmodify = msg.guild.channels.find(channelmodify => channelmodify.name === (client.settings.get(msg.guild.id, channelold)));
+				if (!channelmodify) channelrenamed = 0;
+					else {channelrenamed = 1;
+						channelmodify.setName(channelnew);
+					}
+			}
+		}
+
 		if (arg[0].includes("role")) {
 			const roleold = prop;
 			const rolenew = value.join(" ");

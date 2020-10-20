@@ -46,7 +46,8 @@ const defaultSettings = {
 	djrole: "DJ",
 	supportrole: "Support",
 	roleonjoin: "Member",
-	musicchannelonly: "false"
+	musicchannelonly: "false",
+	xpcooldown: 5
 }
 
 client.on('warn', console.warn);
@@ -136,28 +137,33 @@ client.on('message', message=> {
 	client.settings.ensure(message.guild.id, defaultSettings);
   	if (message.author.bot) return;
   	if (message.isMentioned(client.user)) {
-    message.reply('Hey! Type .help for more info! :smiley:');
-    if(message.member.hasPermission("ADMINISTRATOR")){
-      let bcchannel = message.guild.channels.find(bcchannel => bcchannel.name === '🔴broadcast');
-      let puchannel = message.guild.channels.find(puchannel => puchannel.name === '🔨punishments');
-      let reportchannel = message.guild.channels.find(reportchannel => reportchannel.name === '🚨reports');
-	  let gachannel = message.guild.channels.find(gachannel => gachannel.name === '🎉giveaway');
-	  let pollchannel = message.guild.channels.find(pollchannel => pollchannel.name === `💡poll`);
-      let mutedrole = message.guild.roles.find(mutedrole => mutedrole.name === "Muted");
-      let djrole = message.guild.roles.find(djrole => djrole.name === "DJ");
-      if(!bcchannel || !puchannel || !reportchannel || !gachannel || !pollchannel|| !mutedrole || !djrole)
-      return message.channel.send (":warning: Ops! It looks like you didn't complete the setup. Type .setup to configure needed roles and channels to let me do my job!")
-    }
-  }
+    	message.reply('Hey! Type .help for more info! :smiley:');
+		if(message.member.hasPermission("ADMINISTRATOR")){
+			let welcomechannel = msg.guild.channels.find(welcomechannel => welcomechannel.name === (client.settings.get(msg.guild.id, "welcomechannel")));
+			let bcchannel = msg.guild.channels.find(bcchannel => bcchannel.name === (client.settings.get(msg.guild.id, "bcchannel")));
+			let puchannel = msg.guild.channels.find(puchannel => puchannel.name === (client.settings.get(msg.guild.id, "puchannel")));
+			let reportchannel = msg.guild.channels.find(reportchannel => reportchannel.name === (client.settings.get(msg.guild.id, "reportchannel")));
+			let gachannel = msg.guild.channels.find(gachannel => gachannel.name === (client.settings.get(msg.guild.id, "gachannel")));
+			let pollchannel = msg.guild.channels.find(pollchannel => pollchannel.name === (client.settings.get(msg.guild.id, "pollchannel")));
+			let musicvocalchannel = msg.guild.channels.find(musicvocalchannel => musicvocalchannel.name === (client.settings.get(msg.guild.id, "musicvocalchannel")));
+			let musictextchannel = msg.guild.channels.find(musictextchannel => musictextchannel.name === (client.settings.get(msg.guild.id, "musictextchannel")));
+			let ticketcategory = msg.guild.channels.find(ticketcategory => ticketcategory.name === (client.settings.get(msg.guild.id, "ticketcategory")));
+			let musictemprole = msg.guild.roles.find(musictemprole => musictemprole.name === (client.settings.get(msg.guild.id, "musictemprole")));
+			let mutedrole = msg.guild.roles.find(mutedrole => mutedrole.name === (client.settings.get(msg.guild.id, "mutedrole")));
+			let djrole = msg.guild.roles.find(djrole => djrole.name === (client.settings.get(msg.guild.id, "djrole")));
+			let supportrole = msg.guild.roles.find(supportrole => supportrole.name === (client.settings.get(msg.guild.id, "supportrole")));
+			let roleonjoin = msg.guild.roles.find(roleonjoin => roleonjoin.name === (client.settings.get(msg.guild.id, "roleonjoin")));	
+			if(!bcchannel || !puchannel || !reportchannel || !gachannel || !pollchannel|| !mutedrole || !djrole || !welcomechannel || !musicvocalchannel || !musictextchannel || !ticketcategory || !musictemprole || !supportrole || !roleonjoin)
+			return message.channel.send (":warning: Ops! It looks like you didn't complete the setup. Type .setup to create preset channels, roles, channel categories, etc...\nDon't worry you can later rename them.")
+		}
+ 	}
 });
 
 //--------------------Xp-add-----------------------
 client.on(`message`, async xpmsg => {
 	client.settings.ensure(xpmsg.guild.id, defaultSettings);
 	PREFIX = client.settings.get(xpmsg.guild.id, "prefix");
-	if (xpmsg.author.bot) return;
-	if (xpmsg.content.startsWith(PREFIX)) return;
-	if (talkedRecently.has(xpmsg.author.id)) return;
+	if (xpmsg.author.bot || xpmsg.content.startsWith(PREFIX) || talkedRecently.has(xpmsg.author.id) || xpmsg.channel.name === client.settings.get(xpmsg.guild.id, "musictextchannel")) return;
 	let score;
 	if (xpmsg.guild) {
 		score = client.getScore.get(xpmsg.author.id, xpmsg.guild.id);
@@ -181,7 +187,7 @@ client.on(`message`, async xpmsg => {
         setTimeout(() => {
           // Removes the user from the set after a minute
           talkedRecently.delete(xpmsg.author.id);
-        }, 5000);
+        }, client.settings.get(xpmsg.guild.id, "xpcooldown")*1000);
     }
 });
 
@@ -697,10 +703,10 @@ function play(guild, song) {
 	}
 	// console.log(serverQueue.songs);
 
-	const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
+	const dispatcher = serverQueue.connection.playStream(ytdl(song.url, { filter: 'audioonly'}))
 		.on('end', reason => {
-			if (reason === 'Stream is not generating quickly enough.') console.log('Song ended.');
-			else console.log(reason);
+			// if (reason === 'Stream is not generating quickly enough.') console.log('Song ended.');
+			// else console.log(reason);
 			serverQueue.songs.shift();
 			play(guild, serverQueue.songs[0]);
 		})
