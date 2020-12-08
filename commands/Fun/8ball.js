@@ -10,7 +10,7 @@ module.exports = {
 
         msg.delete();
 
-        const noquestionEmbed = new Discord.RichEmbed()
+        const noquestionEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setTitle(`⛔ Please ask me a question`)
 
@@ -18,11 +18,11 @@ module.exports = {
         "Outlook good.","Yes.","Signs point to yes.","Reply hazy, try again.","Ask again later","Better not tell you now.","Cannot predict now.",
         "Concentrate and ask again","Don't count on it.","My reply is no.","My sources say no.","Outlook not so good.","Very doubtful."];
         let question = arg.join(" ");
-        if (!question) return msg.channel.send(noquestionEmbed).then(msg => msg.delete(5000));
+        if (!question) return msg.channel.send(noquestionEmbed).then(msg => msg.delete({ timeout: 5000 }));
         //if (arg[0]) msg.channel.send(fortunes[Math.floor(Math.random() * fortunes.length)]);
         else {
             let answer = fortunes[Math.floor(Math.random() * fortunes.length)];
-            const embed = new Discord.RichEmbed()
+            const embed = new Discord.MessageEmbed()
                 .setColor ('RANDOM')
                 .setTitle(":8ball: **8 Ball**")
                 .setDescription(`*${question}*\n**${answer}**`)

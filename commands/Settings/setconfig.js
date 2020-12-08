@@ -12,43 +12,43 @@ module.exports = {
 		var channelrenamed;
 		var rolerenamed;
 
-		const nopermEmbed = new Discord.RichEmbed()
+		const nopermEmbed = new Discord.MessageEmbed()
 		.setColor(`RED`)
 		.setTitle(`⛔ You don't have permission to use this!`)
 
-		const novalueEmbed = new Discord.RichEmbed()
+		const novalueEmbed = new Discord.MessageEmbed()
 		.setColor(`RED`)
 		.setTitle("💾Guild Settings")
 		.setDescription(`⛔ You didn't provide any key and/or value!`)
 
-		const truefalseEmbed = new Discord.RichEmbed()
+		const truefalseEmbed = new Discord.MessageEmbed()
 		.setColor(`RED`)
 		.setTitle("💾Guild Settings")
 		.setDescription(`⛔ That key can only be set to **true** or **false**`)
 
-		const cooldownEmbed = new Discord.RichEmbed()
+		const cooldownEmbed = new Discord.MessageEmbed()
 		.setColor(`RED`)
 		.setTitle("💾Guild Settings")
 		.setDescription(`⛔ That key can only be set to a number between **0-60**`)
 
-		const nokeyEmbed = new Discord.RichEmbed()
+		const nokeyEmbed = new Discord.MessageEmbed()
 		.setColor(`RED`)
 		.setTitle("💾Guild Settings")
 		.setDescription(`⛔ Couldn't find that key! Do ${client.settings.get(msg.guild.id, "prefix")}showconfig to get key names`)
 
-		if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.reply(nopermEmbed).then(msg => msg.delete(5000));
+		if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.reply(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
-		if (!arg[0] || !arg[1]) return msg.channel.send(novalueEmbed).then(msg => msg.delete(5000));
+		if (!arg[0] || !arg[1]) return msg.channel.send(novalueEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		const [prop, ...value] = arg;
 		if(!client.settings.has(msg.guild.id, prop)) {
-			return msg.reply(nokeyEmbed).then(msg => msg.delete(5000));
+			return msg.reply(nokeyEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		  }
 
 		if (arg[0].includes("only")) {
-			if (arg.slice(1).join('') !== "true" && arg.slice(1).join('') !== "false") return msg.channel.send(truefalseEmbed).then(msg => msg.delete(5000));
+			if (arg.slice(1).join('') !== "true" && arg.slice(1).join('') !== "false") return msg.channel.send(truefalseEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		}
 		if (arg[0].includes("cooldown")) {
-			if (isNaN(arg.slice(1).join('')) || arg[1] > 60 || arg[1] < 0) return msg.channel.send(cooldownEmbed).then(msg => msg.delete(5000));
+			if (isNaN(arg.slice(1).join('')) || arg[1] > 60 || arg[1] < 0) return msg.channel.send(cooldownEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		}
 
 		if (arg[0].includes("channel") || arg[0].includes("category")) {
@@ -75,7 +75,7 @@ module.exports = {
 
 		client.settings.set(msg.guild.id, value.join(" "), prop);
 
-		const changedEmbed = new Discord.RichEmbed()
+		const changedEmbed = new Discord.MessageEmbed()
 			.setColor('RANDOM')
 			.setTitle("💾Guild Settings")
 			.setDescription(`**${prop}** has been changed to: \`${value.join(" ")}\``)
@@ -85,6 +85,6 @@ module.exports = {
 		if (rolerenamed === 1) changedEmbed.setFooter("Found and renamed the old role")
 		if (rolerenamed === 0) changedEmbed.setFooter("Couldn't find the old role, delete it manually and then run the setup again to create the new one!")
 		
-		msg.channel.send(changedEmbed).then(msg => msg.delete(5000));
+		msg.channel.send(changedEmbed).then(msg => msg.delete({ timeout: 5000 }));
     }
 }

@@ -9,14 +9,14 @@ module.exports = {
     run: async (client, msg, arg) => {
         msg.delete();
 
-        const noroleEmbed = new Discord.RichEmbed()
+        const noroleEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setTitle(`⛔ Role not found`)
 
         let roletocheck = arg.join(" ")
-        let role = client.guilds.get(msg.guild.id).roles.find('name', roletocheck);
-        if (!role) return msg.channel.send(noroleEmbed).then(msg => msg.delete(5000));
-            const embed = new Discord.RichEmbed()
+        let role = msg.guild.roles.cache.find(grole => grole.name === (roletocheck));
+        if (!role) return msg.channel.send(noroleEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            const embed = new Discord.MessageEmbed()
             .setColor(0x00A2E8)
             .addField('Role name', `${role.name}`, true)
             .addField('Role ID', `${role.id}`, true)

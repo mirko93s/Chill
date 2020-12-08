@@ -1,4 +1,4 @@
-const { RichEmbed } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const { promptMessage } = require("../../functions.js");
 
 const chooseArr = ["🗻", "📰", "✂"];
@@ -11,9 +11,9 @@ module.exports = {
     usage: "rockpaperscissors\n**e.g.**\n\`rockpaperscissors\`\n> Play a rock-paper-scissors game with the Bot",
     run: async (client, message, args) => {
         message.delete();
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
             .setColor(`RANDOM`)
-            .setFooter(message.author.username, message.author.displayAvatarURL)
+            .setFooter(message.author.username, message.author.displayAvatarURL())
             .setDescription("React to play!")
 
         const m = await message.channel.send(embed);
@@ -26,7 +26,7 @@ module.exports = {
         // Check if it's a win/tie/loss
         const result = await getResult(reacted, botChoice);
         // Clear the reactions
-        await m.clearReactions();
+        await m.reactions.removeAll();
 
         embed
             .setDescription("")

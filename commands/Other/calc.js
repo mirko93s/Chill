@@ -10,24 +10,24 @@ module.exports = {
     run: async (client, msg, arg) => {
         msg.delete();
 
-        const noexpressionEmbed = new Discord.RichEmbed()
+        const noexpressionEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setTitle(`⛔ No expression provided`)
 
         const expression = arg.join(" ");
-        if (!expression) return msg.channel.send (noexpressionEmbed).then(msg => {msg.delete(5000)});
+        if (!expression) return msg.channel.send (noexpressionEmbed).then(msg => {msg.delete({ timeout: 5000 })});
         try {
             const solved = math.evaluate(expression).toString();
-            let calcEmbed = new Discord.RichEmbed()
+            let calcEmbed = new Discord.MessageEmbed()
                 .setColor(`RANDOM`)
                 .setTitle(`Calc`)
                 .setDescription(`${expression} = **${solved}**`)
             return msg.channel.send(calcEmbed);
         } catch (err) {
-            const errorEmbed = new Discord.RichEmbed()
+            const errorEmbed = new Discord.MessageEmbed()
                 .setColor(`RED`)
                 .setTitle(`⛔ ${err}`)
-            return msg.channel.send(errorEmbed).then(msg => {msg.delete(5000)});
+            return msg.channel.send(errorEmbed).then(msg => {msg.delete({ timeout: 5000 })});
         }
     }
 }

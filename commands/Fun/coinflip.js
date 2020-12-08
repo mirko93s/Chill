@@ -9,27 +9,27 @@ module.exports = {
     run: async (client, msg, arg) => {
         msg.delete();
         var coin = ["Heads","Tails"];
-        const embed = new Discord.RichEmbed()
+        const embed = new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setTitle("Coin Flip")
             .setDescription("Flipping")
 
-        const embed1 = new Discord.RichEmbed()
+        const embed1 = new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setTitle("Coin Flip")
             .setDescription("Flipping .")
 
-        const embed2 = new Discord.RichEmbed()
+        const embed2 = new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setTitle("Coin Flip")
             .setDescription("Flipping . .")
 
-        const embed3 = new Discord.RichEmbed()
+        const embed3 = new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setTitle("Coin Flip")
             .setDescription("Flipping . . .")
 
-        const embed4 = new Discord.RichEmbed()
+        const embed4 = new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setTitle("Coin Flip")
             .setDescription(msg.author.toString() + " flipped **" + (coin[Math.floor(Math.random() * coin.length)]) + "**")

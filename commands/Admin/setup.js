@@ -10,111 +10,111 @@ module.exports = {
     run: async (client, msg, arg) => {
         msg.delete();
 
-        const nopermEmbed = new Discord.RichEmbed()
+        const nopermEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setTitle(`⛔ You don't have permission to use this!`)
 
-        if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.reply(nopermEmbed).then(msg => msg.delete(5000));
+        if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.reply(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
-        let welcomechannel = msg.guild.channels.find(welcomechannel => welcomechannel.name === (client.settings.get(msg.guild.id, "welcomechannel")));
-        let bcchannel = msg.guild.channels.find(bcchannel => bcchannel.name === (client.settings.get(msg.guild.id, "bcchannel")));
-        let puchannel = msg.guild.channels.find(puchannel => puchannel.name === (client.settings.get(msg.guild.id, "puchannel")));
-        let reportchannel = msg.guild.channels.find(reportchannel => reportchannel.name === (client.settings.get(msg.guild.id, "reportchannel")));
-        let gachannel = msg.guild.channels.find(gachannel => gachannel.name === (client.settings.get(msg.guild.id, "gachannel")));
-        let pollchannel = msg.guild.channels.find(pollchannel => pollchannel.name === (client.settings.get(msg.guild.id, "pollchannel")));
-        let musicvocalchannel = msg.guild.channels.find(musicvocalchannel => musicvocalchannel.name === (client.settings.get(msg.guild.id, "musicvocalchannel")));
-        let musictextchannel = msg.guild.channels.find(musictextchannel => musictextchannel.name === (client.settings.get(msg.guild.id, "musictextchannel")));
+        let welcomechannel = msg.guild.channels.cache.find(welcomechannel => welcomechannel.name === (client.settings.get(msg.guild.id, "welcomechannel")));
+        let bcchannel = msg.guild.channels.cache.find(bcchannel => bcchannel.name === (client.settings.get(msg.guild.id, "bcchannel")));
+        let puchannel = msg.guild.channels.cache.find(puchannel => puchannel.name === (client.settings.get(msg.guild.id, "puchannel")));
+        let reportchannel = msg.guild.channels.cache.find(reportchannel => reportchannel.name === (client.settings.get(msg.guild.id, "reportchannel")));
+        let gachannel = msg.guild.channels.cache.find(gachannel => gachannel.name === (client.settings.get(msg.guild.id, "gachannel")));
+        let pollchannel = msg.guild.channels.cache.find(pollchannel => pollchannel.name === (client.settings.get(msg.guild.id, "pollchannel")));
+        let musicvocalchannel = msg.guild.channels.cache.find(musicvocalchannel => musicvocalchannel.name === (client.settings.get(msg.guild.id, "musicvocalchannel")));
+        let musictextchannel = msg.guild.channels.cache.find(musictextchannel => musictextchannel.name === (client.settings.get(msg.guild.id, "musictextchannel")));
 
-        let ticketcategory = msg.guild.channels.find(ticketcategory => ticketcategory.name === (client.settings.get(msg.guild.id, "ticketcategory")));
+        let ticketcategory = msg.guild.channels.cache.find(ticketcategory => ticketcategory.name === (client.settings.get(msg.guild.id, "ticketcategory")));
 
-        let musictemprole = msg.guild.roles.find(musictemprole => musictemprole.name === (client.settings.get(msg.guild.id, "musictemprole")));
-        let mutedrole = msg.guild.roles.find(mutedrole => mutedrole.name === (client.settings.get(msg.guild.id, "mutedrole")));
-        let djrole = msg.guild.roles.find(djrole => djrole.name === (client.settings.get(msg.guild.id, "djrole")));
-        let supportrole = msg.guild.roles.find(supportrole => supportrole.name === (client.settings.get(msg.guild.id, "supportrole")));
-        let roleonjoin = msg.guild.roles.find(roleonjoin => roleonjoin.name === (client.settings.get(msg.guild.id, "roleonjoin")));
+        let musictemprole = msg.guild.roles.cache.find(musictemprole => musictemprole.name === (client.settings.get(msg.guild.id, "musictemprole")));
+        let mutedrole = msg.guild.roles.cache.find(mutedrole => mutedrole.name === (client.settings.get(msg.guild.id, "mutedrole")));
+        let djrole = msg.guild.roles.cache.find(djrole => djrole.name === (client.settings.get(msg.guild.id, "djrole")));
+        let supportrole = msg.guild.roles.cache.find(supportrole => supportrole.name === (client.settings.get(msg.guild.id, "supportrole")));
+        let roleonjoin = msg.guild.roles.cache.find(roleonjoin => roleonjoin.name === (client.settings.get(msg.guild.id, "roleonjoin")));
 
         const created = "✅"
         const already = "❌"
 
         if(!ticketcategory) {
-            msg.guild.createChannel(client.settings.get(msg.guild.id, "ticketcategory"), {type: 'category', 
+            msg.guild.channels.create(client.settings.get(msg.guild.id, "ticketcategory"), {type: 'category', 
             })
             ticketmsg = created
         } else ticketmsg = already
         if (!mutedrole) {
-            msg.guild.createRole({name: client.settings.get(msg.guild.id, "mutedrole"),color: '525252'})
+            msg.guild.roles.create({ data: {name: client.settings.get(msg.guild.id, "mutedrole"),permissions: [],color: '525252'}})
             mutedmsg = created
         } else mutedmsg = already
         if (!djrole) {
-            msg.guild.createRole({name: client.settings.get(msg.guild.id, "djrole"),permissions: ['CONNECT'], color: 'D00091'})
+            msg.guild.roles.create({ data: {name: client.settings.get(msg.guild.id, "djrole"),permissions: ['CONNECT'], color: 'D00091'}})
             djmsg = created
         } else djmsg = already
         if (!musictemprole) {
-            msg.guild.createRole({name: client.settings.get(msg.guild.id, "musictemprole"), color: 'CCCC00'})
+            msg.guild.roles.create({ data: {name: client.settings.get(msg.guild.id, "musictemprole"),permissions: [], color: 'CCCC00'}})
             musictempmsg = created
         } else musictempmsg = already
         if (!supportrole) {
-            msg.guild.createRole({name: client.settings.get(msg.guild.id, "supportrole"), color: 'FC72F3'})
+            msg.guild.roles.create({ data: {name: client.settings.get(msg.guild.id, "supportrole"),permissions: [], color: 'FC72F3'}})
             supportmsg = created
         } else supportmsg = already
         if (!roleonjoin) {
-            msg.guild.createRole({name: client.settings.get(msg.guild.id, "roleonjoin"),permissions: ['VIEW_CHANNEL'], color: '33FFFF'})
+            msg.guild.roles.create({ data: {name: client.settings.get(msg.guild.id, "roleonjoin"),permissions: ['VIEW_CHANNEL'], color: '33FFFF'}})
             roleonmsg = created
         } else roleonmsg = already
         if(!welcomechannel) {
-            msg.guild.createChannel(client.settings.get(msg.guild.id, "welcomechannel"), {type: 'text', 
-                permissionOverwrites: [{id: msg.guild.defaultRole.id, 
+            msg.guild.channels.create(client.settings.get(msg.guild.id, "welcomechannel"), {type: 'text', 
+                permissionOverwrites: [{id: msg.guild.roles.everyone.id, 
                 deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`
                 ]}]})
             welcomemsg = created
         } else welcomemsg = already
         if(!bcchannel) {
-            msg.guild.createChannel(client.settings.get(msg.guild.id, "bcchannel"), {type: 'text', 
-                permissionOverwrites: [{id: msg.guild.defaultRole.id, 
+            msg.guild.channels.create(client.settings.get(msg.guild.id, "bcchannel"), {type: 'text', 
+                permissionOverwrites: [{id: msg.guild.roles.everyone.id, 
                 deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`
                 ]}]})
             bcmsg = created
         } else bcmsg = already
         if(!puchannel) {
-            msg.guild.createChannel(client.settings.get(msg.guild.id, "puchannel"), {type: 'text', 
-            permissionOverwrites: [{id: msg.guild.defaultRole.id, 
+            msg.guild.channels.create(client.settings.get(msg.guild.id, "puchannel"), {type: 'text', 
+            permissionOverwrites: [{id: msg.guild.roles.everyone.id, 
             deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`
             ]}]})
             pumsg = created
         } else pumsg = already
         if(!reportchannel) {
-            msg.guild.createChannel(client.settings.get(msg.guild.id, "reportchannel"), {type: 'text', 
-            permissionOverwrites: [{id: msg.guild.defaultRole.id, 
+            msg.guild.channels.create(client.settings.get(msg.guild.id, "reportchannel"), {type: 'text', 
+            permissionOverwrites: [{id: msg.guild.roles.everyone.id, 
             deny: [`VIEW_CHANNEL`
             ]}]})
             reportmsg = created
         } else reportmsg = already
         if(!gachannel) {
-            msg.guild.createChannel(client.settings.get(msg.guild.id, "gachannel"), {type: 'text', 
-            permissionOverwrites: [{id: msg.guild.defaultRole.id, 
+            msg.guild.channels.create(client.settings.get(msg.guild.id, "gachannel"), {type: 'text', 
+            permissionOverwrites: [{id: msg.guild.roles.everyone.id, 
             deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`
             ]}]})
             gamsg = created
         } else gamsg = already
         if(!pollchannel) {
-            msg.guild.createChannel(client.settings.get(msg.guild.id, "pollchannel"), {type: 'text', 
-            permissionOverwrites: [{id: msg.guild.defaultRole.id, 
+            msg.guild.channels.create(client.settings.get(msg.guild.id, "pollchannel"), {type: 'text', 
+            permissionOverwrites: [{id: msg.guild.roles.everyone.id, 
             deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`
             ]}]})
             pollmsg = created
         } else pollmsg = already
         if(!musicvocalchannel) {
-            msg.guild.createChannel(client.settings.get(msg.guild.id, "musicvocalchannel"), {type: 'voice',
+            msg.guild.channels.create(client.settings.get(msg.guild.id, "musicvocalchannel"), {type: 'voice',
             permissionOverwrites: [
-                {id: msg.guild.defaultRole.id, 
+                {id: msg.guild.roles.everyone.id, 
                 deny: ['SPEAK']}]
             })
             musicvocalmsg = created
         } else musicvocalmsg = already
         if(!musictextchannel) {
-            msg.guild.createChannel(client.settings.get(msg.guild.id, "musictextchannel"), {type: 'text', 
+            msg.guild.channels.create(client.settings.get(msg.guild.id, "musictextchannel"), {type: 'text', 
             permissionOverwrites: [
-                {id: msg.guild.defaultRole.id, 
+                {id: msg.guild.roles.everyone.id, 
                 deny: ['VIEW_CHANNEL']},
                 {id: musictemprole.id,
                 allow: ['VIEW_CHANNEL','SEND_MESSAGES']}]
@@ -145,10 +145,10 @@ module.exports = {
 		${ticketmsg} | ${client.settings.get(msg.guild.id, "ticketcategory")}
 		`;
 
-        let setupembed = new Discord.RichEmbed()
+        let setupembed = new Discord.MessageEmbed()
             .setTitle("**SETUP**")
             .setColor(`RANDOM`)
-            .setThumbnail(client.user.displayAvatarURL)
+            .setThumbnail(client.user.displayAvatarURL())
             .setDescription(`**Prefix** | \`${client.settings.get(msg.guild.id, "prefix")}\``)
             .addField(`**Channels**`, `\`\`\`${channels}\`\`\``, false)
             .addField(`**Roles**`, `\`\`\`${roles}\`\`\``, false)

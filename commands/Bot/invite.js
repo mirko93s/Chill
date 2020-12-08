@@ -7,7 +7,7 @@ module.exports = {
     usage: "invite\n**e.g.**\n\`invite\`\n> Returns a link to Invite the bot on another server",
     run: async (client, msg, arg) => {
         msg.delete();
-        const embed = new Discord.RichEmbed()
+        const embed = new Discord.MessageEmbed()
             .setColor(`RANDOM`)
             .setThumbnail(client.user.avatarURL)
             .setTitle(`**Chill** BOT`)

@@ -59,7 +59,7 @@ module.exports = {
 			
         `;
 
-		const settingsEmbed = new Discord.RichEmbed()
+		const settingsEmbed = new Discord.MessageEmbed()
 			.setColor('BLUE')
 			.setTitle("💾Guild Settings")
 			.addField('Channels', `\`\`\`asciidoc\n${channels}\`\`\``, false)
@@ -73,6 +73,6 @@ module.exports = {
 		// msg.channel.send(`The following are the server's current configuration:
 		// \`\`\`${configProps}\`\`\``);
 		
-		msg.channel.send(settingsEmbed).then(msg => msg.delete(30000));
+		msg.channel.send(settingsEmbed).then(msg => msg.delete({timeout:30000}));
     }
 }

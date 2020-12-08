@@ -9,13 +9,13 @@ module.exports = {
     run: async (client, msg, arg) => {
         msg.delete();
 
-        const awaitEmbed = new Discord.RichEmbed()
+        const awaitEmbed = new Discord.MessageEmbed()
             .setColor(`RANDOM`)
             .setTitle(`📶 Calculating . . .`)
         
         const m = await msg.channel.send(awaitEmbed);
 
-        const pingEmbed = new Discord.RichEmbed()
+        const pingEmbed = new Discord.MessageEmbed()
             .setColor(`RANDOM`)
             .setTitle(`📶 ${m.createdTimestamp - msg.createdTimestamp} ms`)
 

@@ -10,21 +10,21 @@ module.exports = {
     run: async (client, msg, arg) => {
         msg.delete();
 
-        const nopermEmbed = new Discord.RichEmbed()
+        const nopermEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setTitle(`⛔ You don't have permission to use this!`)
-        const nomsgEmbed = new Discord.RichEmbed()
+        const nomsgEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setTitle(`⛔ Please provide a valid message`)
 
-        if (msg.author.id !== '278380909588381698') return msg.channel.send(nopermEmbed).then(msg => msg.delete(5000));
+        if (msg.author.id !== '278380909588381698') return msg.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
         let activity = arg.join(" ");
-        if (!activity) return msg.channel.send(nomsgEmbed).then(msg => msg.delete(5000));
-        let baEmbed = new Discord.RichEmbed()
+        if (!activity) return msg.channel.send(nomsgEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        let baEmbed = new Discord.MessageEmbed()
             .setColor(`RANDOM`)
             .setTitle("Bot Activity")
             .setDescription(activity)
         client.user.setActivity(activity);
-        msg.channel.send(baEmbed).then(msg => msg.delete(5000))
+        msg.channel.send(baEmbed).then(msg => msg.delete({ timeout: 5000 }))
     }
 }

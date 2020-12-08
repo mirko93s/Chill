@@ -8,11 +8,11 @@ module.exports = {
     usage: "wouldyourather\n**e.g.**\n\`wouldyourather\`\n> Get a random question and answer using reactions",
     run: async (client, msg, arg) => {
         msg.delete();
-        return msg.reply("This command is currently disabled.").then(msg => msg.delete(5000));
+        return msg.reply("This command is currently disabled.").then(msg => msg.delete({ timeout: 5000 }));
         const superagent = require('superagent');
         const { body } = await superagent
             .get('http://www.rrrather.com/botapi');
-        const embed = new Discord.RichEmbed()
+        const embed = new Discord.MessageEmbed()
             .setTitle(`${body.title}`)
             .setURL(body.link)
             .setColor(0x00A2E8)

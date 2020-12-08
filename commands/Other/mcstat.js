@@ -27,7 +27,7 @@ module.exports = {
                 var serverport_final = serverport_fromfield;
             }
             
-            const embed = new Discord.RichEmbed()
+            const embed = new Discord.MessageEmbed()
             .setAuthor("Minecraft Server Status",icon_url="https://gamepedia.cursecdn.com/minecraft_gamepedia/4/44/Grass_Block_Revision_6.png?version=6fbedf976222daab354767540ccff4a1")
             .setTitle(`***${serverip}***`)
             .setColor(`RANDOM`)

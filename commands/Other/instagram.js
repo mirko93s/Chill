@@ -14,7 +14,7 @@ module.exports = {
 
         if (!name) {
             return msg.reply("Please provide a name.")
-                .then(m => m.delete(5000));
+                .then(m => m.delete({timeout:5000}));
         }
 
         const url = `https://instagram.com/${name}/?__a=1`;
@@ -25,12 +25,12 @@ module.exports = {
             res = await fetch(url).then(url => url.json());
         } catch (e) {
             return msg.reply("I couldn't find any account with that name.")
-                .then(m => m.delete(5000));
+                .then(m => m.delete({timeout:5000}));
         }
 
         const account = res.graphql.user;
 
-        const embed = new Discord.RichEmbed()
+        const embed = new Discord.MessageEmbed()
             .setColor("RANDOM")
             .setTitle(account.full_name)
             .setURL(`https://instagram.com/${name}`)

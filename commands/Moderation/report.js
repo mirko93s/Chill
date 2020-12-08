@@ -9,35 +9,35 @@ module.exports = {
     run: async (client, message, args) => {
         message.delete();
 
-        const noargsEmbed = new Discord.RichEmbed()
+        const noargsEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setTitle(`⛔ Please mention a valid user of this server and provide a reason`)
-        const nochannelEmbed = new Discord.RichEmbed()
+        const nochannelEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setTitle(`⛔ Reports channel not found`)
-        const nobotEmbed = new Discord.RichEmbed()
+        const nobotEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setTitle(`⛔ You can't report me`)
-        const thanksEmbed = new Discord.RichEmbed()
+        const thanksEmbed = new Discord.MessageEmbed()
             .setColor(`GREEN`)
             .setTitle(`✅ Thanks for reporting this person.\nA staff member will take a decision as soon as possible`)
 
         let rMember = message.mentions.members.first();
 
-        if (!rMember || !args[1]) return message.channel.send(noargsEmbed).then(m => m.delete(5000));
-        if (rMember.user.bot) return message.channel.send(nobotEmbed).then(m => m.delete(5000));
+        if (!rMember || !args[1]) return message.channel.send(noargsEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (rMember.user.bot) return message.channel.send(nobotEmbed).then(msg => msg.delete({ timeout: 5000 }));
         
-        let reportchannel = message.guild.channels.find(reportchannel => reportchannel.name === (client.settings.get(message.guild.id, "reportchannel")));
+        let reportchannel = message.guild.channels.cache.find(reportchannel => reportchannel.name === (client.settings.get(message.guild.id, "reportchannel")));
         
-        if(!reportchannel) return message.channel.send(nochannelEmbed).then(m => m.delete(5000));
+        if(!reportchannel) return message.channel.send(nochannelEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
-        message.channel.send(thanksEmbed).then(m => m.delete(5000));
+        message.channel.send(thanksEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
-        const embed = new Discord.RichEmbed()
+        const embed = new Discord.MessageEmbed()
             .setColor("#ff0000")
             .setTimestamp()
             .setFooter(message.guild.name, message.guild.iconURL)
-            .setAuthor("Reported member", rMember.user.displayAvatarURL)
+            .setAuthor("Reported member", rMember.user.displayAvatarURL())
             .setDescription(stripIndents`**> Member:** ${rMember} (${rMember.user.id})
             **> Reported by:** ${message.member}
             **> Reported in:** ${message.channel}

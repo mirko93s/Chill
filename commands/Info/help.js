@@ -1,4 +1,4 @@
-const { RichEmbed } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
 module.exports = {
@@ -18,7 +18,7 @@ module.exports = {
 }
 
 function getAll(client, message) { //old help main page below-----------
-    // const embed = new RichEmbed()
+    // const embed = new MessageEmbed()
     //     .setColor("RANDOM")
 
     // const commands = (category) => {
@@ -32,11 +32,11 @@ function getAll(client, message) { //old help main page below-----------
     //     .map(cat => stripIndents`**${cat[0].toUpperCase() + cat.slice(1)}** \n${commands(cat)}`)
     //     .reduce((string, category) => string + "\n" + category);
 
-        const helpembed = new RichEmbed()
+        const helpembed = new MessageEmbed()
             .setTitle(":question: Chill Bot HELP :question:")
             .setDescription("Type .help <command | alias> for more info.")
             .setColor(0x00AE86)
-            .setThumbnail(client.user.displayAvatarURL)
+            .setThumbnail(client.user.displayAvatarURL())
             /* Admin */.addField(":no_entry_sign: Admin", "addchannel, broadcast, giveaway, poll, setup")
             /* Bot */.addField(":robot: Bot", "botinfo, bugreport, invite, project, website")
             /* Fun */.addField(":game_die: Fun", "8ball, achievement, flipcoin, respawn, rockpaperscissors, ship, slotmachine, wouldyourather")
@@ -53,14 +53,14 @@ function getAll(client, message) { //old help main page below-----------
 }
 
 function getCMD(client, message, input) {
-    const embed = new RichEmbed()
+    const embed = new MessageEmbed()
 
     const cmd = client.commands.get(input.toLowerCase()) || client.commands.get(client.aliases.get(input.toLowerCase()));
     
     let info = `⛔ No information found for command **${input.toLowerCase()}**`;
 
     if (!cmd) {
-        return message.channel.send(embed.setColor("RED").setDescription(info)).then(msg => msg.delete(5000));
+        return message.channel.send(embed.setColor("RED").setDescription(info)).then(msg => msg.delete({ timeout: 5000 }));
     }
 
     //if (cmd.name) info = `**Command name**: ${cmd.name}`;

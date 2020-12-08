@@ -7,7 +7,7 @@ module.exports = {
     usage: "website\n**e.g.**\n\`website\`\n> Return a link to the Bot's website",
     run: async (client, msg, arg) => {
         msg.delete();
-        const embed = new Discord.RichEmbed()
+        const embed = new Discord.MessageEmbed()
             .setColor(`RANDOM`)
             .setThumbnail(client.user.avatarURL)
             .setTitle(`**Chill - Discord Bot**`)

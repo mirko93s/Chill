@@ -10,26 +10,26 @@ module.exports = {
     run: async (client, msg, arg) => {
         msg.delete();
         
-        const noargsEmbed = new Discord.RichEmbed()
+        const noargsEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setTitle(`⛔ Please provide a valid time and a valid text`)
         
         let time = arg[0];
         let text = arg.slice(1).join(' ');
 
-        if(!time || !time.match(/[1-60][s,m,h,d,w]/g) || !text || text.length > 2048) return msg.channel.send(noargsEmbed).then(msg => msg.delete(5000));
+        if(!time || !time.match(/[1-60][s,m,h,d,w]/g) || !text || text.length > 2048) return msg.channel.send(noargsEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
         let timems = ms(time);
 
         function reminder() {
-            const reminderEmbed = new Discord.RichEmbed()
+            const reminderEmbed = new Discord.MessageEmbed()
                 .setColor(`RANDOM`)
                 .setTitle("\n**REMINDER**\n")
                 .setDescription(text)
             msg.reply(reminderEmbed);
         }
 
-        msg.reply(`Your reminder has been set, I will remind you in ${time}.`).then(msg => msg.delete(10000));
+        msg.reply(`Your reminder has been set, I will remind you in ${time}.`).then(msg => msg.delete({timeout:10000}));
         setTimeout(reminder, timems);
     }
 }

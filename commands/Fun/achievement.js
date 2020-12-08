@@ -10,13 +10,13 @@ module.exports = {
     run: async (client, msg, arg) => {
         msg.delete();
 
-        const textErrEmbed = new Discord.RichEmbed()
+        const textErrEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setTitle(`⛔ Provide a text (max 25 characters)`)
 
         try {
             const text = arg.join(" ");
-            if (!text || text.length > 25) return msg.reply(textErrEmbed).then(msg => msg.delete(5000));		
+            if (!text || text.length > 25) return msg.reply(textErrEmbed).then(msg => msg.delete({ timeout: 5000 }));		
 			 const { body } = await superagent
 				 .get('https://www.minecraftskinstealer.com/achievement/a.php')
 				 .query({

@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
-const snekfetch = require("snekfetch");
+const fetch = require("node-fetch");
+const querystring = require('querystring');
 const config = require ('../../config.json')
 const yandexkey = config.yandexkey;
 
@@ -11,12 +12,12 @@ module.exports = {
     usage: "translator [no arguments = language list] <from> <to> <message>\n**e.g.**\n\`translator\`\n> get the list of all available languages\n\`translator en it hello I am a robot\`\n> will translate the sentence \"hello i am a robot\" from english to italian",
     run: async (client, msg, arg) => {
         msg.delete();
-
-        const noargsEmbed = new Discord.RichEmbed()
+        return msg.reply("This command is currently disabled.").then(msg => msg.delete({ timeout: 5000 }));
+        const noargsEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setTitle(`⛔ Please provide 2 different languages and the text to translate`)
             .setFooter(`<from> <to> <text> Example: en it Hello World. Leave them blank to get a link to code list`)
-        const errorEmbed = new Discord.RichEmbed()
+        const errorEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setTitle(`⛔ Error: 400 Bad Request`)
             .setFooter(`Something went wrong or you probably typed wrong codes.\nPlease try again.`)
@@ -38,32 +39,34 @@ module.exports = {
         const text = arg.slice(2).join(' ')
         const from = arg[0]
         const to = arg[1]
-        const translatorcodesEmbed = new Discord.RichEmbed()
+        const translatorcodesEmbed = new Discord.MessageEmbed()
             .setColor(`RANDOM`)
             .setTitle(`🗣️ Translator`)
             .setThumbnail(`https://camo.githubusercontent.com/f2ec5a009334a6dfafe485313689b137b8dbfd90/68747470733a2f2f692e696d6775722e636f6d2f34597a504270372e706e67`)
             .setDescription(`Click on the image or open the link below\n\n[**Codes List**](https://camo.githubusercontent.com/f2ec5a009334a6dfafe485313689b137b8dbfd90/68747470733a2f2f692e696d6775722e636f6d2f34597a504270372e706e67)`);
 
-        if (!arg[0] && !arg[1] && !arg[2]) return msg.channel.send(translatorcodesEmbed).then(msg => msg.delete(30000));
-        if (arg[0] === arg[1] || !arg[2]) return msg.channel.send (noargsEmbed).then(msg => msg.delete(5000));
+        if (!arg[0] && !arg[1] && !arg[2]) return msg.channel.send(translatorcodesEmbed).then(msg => msg.delete({timeout: 30000}));
+        if (arg[0] === arg[1] || !arg[2]) return msg.channel.send (noargsEmbed).then(msg => msg.delete({ timeout: 5000 }));
         try {
-            const { body } = await snekfetch
-                .get('https://translate.yandex.net/api/v1.5/tr.json/translate')
-                .query({
-                    key: yandexkey,
-                    text,
-                    lang: from ? `${from}-${to}` : to
-                });
-            const lang = body.lang.split('-');
-            const embed = new Discord.RichEmbed()
+
+            const query = querystring.stringify({
+                key: yandexkey,
+                text,
+                lang: from ? `${from}-${to}` : to
+            });
+            const body = await fetch(`https://translate.yandex.net/api/v1.5/tr.json/translate?${query}`)
+                .then(response => response.text())
+                console.log(body)
+            const langs = body.lang.split('-');
+            const embed = new Discord.MessageEmbed()
                 .setColor(0x00AE86)
                 .setTitle(`🗣️ Translator`)
-                .addField(`From: ${codes[lang[0]]}`, text)
-                .addField(`To: ${codes[lang[1]]}`, body.text[0]);
+                .addField(`From: ${codes[langs[0]]}`, text)
+                .addField(`To: ${codes[langs[1]]}`, body.text[0]);
             msg.channel.send(embed).catch(err => console.log(err));
         } catch (error) {
             console.error(error);
-            msg.channel.send(errorEmbed).then(msg => msg.delete(5000));
+            msg.channel.send(errorEmbed).then(msg => msg.delete({ timeout: 5000 }));
             }    
     }
 }

@@ -30,19 +30,19 @@ module.exports = {
     run: async (client, msg, arg) => {
 		msg.delete();
 
-		const nopermEmbed = new Discord.RichEmbed()
+		const nopermEmbed = new Discord.MessageEmbed()
 		.setColor(`RED`)
 		.setTitle(`⛔ You don't have permission to use this!`)
 
-		if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.reply(nopermEmbed).then(msg => msg.delete(5000));
+		if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.reply(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
-        const resetEmbed = new Discord.RichEmbed()
+        const resetEmbed = new Discord.MessageEmbed()
 			.setColor('RANDOM')
 			.setTitle("💾Guild Settings")
             .setDescription("Settings resetted to default values!")
             
         client.settings.set(msg.guild.id , defaultSettings);
-        msg.channel.send(resetEmbed).then(msg => msg.delete(5000));
+        msg.channel.send(resetEmbed).then(msg => msg.delete({ timeout: 5000 }));
         
 
     }

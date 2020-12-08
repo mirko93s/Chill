@@ -6,7 +6,7 @@ const fs = require("fs");
 const config = require('./config.json');
 // const PREFIX = config.prefix;
 const GOOGLE_API_KEY = config.google_api_key
-const client = new Client({ disableEveryone: false });
+const client = new Discord.Client;
 const youtube = new YouTube(GOOGLE_API_KEY);
 const queue = new Map();
 const SQLite = require("better-sqlite3");
@@ -63,20 +63,18 @@ client.on('ready', () => {
 	client.getScore = sql.prepare("SELECT * FROM scores WHERE user = ? AND guild = ?");
 	client.setScore = sql.prepare("INSERT OR REPLACE INTO scores (id, user, guild, points, level) VALUES (@id, @user, @guild, @points, @level);");
 	//set activity
-	let users = 0;
-	for (let g of client.guilds.array()) users += (g.members.size - 1);
+	let users = client.guilds.cache.reduce((a, g) => a + g.memberCount - 1, 0)
 	client.user.setActivity(`${users} user${users !== 1 ? 's' : ''}`, {type: 'WATCHING'});
 	//set channel counters in my server
-	client.channels.get(`735001555023036517`).setName(`USERS: ${client.users.size}`);
-	client.channels.get(`735001597926441011`).setName(`SERVERS: ${client.guilds.size}`);
+	client.channels.cache.get(`735001555023036517`).setName(`USERS: ${users}`);
+	client.channels.cache.get(`735001597926441011`).setName(`SERVERS: ${client.guilds.cache.size}`);
 	//update activity and counters every 30 minutes
 	setInterval(async () => { 
-		client.channels.get(`735001555023036517`).setName(`USERS: ${client.users.size}`);
-		client.channels.get(`735001597926441011`).setName(`SERVERS: ${client.guilds.size}`);
-	  	let users = 0;
-	  	for (let g of client.guilds.array()) users += (g.members.size - 1);
+		let users = client.guilds.cache.reduce((a, g) => a + g.memberCount - 1, 0)
+		client.channels.get(`735001555023036517`).setName(`USERS: ${users}`);
+		client.channels.get(`735001597926441011`).setName(`SERVERS: ${client.guilds.cache.size}`);
 	  	await client.user.setActivity(`${users} user${users !== 1 ? 's' : ''}`, {type: 'WATCHING'});
-	  	console.log(`Bot activity UPDATED! New user size is: ${users}\nCounter channels updated!`);
+	  	console.log(`Bot activity UPDATED! New user size is: ${users}. New guild size is: ${client.guilds.cache.size}`);
 	}, 30*60*1000);
 });
 client.on('disconnect', () => console.log('Chill BOT Disconnected! Trying to reconnect...'));
@@ -87,7 +85,7 @@ client.on('guildCreate', (guild) => {
 	client.settings.ensure(guild.id, defaultSettings);
 	console.log(`+ Guild: ${guild.name}`);
 	//msg guild owner with setup info
-	const dmonweronjoinEmbed = new Discord.RichEmbed()
+	const dmonweronjoinEmbed = new Discord.MessageEmbed()
 		.setColor(`RANDOM`)
 		.setAuthor(`Chill - Discord Bot`)
 		.setURL(`https://www.mirko93s.it/`)
@@ -110,49 +108,50 @@ client.on("guildDelete", guild => {
 //welcome message new members
 client.on("guildMemberAdd", member => {
 
-	member.addRole(member.guild.roles.find(role => role.name === client.settings.get(member.guild.id, "roleonjoin")));
+	member.roles.add(member.guild.roles.cache.find(role => role.name === client.settings.get(member.guild.id, "roleonjoin")));
 
-	const welcomeEmbed = new Discord.RichEmbed()
+	const welcomeEmbed = new Discord.MessageEmbed()
             .setColor('GREEN')
 			.setTitle(`${member.user.username} joined...`)
 
-	const welcomechannel = member.guild.channels.find(welcomechannel => welcomechannel.name === (client.settings.get(member.guild.id, "welcomechannel")));
+	const welcomechannel = member.guild.channels.cache.find(welcomechannel => welcomechannel.name === (client.settings.get(member.guild.id, "welcomechannel")));
 	if (!welcomechannel) return;
 	else welcomechannel.send(welcomeEmbed);
 });
 
-client.on("voiceStateUpdate", (oldMember, newMember) => {
-	const channel = newMember.guild.channels.find(channel => channel.name === (client.settings.get(newMember.guild.id, "musicvocalchannel")));
-	const role = newMember.guild.roles.find(role => role.name === (client.settings.get(newMember.guild.id, "musictemprole")));
+client.on("voiceStateUpdate", (oldUser, newUser) => {
+	const channel = newUser.guild.channels.cache.find(channel => channel.name === (client.settings.get(newUser.guild.id, "musicvocalchannel")));
+	const role = newUser.guild.roles.cache.find(role => role.name === (client.settings.get(newUser.guild.id, "musictemprole")));
 	if (channel && role) {
-		let newUserChannel = newMember.voiceChannel;	
-		if (newUserChannel === undefined) return newMember.removeRole(role);
-		if (newUserChannel.name === channel.name) return newMember.addRole(role);
-		if (newUserChannel.name !== channel.name) return newMember.removeRole(role);
+		let newUserChannel = newUser.channel;
+		if (newUserChannel === null) return newUser.member.roles.remove(role);
+		if (newUserChannel.name === channel.name) return newUser.member.roles.add(role);
+		if (newUserChannel.name !== channel.name) return newUser.member.roles.remove(role);
 	}
 });
 
 //BOT-MENTION
 client.on('message', message=> {
 	client.settings.ensure(message.guild.id, defaultSettings);
-  	if (message.author.bot) return;
-  	if (message.isMentioned(client.user)) {
+	if (message.author.bot) return;
+	if (message.content.includes("@here") || message.content.includes("@everyone")) return;
+  	if (message.mentions.has(client.user)) {
     	message.reply('Hey! Type .help for more info! :smiley:');
 		if(message.member.hasPermission("ADMINISTRATOR")){
-			let welcomechannel = message.guild.channels.find(welcomechannel => welcomechannel.name === (client.settings.get(message.guild.id, "welcomechannel")));
-			let bcchannel = message.guild.channels.find(bcchannel => bcchannel.name === (client.settings.get(message.guild.id, "bcchannel")));
-			let puchannel = message.guild.channels.find(puchannel => puchannel.name === (client.settings.get(message.guild.id, "puchannel")));
-			let reportchannel = message.guild.channels.find(reportchannel => reportchannel.name === (client.settings.get(message.guild.id, "reportchannel")));
-			let gachannel = message.guild.channels.find(gachannel => gachannel.name === (client.settings.get(message.guild.id, "gachannel")));
-			let pollchannel = message.guild.channels.find(pollchannel => pollchannel.name === (client.settings.get(message.guild.id, "pollchannel")));
-			let musicvocalchannel = message.guild.channels.find(musicvocalchannel => musicvocalchannel.name === (client.settings.get(message.guild.id, "musicvocalchannel")));
-			let musictextchannel = message.guild.channels.find(musictextchannel => musictextchannel.name === (client.settings.get(message.guild.id, "musictextchannel")));
-			let ticketcategory = message.guild.channels.find(ticketcategory => ticketcategory.name === (client.settings.get(message.guild.id, "ticketcategory")));
-			let musictemprole = message.guild.roles.find(musictemprole => musictemprole.name === (client.settings.get(message.guild.id, "musictemprole")));
-			let mutedrole = message.guild.roles.find(mutedrole => mutedrole.name === (client.settings.get(message.guild.id, "mutedrole")));
-			let djrole = message.guild.roles.find(djrole => djrole.name === (client.settings.get(message.guild.id, "djrole")));
-			let supportrole = message.guild.roles.find(supportrole => supportrole.name === (client.settings.get(message.guild.id, "supportrole")));
-			let roleonjoin = message.guild.roles.find(roleonjoin => roleonjoin.name === (client.settings.get(message.guild.id, "roleonjoin")));	
+			let welcomechannel = message.guild.channels.cache.find(welcomechannel => welcomechannel.name === (client.settings.get(message.guild.id, "welcomechannel")));
+			let bcchannel = message.guild.channels.cache.find(bcchannel => bcchannel.name === (client.settings.get(message.guild.id, "bcchannel")));
+			let puchannel = message.guild.channels.cache.find(puchannel => puchannel.name === (client.settings.get(message.guild.id, "puchannel")));
+			let reportchannel = message.guild.channels.cache.find(reportchannel => reportchannel.name === (client.settings.get(message.guild.id, "reportchannel")));
+			let gachannel = message.guild.channels.cache.find(gachannel => gachannel.name === (client.settings.get(message.guild.id, "gachannel")));
+			let pollchannel = message.guild.channels.cache.find(pollchannel => pollchannel.name === (client.settings.get(message.guild.id, "pollchannel")));
+			let musicvocalchannel = message.guild.channels.cache.find(musicvocalchannel => musicvocalchannel.name === (client.settings.get(message.guild.id, "musicvocalchannel")));
+			let musictextchannel = message.guild.channels.cache.find(musictextchannel => musictextchannel.name === (client.settings.get(message.guild.id, "musictextchannel")));
+			let ticketcategory = message.guild.channels.cache.find(ticketcategory => ticketcategory.name === (client.settings.get(message.guild.id, "ticketcategory")));
+			let musictemprole = message.guild.roles.cache.find(musictemprole => musictemprole.name === (client.settings.get(message.guild.id, "musictemprole")));
+			let mutedrole = message.guild.roles.cache.find(mutedrole => mutedrole.name === (client.settings.get(message.guild.id, "mutedrole")));
+			let djrole = message.guild.roles.cache.find(djrole => djrole.name === (client.settings.get(message.guild.id, "djrole")));
+			let supportrole = message.guild.roles.cache.find(supportrole => supportrole.name === (client.settings.get(message.guild.id, "supportrole")));
+			let roleonjoin = message.guild.roles.cache.find(roleonjoin => roleonjoin.name === (client.settings.get(message.guild.id, "roleonjoin")));	
 			if(!bcchannel || !puchannel || !reportchannel || !gachannel || !pollchannel|| !mutedrole || !djrole || !welcomechannel || !musicvocalchannel || !musictextchannel || !ticketcategory || !musictemprole || !supportrole || !roleonjoin)
 			return message.channel.send (":warning: Ops! It looks like you didn't complete the setup. Type .setup to create preset channels, roles, channel categories, etc...\nDon't worry you can later rename them.")
 		}
@@ -174,7 +173,7 @@ client.on(`message`, async xpmsg => {
 		const curLevel = Math.floor(0.3163 * Math.sqrt(score.points));
 		if(score.level < curLevel) {
 			score.level = curLevel;
-			const newlevelembed = new Discord.RichEmbed()
+			const newlevelembed = new Discord.MessageEmbed()
 				.setColor(`RANDOM`)
 				.setAuthor(xpmsg.author.username, xpmsg.author.avatarURL)
 				.setTitle(`Congratulations!`)
@@ -236,7 +235,7 @@ client.on('message', async msg => {
 			else if(fixedpoints >= 10000 && fixedpoints < 1000000) fixedpoints = `${Math.floor(fixedpoints/1000)} K`
 				else if(fixedpoints >= 1000000 && fixedpoints < 10000000) fixedpoints = `${parseFloat(fixedpoints/1000000).toFixed(1)} M`
 					else if(fixedpoints >= 10000000) fixedpoints = `${Math.floor(fixedpoints/1000000)} M`
-		const levelembed = new Discord.RichEmbed()
+		const levelembed = new Discord.MessageEmbed()
 			.setColor(`RANDOM`)
 			.setAuthor(msg.author.username, msg.author.avatarURL)
 			.setTitle(`Lvl ${score.level}`)
@@ -246,24 +245,24 @@ client.on('message', async msg => {
 
   	if(command === "xp") {
 		msg.delete();
-		const nopermEmbed = new Discord.RichEmbed()
+		const nopermEmbed = new Discord.MessageEmbed()
 			.setColor(`RED`)
 			.setTitle(`⛔ You don't have permission to use this!`)
-		const noargsEmbed = new Discord.RichEmbed()
+		const noargsEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
 			.setTitle(`⛔ Please mention a valid user of this server and provide mode and amount.`)
-		const nonegativeEmbed = new Discord.RichEmbed()
+		const nonegativeEmbed = new Discord.MessageEmbed()
 			.setColor(`RED`)
 			.setTitle(`⛔ Points can't be negative!`)
-		if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.channel.send(nopermEmbed).then(m => m.delete(5000));
-		let user = msg.mentions.users.first() || client.users.get(arg[0]);
-		if(!user) return msg.channel.send(noargsEmbed).then(m => m.delete(5000));
+		if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.channel.send(nopermEmbed).then(m => m.delete({timeout:5000}));
+		let user = msg.mentions.users.first() || client.users.cache.get(arg[0]);
+		if(!user) return msg.channel.send(noargsEmbed).then(m => m.delete({timeout:5000}));
 		let mode = arg[1];
-		if(!mode) return msg.channel.send(noargsEmbed).then(m => m.delete(5000));
-			else if(mode !== "take" && mode !== "give" && mode !== "set") return msg.channel.send(noargsEmbed).then(m => m.delete(5000));
+		if(!mode) return msg.channel.send(noargsEmbed).then(m => m.delete({timeout:5000}));
+			else if(mode !== "take" && mode !== "give" && mode !== "set") return msg.channel.send(noargsEmbed).then(m => m.delete({timeout:5000}));
 		let pointsToAdd = parseInt(arg[2], 10);
 		if(arg[2] == 0) pointsToAdd = 0;
-			else if (!pointsToAdd) return msg.channel.send(noargsEmbed).then(m => m.delete(5000));
+			else if (!pointsToAdd) return msg.channel.send(noargsEmbed).then(m => m.delete({timeout:5000}));
 		let userscore = client.getScore.get(user.id, msg.guild.id);
 		if (!userscore) {
 			userscore = { id: `${msg.guild.id}-${user.id}`, user: user.id, guild: msg.guild.id, points: 0, level: 0 }
@@ -277,7 +276,7 @@ client.on('message', async msg => {
 			client.setScore.run(userscore);
 		}		
 		if(mode == "take") {
-			if(userscore.points-pointsToAdd < 0) return msg.channel.send(nonegativeEmbed).then(m => m.delete(5000));
+			if(userscore.points-pointsToAdd < 0) return msg.channel.send(nonegativeEmbed).then(m => m.delete({timeout:5000}));
 			userscore.points -= pointsToAdd;
 			xpmsg = "-";
 			let userLevel = Math.floor(0.2 * Math.sqrt(userscore.points));
@@ -291,7 +290,7 @@ client.on('message', async msg => {
 			userscore.level = userLevel;
 			client.setScore.run(userscore);
 		}
-		const xpcmdembed = new Discord.RichEmbed()
+		const xpcmdembed = new Discord.MessageEmbed()
 			.setColor(`RANDOM`)
 			.setAuthor(user.username, user.avatarURL)
 			.setTitle(`${xpmsg} ${pointsToAdd} points`)
@@ -303,7 +302,7 @@ client.on('message', async msg => {
 		msg.delete();
 		const top10 = sql.prepare("SELECT * FROM scores WHERE guild = ? ORDER BY points DESC LIMIT 10;").all(msg.guild.id);
 		let emojiposition = 0;
-		const embed = new Discord.RichEmbed()
+		const embed = new Discord.MessageEmbed()
 			.setTitle("🏆 Leaderboard 🏆")
 			.setAuthor(msg.guild.name, msg.guild.iconURL)
 			.setDescription("Top 10")
@@ -314,7 +313,7 @@ client.on('message', async msg => {
 				else if(data.points >= 10000 && data.points < 1000000) data.points = `${Math.floor(data.points/1000)} K`
 					else if(data.points >= 1000000 && data.points < 10000000) data.points = `${parseFloat(data.points/1000000).toFixed(1)} M`
 						else if(data.points >= 10000000) data.points = `${Math.floor(data.points/1000000)} M`
-			embed.addField(`${emoji[emojiposition]}**${client.users.get(data.user).username}**`, `> ${data.points} | Lvl ${data.level}`, true);
+			embed.addField(`${emoji[emojiposition]}**${client.users.cache.get(data.user).username}**`, `> ${data.points} | Lvl ${data.level}`, true);
 			emojiposition++;
 		}
 		return msg.channel.send(embed);
@@ -322,24 +321,24 @@ client.on('message', async msg => {
 
 //--------------------Music--------------------
 
-const noDJroleEmbed = new Discord.RichEmbed()
+const noDJroleEmbed = new Discord.MessageEmbed()
 	.setColor('PURPLE')
 	.setTitle(":musical_note: Music")
 	.setDescription(`⛔ You don't have DJ role`)
-const noplayingEmbed = new Discord.RichEmbed()
+const noplayingEmbed = new Discord.MessageEmbed()
 	.setColor('PURPLE')
 	.setTitle(":musical_note: Music")
 	.setDescription(`⛔ There is nothing playing`)
-const notinvcEmbed = new Discord.RichEmbed()
+const notinvcEmbed = new Discord.MessageEmbed()
 	.setColor('PURPLE')
 	.setTitle(":musical_note: Music")
 	.setDescription(`⛔ You are not in a voice channel`)
-const mconlyEmbed = new Discord.RichEmbed()
+const mconlyEmbed = new Discord.MessageEmbed()
 	.setColor(`RANDOM`)
 	.setTitle(":musical_note: Music")
 	.setDescription(`Music Channel Only is active!`)
 	.setFooter(`You can only use the music module in: ${client.settings.get(msg.guild.id, "musicvocalchannel")}`)
-const nosummonEmbed = new Discord.RichEmbed()
+const nosummonEmbed = new Discord.MessageEmbed()
 	.setColor(`RANDOM`)
 	.setTitle(":musical_note: Music")
 	.setDescription(`Music Channel Only is active! \`summon\` command is disabled`)
@@ -348,37 +347,37 @@ const nosummonEmbed = new Discord.RichEmbed()
   //PLAY
 	if (command === 'play' || command === 'p') {
 	msg.delete();
-    if (msg.member.roles.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
+    if (msg.member.roles.cache.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
 		
-		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete(5000));
+		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
-		const nourlEmbed = new Discord.RichEmbed()
+		const nourlEmbed = new Discord.MessageEmbed()
 			.setColor('PURPLE')
 			.setTitle(":musical_note: Music")
 			.setDescription("⛔ No song or link provided")
-		const novcEmbed = new Discord.RichEmbed()
+		const novcEmbed = new Discord.MessageEmbed()
 			.setColor('PURPLE')
 			.setTitle(":musical_note: Music")
 			.setDescription("⛔ You need to be in a voice channel to play music")
-		const noconnectpermEmbed = new Discord.RichEmbed()
+		const noconnectpermEmbed = new Discord.MessageEmbed()
 			.setColor('PURPLE')
 			.setTitle(":musical_note: Music")
 			.setDescription("⛔ I can't connect to your voice channel, make sure I have the proper permission")
-		const nospeakpermEmbed = new Discord.RichEmbed()
+		const nospeakpermEmbed = new Discord.MessageEmbed()
 			.setColor('PURPLE')
 			.setTitle(":musical_note: Music")
 			.setDescription("⛔ I can't speak in this voice channel, make sure i Have the proper permission")
-		const noresultEmbed = new Discord.RichEmbed()
+		const noresultEmbed = new Discord.MessageEmbed()
 			.setColor('PURPLE')
 			.setTitle(":musical_note: Music")
 			.setDescription(`⛔ I could not obtain any search results.`)
 
-		if (!url) return msg.channel.send(nourlEmbed).then(msg => msg.delete(5000));
-		const voiceChannel = msg.member.voiceChannel;
-		if (!voiceChannel) return msg.channel.send(novcEmbed).then(msg => msg.delete(5000));
+		if (!url) return msg.channel.send(nourlEmbed).then(msg => msg.delete({ timeout: 5000 }));
+		const voiceChannel = msg.member.voice.channel;
+		if (!voiceChannel) return msg.channel.send(novcEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		const permissions = voiceChannel.permissionsFor(msg.client.user);
-		if (!permissions.has('CONNECT')) return msg.channel.send(noconnectpermEmbed).then(msg => msg.delete(5000));
-		if (!permissions.has('SPEAK')) return msg.channel.send(nospeakpermEmbed).then(msg => msg.delete(5000));
+		if (!permissions.has('CONNECT')) return msg.channel.send(noconnectpermEmbed).then(msg => msg.delete({ timeout: 5000 }));
+		if (!permissions.has('SPEAK')) return msg.channel.send(nospeakpermEmbed).then(msg => msg.delete({ timeout: 5000 }));
     	if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
 			const playlist = await youtube.getPlaylist(url);
 			const videos = await playlist.getVideos();
@@ -386,12 +385,12 @@ const nosummonEmbed = new Discord.RichEmbed()
 				const video2 = await youtube.getVideoByID(video.id); // eslint-disable-line no-await-in-loop
 				await handleVideo(video2, msg, voiceChannel, true); // eslint-disable-line no-await-in-loop
 				
-				const addtoqueueEmbed = new Discord.RichEmbed()
+				const addtoqueueEmbed = new Discord.MessageEmbed()
 					.setColor('PURPLE')
 					.setTitle(":musical_note: Music")
 					.setDescription(`✅ **${playlist.title}** has been added to the queue`)
 
-			}return msg.channel.send(addtoqueueEmbed).then(msg => msg.delete(5000));
+			}return msg.channel.send(addtoqueueEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		} else {
 			try {
 				var video = await youtube.getVideo(url);
@@ -404,67 +403,67 @@ const nosummonEmbed = new Discord.RichEmbed()
 					var video = await youtube.getVideoByID(videos[videoIndex - 1].id);
 				} catch (err) {
 					console.error(err);
-					return msg.channel.send(noresultEmbed).then(msg => msg.delete(5000));
+					return msg.channel.send(noresultEmbed).then(msg => msg.delete({ timeout: 5000 }));
 				}
 			}
 			return handleVideo(video, msg, voiceChannel);
 		}
-  } else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete(5000));
+  } else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete({ timeout: 5000 }));
   }
 
   //SKIP
   if (command === 'skip') {
     msg.delete();
-    if (msg.member.roles.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
-		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete(5000));
-		if (!msg.member.voiceChannel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete(5000));
-		if (!serverQueue) return msg.channel.send(noplayingEmbed).then(msg => msg.delete(5000));
+    if (msg.member.roles.cache.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
+		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 5000 }));
+		if (!msg.member.voiceChannel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
+		if (!serverQueue) return msg.channel.send(noplayingEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		serverQueue.connection.dispatcher.end();
 
-		const skipEmbed = new Discord.RichEmbed()
+		const skipEmbed = new Discord.MessageEmbed()
 			.setColor('PURPLE')
 			.setTitle(":musical_note: Music")
 			.setDescription(`:track_next: Skipped`)
 
-    	return msg.channel.send (skipEmbed).then(msg => msg.delete(5000));
-    } else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete(5000));
+    	return msg.channel.send (skipEmbed).then(msg => msg.delete({ timeout: 5000 }));
+    } else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete({ timeout: 5000 }));
   }
 
   //PLAYSKIP
   if (command === 'playskip' || command === 'ps') {
 	msg.delete();
-    if (msg.member.roles.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
-		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete(5000));
-		if (!msg.member.voiceChannel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete(5000));
-		if (!serverQueue) return msg.channel.send(noplayingEmbed).then(msg => msg.delete(5000));
+    if (msg.member.roles.cache.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
+		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 5000 }));
+		if (!msg.member.voiceChannel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
+		if (!serverQueue) return msg.channel.send(noplayingEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		
-		const nourlEmbed = new Discord.RichEmbed()
+		const nourlEmbed = new Discord.MessageEmbed()
 			.setColor('PURPLE')
 			.setTitle(":musical_note: Music")
 			.setDescription("⛔ No song or link provided")
-		const novcEmbed = new Discord.RichEmbed()
+		const novcEmbed = new Discord.MessageEmbed()
 			.setColor('PURPLE')
 			.setTitle(":musical_note: Music")
 			.setDescription("⛔ You need to be in a voice channel to play music")
-		const noconnectpermEmbed = new Discord.RichEmbed()
+		const noconnectpermEmbed = new Discord.MessageEmbed()
 			.setColor('PURPLE')
 			.setTitle(":musical_note: Music")
 			.setDescription("⛔ I can't connect to your voice channel, make sure I have the proper permission")
-		const nospeakpermEmbed = new Discord.RichEmbed()
+		const nospeakpermEmbed = new Discord.MessageEmbed()
 			.setColor('PURPLE')
 			.setTitle(":musical_note: Music")
 			.setDescription("⛔ I can't speak in this voice channel, make sure i Have the proper permission")
-		const noresultEmbed = new Discord.RichEmbed()
+		const noresultEmbed = new Discord.MessageEmbed()
 			.setColor('PURPLE')
 			.setTitle(":musical_note: Music")
 			.setDescription(`⛔ I could not obtain any search results.`)
 
-		if (!url) return msg.channel.send(nourlEmbed).then(msg => msg.delete(5000));
+		if (!url) return msg.channel.send(nourlEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		const voiceChannel = msg.member.voiceChannel;
-		if (!voiceChannel) return msg.channel.send(novcEmbed).then(msg => msg.delete(5000));
+		if (!voiceChannel) return msg.channel.send(novcEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		const permissions = voiceChannel.permissionsFor(msg.client.user);
-		if (!permissions.has('CONNECT')) return msg.channel.send(noconnectpermEmbed).then(msg => msg.delete(5000));
-		if (!permissions.has('SPEAK')) return msg.channel.send(nospeakpermEmbed).then(msg => msg.delete(5000));
+		if (!permissions.has('CONNECT')) return msg.channel.send(noconnectpermEmbed).then(msg => msg.delete({ timeout: 5000 }));
+		if (!permissions.has('SPEAK')) return msg.channel.send(nospeakpermEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
     	if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
 			const playlist = await youtube.getPlaylist(url);
@@ -473,7 +472,7 @@ const nosummonEmbed = new Discord.RichEmbed()
 				const video2 = await youtube.getVideoByID(video.id); // eslint-disable-line no-await-in-loop
 				await handleVideo(video2, msg, voiceChannel, true); // eslint-disable-line no-await-in-loop
 				
-				const addtoqueueEmbed = new Discord.RichEmbed()
+				const addtoqueueEmbed = new Discord.MessageEmbed()
 					.setColor('PURPLE')
 					.setTitle(":musical_note: Music")
 					.setDescription(`✅ **${playlist.title}** has been added to the queue`)
@@ -491,7 +490,7 @@ const nosummonEmbed = new Discord.RichEmbed()
 					var video = await youtube.getVideoByID(videos[videoIndex - 1].id);
 				} catch (err) {
 					console.error(err);
-					return msg.channel.send(noresultEmbed).then(msg => msg.delete(5000));
+					return msg.channel.send(noresultEmbed).then(msg => msg.delete({ timeout: 5000 }));
 				}
 			}
 			handleVideo(video, msg, voiceChannel);
@@ -499,142 +498,142 @@ const nosummonEmbed = new Discord.RichEmbed()
 			serverQueue.connection.dispatcher.end(); //skip to next-last song
 		}
 		
-  	} else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete(5000));
+  	} else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete({ timeout: 5000 }));
   }
 
   //STOP
   if (command === 'stop') {
     msg.delete();
-    if (msg.member.roles.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
-		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete(5000));
-		if (!msg.member.voiceChannel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete(5000));
-		if (!serverQueue) return msg.channel.send(noplayingEmbed).then(msg => msg.delete(5000));
+    if (msg.member.roles.cache.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
+		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 5000 }));
+		if (!msg.member.voiceChannel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
+		if (!serverQueue) return msg.channel.send(noplayingEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		serverQueue.songs = [];
 		serverQueue.connection.dispatcher.end();
 
-		const stopEmbed = new Discord.RichEmbed()
+		const stopEmbed = new Discord.MessageEmbed()
 			.setColor('PURPLE')
 			.setTitle(":musical_note: Music")
 			.setDescription(`:stop_button: Stopped`)
 
-    	return msg.channel.send(stopEmbed).then(msg => msg.delete(5000));
-    } else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete(5000));
+    	return msg.channel.send(stopEmbed).then(msg => msg.delete({ timeout: 5000 }));
+    } else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete({ timeout: 5000 }));
   }
 
   //VOLUME
   if (command === 'volume') {
 	msg.delete();
 
-	const nopermvolumeEmbed = new Discord.RichEmbed()
+	const nopermvolumeEmbed = new Discord.MessageEmbed()
 	.setColor('PURPLE')
 	.setTitle(":musical_note: Music")
 	.setDescription(`⛔ You don't have permission to use this!`)
 
     if (msg.member.hasPermission("ADMINISTRATOR")) {
-		if (!msg.member.voiceChannel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete(5000));
-		if (!serverQueue) return msg.channel.send(noplayingEmbed).then(msg => msg.delete(5000));
+		if (!msg.member.voiceChannel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
+		if (!serverQueue) return msg.channel.send(noplayingEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
-		const currentvolumeEmbed = new Discord.RichEmbed()
+		const currentvolumeEmbed = new Discord.MessageEmbed()
 			.setColor('PURPLE')
 			.setTitle(":musical_note: Music")
 			.setDescription(`:speaker: Current volume: **${serverQueue.volume}**`)
 
-		if (!args[1]) return msg.channel.send(currentvolumeEmbed).then(msg => msg.delete(5000));
+		if (!args[1]) return msg.channel.send(currentvolumeEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		serverQueue.volume = args[1];
 
-		const newvolumeEmbed = new Discord.RichEmbed()
+		const newvolumeEmbed = new Discord.MessageEmbed()
 			.setColor('PURPLE')
 			.setTitle(":musical_note: Music")
 			.setDescription(`:speaker: New volume: **${args[1]}**`)
 
 		serverQueue.connection.dispatcher.setVolumeLogarithmic(args[1] / 5);
-    	return msg.channel.send(newvolumeEmbed).then(msg => msg.delete(5000));
-    } else return msg.channel.send(nopermvolumeEmbed).then(msg => msg.delete(5000));
+    	return msg.channel.send(newvolumeEmbed).then(msg => msg.delete({ timeout: 5000 }));
+    } else return msg.channel.send(nopermvolumeEmbed).then(msg => msg.delete({ timeout: 5000 }));
   }
   
   //NOW-PLAYING
   if (command === 'nowplaying' || command === 'np') {
     msg.delete();
-    if (msg.member.roles.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
-		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete(5000));
-		if (!serverQueue) return msg.channel.send(noplayingEmbed).then(msg => msg.delete(5000));
+    if (msg.member.roles.cache.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
+		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 5000 }));
+		if (!serverQueue) return msg.channel.send(noplayingEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
-		const nowplayingEmbed = new Discord.RichEmbed()
+		const nowplayingEmbed = new Discord.MessageEmbed()
 		.setColor('PURPLE')
 		.setTitle(":musical_note: Music")
 		.setDescription(`🎶 **${serverQueue.songs[0].title}**`)
 
-    	return msg.channel.send(nowplayingEmbed).then(msg => msg.delete(5000));
-    } else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete(5000));
+    	return msg.channel.send(nowplayingEmbed).then(msg => msg.delete({ timeout: 5000 }));
+    } else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete({ timeout: 5000 }));
   }
   
   //QUEUE
   if (command === 'queue') {
 	msg.delete();
-	if (msg.member.roles.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
-		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete(5000));
-		if (!serverQueue) return msg.channel.send(noplayingEmbed).then(msg => msg.delete(5000));
+	if (msg.member.roles.cache.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
+		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 5000 }));
+		if (!serverQueue) return msg.channel.send(noplayingEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
-		const queueEmbed = new Discord.RichEmbed()
+		const queueEmbed = new Discord.MessageEmbed()
 		.setColor('PURPLE')
 		.setTitle(":musical_note: Music")
 		.setDescription(`:twisted_rightwards_arrows: Queue:\n\n${serverQueue.songs.map(song => `**-** ${song.title}`).join('\n')}\n\n🎶 **${serverQueue.songs[0].title}**`)
 
 		return msg.channel.send(queueEmbed).then(msg => msg.delete(15000));
-    } else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete(5000));
+    } else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete({ timeout: 5000 }));
   }
   
   //PAUSE
   if (command === 'pause') {
     msg.delete();
-    if (msg.member.roles.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
-		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete(5000));
-		if (!msg.member.voiceChannel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete(5000));
+    if (msg.member.roles.cache.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
+		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 5000 }));
+		if (!msg.member.voiceChannel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		if (serverQueue && serverQueue.playing) {
 			serverQueue.playing = false;
 			serverQueue.connection.dispatcher.pause();
 
-			const pauseEmbed = new Discord.RichEmbed()
+			const pauseEmbed = new Discord.MessageEmbed()
 			.setColor('PURPLE')
 			.setTitle(":musical_note: Music")
 			.setDescription(`⏸ Paused`)
 
-			return msg.channel.send(pauseEmbed).then(msg => msg.delete(5000));
+			return msg.channel.send(pauseEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		}
-    	return msg.channel.send(noplayingEmbed).then(msg => msg.delete(5000));
-    } else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete(5000));
+    	return msg.channel.send(noplayingEmbed).then(msg => msg.delete({ timeout: 5000 }));
+    } else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete({ timeout: 5000 }));
   }
   
   //RESUME
   if (command === 'resume') {
     msg.delete();
-    if (msg.member.roles.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
-		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete(5000));
-		if (!msg.member.voiceChannel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete(5000));
+    if (msg.member.roles.cache.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
+		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 5000 }));
+		if (!msg.member.voiceChannel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		if (serverQueue && !serverQueue.playing) {
 			serverQueue.playing = true;
 			serverQueue.connection.dispatcher.resume();
-			const resumeEmbed = new Discord.RichEmbed()
+			const resumeEmbed = new Discord.MessageEmbed()
 
 			.setColor('PURPLE')
 			.setTitle(":musical_note: Music")
 			.setDescription(`:play_pause: Resumed`)
 
-			return msg.channel.send(resumeEmbed).then(msg => msg.delete(5000));
+			return msg.channel.send(resumeEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		}
-    	return msg.channel.send(noplayingEmbed).then(msg => msg.delete(5000));
-    } else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete(5000));
+    	return msg.channel.send(noplayingEmbed).then(msg => msg.delete({ timeout: 5000 }));
+    } else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete({ timeout: 5000 }));
 	} 
 
   //SUMMON
   if (command === 'summon') {
 	msg.delete();
-	if (msg.member.roles.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
-		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true") return msg.channel.send(nosummonEmbed).then(msg => msg.delete(5000));
-		if (!msg.member.voiceChannel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete(5000));
+	if (msg.member.roles.cache.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
+		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true") return msg.channel.send(nosummonEmbed).then(msg => msg.delete({ timeout: 5000 }));
+		if (!msg.member.voiceChannel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		let memberVoiceChannel = msg.member.voiceChannel;
 		memberVoiceChannel.join();
-	} else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete(5000));
+	} else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete({ timeout: 5000 }));
   }
 
 }); //end of main
@@ -671,16 +670,16 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 			console.error(`I could not join the voice channel: ${error}`);
 			queue.delete(msg.guild.id);
 
-			const errjoinEmbed = new Discord.RichEmbed()
+			const errjoinEmbed = new Discord.MessageEmbed()
 				.setColor('PURPLE')
 				.setTitle(":musical_note: Music")
 				.setDescription(`⛔ I couldn't join the voice channel: ${error}`)
 
-			return msg.channel.send(errjoinEmbed).then(msg => msg.delete(5000));
+			return msg.channel.send(errjoinEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		}
 	} else {
 		
-		const addtoqueueEmbed = new Discord.RichEmbed()
+		const addtoqueueEmbed = new Discord.MessageEmbed()
 			.setColor('PURPLE')
 			.setTitle(":musical_note: Music")
 			.setDescription(`✅ ${song.title} has been added to the queue`)
@@ -688,7 +687,7 @@ async function handleVideo(video, msg, voiceChannel, playlist = false) {
 		serverQueue.songs.push(song);
 		// console.log(serverQueue.songs);
 		if (playlist) return undefined;
-		else return msg.channel.send(addtoqueueEmbed).then(msg => msg.delete(5000));
+		else return msg.channel.send(addtoqueueEmbed).then(msg => msg.delete({ timeout: 5000 }));
 	}
 	return undefined;
 }
@@ -703,7 +702,7 @@ function play(guild, song) {
 	}
 	// console.log(serverQueue.songs);
 
-	const dispatcher = serverQueue.connection.playStream(ytdl(song.url, { filter: 'audioonly'}))
+	const dispatcher = serverQueue.connection.play(ytdl(song.url, { filter: 'audioonly'}))
 		.on('end', reason => {
 			// if (reason === 'Stream is not generating quickly enough.') console.log('Song ended.');
 			// else console.log(reason);
@@ -713,7 +712,7 @@ function play(guild, song) {
 		.on('error', error => console.error(error));
 	dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
 	
-	const playEmbed = new Discord.RichEmbed()
+	const playEmbed = new Discord.MessageEmbed()
 		.setImage(`https://i.ytimg.com/vi/${videoid}/maxresdefault.jpg`)
 		.setColor('PURPLE')
 		.setTitle(`:musical_note: Music`)

@@ -10,7 +10,7 @@ module.exports = {
     run: async (client, msg, arg) => {
         msg.delete();
 
-        const nonumEmbed = new Discord.RichEmbed()
+        const nonumEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setTitle(`⛔ Error: Invalid numbers`)
 
@@ -19,16 +19,16 @@ module.exports = {
 
         try {
             const percentage = math.evaluate(`(${amount}/${maximum})*100`).toString();
-            const resultEmbed = new Discord.RichEmbed()
+            const resultEmbed = new Discord.MessageEmbed()
                 .setColor(`RANDOM`)
                 .setTitle(`Percentage`)
                 .setDescription(`${amount} is **${percentage} %** of ${maximum}`)
             return msg.channel.send(resultEmbed);
         } catch (err) {
-            const errorEmbed = new Discord.RichEmbed()
+            const errorEmbed = new Discord.MessageEmbed()
                 .setColor(`RED`)
                 .setTitle(`⛔ ${err}`)
-            return msg.channel.send(errorEmbed).then(msg => {msg.delete(5000)});
+            return msg.channel.send(errorEmbed).then(msg => {msg.delete({ timeout: 5000 })});
         }
     }
 }

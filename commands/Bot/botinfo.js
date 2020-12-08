@@ -20,9 +20,9 @@ module.exports = {
             }
         
         const counters = stripIndent`
-            Guilds    :: ${Math.ceil(client.guilds.size)}
-            Users     :: ${client.users.size}
-            Channels  :: ${client.channels.size}
+            Guilds    :: ${Math.ceil(client.guilds.cache.size)}
+            Users     :: ${client.guilds.cache.reduce((a, g) => a + g.memberCount - 1, 0)}
+            Channels  :: ${client.channels.cache.size}
         `;
             
         const versions = stripIndent`
@@ -40,7 +40,7 @@ module.exports = {
             Uptime    :: ${ms(os.uptime()*1000)}
         `;
 
-            const embed = new Discord.RichEmbed()
+            const embed = new Discord.MessageEmbed()
                 .setAuthor(client.user.username)
                 .setColor(`RANDOM`)
                 .setThumbnail(client.user.avatarURL)
@@ -50,7 +50,7 @@ module.exports = {
                 .addField('System', `\`\`\`asciidoc\n${system}\`\`\``, false)
                 .setTimestamp()
                 .setFooter(client.user.username, client.user.avatarURL);
-            msg.channel.send({embed}).then(msg => msg.delete(30000));
+            msg.channel.send(embed).then(msg => msg.delete({ timeout: 30000}));
         })
     }
 }

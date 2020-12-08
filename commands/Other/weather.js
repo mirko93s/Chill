@@ -9,7 +9,7 @@ module.exports = {
     run: async (client, msg, arg) => {
         msg.delete();
 
-        const nolocationEmbed = new Discord.RichEmbed()
+        const nolocationEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setTitle(`⛔ No location provided`)
 
@@ -18,11 +18,11 @@ module.exports = {
             degreeType: 'C'
           }, function(err, result) {
             //if (err) console.log(err);
-            if (result === undefined || result.length === 0) return msg.channel.send(nolocationEmbed).then(msg => {msg.delete(5000)});
+            if (result === undefined || result.length === 0) return msg.channel.send(nolocationEmbed).then(msg => {msg.delete({ timeout: 5000 })});
             var current = result[0].current;
             const tempF = [Math.round(current.temperature * 1.8) + 32];
             const feelslikeF = [Math.round(current.feelslike * 1.8) + 32];
-            const embed = new Discord.RichEmbed()
+            const embed = new Discord.MessageEmbed()
                 .setDescription(`**${current.skytext}**`)
                 .setAuthor(`Weather for ${current.observationpoint}`)
                 .setThumbnail(current.imageUrl)

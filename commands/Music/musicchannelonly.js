@@ -10,26 +10,26 @@ module.exports = {
     run: async (client, msg, arg) => {
         msg.delete();
 
-        const nopermEmbed = new Discord.RichEmbed()
+        const nopermEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setTitle(`⛔ You don't have permission to use this!`)
 
-        const resultEmbed = new Discord.RichEmbed()
+        const resultEmbed = new Discord.MessageEmbed()
             .setColor(`RANDOM`)
             .setTitle(":musical_note: Music")
             .setDescription(`Music Channel Only: \`${arg[0]}\``)
 
-        const wrongvalueEmbed = new Discord.RichEmbed()
+        const wrongvalueEmbed = new Discord.MessageEmbed()
             .setColor(`RANDOM`)
             .setTitle(":musical_note: Music")
             .setDescription(`You can only set this value to \`true\` or  \`false\``)
 
-        if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.reply(nopermEmbed).then(msg => msg.delete(5000));
+        if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.reply(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
         if (arg[0] === "true" || arg[0] === "false") {
             client.settings.set(msg.guild.id, arg[0], "musicchannelonly");
-            msg.channel.send(resultEmbed).then(msg => msg.delete(5000));
+            msg.channel.send(resultEmbed).then(msg => msg.delete({ timeout: 5000 }));
         }
-        else return msg.channel.send(wrongvalueEmbed).then(msg => msg.delete(5000));
+        else return msg.channel.send(wrongvalueEmbed).then(msg => msg.delete({ timeout: 5000 }));
     }
 }
