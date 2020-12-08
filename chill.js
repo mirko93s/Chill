@@ -71,8 +71,8 @@ client.on('ready', () => {
 	//update activity and counters every 30 minutes
 	setInterval(async () => { 
 		let users = client.guilds.cache.reduce((a, g) => a + g.memberCount - 1, 0)
-		client.channels.get(`735001555023036517`).setName(`USERS: ${users}`);
-		client.channels.get(`735001597926441011`).setName(`SERVERS: ${client.guilds.cache.size}`);
+		client.channels.cache.get(`735001555023036517`).setName(`USERS: ${users}`);
+		client.channels.cache.get(`735001597926441011`).setName(`SERVERS: ${client.guilds.cache.size}`);
 	  	await client.user.setActivity(`${users} user${users !== 1 ? 's' : ''}`, {type: 'WATCHING'});
 	  	console.log(`Bot activity UPDATED! New user size is: ${users}. New guild size is: ${client.guilds.cache.size}`);
 	}, 30*60*1000);
