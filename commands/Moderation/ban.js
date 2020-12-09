@@ -36,18 +36,18 @@ module.exports = {
             .setColor(`RED`)
             .setTitle(`⛔ Ban canceled`)
 
-        let puchannel = message.guild.channels.find(puchannel => puchannel.name === (client.settings.get(message.guild.id, "puchannel")));
+        let puchannel = message.guild.channels.cache.find(puchannel => puchannel.name === (client.settings.get(message.guild.id, "puchannel")));
 
-        if (!message.member.hasPermission("BAN_MEMBERS")) return message.channel.send(nopermEmbed).then(m => m.delete(5000));
-        if (!message.guild.me.hasPermission("BAN_MEMBERS")) return message.channel.send(nobotpermEmbed).then(m => m.delete(5000));
+        if (!message.member.hasPermission("BAN_MEMBERS")) return message.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!message.guild.me.hasPermission("BAN_MEMBERS")) return message.channel.send(nobotpermEmbed).then(msg => msg.delete({ timeout: 5000 }));
         if (!puchannel) return message.channel.send (nochannelEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        if (!args[0] || !args[1]) return message.channel.send(noargsEmbed).then(m => m.delete(5000));
+        if (!args[0] || !args[1]) return message.channel.send(noargsEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
         const toBan = message.mentions.members.first();
 
-        if (!toBan) return message.channel.send(nomemberEmbed).then(m => m.delete(5000));
-        if (toBan.id === message.author.id) return message.channel.send(noyourselfEmbed).then(m => m.delete(5000));
-        if (!toBan.bannable) return message.channel.send(hierarchyEmbed).then(m => m.delete(5000));
+        if (!toBan) return message.channel.send(nomemberEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (toBan.id === message.author.id) return message.channel.send(noyourselfEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!toBan.bannable) return message.channel.send(hierarchyEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
         const embed = new Discord.MessageEmbed()
             .setColor(`RED`)
@@ -74,7 +74,7 @@ module.exports = {
             if (emoji === "✅") {
                 msg.delete();
 
-                toBan.ban(args.slice(1).join(" "))
+                toBan.ban({days: 0, reason: args.slice(1).join(" ")})
                     .catch(err => {
                         const errorEmbed = new Discord.MessageEmbed()
                             .setColor(`RED`)
@@ -86,7 +86,7 @@ module.exports = {
             }
             else if (emoji === "❌") {
                 msg.delete();
-                message.channel.send(canceledEmbed).then(m => m.delete(5000));
+                message.channel.send(canceledEmbed).then(msg => msg.delete({ timeout: 5000 }));
             }
         });
     }
