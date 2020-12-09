@@ -1,3 +1,4 @@
+[![License](https://img.shields.io/github/license/mirko93s/Chill?label=License&logo=apache&logoColor=green)](https://opensource.org/licenses/Apache-2.0)
 [![Version](https://img.shields.io/github/v/release/mirko93s/Chill?color=8a2be2&include_prereleases)](https://github.com/mirko93s/Chill/releases)
 ![Language](https://img.shields.io/github/languages/top/mirko93s/Chill?logo=javascript&logoColor=blue)
 ![discord.js](https://img.shields.io/github/package-json/dependency-version/mirko93s/Chill/discord.js?logo=discord&logoColor=blue)
