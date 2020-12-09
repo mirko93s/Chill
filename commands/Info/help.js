@@ -1,5 +1,4 @@
 const { MessageEmbed } = require("discord.js");
-const { stripIndents } = require("common-tags");
 
 module.exports = {
     name: "help",
@@ -17,37 +16,23 @@ module.exports = {
     }
 }
 
-function getAll(client, message) { //old help main page below-----------
-    // const embed = new MessageEmbed()
-    //     .setColor("RANDOM")
-
-    // const commands = (category) => {
-    //     return client.commands
-    //         .filter(cmd => cmd.category === category)
-    //         .map(cmd => `- \`${cmd.name}\``)
-    //         .join("\n");
-    // }
-
-    // const info = client.categories
-    //     .map(cat => stripIndents`**${cat[0].toUpperCase() + cat.slice(1)}** \n${commands(cat)}`)
-    //     .reduce((string, category) => string + "\n" + category);
-
-        const helpembed = new MessageEmbed()
-            .setTitle(":question: Chill Bot HELP :question:")
-            .setDescription("Type .help <command | alias> for more info.")
-            .setColor(0x00AE86)
-            .setThumbnail(client.user.displayAvatarURL())
-            /* Admin */.addField(":no_entry_sign: Admin", "addchannel, broadcast, giveaway, poll, setup")
-            /* Bot */.addField(":robot: Bot", "botinfo, bugreport, invite, project, website")
-            /* Fun */.addField(":game_die: Fun", "8ball, achievement, flipcoin, respawn, rockpaperscissors, ship, slotmachine, wouldyourather")
-            /* Info */.addField(":information_source: Info", "avatar, help, serveremojis, serverinfo, whois")
-            /* Moderation */.addField(":hammer: Moderation", "ban, kick, mute, purge, report, say, ticket, unmute")
-            /* Music */.addField(":musical_note: Music", "play, skip, playskip, pause, resume, stop, nowplaying, queue, summon, volume")
-            /* Other */.addField(":bulb: Other", "calc, instagram, mcstat, nick, percentage, ping, remindme, today, translator, urban, weather")
-            /* Owner */.addField(":gear: Owner", "botactivity")
-            /* Roles */.addField(":level_slider: Roles", "addrole, removerole, roleinfo, rolelist")
-            /* Settings */.addField(":floppy_disk: Settings", "resetconfig, setconfig, showconfig")
-            /* Xp */.addField(":trophy: Xp", "leaderboard, level, xp")
+function getAll(client, message) {
+    const helpembed = new MessageEmbed()
+        .setTitle(":question: Chill Bot HELP :question:")
+        .setDescription("Type .help <command | alias> for more info.")
+        .setColor(0x00AE86)
+        .setThumbnail(client.user.displayAvatarURL())
+        /* Admin */.addField(":no_entry_sign: Admin", "addchannel, broadcast, giveaway, poll, setup")
+        /* Bot */.addField(":robot: Bot", "botinfo, bugreport, invite, project, website")
+        /* Fun */.addField(":game_die: Fun", "8ball, achievement, flipcoin, respawn, rockpaperscissors, ship, slotmachine")
+        /* Info */.addField(":information_source: Info", "avatar, help, serveremojis, serverinfo, whois")
+        /* Moderation */.addField(":hammer: Moderation", "ban, kick, mute, purge, report, say, ticket, unmute")
+        /* Music */.addField(":musical_note: Music", "play, skip, playskip, pause, resume, stop, nowplaying, queue, summon, volume")
+        /* Other */.addField(":bulb: Other", "calc, instagram, mcstat, nick, percentage, ping, remindme, today, urban, weather")
+        /* Owner */.addField(":gear: Owner", "botactivity")
+        /* Roles */.addField(":level_slider: Roles", "addrole, removerole, roleinfo, rolelist")
+        /* Settings */.addField(":floppy_disk: Settings", "resetconfig, setconfig, showconfig")
+        /* Xp */.addField(":trophy: Xp", "leaderboard, level, xp")
 
     return message.channel.send(helpembed);
 }
