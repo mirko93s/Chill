@@ -4,7 +4,6 @@ const ytdl = require('ytdl-core');
 const Discord = require("discord.js");
 const fs = require("fs");
 const config = require('./config.json');
-// const PREFIX = config.prefix;
 const GOOGLE_API_KEY = config.google_api_key
 const client = new Discord.Client;
 const youtube = new YouTube(GOOGLE_API_KEY);
@@ -416,7 +415,7 @@ const nosummonEmbed = new Discord.MessageEmbed()
     msg.delete();
     if (msg.member.roles.cache.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
 		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 5000 }));
-		if (!msg.member.voiceChannel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
+		if (!msg.member.voice.channel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		if (!serverQueue) return msg.channel.send(noplayingEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		serverQueue.connection.dispatcher.end();
 
@@ -434,7 +433,7 @@ const nosummonEmbed = new Discord.MessageEmbed()
 	msg.delete();
     if (msg.member.roles.cache.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
 		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 5000 }));
-		if (!msg.member.voiceChannel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
+		if (!msg.member.voice.channel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		if (!serverQueue) return msg.channel.send(noplayingEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		
 		const nourlEmbed = new Discord.MessageEmbed()
@@ -459,7 +458,7 @@ const nosummonEmbed = new Discord.MessageEmbed()
 			.setDescription(`⛔ I could not obtain any search results.`)
 
 		if (!url) return msg.channel.send(nourlEmbed).then(msg => msg.delete({ timeout: 5000 }));
-		const voiceChannel = msg.member.voiceChannel;
+		const voiceChannel = msg.member.voice.channel;
 		if (!voiceChannel) return msg.channel.send(novcEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		const permissions = voiceChannel.permissionsFor(msg.client.user);
 		if (!permissions.has('CONNECT')) return msg.channel.send(noconnectpermEmbed).then(msg => msg.delete({ timeout: 5000 }));
@@ -506,7 +505,7 @@ const nosummonEmbed = new Discord.MessageEmbed()
     msg.delete();
     if (msg.member.roles.cache.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
 		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 5000 }));
-		if (!msg.member.voiceChannel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
+		if (!msg.member.voice.channel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		if (!serverQueue) return msg.channel.send(noplayingEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		serverQueue.songs = [];
 		serverQueue.connection.dispatcher.end();
@@ -530,7 +529,7 @@ const nosummonEmbed = new Discord.MessageEmbed()
 	.setDescription(`⛔ You don't have permission to use this!`)
 
     if (msg.member.hasPermission("ADMINISTRATOR")) {
-		if (!msg.member.voiceChannel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
+		if (!msg.member.voice.channel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		if (!serverQueue) return msg.channel.send(noplayingEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
 		const currentvolumeEmbed = new Discord.MessageEmbed()
@@ -556,6 +555,7 @@ const nosummonEmbed = new Discord.MessageEmbed()
     msg.delete();
     if (msg.member.roles.cache.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
 		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 5000 }));
+		if (!msg.member.voice.channel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		if (!serverQueue) return msg.channel.send(noplayingEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
 		const nowplayingEmbed = new Discord.MessageEmbed()
@@ -572,6 +572,7 @@ const nosummonEmbed = new Discord.MessageEmbed()
 	msg.delete();
 	if (msg.member.roles.cache.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
 		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 5000 }));
+		if (!msg.member.voice.channel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		if (!serverQueue) return msg.channel.send(noplayingEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
 		const queueEmbed = new Discord.MessageEmbed()
@@ -579,7 +580,7 @@ const nosummonEmbed = new Discord.MessageEmbed()
 		.setTitle(":musical_note: Music")
 		.setDescription(`:twisted_rightwards_arrows: Queue:\n\n${serverQueue.songs.map(song => `**-** ${song.title}`).join('\n')}\n\n🎶 **${serverQueue.songs[0].title}**`)
 
-		return msg.channel.send(queueEmbed).then(msg => msg.delete(15000));
+		return msg.channel.send(queueEmbed).then(msg => msg.delete({timeout:15000}));
     } else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete({ timeout: 5000 }));
   }
   
@@ -588,7 +589,7 @@ const nosummonEmbed = new Discord.MessageEmbed()
     msg.delete();
     if (msg.member.roles.cache.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
 		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 5000 }));
-		if (!msg.member.voiceChannel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
+		if (!msg.member.voice.channel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		if (serverQueue && serverQueue.playing) {
 			serverQueue.playing = false;
 			serverQueue.connection.dispatcher.pause();
@@ -609,7 +610,7 @@ const nosummonEmbed = new Discord.MessageEmbed()
     msg.delete();
     if (msg.member.roles.cache.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
 		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 5000 }));
-		if (!msg.member.voiceChannel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
+		if (!msg.member.voice.channel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		if (serverQueue && !serverQueue.playing) {
 			serverQueue.playing = true;
 			serverQueue.connection.dispatcher.resume();
@@ -630,7 +631,7 @@ const nosummonEmbed = new Discord.MessageEmbed()
 	msg.delete();
 	if (msg.member.roles.cache.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
 		if (client.settings.get(msg.guild.id, "musicchannelonly") === "true") return msg.channel.send(nosummonEmbed).then(msg => msg.delete({ timeout: 5000 }));
-		if (!msg.member.voiceChannel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
+		if (!msg.member.voice.channel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		let memberVoiceChannel = msg.member.voiceChannel;
 		memberVoiceChannel.join();
 	} else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete({ timeout: 5000 }));
@@ -703,7 +704,7 @@ function play(guild, song) {
 	// console.log(serverQueue.songs);
 
 	const dispatcher = serverQueue.connection.play(ytdl(song.url, { filter: 'audioonly'}))
-		.on('end', reason => {
+		.on('finish', reason => {
 			// if (reason === 'Stream is not generating quickly enough.') console.log('Song ended.');
 			// else console.log(reason);
 			serverQueue.songs.shift();
