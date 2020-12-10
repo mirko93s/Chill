@@ -9,16 +9,16 @@ module.exports = {
     category: "Fun",
     description: "Rock Paper Scissors",
     usage: "rockpaperscissors\n**e.g.**\n\`rockpaperscissors\`\n> Play a rock-paper-scissors game with the Bot",
-    run: async (client, message, args) => {
-        message.delete();
+    run: async (client, msg, arg) => {
+        msg.delete();
         const embed = new MessageEmbed()
             .setColor(`RANDOM`)
-            .setFooter(message.author.username, message.author.displayAvatarURL())
+            .setFooter(msg.author.username, msg.author.displayAvatarURL())
             .setDescription("React to play!")
 
-        const m = await message.channel.send(embed);
+        const m = await msg.channel.send(embed);
         // Wait for a reaction to be added
-        const reacted = await promptMessage(m, message.author, 30, chooseArr);
+        const reacted = await promptMessage(m, msg.author, 30, chooseArr);
 
         // Get a random emoji from the array
         const botChoice = chooseArr[Math.floor(Math.random() * chooseArr.length)];

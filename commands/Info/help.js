@@ -6,17 +6,17 @@ module.exports = {
     category: "info",
     description: "Show help for a specific command",
     usage: "help [command | alias]\n**e.g.**\n\`help\`\n> shows a list with all the available commands\n\`help ping\`\n> shows help about the ping command and how to use it",
-    run: async (client, message, args) => {
-        message.delete();
-        if (args[0]) {
-            return getCMD(client, message, args[0]);
+    run: async (client, msg, arg) => {
+        msg.delete();
+        if (arg[0]) {
+            return getCMD(client, msg, arg[0]);
         } else {
-            return getAll(client, message);
+            return getAll(client, msg);
         }
     }
 }
 
-function getAll(client, message) {
+function getAll(client, msg) {
     const helpembed = new MessageEmbed()
         .setTitle(":question: Chill Bot HELP :question:")
         .setDescription("Type .help <command | alias> for more info.")
@@ -34,10 +34,10 @@ function getAll(client, message) {
         /* Settings */.addField(":floppy_disk: Settings", "resetconfig, setconfig, showconfig")
         /* Xp */.addField(":trophy: Xp", "leaderboard, level, xp")
 
-    return message.channel.send(helpembed);
+    return msg.channel.send(helpembed);
 }
 
-function getCMD(client, message, input) {
+function getCMD(client, msg, input) {
     const embed = new MessageEmbed()
 
     const cmd = client.commands.get(input.toLowerCase()) || client.commands.get(client.aliases.get(input.toLowerCase()));
@@ -45,7 +45,7 @@ function getCMD(client, message, input) {
     let info = `⛔ No information found for command **${input.toLowerCase()}**`;
 
     if (!cmd) {
-        return message.channel.send(embed.setColor("RED").setDescription(info)).then(msg => msg.delete({ timeout: 5000 }));
+        return msg.channel.send(embed.setColor("RED").setDescription(info)).then(msg => msg.delete({ timeout: 5000 }));
     }
 
     //if (cmd.name) info = `**Command name**: ${cmd.name}`;
@@ -58,5 +58,5 @@ function getCMD(client, message, input) {
     }
     if (cmd.permission) info += `\n\n**Permission**: \`\`\`${cmd.permission}\`\`\``;
 
-    return message.channel.send(embed.setColor("GREEN").setTitle(`**${cmd.name}**`).setDescription(info));
+    return msg.channel.send(embed.setColor("GREEN").setTitle(`**${cmd.name}**`).setDescription(info));
 }

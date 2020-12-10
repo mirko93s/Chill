@@ -5,7 +5,6 @@ const ytdl = require('ytdl-core');
 const config = require('../../config.json');
 const GOOGLE_API_KEY = config.google_api_key
 const youtube = new YouTube(GOOGLE_API_KEY);
-var videoid;
 
 module.exports = {
     name: "play",
@@ -13,9 +12,8 @@ module.exports = {
     category: "Music",
     description: "Play a song from Youtube",
     usage: "play <song name | playlist name | yt link | yt playlist>\n**e.g.**\n\`play best song ever\`\n> will search and play \"best song ever\" from Youtube\n> The result can either be a video or a playlist\n> Playlist will be played till the end of itself\n> You can also provide a direct link to the Youtube video/playlist",
-    run: async (client, msg, arg) => {
+    run: async (client, msg, MTC_state) => {
         msg.delete();
-
         const noDJroleEmbed = new Discord.MessageEmbed()
             .setColor('PURPLE')
             .setTitle(":musical_note: Music")
@@ -46,9 +44,17 @@ module.exports = {
             .setTitle(":musical_note: Music")
             .setDescription(`⛔ I could not obtain any search results.`)
 
-        const args = msg.content.split(' ');
-        let searchString = args.slice(1).join(' ');
-        let url = args[1] ? args[1].replace(/<(.+)>/g, '$1') : '';
+        let searchString;
+        let url;
+        const arg = msg.content.split(' ');
+       
+        if (MTC_state === true) {
+            searchString = arg.slice(0).join(' ');
+            url = arg[0] ? arg[0].replace(/<(.+)>/g, '$1') : '';
+        } else {
+            searchString = arg.slice(1).join(' ');
+            url = arg[1] ? arg[1].replace(/<(.+)>/g, '$1') : '';
+        }
 
         if (msg.member.roles.cache.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
             if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 5000 }));
@@ -62,8 +68,8 @@ module.exports = {
                 const playlist = await youtube.getPlaylist(url);
                 const videos = await playlist.getVideos();
                 for (const video of Object.values(videos)) {
-                    const video2 = await youtube.getVideoByID(video.id); // eslint-disable-line no-await-in-loop
-                    await handleVideo(video2, msg, voiceChannel, true); // eslint-disable-line no-await-in-loop
+                    const video2 = await youtube.getVideoByID(video.id);
+                    await handleVideo(video2, msg, voiceChannel, true);
                 }
             } else {
                     try {
@@ -71,8 +77,6 @@ module.exports = {
                     } catch (error) {
                         try {
                             var videos = await youtube.searchVideos(searchString, 10);
-                            let index = 0;
-                            // eslint-disable-next-line max-depth
                             const videoIndex = 1;
                             var video = await youtube.getVideoByID(videos[videoIndex - 1].id);
                         } catch (err) {
@@ -86,13 +90,11 @@ module.exports = {
 
         async function handleVideo(video, msg, voiceChannel, playlist = false) {
             const serverQueue = client.queue.get(msg.guild.id);
-            // console.log(video);
             const song = {
                 id: video.id,
                 title: Util.escapeMarkdown(video.title),
                 url: `https://www.youtube.com/watch?v=${video.id}`
             };
-            videoid = song.id;
         
             if (!serverQueue) {
                 const queueConstruct = {
@@ -130,7 +132,6 @@ module.exports = {
                     .setDescription(`✅ ${song.title} has been added to the queue`)
         
                 serverQueue.songs.push(song);
-                // console.log(serverQueue.songs);
                 if (playlist) return undefined;
                 else return msg.channel.send(addtoqueueEmbed).then(msg => msg.delete({ timeout: 5000 }));
             }
@@ -145,12 +146,9 @@ module.exports = {
                 client.queue.delete(guild.id);
                 return;
             }
-            // console.log(serverQueue.songs);
         
             const dispatcher = serverQueue.connection.play(ytdl(song.url, { filter: 'audioonly'}))
                 .on('finish', reason => {
-                    // if (reason === 'Stream is not generating quickly enough.') console.log('Song ended.');
-                    // else console.log(reason);
                     serverQueue.songs.shift();
                     play(guild, serverQueue.songs[0]);
                 })
@@ -158,14 +156,12 @@ module.exports = {
             dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
             
             const playEmbed = new Discord.MessageEmbed()
-                .setImage(`https://i.ytimg.com/vi/${videoid}/maxresdefault.jpg`)
+                .setImage(`https://i.ytimg.com/vi/${song.id}/hqdefault.jpg`)
                 .setColor('PURPLE')
                 .setTitle(`:musical_note: Music`)
                 .setDescription(`:arrow_forward: **${song.title}**`)
-        
-            serverQueue.textChannel.send(playEmbed);
-        
+            
+            serverQueue.textChannel.send(playEmbed);       
         }
-
     }
 }

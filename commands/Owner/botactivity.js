@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const config = require('../../config.json');
 
 module.exports = {
     name: "botactivity",
@@ -17,7 +18,7 @@ module.exports = {
             .setColor(`RED`)
             .setTitle(`⛔ Please provide a valid message`)
 
-        if (msg.author.id !== '278380909588381698') return msg.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (msg.author.id !== config.bot_owner) return msg.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
         let activity = arg.join(" ");
         if (!activity) return msg.channel.send(nomsgEmbed).then(msg => msg.delete({ timeout: 5000 }));
         let baEmbed = new Discord.MessageEmbed()

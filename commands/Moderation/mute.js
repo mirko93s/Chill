@@ -8,8 +8,8 @@ module.exports = {
     description: "Mute a member",
     usage: "mute <mention> <reason>\n**e.g.**\n\`mute @mirko93s reason\`\n> will mute mirko93s\n> The mute will be logged in the punishments channel",
     permission: "MANAGE_ROLES",
-    run: async (client, message, args) => {
-        message.delete();
+    run: async (client, msg, arg) => {
+        msg.delete();
 
         const nochannelEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
@@ -39,20 +39,20 @@ module.exports = {
             .setColor(`RED`)
             .setTitle(`⛔ Mute canceled`)
 
-        let mutedrole = message.guild.roles.cache.find(mutedrole => mutedrole.name === (client.settings.get(message.guild.id, "mutedrole")));
-        let puchannel = message.guild.channels.cache.find(puchannel => puchannel.name === (client.settings.get(message.guild.id, "puchannel")));
+        let mutedrole = msg.guild.roles.cache.find(mutedrole => mutedrole.name === (client.settings.get(msg.guild.id, "mutedrole")));
+        let puchannel = msg.guild.channels.cache.find(puchannel => puchannel.name === (client.settings.get(msg.guild.id, "puchannel")));
 
-        if (!message.member.hasPermission("MANAGE_ROLES")) return message.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        if (!message.guild.me.hasPermission("MANAGE_ROLES")) return message.channel.send(nobotpermEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        if (!puchannel) return message.channel.send (nochannelEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        if (!mutedrole) return message.channel.send(noroleEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        if (!args[0] || !args[1]) return message.channel.send(noargsEmbed).then(m => m.delete({timeout:5000}));
+        if (!msg.member.hasPermission("MANAGE_ROLES")) return msg.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!msg.guild.me.hasPermission("MANAGE_ROLES")) return msg.channel.send(nobotpermEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!puchannel) return msg.channel.send (nochannelEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!mutedrole) return msg.channel.send(noroleEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!arg[0] || !arg[1]) return msg.channel.send(noargsEmbed).then(m => m.delete({timeout:5000}));
         
-        const toMute = message.mentions.members.first();
+        const toMute = msg.mentions.members.first();
 
-        if (toMute.roles.cache.some(r => r.id === mutedrole.id)) return message.channel.send(alreadyEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        if (!toMute) return message.channel(nomemberEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        if (toMute.id === message.author.id) return message.channel.send(noyourselfEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (toMute.roles.cache.some(r => r.id === mutedrole.id)) return msg.channel.send(alreadyEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!toMute) return msg.channel(nomemberEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (toMute.id === msg.author.id) return msg.channel.send(noyourselfEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
         const embed = new Discord.MessageEmbed()
             .setColor(`GOLD`)
@@ -61,8 +61,8 @@ module.exports = {
             .setTitle(`MUTE`)
             .setDescription(`
             **Member:** ${toMute}
-            \n**By:** ${message.member}
-            \n**Reason:** ${args.slice(1).join(" ")}
+            \n**By:** ${msg.member}
+            \n**Reason:** ${arg.slice(1).join(" ")}
             `);
 
         const promptEmbed = new Discord.MessageEmbed()
@@ -70,29 +70,28 @@ module.exports = {
             .setAuthor(`This verification becomes invalid after 30s.`)
             .setDescription(`Do you want to mute ${toMute}?`)
 
-        // Send the message
-        await message.channel.send(promptEmbed).then(async msg => {
+        // Send the msg
+        await msg.channel.send(promptEmbed).then(async promptmsg => {
             // Await the reactions and the reactioncollector
-            const emoji = await promptMessage(msg, message.author, 30, ["✅", "❌"]);
+            const emoji = await promptMessage(promptmsg, msg.author, 30, ["✅", "❌"]);
 
             // Verification stuffs
             if (emoji === "✅") {
-                msg.delete();
+                promptmsg.delete();
 
-                //toMute.ban(args.slice(1).join(" "))
                 toMute.roles.add(mutedrole.id)
                     .catch(err => {
                         const errorEmbed = new Discord.MessageEmbed()
                             .setColor(`RED`)
                             .setTitle(`⛔ Error: **${err}**`)
-                        if (err) return message.channel.send(errorEmbed).then(msg => msg.delete({ timeout: 5000 }));
+                        if (err) return msg.channel.send(errorEmbed).then(msg => msg.delete({ timeout: 5000 }));
                     });
 
                 puchannel.send(embed);
             }
             else if (emoji === "❌") {
-                msg.delete();
-                message.channel.send(canceledEmbed).then(msg => msg.delete({ timeout: 5000 }));
+                promptmsg.delete();
+                msg.channel.send(canceledEmbed).then(msg => msg.delete({ timeout: 5000 }));
             }
         });
     }

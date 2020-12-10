@@ -5,8 +5,8 @@ module.exports = {
     description: "Let the Bot say something for you",
     usage: "say [embed] <message>\n**e.g.**\n\`say hello\`\n> The Bot will send a normal \"hello\" message\n\`say embed hello\`\n> The Bot will send an embedded \"hello\" message",
     permission: "MANAGE_MESSAGES",
-    run: (client, message, args) => {
-        message.delete();
+    run: (client, msg, arg) => {
+        msg.delete();
 
         const nopermEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
@@ -15,17 +15,17 @@ module.exports = {
             .setColor(`RED`)
             .setTitle(`⛔ Please provide a message`)
 
-        if (!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send(nopermEmbed).then(m => m.delete(5000));
-        if (!args[0]) return message.channel.send(nomsgEmbed).then(m => m.delete(5000));
-        if (args[0] === "embed") {
+        if (!msg.member.hasPermission("MANAGE_MESSAGES")) return msg.channel.send(nopermEmbed).then(m => m.delete(5000));
+        if (!arg[0]) return msg.channel.send(nomsgEmbed).then(m => m.delete(5000));
+        if (arg[0] === "embed") {
             const embed = new Discord.MessageEmbed()
                 .setColor(`RANDOM`)
-                .setDescription(args.slice(1).join(" "))
+                .setDescription(arg.slice(1).join(" "))
 
-            message.channel.send(embed);
+                msg.channel.send(embed);
         }
         else {
-            message.channel.send(args.join(" "));
+            msg.channel.send(arg.join(" "));
         }
     }
 }

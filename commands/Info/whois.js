@@ -8,13 +8,13 @@ module.exports = {
     category: "Info",
     description: "Returns user info",
     usage: "whois [name | id | mention]\n**e.g.**\n\`whois mirko\`\n> will return the closest username found on the server\n\`whois @mirko93s\`\n> will return the mentioned user\n> whois shows some info about that user",
-    run: (client, message, args) => {
-        const member = getMember(message, args.join(" "));
+    run: (client, msg, arg) => {
+        const member = getMember(msg, arg.join(" "));
 
         // Member variables
         const joined = formatDate(member.joinedAt);
         const roles = member.roles.cache
-            .filter(r => r.id !== message.guild.id)
+            .filter(r => r.id !== msg.guild.id)
             .map(r => r).join(", ") || 'none';
 
         // User variables
@@ -39,6 +39,6 @@ module.exports = {
         if (member.user.presence.game) 
             embed.addField('Currently playing', stripIndents`**> Name:** ${member.user.presence.game.name}`);
 
-        message.channel.send(embed);
+        msg.channel.send(embed);
     }
 }

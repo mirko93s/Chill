@@ -1,5 +1,6 @@
 const talkedRecently = new Set();
 const Discord = require("discord.js");
+const config = require('../../config.json');
 
 module.exports = {
     name: "bugreport",
@@ -32,7 +33,7 @@ module.exports = {
                         .setDescription(`*by: ${msg.author.tag}*`)
                         .setTimestamp()
 
-                        client.guilds.cache.get(`604535617841266708`).channels.cache.get(`655345220791304192`).send(bugembed).then(sentEmbed => {
+                        client.channels.cache.get(config.bugreport_channel).send(bugembed).then(sentEmbed => {
                             sentEmbed.react("✅")
                             .then (() => sentEmbed.react("❔"))
                             .then (() => sentEmbed.react("❌"))

@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const config = require('../../config.json');
 
 module.exports = {
     name: "website",
@@ -11,7 +12,7 @@ module.exports = {
             .setColor(`RANDOM`)
             .setThumbnail(client.user.avatarURL)
             .setTitle(`**Chill - Discord Bot**`)
-            .setURL(`https://www.mirko93s.it/`)
+            .setURL(config.bot_website_link)
             .setDescription(`Just another discord bot!`)
 
         msg.channel.send(embed)

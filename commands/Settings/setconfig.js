@@ -55,7 +55,7 @@ module.exports = {
 			if (!arg[0].includes("only")) {
 				const channelold = prop;
 				const channelnew = value.join(" ");
-				const channelmodify = msg.guild.channels.find(channelmodify => channelmodify.name === (client.settings.get(msg.guild.id, channelold)));
+				const channelmodify = msg.guild.channels.cache.find(channelmodify => channelmodify.name === (client.settings.get(msg.guild.id, channelold)));
 				if (!channelmodify) channelrenamed = 0;
 					else {channelrenamed = 1;
 						channelmodify.setName(channelnew);
@@ -66,7 +66,7 @@ module.exports = {
 		if (arg[0].includes("role")) {
 			const roleold = prop;
 			const rolenew = value.join(" ");
-			const rolemodify = msg.guild.roles.find(rolemodify => rolemodify.name === (client.settings.get(msg.guild.id, roleold)));
+			const rolemodify = msg.guild.roles.cache.find(rolemodify => rolemodify.name === (client.settings.get(msg.guild.id, roleold)));
 			if (!rolemodify) rolerenamed = 0;
 				else {rolerenamed = 1;
 					rolemodify.edit({ name: rolenew });

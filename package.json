@@ -1,6 +1,6 @@
 {
   "name": "chill",
-  "version": "6.1",
+  "version": "6.2",
   "description": "Just Another Discord Bot",
   "main": "chill.js",
   "scripts": {
