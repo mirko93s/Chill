@@ -1,4 +1,12 @@
 {
 	"token": "paste_bot_token_here",
 	"google_api_key": "paste_google_api_key_here",
+	"bot_owner": "paste_your_discord_account_id_here",
+	"users_counter_channel": "paste_channel_id_for_users_counter_here",
+	"guilds_counter_channel": "paste_channel_id_for_guilds_counter_here",
+	"bugreport_channel": "paste_channel_id_for_bug_reports_here",
+	"bot_invite_link": "paste_bot_invite_link_here",
+	"bot_project_link": "paste_bot_github/project_link_here",
+	"bot_website_link": "paste_bot/your_website_link_here",
+	"mc_default_ip": "paste_default/your_mc_server_ip_here"
   }
