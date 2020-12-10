@@ -30,7 +30,7 @@ Type ".help" or ".help (command)" in discord to get a detailed explanation of ea
 | Moderation | ban, kick, mute, purge, report, say, ticket, unmute |
 | Music | play, skip, playskip, resume, stop, nowplaying, queue, summon, volume |
 | Other | calc, instagram, mcstat, nick, percentage, ping, remindme, today, urban, weather |
-| Owner | botactivity |
+| Owner | botactivity, guilds |
 | Roles | addrole, removerole, roleinfo, rolelist |
 | Settings| resetconfig, setconfig, showconfig |
 | Xp | leaderboard, level, xp |
