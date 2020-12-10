@@ -29,7 +29,7 @@ function getAll(client, msg) {
         /* Moderation */.addField(":hammer: Moderation", "ban, kick, mute, purge, report, say, ticket, unmute")
         /* Music */.addField(":musical_note: Music", "play, skip, playskip, pause, resume, stop, nowplaying, queue, summon, volume")
         /* Other */.addField(":bulb: Other", "calc, instagram, mcstat, nick, percentage, ping, remindme, today, urban, weather")
-        /* Owner */.addField(":gear: Owner", "botactivity")
+        /* Owner */.addField(":gear: Owner", "botactivity, guilds")
         /* Roles */.addField(":level_slider: Roles", "addrole, removerole, roleinfo, rolelist")
         /* Settings */.addField(":floppy_disk: Settings", "resetconfig, setconfig, showconfig")
         /* Xp */.addField(":trophy: Xp", "leaderboard, level, xp")
