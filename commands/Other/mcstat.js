@@ -8,7 +8,8 @@ module.exports = {
     description: "Get Minecraft server banner",
     usage: "mcstat [ip | ip:port | host address]\n**e.g.**\n\`mcstat\`\n> will return the default server banner, set in the config file\n\`mcstat play.randomminecraftserver.com\`\n> will return the banner of that server\n> You can use ips, ips:port, addresses",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
+        
         let serverip = msg.content.split(' ').splice(1).join(' ');
 			let serverip_fromfield = serverip.substring(0,serverip.indexOf(":"));
             let serverport_fromfield = serverip.split(':')[1];

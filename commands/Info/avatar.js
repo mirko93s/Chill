@@ -7,7 +7,7 @@ module.exports = {
     description: "Display user's avatar",
     usage: "avatar [mention]\n**e.g.**\n\`avatar @mirko93s\`\n> will return mirko93s' avatar\n\`avatar\`\n> will return your avatar",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const nomentionEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)

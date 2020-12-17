@@ -7,7 +7,7 @@ module.exports = {
     description: "Returns a list with all the emojis in this server",
     usage: "serveremojis\n**e.g.**\n\`serveremojis\`\n> Get a list with all the available emojis on this server",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
         const noemojiEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setTitle(`⛔ Server has no emojis`)

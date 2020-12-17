@@ -10,7 +10,7 @@ module.exports = {
     description: "Rock Paper Scissors",
     usage: "rockpaperscissors\n**e.g.**\n\`rockpaperscissors\`\n> Play a rock-paper-scissors game with the Bot",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
         const embed = new MessageEmbed()
             .setColor(`RANDOM`)
             .setFooter(msg.author.username, msg.author.displayAvatarURL())

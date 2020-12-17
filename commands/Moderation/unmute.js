@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const { stripIndents } = require("common-tags");
 const { promptMessage } = require("../../functions.js");
 
 module.exports = {
@@ -9,7 +8,7 @@ module.exports = {
     usage: "unmute <mention> <reason>\n**e.g.**\n\`unmute @mirko93s reason\`\n> will unmute mirko93s\n> The unmute will be logged in the punishments channel",
     permission: "MANAGE_ROLES",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const nochannelEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)

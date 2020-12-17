@@ -6,7 +6,8 @@ module.exports = {
     description: "Skip to the next song",
     usage: "skip\n**e.g.**\n\`skip\`\n> skip to the next song in the queue",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
+        
         const serverQueue = client.queue.get(msg.guild.id);
 
         const noDJroleEmbed = new Discord.MessageEmbed()

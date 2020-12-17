@@ -8,7 +8,7 @@ module.exports = {
     description: "Shows server stats",
     usage: "serverinfo\n**e.g.**\n\`serverinfo\`\n> Get some useful stat about this server",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
         const filterLevels = {DISABLED: 'Off',MEMBERS_WITHOUT_ROLES: 'No Role',ALL_MEMBERS: 'Everyone',0: 'Off',1: 'No Role',2: 'Everyone'};
         const verificationLevels = {NONE: 'None', LOW: 'Low', MEDIUM: 'Medium', HIGH: 'High',VERY_HIGH: 'Highest',0: 'None',  1: 'Low', 2: 'Medium',3: 'High',4: 'Highest'};
 
@@ -37,9 +37,9 @@ module.exports = {
         `;
 
         const embed = new Discord.MessageEmbed()
-            .setAuthor(msg.guild.name, msg.guild.iconURL)
+            .setAuthor(msg.guild.name, msg.guild.iconURL())
             .setColor('RANDOM')
-            .setThumbnail(msg.guild.iconURL)
+            .setThumbnail(msg.guild.iconURL())
             .addField(`Members`, `\`\`\`asciidoc\n${members}\`\`\``,true)
             .addField(`Channels`, `\`\`\`asciidoc\n${channels}\`\`\``,true)
             .addField(`Boost`, `\`\`\`asciidoc\n${boost}\`\`\``,true)

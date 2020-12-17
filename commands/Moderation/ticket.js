@@ -7,7 +7,7 @@ module.exports = {
     usage: "ticket [close-delete]\n**e.g.**\n\`ticket\`\n> will create a ticket\n> It will create a new private channel\n> Only you and the @Support team can view and send messages in that channel\n\`ticket close\`\n> @Support can use this command to lock the channel\n> You won't be able to send messages anymore but you can still read them\n\`ticket delete\`\n> @Support can use this command to simply delete the channel after some time",
     permission: "@everyone | @Support",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const alreadyEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)

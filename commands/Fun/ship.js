@@ -6,7 +6,7 @@ module.exports = {
     description: "Ship 2 members",
     usage: "ship <name1> <name2>\n**e.g.**\n\`ship name_1 name_2\`\n> Check the affinity between 2 people",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const nonamesEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
@@ -16,24 +16,51 @@ module.exports = {
         let user2 = arg.slice(1).join(' ');
         if (!user1 || !user2) return msg.channel.send(nonamesEmbed).then(msg => msg.delete({ timeout: 5000 }));
         var ship = Math.floor(Math.random() * 100) + 1;
-        if (ship <= 49) {
-                    const badmatch = new Discord.MessageEmbed()
-                        .setColor(0x00A2E8)
-                        .setTitle(`**${user1}** and **${user2}** do not match very well`)
-                        .setDescription(":broken_heart: " + ship + "% :broken_heart:");
-                    msg.channel.send(badmatch);
-           } else if (ship >= 90) {
-                const perfectmatch = new Discord.MessageEmbed()
-                        .setColor(0x00A2E8)
-                        .setTitle(`**${user1}** and **${user2}** are meant for eachother`)
-                        .setDescription(":heartpulse: " + ship + "% :heartpulse:");
-                    msg.channel.send(perfectmatch);
-           } else {
-               const match = new Discord.MessageEmbed()
-                        .setColor(0x00A2E8)
-                        .setTitle(`**${user1}** and **${user2}** match very well`)
-                        .setDescription(":heart: " + ship + "% :heart:");
-                    msg.channel.send(match);
-            }
+
+        let bar = "";
+
+        for (var i=0; i < Math.round(ship/10) ; i++) {
+            bar += "⬜";
+        }
+        for (var i=0; i < 10-Math.round(ship/10) ; i++) {
+            bar += "🔳";
+        }
+
+        let shipEmbed = new Discord.MessageEmbed()
+
+        switch (true) {
+            case (ship>=0 && ship <=19):
+                shipEmbed
+                    .setColor(`640000`)
+                    .setTitle(`💔 SHIP 💔`)
+                    .setDescription(`🔻 ${user1}\n🔺 ${user2}\n**Do not match at all**`)
+                    .setFooter(`${bar} ${ship}%`);
+                msg.channel.send(shipEmbed);
+                break;
+            case (ship>=20 && ship <=49):
+                shipEmbed
+                    .setColor(`960000`)
+                    .setTitle(`❤️ SHIP ❤️`)
+                    .setDescription(`🔻 ${user1}\n🔺 ${user2}\n**Do not match well**`)
+                    .setFooter(`${bar} ${ship}%`);
+                msg.channel.send(shipEmbed);
+                break;
+            case (ship>=50 && ship <=89):
+                shipEmbed
+                    .setColor(`C80000`)
+                    .setTitle(`💓 SHIP 💓`)
+                    .setDescription(`🔻 ${user1}\n🔺 ${user2}\n**Match very well**`)
+                    .setFooter(`${bar} ${ship}%`);
+                msg.channel.send(shipEmbed);
+                break;
+            case (ship>=90 && ship <=100):
+                shipEmbed
+                    .setColor(`FA0000`)
+                    .setTitle(`💗 SHIP 💗`)
+                    .setDescription(`🔻 ${user1}\n🔺 ${user2}\n**Are meant to eachother**`)
+                    .setFooter(`${bar} ${ship}%`);
+                msg.channel.send(shipEmbed);
+                break;
+        };
     }
 }

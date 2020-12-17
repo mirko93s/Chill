@@ -9,7 +9,7 @@ module.exports = {
     description: "Report a bug to the dev",
     usage: "bugreport <message>\n**e.g.**\n\`bugreport ping command is not working\`\n> It will send an embed to the dev's discord server with your message\n> Please provide a good explanation of the bug and if you can the steps to reproduce it.",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const cooldownEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)

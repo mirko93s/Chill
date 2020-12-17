@@ -8,7 +8,7 @@ const SQLite = require("better-sqlite3");
 const sql = new SQLite('./xp_database/scores.sqlite');
 const Enmap = require('enmap');
 const talkedRecently = new Set();
-const { xpAdd, setupCheck } = require("./functions.js");
+const { xpAdd, setupCheck, dmOwnerOnJoin } = require("./functions.js");
 
 client.commands = new Collection();
 client.aliases = new Collection();
@@ -42,7 +42,8 @@ const defaultSettings = {
 	supportrole: "Support",
 	roleonjoin: "Member",
 	musicchannelonly: "false",
-	xpcooldown: 5
+	xpcooldown: 5,
+	autodeletecmds: "true"
 }
 
 client.on('warn', console.warn);
@@ -80,20 +81,7 @@ client.on('guildCreate', (guild) => {
 	client.settings.ensure(guild.id, defaultSettings);
 	console.log(`+ Guild: ${guild.name}`);
 	//msg guild owner with setup info
-	const dmonweronjoinEmbed = new Discord.MessageEmbed()
-		.setColor(`RANDOM`)
-		.setAuthor(`Chill - Discord Bot`)
-		.setURL(`https://www.mirko93s.it/`)
-		.setThumbnail(client.user.avatarURL())
-		.setTitle(`Thanks for inviting my bot!`)
-		.setDescription(`⚠️ Follow these instructions to setup the Bot (Don't skip them!) ⚠️
-		\n1️⃣ Type **.showconfig** \n> You can check the default settings in there. \n> **Then you can set them as you prefer using .setconfig.
-		\n2️⃣ Type **.setup** \n> It will create required channels, roles, etc according to the config you just set.
-		\n3️⃣ Set your role hierarchy\n> **Chill** (bot) role must be just below the owner/admin role.\n> **Muted** role must be above any other role that your members will get.
-		\n4️⃣ Extra settings\n> Sometimes you might need to adjust channel permissions to avoid that "Muted" members can still send messages.
-		\n5️⃣ Music\n> Don't forget to give **DJ** role to your members to make sure they can use Music commands.\n> If you will use "Music Only Channel" a hidden text channel will only be shown to people who are connected to the Music Vocal Channel`)
-		.setFooter(`©️ 2019-2020 by mirko93s`,`https://cdn.discordapp.com/avatars/278380909588381698/029d0578df3fa298132b3d85dd06bf3c.png?size=128`)
-	guild.owner.send(dmonweronjoinEmbed);
+	dmOwnerOnJoin(client, guild);
 });
 
 client.on("guildDelete", guild => {
@@ -107,7 +95,7 @@ client.on("guildMemberAdd", member => {
 
 	const welcomeEmbed = new Discord.MessageEmbed()
             .setColor('GREEN')
-			.setTitle(`${member.user.username} joined...`)
+			.setDescription(`${member.user} joined...`)
 
 	const welcomechannel = member.guild.channels.cache.find(welcomechannel => welcomechannel.name === (client.settings.get(member.guild.id, "welcomechannel")));
 	if (!welcomechannel) return;
@@ -148,14 +136,14 @@ client.on("message", async msg => {
 	//music-text-channel doesn't need .play command
 	if (msg.channel.name === client.settings.get(msg.guild.id, "musictextchannel") && !msg.content.startsWith(prefix)) {
 		var MTC_state = true;
-		let commandh = client.commands.get("play");
-		commandh.run(client, msg, MTC_state);
+		let cmdplay = client.commands.get("play");
+		return cmdplay.run(client, msg, MTC_state);
 	}
   	//commands stuff
   	const arg = msg.content.slice(prefix.length).trim().split(/ +/g);
   	const cmd = arg.shift().toLowerCase();
 	//command handler
-  	if (cmd.length === 0) return;
+	if (cmd.length === 0) return;
   	let commandh = client.commands.get(cmd);
     if (!commandh) commandh = client.commands.get(client.aliases.get(cmd));
 	if (commandh) commandh.run(client, msg, arg);

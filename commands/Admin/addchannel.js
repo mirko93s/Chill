@@ -8,7 +8,8 @@ module.exports = {
     usage: "addchannel <text | voice> <name>\n**e.g.**\n\`addchannel text textchannelname\`\n> will create a text channel named \"textchannelname\"\n\`addchannel voice voicechannelname\`\n> will create a voice channel named voicechannelname ",
     permission: "MANAGE_CHANNELS",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
+        
         const nopermEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setTitle(`⛔ You don't have permission to use this!`)

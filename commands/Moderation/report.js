@@ -7,7 +7,7 @@ module.exports = {
     description: "Report a member for breaking the rules",
     usage: "report <mention | id> <reason>\n**e.g.**\n\`report @mirko93s spamming in chat channel\`\n> You will report mirko93s for spammin in a channel\n> Your report will be sent to the report channel\n> Moderators can then take a decision about the reported member",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const noargsEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)

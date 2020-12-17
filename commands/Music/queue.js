@@ -6,7 +6,8 @@ module.exports = {
     description: "Returns song queue list",
     usage: "queue\n**e.g.**\n\`queue\`\n> Check which songs are in the queue",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
+        
         const serverQueue = client.queue.get(msg.guild.id);
 
         const noDJroleEmbed = new Discord.MessageEmbed()

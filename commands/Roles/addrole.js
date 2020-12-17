@@ -8,7 +8,7 @@ module.exports = {
     usage: "addrole <user-mention> <role>\n**e.g.**\n\`addrole @mirko93s DJ\`\n> will give the \"DJ\" role to the user mirko93s",
     permission: "MANAGE_ROLES",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const nopermEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)

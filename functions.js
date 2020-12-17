@@ -85,5 +85,22 @@ module.exports = {
         setTimeout(() => {
           talkedRecently.delete(msg.author.id);
         }, client.settings.get(msg.guild.id, "xpcooldown")*1000);
+    },
+
+    dmOwnerOnJoin: async function(client, guild) {
+        const dmonweronjoinEmbed = new Discord.MessageEmbed()
+            .setColor(`RANDOM`)
+            .setAuthor(`Chill - Discord Bot`)
+            .setURL(`https://www.mirko93s.it/`)
+            .setThumbnail(client.user.avatarURL())
+            .setTitle(`Thanks for inviting my bot!`)
+            .setDescription(`⚠️ Follow these instructions to setup the Bot (Don't skip them!) ⚠️
+            \n1️⃣ Type **.showconfig** \n> You can check the default settings in there. \n> **Then you can set them as you prefer using .setconfig.
+            \n2️⃣ Type **.setup** \n> It will create required channels, roles, etc according to the config you just set.
+            \n3️⃣ Set your role hierarchy\n> **Chill** (bot) role must be just below the owner/admin role.\n> **Muted** role must be above any other role that your members will get.
+            \n4️⃣ Extra settings\n> Sometimes you might need to adjust channel permissions to avoid that "Muted" members can still send messages.
+            \n5️⃣ Music\n> Don't forget to give **DJ** role to your members to make sure they can use Music commands.\n> If you will use "Music Only Channel" a hidden text channel will only be shown to people who are connected to the Music Vocal Channel`)
+            .setFooter(`©️ 2019-2020 by mirko93s`,`https://cdn.discordapp.com/avatars/278380909588381698/029d0578df3fa298132b3d85dd06bf3c.png?size=128`)
+	    guild.owner.send(dmonweronjoinEmbed);
     }
 };

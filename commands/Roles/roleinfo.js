@@ -7,7 +7,7 @@ module.exports = {
     description: "Returns role info",
     usage: "roleinfo <role name>\n**e.g.**\n\`roleinfo DJ\`\n> will return few info about the \"DJ\" role\n> Keep in mind, role names are case-sensitive",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const noroleEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)

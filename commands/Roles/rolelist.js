@@ -6,7 +6,7 @@ module.exports = {
     description: "Returns a list of server roles",
     usage: "rolelist\n**e.g.**\n\`rolelist\`\n> get a list of all the roles in this server",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const role = msg.guild.roles.cache;
         const embed = new Discord.MessageEmbed()

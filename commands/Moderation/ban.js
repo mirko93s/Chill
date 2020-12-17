@@ -9,7 +9,7 @@ module.exports = {
     usage: "ban <id | mention> <reason>\n**e.g.**\n\`ban @mirko93s reason\`\n> will ban mirko93s from your server\n> The ban will be logged in the punishments channel",
     permission: "BAN_MEMBERS",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const nochannelEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)

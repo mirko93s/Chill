@@ -7,7 +7,7 @@ module.exports = {
     description: "Returns latency/ping in ms",
     usage: "ping\n**e.g.**\n\`ping\`\n> will return your latency (e.g. 123ms)",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const awaitEmbed = new Discord.MessageEmbed()
             .setColor(`RANDOM`)

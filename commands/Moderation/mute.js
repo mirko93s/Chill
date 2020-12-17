@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const { stripIndents } = require("common-tags");
+const ms = require('ms');
 const { promptMessage } = require("../../functions.js");
 
 module.exports = {
@@ -9,7 +9,7 @@ module.exports = {
     usage: "mute <mention> <reason>\n**e.g.**\n\`mute @mirko93s reason\`\n> will mute mirko93s\n> The mute will be logged in the punishments channel",
     permission: "MANAGE_ROLES",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const nochannelEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
@@ -38,6 +38,9 @@ module.exports = {
         const canceledEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setTitle(`⛔ Mute canceled`)
+        const invalidtimeEmbed = new Discord.MessageEmbed()
+            .setColor(`RED`)
+            .setTitle(`⛔ Invalid time entered!`)
 
         let mutedrole = msg.guild.roles.cache.find(mutedrole => mutedrole.name === (client.settings.get(msg.guild.id, "mutedrole")));
         let puchannel = msg.guild.channels.cache.find(puchannel => puchannel.name === (client.settings.get(msg.guild.id, "puchannel")));
@@ -50,11 +53,15 @@ module.exports = {
         
         const toMute = msg.mentions.members.first();
 
+        const time = arg[1];
+        if(!time.match(/[1-60][s,m,h,d,w]/g)) return msg.channel.send(invalidtimeEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        const reason = arg.slice(2).join("");
+
         if (toMute.roles.cache.some(r => r.id === mutedrole.id)) return msg.channel.send(alreadyEmbed).then(msg => msg.delete({ timeout: 5000 }));
         if (!toMute) return msg.channel(nomemberEmbed).then(msg => msg.delete({ timeout: 5000 }));
         if (toMute.id === msg.author.id) return msg.channel.send(noyourselfEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
-        const embed = new Discord.MessageEmbed()
+        const muteEmbed = new Discord.MessageEmbed()
             .setColor(`GOLD`)
             .setThumbnail(toMute.user.displayAvatarURL())
             .setTimestamp()
@@ -62,8 +69,16 @@ module.exports = {
             .setDescription(`
             **Member:** ${toMute}
             \n**By:** ${msg.member}
-            \n**Reason:** ${arg.slice(1).join(" ")}
+            \n**Time:** ${time}
+            \n**Reason:** ${reason}
             `);
+
+        const muteexpiredEmbed = new Discord.MessageEmbed()
+            .setColor(`DARK_AQUA`)
+            .setThumbnail(toMute.user.displayAvatarURL())
+            .setTimestamp()
+            .setTitle(`MUTE EXPIRED`)
+            .setDescription(`**Member:** ${toMute}`);
 
         const promptEmbed = new Discord.MessageEmbed()
             .setColor("GREEN")
@@ -87,7 +102,12 @@ module.exports = {
                         if (err) return msg.channel.send(errorEmbed).then(msg => msg.delete({ timeout: 5000 }));
                     });
 
-                puchannel.send(embed);
+                puchannel.send(muteEmbed);
+
+                setTimeout(() => {
+                    toMute.roles.remove(mutedrole.id);
+                    puchannel.send(muteexpiredEmbed);
+                }, ms(time));
             }
             else if (emoji === "❌") {
                 promptmsg.delete();

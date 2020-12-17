@@ -12,7 +12,7 @@ module.exports = {
     description: "Shows some bot statistics",
     usage: "botinfo\n**e.g.**\n> \`botinfo\`\n> It will show you some cool satistics, such cpu/ram usage, number of servers/users, etc...",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         cpuStat.usagePercent(function(err, percent, seconds) {
             if (err) {
@@ -43,13 +43,13 @@ module.exports = {
             const embed = new Discord.MessageEmbed()
                 .setAuthor(client.user.username)
                 .setColor(`RANDOM`)
-                .setThumbnail(client.user.avatarURL)
+                .setThumbnail(client.user.avatarURL())
                 .addField('Bot Created', `\`\`\`${client.user.createdAt.toLocaleString()}\`\`\``, false)//
                 .addField('Counters', `\`\`\`asciidoc\n${counters}\`\`\``, true)
                 .addField('Versions', `\`\`\`asciidoc\n${versions}\`\`\``, true)
                 .addField('System', `\`\`\`asciidoc\n${system}\`\`\``, false)
                 .setTimestamp()
-                .setFooter(client.user.username, client.user.avatarURL);
+                .setFooter(client.user.username, client.user.avatarURL());
             msg.channel.send(embed).then(msg => msg.delete({ timeout: 30000}));
         })
     }

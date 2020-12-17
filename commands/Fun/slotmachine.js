@@ -7,7 +7,7 @@ module.exports = {
     description: "Play a slot machine",
     usage: "slotmachine\n**e.g.**\n\`slotmachine\`\n> No real money are used :D",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
         const slots = [':grapes:', ':cherries:', ':lemon:', ':tangerine:'];
         const slotOne = slots[Math.floor(Math.random() * slots.length)];
         const slotTwo = slots[Math.floor(Math.random() * slots.length)];

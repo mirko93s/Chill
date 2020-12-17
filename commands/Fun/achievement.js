@@ -8,7 +8,7 @@ module.exports = {
     description: "Generate a Minecraft achievement",
     usage: "achievement <text>\n**e.g.**\n\`achievement Use your first command\`\n> This will generate an achievement image using Minecraft style",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const textErrEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)

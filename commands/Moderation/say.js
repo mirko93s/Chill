@@ -6,7 +6,7 @@ module.exports = {
     usage: "say [embed] <message>\n**e.g.**\n\`say hello\`\n> The Bot will send a normal \"hello\" message\n\`say embed hello\`\n> The Bot will send an embedded \"hello\" message",
     permission: "MANAGE_MESSAGES",
     run: (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const nopermEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)

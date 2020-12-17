@@ -7,7 +7,7 @@ module.exports = {
     description: "Show help for a specific command",
     usage: "help [command | alias]\n**e.g.**\n\`help\`\n> shows a list with all the available commands\n\`help ping\`\n> shows help about the ping command and how to use it",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
         if (arg[0]) {
             return getCMD(client, msg, arg[0]);
         } else {
@@ -24,7 +24,7 @@ function getAll(client, msg) {
         .setThumbnail(client.user.displayAvatarURL())
         /* Admin */.addField(":no_entry_sign: Admin", "addchannel, broadcast, giveaway, poll, setup")
         /* Bot */.addField(":robot: Bot", "botinfo, bugreport, invite, project, website")
-        /* Fun */.addField(":game_die: Fun", "8ball, achievement, flipcoin, respawn, rockpaperscissors, ship, slotmachine")
+        /* Fun */.addField(":game_die: Fun", "8ball, achievement, flipcoin, rockpaperscissors, ship, slotmachine")
         /* Info */.addField(":information_source: Info", "avatar, help, serveremojis, serverinfo, whois")
         /* Moderation */.addField(":hammer: Moderation", "ban, kick, mute, purge, report, say, ticket, unmute")
         /* Music */.addField(":musical_note: Music", "play, skip, playskip, pause, resume, stop, nowplaying, queue, summon, volume")

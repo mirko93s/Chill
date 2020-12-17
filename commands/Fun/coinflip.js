@@ -7,7 +7,7 @@ module.exports = {
     description: "Flips a coin",
     usage: "coinflip\n**e.g.**\n\`coinflip\`\n> The Bot will flip a coin for you\n> Heads or Tails?",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
         var coin = ["Heads","Tails"];
         const embed = new Discord.MessageEmbed()
             .setColor('RANDOM')

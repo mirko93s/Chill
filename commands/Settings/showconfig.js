@@ -18,7 +18,8 @@ const defaultSettings = {
 	supportrole: "Support",
 	roleonjoin: "Member",
 	musicchannelonly: "false",
-	xpcooldown: 5
+	xpcooldown: 5,
+	autodeletecmds: "true"
 }
 
 module.exports = {
@@ -28,7 +29,7 @@ module.exports = {
 	description: "Show current guild's config",
 	usage: "showconfig\n**e.g**\n\`showconfig\`\n> get server settings (prefix, roles, channels, etc...)",
     run: async (client, msg, arg) => {
-		msg.delete();
+		if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
 		let guildConf = client.settings.ensure(msg.guild.id, defaultSettings);
 		
@@ -56,7 +57,7 @@ module.exports = {
 		ticketcategory   :: ${guildConf.ticketcategory}
 		musicchannelonly :: ${guildConf.musicchannelonly}
 		xpcooldown       :: ${guildConf.xpcooldown}
-			
+		autodeletecmds   :: ${guildConf.autodeletecmds}	
         `;
 
 		const settingsEmbed = new Discord.MessageEmbed()

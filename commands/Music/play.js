@@ -13,7 +13,8 @@ module.exports = {
     description: "Play a song from Youtube",
     usage: "play <song name | playlist name | yt link | yt playlist>\n**e.g.**\n\`play best song ever\`\n> will search and play \"best song ever\" from Youtube\n> The result can either be a video or a playlist\n> Playlist will be played till the end of itself\n> You can also provide a direct link to the Youtube video/playlist",
     run: async (client, msg, MTC_state) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
+        
         const noDJroleEmbed = new Discord.MessageEmbed()
             .setColor('PURPLE')
             .setTitle(":musical_note: Music")

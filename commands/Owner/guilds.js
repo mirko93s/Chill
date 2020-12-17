@@ -8,7 +8,7 @@ module.exports = {
     usage: "guilds\n**e.g.**\n\`guilds\`\n> List all guilds",
     permission: "DEV_ONLY",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const nopermEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)

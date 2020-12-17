@@ -8,7 +8,7 @@ module.exports = {
     description: "Calculate a percentage",
     usage: "percentage <amount> <maximum>\n**e.g.**\n\`percentage 2 100\`\n> will return 50%",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const nonumEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)

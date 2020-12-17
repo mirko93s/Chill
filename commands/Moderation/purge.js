@@ -8,7 +8,7 @@ module.exports = {
     usage: "purge <2 to 100>\n**e.g.**\n\`purge 25\`\n> will delete the last 25 messages in the channel\n> Due to Discord API limitations you can only bulk delete a number of messages between 2 and 100",
     permission: "MANAGE_MESSAGES",
     run: async (client, msg, arg) => {
-        await msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const nopermEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)

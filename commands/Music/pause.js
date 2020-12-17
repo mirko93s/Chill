@@ -6,7 +6,7 @@ module.exports = {
     description: "Pause current song",
     usage: "pause\n**e.g.**\n\`pause\`\n> will pause the music stream",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const noDJroleEmbed = new Discord.MessageEmbed()
             .setColor('PURPLE')

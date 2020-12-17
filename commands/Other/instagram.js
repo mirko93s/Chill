@@ -9,7 +9,8 @@ module.exports = {
     description: "Find out some nice instagram statistics",
     usage: "instagram <username>\n**e.g.**\n\`instagram randomusername\`\n> will show some info about an instagram profile",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
+        
         const name = arg.join(" ");
 
         if (!name) {

@@ -9,7 +9,7 @@ module.exports = {
     description: "Returns your XP points and level",
     usage: "level\n**e.g.**\n\`level\`\n> Get your XP points and Level",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         let score;
         score = client.getScore.get(msg.author.id, msg.guild.id);

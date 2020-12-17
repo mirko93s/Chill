@@ -6,7 +6,8 @@ module.exports = {
     description: "Stop music",
     usage: "stop\n**e.g.**\n\`stop\`\n> stops the music, delete the queue and disconnect the Bot from the voice channel",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
+        
         const serverQueue = client.queue.get(msg.guild.id);
 
         const noDJroleEmbed = new Discord.MessageEmbed()

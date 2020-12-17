@@ -8,7 +8,7 @@ module.exports = {
     usage: "musicchannelonly <true/false>\n**e.g**\n\`musicchannelonly true\`\n> will enable the Music Channel Only mode (default: false)\n> While active Music commands can only be used in the preset Music Text Channel and the \"summon\" command will be disabled\n> Keep in mind, the music text channel is only shown when you are connected in the music voice channel",
     permission: "ADMINISTRATOR",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const nopermEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)

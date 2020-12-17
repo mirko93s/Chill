@@ -6,7 +6,8 @@ module.exports = {
     description: "Resume last song",
     usage: "resume\n**e.g.**\n\`resume\`\n> Resume the music stream",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
+        
         const serverQueue = client.queue.get(msg.guild.id);
 
         const noDJroleEmbed = new Discord.MessageEmbed()

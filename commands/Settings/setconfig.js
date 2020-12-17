@@ -7,7 +7,7 @@ module.exports = {
     usage: "setconfig <key> <value>\n**e.g.**\n\`setconfig prefix ?\`\n> will set the prefix to \"?\"\n\`setconfig mutedrole icantspeak\`\n> change the mutedrole name to \"icantspeak\"\n> If you set the value of a channel or a role the Bot will also try to rename it.\n> If it doesn't succeed, the channel/role doesn't exist yet or you had manually renamed it\n> Run setup command to fix the missing channels/roles \n> Check showconfig command for a key and value list",
     permission: "ADMINISTRATOR",
     run: async (client, msg, arg) => {
-		msg.delete();
+		if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
 		var channelrenamed;
 		var rolerenamed;
@@ -44,7 +44,7 @@ module.exports = {
 			return msg.reply(nokeyEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		  }
 
-		if (arg[0].includes("only")) {
+		if (arg[0].includes("only") || arg[0].includes("delete")) {
 			if (arg.slice(1).join('') !== "true" && arg.slice(1).join('') !== "false") return msg.channel.send(truefalseEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		}
 		if (arg[0].includes("cooldown")) {

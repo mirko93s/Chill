@@ -8,7 +8,7 @@ module.exports = {
     usage: "broadcast\n**e.g.**\n\`broadcast\`\n> Follow the instructions\n> Bot will ask you a title and a description/message\n> Title can be max 256 char long, Description can be max 2048 char long",
     permission: "ADMINISTRATOR",
     run: async (client, msg, arg) => {
-        msg.delete();
+        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         let author = msg.author
 

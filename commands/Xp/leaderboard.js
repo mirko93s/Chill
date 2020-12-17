@@ -9,7 +9,8 @@ module.exports = {
     description: "Returns top 10 leaderboard",
     usage: "leaderboard\n**e.g.**\n\`leaderboard\`\n> Check the Top 10 users with the most xp(messages sent) in this server\n> Commands don't give xp",
     run: async (client, msg, arg) => {
-        msg.delete();
+		if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
+		
 		const top10 = sql.prepare("SELECT * FROM scores WHERE guild = ? ORDER BY points DESC LIMIT 10;").all(msg.guild.id);
 		let emojiposition = 0;
 		const embed = new Discord.MessageEmbed()
