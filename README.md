@@ -11,9 +11,7 @@
 ### Join the Support server to try the bot and to ask for help, using the button below.  
 
 [<img src="https://i.imgur.com/d7Eet0y.png">](https://discord.gg/2ktWcAb)
-
 [<img src="https://i.imgur.com/OJpg8dD.png">](https://discord.com/api/oauth2/authorize?client_id=605894942275141672&permissions=8&scope=bot)
-
 [<img src="https://i.imgur.com/xN1Y074.png">](https://github.com/mirko93s/Chill/releases)
 
 [Installation guide](https://github.com/mirko93s/Chill/wiki/Installation) (outdated)
