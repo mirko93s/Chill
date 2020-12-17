@@ -14,7 +14,7 @@
 
 ### Join the Support server to try the bot and to ask for help, using the button below.  
 
-[Installation guide](https://github.com/mirko93s/Chill/wiki/Installation) (outdated)
+[Installation guide](https://github.com/mirko93s/Chill/wiki/Installation)
 
 [Wiki](https://github.com/mirko93s/Chill/wiki) (w.i.p)
 
