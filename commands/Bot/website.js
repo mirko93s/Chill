@@ -15,6 +15,6 @@ module.exports = {
             .setURL(config.bot_website_link)
             .setDescription(`Just another discord bot!`)
 
-        msg.channel.send(embed)
+        msg.channel.send(embed);
     }
 }

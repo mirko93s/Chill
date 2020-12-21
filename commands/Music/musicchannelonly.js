@@ -13,12 +13,10 @@ module.exports = {
         const nopermEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setTitle(`⛔ You don't have permission to use this!`)
-
         const resultEmbed = new Discord.MessageEmbed()
             .setColor(`RANDOM`)
             .setTitle(":musical_note: Music")
             .setDescription(`Music Channel Only: \`${arg[0]}\``)
-
         const wrongvalueEmbed = new Discord.MessageEmbed()
             .setColor(`RANDOM`)
             .setTitle(":musical_note: Music")

@@ -87,7 +87,7 @@ module.exports = {
         }, client.settings.get(msg.guild.id, "xpcooldown")*1000);
     },
 
-    dmOwnerOnJoin: async function(client, guild) {
+    dmOwnerOnJoin: function(client, guild) {
         const dmonweronjoinEmbed = new Discord.MessageEmbed()
             .setColor(`RANDOM`)
             .setAuthor(`Chill - Discord Bot`)
@@ -102,5 +102,83 @@ module.exports = {
             \n5️⃣ Music\n> Don't forget to give **DJ** role to your members to make sure they can use Music commands.\n> If you will use "Music Only Channel" a hidden text channel will only be shown to people who are connected to the Music Vocal Channel`)
             .setFooter(`©️ 2019-2020 by mirko93s`,`https://cdn.discordapp.com/avatars/278380909588381698/029d0578df3fa298132b3d85dd06bf3c.png?size=128`)
 	    guild.owner.send(dmonweronjoinEmbed);
+    },
+
+    welcomeMessage: function(member, guild) {
+        let count = guild.memberCount.toString();
+        if (count.endsWith("1") === true) count += "st";
+            else if (count.endsWith("2") === true) count += "nd";
+                else if (count.endsWith("3") === true) count += "rd";
+                    else count += "th";
+        var message = [
+            `${member.user} has joined.`,
+            `${member.user} joined ${guild.name}.`,
+            `Welcome, ${member.user}.`,
+            `${member.user} is our 1,000,000th visitor. React for a free IPhone.`,
+            `Let's all give a warm welcome to ${member.user}.`,
+            `Wild ${member.user} appeared!`,
+            `👋 ${member.user} 👋`,
+            `Welcome ${member.user}, you are the ${count} member.`,
+            `Hi ${member.user}, hope you will enjoy staying in our server. `,
+            `Hello ${member.user}, we were expecting you.`,
+            `●●●${member.user} is typing...`
+        ];
+        const welcomeEmbed = new Discord.MessageEmbed()
+            .setColor('GREEN')
+            .setDescription(message[Math.floor(Math.random() * message.length)])
+            
+        return welcomeEmbed;
+    },
+
+    setupGuildOnJoin: async function(client, guild) {
+        //roles
+        await guild.roles.create({ data: {name: "Listening",permissions: [], color: 'CCCC00'}})
+            .then(role => {client.settings.set(guild.id, role.id, "musictemprole")});
+        guild.roles.create({ data: {name: "Muted",permissions: [],color: '525252'}})
+            .then(role => {client.settings.set(guild.id, role.id, "mutedrole")});
+        guild.roles.create({ data: {name: "DJ",permissions: ['CONNECT'], color: 'D00091'}})
+            .then(role => {client.settings.set(guild.id, role.id, "djrole")});
+        guild.roles.create({ data: {name: "Support",permissions: [], color: 'FC72F3'}})
+            .then(role => {client.settings.set(guild.id, role.id, "supportrole")});
+        guild.roles.create({ data: {name: "Member",permissions: ['VIEW_CHANNEL'], color: '33FFFF'}})
+            .then(role => {client.settings.set(guild.id, role.id, "roleonjoin")});
+        //channels
+        guild.channels.create("🎫tickets", {type: 'category'})
+            .then(channel => {client.settings.set(guild.id, channel.id, "ticketcategory")});
+        guild.channels.create("👋welcome", {type: 'text', 
+            permissionOverwrites: [{id: guild.roles.everyone.id, 
+            deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`]}]})
+            .then(channel => {client.settings.set(guild.id, channel.id, "welcomechannel")});
+        guild.channels.create("🔴broadcast", {type: 'text', 
+            permissionOverwrites: [{id: guild.roles.everyone.id, 
+            deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`]}]})
+            .then(channel => {client.settings.set(guild.id, channel.id, "bcchannel")});
+        guild.channels.create("🔨punishments", {type: 'text', 
+            permissionOverwrites: [{id: guild.roles.everyone.id, 
+            deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`]}]})
+            .then(channel => {client.settings.set(guild.id, channel.id, "puchannel")});
+        guild.channels.create("🚨reports", {type: 'text', 
+            permissionOverwrites: [{id: guild.roles.everyone.id, 
+            deny: [`VIEW_CHANNEL`]}]})
+            .then(channel => {client.settings.set(guild.id, channel.id, "reportchannel")});
+        guild.channels.create("🎉giveaway", {type: 'text', 
+            permissionOverwrites: [{id: guild.roles.everyone.id, 
+            deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`]}]})
+            .then(channel => {client.settings.set(guild.id, channel.id, "gachannel")});
+        guild.channels.create("💡poll", {type: 'text', 
+            permissionOverwrites: [{id: guild.roles.everyone.id, 
+            deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`]}]})
+            .then(channel => {client.settings.set(guild.id, channel.id, "pollchannel")});
+        guild.channels.create("🔊music", {type: 'voice',
+            permissionOverwrites: [{id: guild.roles.everyone.id, 
+            deny: ['SPEAK']}]})
+            .then(channel => {client.settings.set(guild.id, channel.id, "musicvocalchannel")});
+        guild.channels.create("🎵song-request", {type: 'text', 
+            permissionOverwrites: [
+            {id: guild.roles.everyone.id, 
+            deny: ['VIEW_CHANNEL']},
+            {id: client.settings.get(guild.id, "musictemprole"),
+            allow: ['VIEW_CHANNEL','SEND_MESSAGES']}]})
+            .then(channel => {client.settings.set(guild.id, channel.id, "musictextchannel")});
     }
 };

@@ -22,8 +22,7 @@ module.exports = {
         const mconlyEmbed = new Discord.MessageEmbed()
             .setColor(`RANDOM`)
             .setTitle(":musical_note: Music")
-            .setDescription(`Music Channel Only is active!`)
-            .setFooter(`You can only use the music module in: ${client.settings.get(msg.guild.id, "musicvocalchannel")}`)
+            .setDescription(`Music Channel Only is active!\nYou can only use the music module in: <#${client.settings.get(msg.guild.id, "musictextchannel")}>`)
         const nourlEmbed = new Discord.MessageEmbed()
             .setColor('PURPLE')
             .setTitle(":musical_note: Music")
@@ -57,7 +56,7 @@ module.exports = {
             url = arg[1] ? arg[1].replace(/<(.+)>/g, '$1') : '';
         }
 
-        if (msg.member.roles.cache.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
+        if (msg.member.roles.cache.some(role => role.id === (client.settings.get(msg.guild.id, "djrole")))) {
             if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 5000 }));
             if (!url) return msg.channel.send(nourlEmbed).then(msg => msg.delete({ timeout: 5000 }));
             const voiceChannel = msg.member.voice.channel;

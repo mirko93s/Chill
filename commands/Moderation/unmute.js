@@ -38,8 +38,8 @@ module.exports = {
             .setColor(`RED`)
             .setTitle(`⛔ Mute canceled`)
 
-        let mutedrole = msg.guild.roles.cache.find(mutedrole => mutedrole.name === (client.settings.get(msg.guild.id, "mutedrole")));
-        let puchannel = msg.guild.channels.cache.find(puchannel => puchannel.name === (client.settings.get(msg.guild.id, "puchannel")));
+        let mutedrole = msg.guild.roles.cache.find(mutedrole => mutedrole.id === (client.settings.get(msg.guild.id, "mutedrole")));
+        let puchannel = msg.guild.channels.cache.find(puchannel => puchannel.id === (client.settings.get(msg.guild.id, "puchannel")));
 
         if (!msg.member.hasPermission("MANAGE_ROLES")) return msg.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
         if (!msg.guild.me.hasPermission("MANAGE_ROLES")) return msg.channel.send(nobotpermEmbed).then(msg => msg.delete({ timeout: 5000 }));
@@ -49,7 +49,7 @@ module.exports = {
         
         const toUnmute = msg.mentions.members.first();
         
-        if (!toUnmute.roles.cache.some(r => r.id === mutedrole.id)) return msg.channel.send(alreadyEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!toUnmute.roles.cache.some(r => r.id === mutedrole)) return msg.channel.send(alreadyEmbed).then(msg => msg.delete({ timeout: 5000 }));
         if (!toUnmute) return msg.channel(nomemberEmbed).then(msg => msg.delete({ timeout: 5000 }));
         if (toUnmute.id === msg.author.id) return msg.channel.send(noyourselfEmbed).then(msg => msg.delete({ timeout: 5000 }));
 

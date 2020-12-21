@@ -16,14 +16,13 @@ module.exports = {
             .setColor('PURPLE')
             .setTitle(":musical_note: Music")
             .setDescription(`⛔ You are not in a voice channel`)
-        const nosummonEmbed = new Discord.MessageEmbed()
+        const mconlyEmbed = new Discord.MessageEmbed()
             .setColor(`RANDOM`)
             .setTitle(":musical_note: Music")
-            .setDescription(`Music Channel Only is active! \`summon\` command is disabled`)
-            .setFooter(`You can only use the music module in: ${client.settings.get(msg.guild.id, "musicvocalchannel")}`)
+            .setDescription(`Music Channel Only is active!\nYou can only use the music module in: <#${client.settings.get(msg.guild.id, "musictextchannel")}>`)
 
-        if (msg.member.roles.cache.some(role => role.name === (client.settings.get(msg.guild.id, "djrole")))) {
-            if (client.settings.get(msg.guild.id, "musicchannelonly") === "true") return msg.channel.send(nosummonEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (msg.member.roles.cache.some(role => role.id === (client.settings.get(msg.guild.id, "djrole")))) {
+            if (client.settings.get(msg.guild.id, "musicchannelonly") === "true") return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 5000 }));
             if (!msg.member.voice.channel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
             msg.member.voice.channel.join();
         } else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete({ timeout: 5000 }));

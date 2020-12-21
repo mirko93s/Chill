@@ -42,8 +42,8 @@ module.exports = {
             .setColor(`RED`)
             .setTitle(`⛔ Invalid time entered!`)
 
-        let mutedrole = msg.guild.roles.cache.find(mutedrole => mutedrole.name === (client.settings.get(msg.guild.id, "mutedrole")));
-        let puchannel = msg.guild.channels.cache.find(puchannel => puchannel.name === (client.settings.get(msg.guild.id, "puchannel")));
+        let mutedrole = msg.guild.roles.cache.find(mutedrole => mutedrole.id === (client.settings.get(msg.guild.id, "mutedrole")));
+        let puchannel = msg.guild.channels.cache.find(puchannel => puchannel.id === (client.settings.get(msg.guild.id, "puchannel")));
 
         if (!msg.member.hasPermission("MANAGE_ROLES")) return msg.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
         if (!msg.guild.me.hasPermission("MANAGE_ROLES")) return msg.channel.send(nobotpermEmbed).then(msg => msg.delete({ timeout: 5000 }));
@@ -57,7 +57,7 @@ module.exports = {
         if(!time.match(/[1-60][s,m,h,d,w]/g)) return msg.channel.send(invalidtimeEmbed).then(msg => msg.delete({ timeout: 5000 }));
         const reason = arg.slice(2).join("");
 
-        if (toMute.roles.cache.some(r => r.id === mutedrole.id)) return msg.channel.send(alreadyEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (toMute.roles.cache.some(r => r.id === mutedrole)) return msg.channel.send(alreadyEmbed).then(msg => msg.delete({ timeout: 5000 }));
         if (!toMute) return msg.channel(nomemberEmbed).then(msg => msg.delete({ timeout: 5000 }));
         if (toMute.id === msg.author.id) return msg.channel.send(noyourselfEmbed).then(msg => msg.delete({ timeout: 5000 }));
 

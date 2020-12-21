@@ -27,7 +27,7 @@ module.exports = {
         if (!rMember || !arg[1]) return msg.channel.send(noargsEmbed).then(msg => msg.delete({ timeout: 5000 }));
         if (rMember.user.bot) return msg.channel.send(nobotEmbed).then(msg => msg.delete({ timeout: 5000 }));
         
-        let reportchannel = msg.guild.channels.cache.find(reportchannel => reportchannel.name === (client.settings.get(msg.guild.id, "reportchannel")));
+        let reportchannel = msg.guild.channels.cache.find(reportchannel => reportchannel.id === (client.settings.get(msg.guild.id, "reportchannel")));
         
         if(!reportchannel) return msg.channel.send(nochannelEmbed).then(msg => msg.delete({ timeout: 5000 }));
 

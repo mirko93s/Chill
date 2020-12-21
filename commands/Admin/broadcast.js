@@ -65,7 +65,7 @@ module.exports = {
                                     .setDescription(description)
                                     .setColor("#00ff00")
                                     .setAuthor(author.username, author.displayAvatarURL())    
-                                let bcchannel = msg.guild.channels.cache.find(bcchannel => bcchannel.name === (client.settings.get(msg.guild.id, "bcchannel")));
+                                let bcchannel = msg.guild.channels.cache.find(bcchannel => bcchannel.id === (client.settings.get(msg.guild.id, "bcchannel")));
                                 if(!bcchannel) return msg.channel.send(nochannelEmbed).then(msg => msg.delete({ timeout: 5000 }));
                                 bcchannel.send("@everyone");
                                 bcchannel.send(bcEmbed);

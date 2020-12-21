@@ -41,7 +41,7 @@ module.exports = {
             .setTitle(`⛔ No answer after 30 seconds, operation canceled.`)
 
         if(!msg.guild.member(msg.author).hasPermission('MANAGE_GUILD')) return msg.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        let gachannel = msg.guild.channels.cache.find(gachannel => gachannel.name === (client.settings.get(msg.guild.id, "gachannel")));
+        let gachannel = msg.guild.channels.cache.find(gachannel => gachannel.id === (client.settings.get(msg.guild.id, "gachannel")));
         if(!gachannel) return msg.reply(nochannelEmbed).then(msg => msg.delete({ timeout: 5000 }));
         msg.channel.send(sendtimeEmbed).then(msg => {//collect duration
             msg.channel.awaitMessages(filter, {max: 1,time: 30000,errors: ['time']}).then(collected => {
@@ -65,9 +65,9 @@ module.exports = {
                             let re = m.react('🎉');
                             //update time left
                             let live = ms(duration);
-                            var livetest = setInterval (liveupdate, 5000);
+                            var livetest = setInterval (liveupdate, 30000);
                             function liveupdate() {
-                                live -= 5000;
+                                live -= 30000;
                                 if (live > 0) {
                                     let liveEmbed = new Discord.MessageEmbed()
                                         .setColor(`RANDOM`)

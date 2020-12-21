@@ -8,7 +8,7 @@ const SQLite = require("better-sqlite3");
 const sql = new SQLite('./xp_database/scores.sqlite');
 const Enmap = require('enmap');
 const talkedRecently = new Set();
-const { xpAdd, setupCheck, dmOwnerOnJoin } = require("./functions.js");
+const { xpAdd, setupCheck, dmOwnerOnJoin, welcomeMessage ,setupGuildOnJoin} = require("./functions.js");
 
 client.commands = new Collection();
 client.aliases = new Collection();
@@ -79,7 +79,10 @@ client.on('reconnecting', () => console.log('Chill BOT Reconnecting!'));
 client.on('guildCreate', (guild) => {
 	//add guild to db and set default values
 	client.settings.ensure(guild.id, defaultSettings);
+	setupGuildOnJoin(client, guild);
 	console.log(`+ Guild: ${guild.name}`);
+	let users = client.guilds.cache.reduce((a, g) => a + g.memberCount - 1, 0)
+	client.user.setActivity(`${users} user${users !== 1 ? 's' : ''}`, {type: 'WATCHING'});
 	//msg guild owner with setup info
 	dmOwnerOnJoin(client, guild);
 });
@@ -90,21 +93,15 @@ client.on("guildDelete", guild => {
 });
 
 client.on("guildMemberAdd", member => {
-
-	member.roles.add(member.guild.roles.cache.find(role => role.name === client.settings.get(member.guild.id, "roleonjoin"))); //give default role to new members
-
-	const welcomeEmbed = new Discord.MessageEmbed()
-            .setColor('GREEN')
-			.setDescription(`${member.user} joined...`)
-
-	const welcomechannel = member.guild.channels.cache.find(welcomechannel => welcomechannel.name === (client.settings.get(member.guild.id, "welcomechannel")));
+	member.roles.add(member.guild.roles.cache.find(role => role.id === client.settings.get(member.guild.id, "roleonjoin"))); //give default role to new members
+	const welcomechannel = member.guild.channels.cache.find(welcomechannel => welcomechannel.id === (client.settings.get(member.guild.id, "welcomechannel")));
 	if (!welcomechannel) return;
-	else welcomechannel.send(welcomeEmbed); //send welcome embed in welcome channel
+		else welcomechannel.send(welcomeMessage(member, member.guild)); //send welcome embed in welcome channel
 });
 
 client.on("voiceStateUpdate", (oldUser, newUser) => { //give temp role while on music voice channel
-	const channel = newUser.guild.channels.cache.find(channel => channel.name === (client.settings.get(newUser.guild.id, "musicvocalchannel")));
-	const role = newUser.guild.roles.cache.find(role => role.name === (client.settings.get(newUser.guild.id, "musictemprole")));
+	const channel = newUser.guild.channels.cache.find(musicvocalchannel => musicvocalchannel.id === (client.settings.get(newUser.guild.id, "musicvocalchannel")));
+	const role = newUser.guild.roles.cache.find(role => role.id === (client.settings.get(newUser.guild.id, "musictemprole")));
 	if (channel && role) {
 		let newUserChannel = newUser.channel;
 		if (newUserChannel === null) return newUser.member.roles.remove(role);

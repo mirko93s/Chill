@@ -16,109 +16,115 @@ module.exports = {
 
         if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.reply(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
-        let welcomechannel = msg.guild.channels.cache.find(welcomechannel => welcomechannel.name === (client.settings.get(msg.guild.id, "welcomechannel")));
-        let bcchannel = msg.guild.channels.cache.find(bcchannel => bcchannel.name === (client.settings.get(msg.guild.id, "bcchannel")));
-        let puchannel = msg.guild.channels.cache.find(puchannel => puchannel.name === (client.settings.get(msg.guild.id, "puchannel")));
-        let reportchannel = msg.guild.channels.cache.find(reportchannel => reportchannel.name === (client.settings.get(msg.guild.id, "reportchannel")));
-        let gachannel = msg.guild.channels.cache.find(gachannel => gachannel.name === (client.settings.get(msg.guild.id, "gachannel")));
-        let pollchannel = msg.guild.channels.cache.find(pollchannel => pollchannel.name === (client.settings.get(msg.guild.id, "pollchannel")));
-        let musicvocalchannel = msg.guild.channels.cache.find(musicvocalchannel => musicvocalchannel.name === (client.settings.get(msg.guild.id, "musicvocalchannel")));
-        let musictextchannel = msg.guild.channels.cache.find(musictextchannel => musictextchannel.name === (client.settings.get(msg.guild.id, "musictextchannel")));
+        let welcomechannel = msg.guild.channels.cache.find(welcomechannel => welcomechannel.id === (client.settings.get(msg.guild.id, "welcomechannel")));
+        let bcchannel = msg.guild.channels.cache.find(bcchannel => bcchannel.id === (client.settings.get(msg.guild.id, "bcchannel")));
+        let puchannel = msg.guild.channels.cache.find(puchannel => puchannel.id === (client.settings.get(msg.guild.id, "puchannel")));
+        let reportchannel = msg.guild.channels.cache.find(reportchannel => reportchannel.id === (client.settings.get(msg.guild.id, "reportchannel")));
+        let gachannel = msg.guild.channels.cache.find(gachannel => gachannel.id === (client.settings.get(msg.guild.id, "gachannel")));
+        let pollchannel = msg.guild.channels.cache.find(pollchannel => pollchannel.id === (client.settings.get(msg.guild.id, "pollchannel")));
+        let musicvocalchannel = msg.guild.channels.cache.find(musicvocalchannel => musicvocalchannel.id === (client.settings.get(msg.guild.id, "musicvocalchannel")));
+        let musictextchannel = msg.guild.channels.cache.find(musictextchannel => musictextchannel.id === (client.settings.get(msg.guild.id, "musictextchannel")));
 
-        let ticketcategory = msg.guild.channels.cache.find(ticketcategory => ticketcategory.name === (client.settings.get(msg.guild.id, "ticketcategory")));
+        let ticketcategory = msg.guild.channels.cache.find(ticketcategory => ticketcategory.id === (client.settings.get(msg.guild.id, "ticketcategory")));
 
-        let musictemprole = msg.guild.roles.cache.find(musictemprole => musictemprole.name === (client.settings.get(msg.guild.id, "musictemprole")));
-        let mutedrole = msg.guild.roles.cache.find(mutedrole => mutedrole.name === (client.settings.get(msg.guild.id, "mutedrole")));
-        let djrole = msg.guild.roles.cache.find(djrole => djrole.name === (client.settings.get(msg.guild.id, "djrole")));
-        let supportrole = msg.guild.roles.cache.find(supportrole => supportrole.name === (client.settings.get(msg.guild.id, "supportrole")));
-        let roleonjoin = msg.guild.roles.cache.find(roleonjoin => roleonjoin.name === (client.settings.get(msg.guild.id, "roleonjoin")));
+        let musictemprole = msg.guild.roles.cache.find(musictemprole => musictemprole.id === (client.settings.get(msg.guild.id, "musictemprole")));
+        let mutedrole = msg.guild.roles.cache.find(mutedrole => mutedrole.id === (client.settings.get(msg.guild.id, "mutedrole")));
+        let djrole = msg.guild.roles.cache.find(djrole => djrole.id === (client.settings.get(msg.guild.id, "djrole")));
+        let supportrole = msg.guild.roles.cache.find(supportrole => supportrole.id === (client.settings.get(msg.guild.id, "supportrole")));
+        let roleonjoin = msg.guild.roles.cache.find(roleonjoin => roleonjoin.id === (client.settings.get(msg.guild.id, "roleonjoin")));
 
         const created = "✅"
         const already = "❌"
 
         if(!ticketcategory) {
-            msg.guild.channels.create(client.settings.get(msg.guild.id, "ticketcategory"), {type: 'category', 
-            })
+            msg.guild.channels.create("🎫tickets", {type: 'category'})
+            .then(channel => {client.settings.set(msg.guild.id, channel.id, "ticketcategory")});
             ticketmsg = created
         } else ticketmsg = already
+
         if (!mutedrole) {
-            msg.guild.roles.create({ data: {name: client.settings.get(msg.guild.id, "mutedrole"),permissions: [],color: '525252'}})
+            msg.guild.roles.create({ data: {name: "Muted",permissions: [],color: '525252'}})
+            .then(role => {client.settings.set(msg.guild.id, role.id, "mutedrole")});
             mutedmsg = created
         } else mutedmsg = already
         if (!djrole) {
-            msg.guild.roles.create({ data: {name: client.settings.get(msg.guild.id, "djrole"),permissions: ['CONNECT'], color: 'D00091'}})
+            msg.guild.roles.create({ data: {name: "DJ",permissions: ['CONNECT'], color: 'D00091'}})
+            .then(role => {client.settings.set(msg.guild.id, role.id, "djrole")});
             djmsg = created
         } else djmsg = already
         if (!musictemprole) {
-            msg.guild.roles.create({ data: {name: client.settings.get(msg.guild.id, "musictemprole"),permissions: [], color: 'CCCC00'}})
+            msg.guild.roles.create({ data: {name: "Support",permissions: [], color: 'CCCC00'}})
+            .then(role => {client.settings.set(msg.guild.id, role.id, "musictemprole")});
             musictempmsg = created
         } else musictempmsg = already
         if (!supportrole) {
-            msg.guild.roles.create({ data: {name: client.settings.get(msg.guild.id, "supportrole"),permissions: [], color: 'FC72F3'}})
+            msg.guild.roles.create({ data: {name: "Support",permissions: [], color: 'FC72F3'}})
+            .then(role => {client.settings.set(msg.guild.id, role.id, "supportrole")});
             supportmsg = created
         } else supportmsg = already
         if (!roleonjoin) {
-            msg.guild.roles.create({ data: {name: client.settings.get(msg.guild.id, "roleonjoin"),permissions: ['VIEW_CHANNEL'], color: '33FFFF'}})
+            msg.guild.roles.create({ data: {name: "Member",permissions: ['VIEW_CHANNEL'], color: '33FFFF'}})
+            .then(role => {client.settings.set(msg.guild.id, role.id, "roleonjoin")});
             roleonmsg = created
         } else roleonmsg = already
+
         if(!welcomechannel) {
-            msg.guild.channels.create(client.settings.get(msg.guild.id, "welcomechannel"), {type: 'text', 
+            msg.guild.channels.create("👋welcome", {type: 'text', 
                 permissionOverwrites: [{id: msg.guild.roles.everyone.id, 
-                deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`
-                ]}]})
+                deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`]}]})
+                .then(channel => {client.settings.set(msg.guild.id, channel.id, "welcomechannel")});
             welcomemsg = created
         } else welcomemsg = already
         if(!bcchannel) {
-            msg.guild.channels.create(client.settings.get(msg.guild.id, "bcchannel"), {type: 'text', 
+            msg.guild.channels.create("🔴broadcast", {type: 'text', 
                 permissionOverwrites: [{id: msg.guild.roles.everyone.id, 
-                deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`
-                ]}]})
+                deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`]}]})
+                .then(channel => {client.settings.set(msg.guild.id, channel.id, "bcchannel")});
             bcmsg = created
         } else bcmsg = already
         if(!puchannel) {
-            msg.guild.channels.create(client.settings.get(msg.guild.id, "puchannel"), {type: 'text', 
+            msg.guild.channels.create("🔨punishments", {type: 'text', 
             permissionOverwrites: [{id: msg.guild.roles.everyone.id, 
-            deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`
-            ]}]})
+            deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`]}]})
+            .then(channel => {client.settings.set(msg.guild.id, channel.id, "puchannel")});
             pumsg = created
         } else pumsg = already
         if(!reportchannel) {
-            msg.guild.channels.create(client.settings.get(msg.guild.id, "reportchannel"), {type: 'text', 
+            msg.guild.channels.create("🚨reports", {type: 'text', 
             permissionOverwrites: [{id: msg.guild.roles.everyone.id, 
-            deny: [`VIEW_CHANNEL`
-            ]}]})
+            deny: [`VIEW_CHANNEL`]}]})
+            .then(channel => {client.settings.set(msg.guild.id, channel.id, "reportchannel")});
             reportmsg = created
         } else reportmsg = already
         if(!gachannel) {
-            msg.guild.channels.create(client.settings.get(msg.guild.id, "gachannel"), {type: 'text', 
+            msg.guild.channels.create("🎉giveaway", {type: 'text', 
             permissionOverwrites: [{id: msg.guild.roles.everyone.id, 
-            deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`
-            ]}]})
+            deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`]}]})
+            .then(channel => {client.settings.set(msg.guild.id, channel.id, "gachannel")});
             gamsg = created
         } else gamsg = already
         if(!pollchannel) {
-            msg.guild.channels.create(client.settings.get(msg.guild.id, "pollchannel"), {type: 'text', 
+            msg.guild.channels.create("💡poll", {type: 'text', 
             permissionOverwrites: [{id: msg.guild.roles.everyone.id, 
-            deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`
-            ]}]})
+            deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`]}]})
+            .then(channel => {client.settings.set(msg.guild.id, channel.id, "pollchannel")});
             pollmsg = created
         } else pollmsg = already
         if(!musicvocalchannel) {
-            msg.guild.channels.create(client.settings.get(msg.guild.id, "musicvocalchannel"), {type: 'voice',
-            permissionOverwrites: [
-                {id: msg.guild.roles.everyone.id, 
-                deny: ['SPEAK']}]
-            })
+            msg.guild.channels.create("🔊music", {type: 'voice',
+            permissionOverwrites: [{id: msg.guild.roles.everyone.id, 
+            deny: ['SPEAK']}]})
+            .then(channel => {client.settings.set(msg.guild.id, channel.id, "musicvocalchannel")});
             musicvocalmsg = created
         } else musicvocalmsg = already
         if(!musictextchannel) {
-            msg.guild.channels.create(client.settings.get(msg.guild.id, "musictextchannel"), {type: 'text', 
+            msg.guild.channels.create("🎵song-request", {type: 'text', 
             permissionOverwrites: [
-                {id: msg.guild.roles.everyone.id, 
-                deny: ['VIEW_CHANNEL']},
-                {id: musictemprole.id,
-                allow: ['VIEW_CHANNEL','SEND_MESSAGES']}]
-            })
+            {id: msg.guild.roles.everyone.id, 
+            deny: ['VIEW_CHANNEL']},
+            {id: musictemprole.id,
+            allow: ['VIEW_CHANNEL','SEND_MESSAGES']}]})
+            .then(channel => {client.settings.set(msg.guild.id, channel.id, "musictextchannel")});
             musictextmsg = created
         } else musictextmsg = already
 

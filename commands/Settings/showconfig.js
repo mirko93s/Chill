@@ -34,30 +34,29 @@ module.exports = {
 		let guildConf = client.settings.ensure(msg.guild.id, defaultSettings);
 		
 		const channels = stripIndent`
-		welcomechannel    :: ${guildConf.welcomechannel}
-		bcchannel         :: ${guildConf.bcchannel}
-		puchannel         :: ${guildConf.puchannel}
-		reportchannel     :: ${guildConf.reportchannel}
-		gachannel         :: ${guildConf.gachannel}
-		pollchannel       :: ${guildConf.pollchannel}
-		musictextchannel  :: ${guildConf.musictextchannel}
-		musicvocalchannel :: ${guildConf.musicvocalchannel}
+		welcomechannel    :: ${msg.guild.channels.cache.find(channel => channel.id === client.settings.get(msg.guild.id, "welcomechannel")) ? msg.guild.channels.cache.get(client.settings.get(msg.guild.id, "welcomechannel")).name + " | " + guildConf.welcomechannel : "❌❌❌ NOT FOUND ❌❌❌"}
+		bcchannel         :: ${msg.guild.channels.cache.find(channel => channel.id === client.settings.get(msg.guild.id, "bcchannel")) ? msg.guild.channels.cache.get(client.settings.get(msg.guild.id, "bcchannel")).name + " | " + guildConf.bcchannel : "❌❌❌ NOT FOUND ❌❌❌"}
+		puchannel         :: ${msg.guild.channels.cache.find(channel => channel.id === client.settings.get(msg.guild.id, "puchannel")) ? msg.guild.channels.cache.get(client.settings.get(msg.guild.id, "puchannel")).name + " | " + guildConf.puchannel : "❌❌❌ NOT FOUND ❌❌❌"}
+		reportchannel     :: ${msg.guild.channels.cache.find(channel => channel.id === client.settings.get(msg.guild.id, "reportchannel")) ? msg.guild.channels.cache.get(client.settings.get(msg.guild.id, "reportchannel")).name + " | " + guildConf.reportchannel : "❌❌❌ NOT FOUND ❌❌❌"}
+		pollchannel       :: ${msg.guild.channels.cache.find(channel => channel.id === client.settings.get(msg.guild.id, "pollchannel")) ? msg.guild.channels.cache.get(client.settings.get(msg.guild.id, "pollchannel")).name + " | " + guildConf.pollchannel : "❌❌❌ NOT FOUND ❌❌❌"}
+		musictextchannel  :: ${msg.guild.channels.cache.find(channel => channel.id === client.settings.get(msg.guild.id, "musictextchannel")) ? msg.guild.channels.cache.get(client.settings.get(msg.guild.id, "musictextchannel")).name + " | " + guildConf.musictextchannel : "❌❌❌ NOT FOUND ❌❌❌"}
+		musicvocalchannel :: ${msg.guild.channels.cache.find(channel => channel.id === client.settings.get(msg.guild.id, "musicvocalchannel")) ? msg.guild.channels.cache.get(client.settings.get(msg.guild.id, "musicvocalchannel")).name + " | " + guildConf.musicvocalchannel : "❌❌❌ NOT FOUND ❌❌❌"}
+		ticketcategory    :: ${msg.guild.channels.cache.find(channel => channel.id === client.settings.get(msg.guild.id, "ticketcategory")) ? msg.guild.channels.cache.get(client.settings.get(msg.guild.id, "ticketcategory")).name + " | " + guildConf.ticketcategory : "❌❌❌ NOT FOUND ❌❌❌"}
 		`;
 		
 		const roles = stripIndent`
-		musictemprole :: ${guildConf.musictemprole}
-		mutedrole     :: ${guildConf.mutedrole}
-		djrole        :: ${guildConf.djrole}
-		supportrole   :: ${guildConf.supportrole}
-		roleonjoin    :: ${guildConf.roleonjoin}
+		musictemprole :: ${msg.guild.roles.cache.find(channel => channel.id === client.settings.get(msg.guild.id, "musictemprole")) ? msg.guild.roles.cache.get(client.settings.get(msg.guild.id, "musictemprole")).name + " | " + guildConf.musictemprole : "❌❌❌ NOT FOUND ❌❌❌"}
+		mutedrole     :: ${msg.guild.roles.cache.find(channel => channel.id === client.settings.get(msg.guild.id, "mutedrole")) ? msg.guild.roles.cache.get(client.settings.get(msg.guild.id, "mutedrole")).name + " | " + guildConf.mutedrole : "❌❌❌ NOT FOUND ❌❌❌"}
+		djrole        :: ${msg.guild.roles.cache.find(channel => channel.id === client.settings.get(msg.guild.id, "djrole")) ? msg.guild.roles.cache.get(client.settings.get(msg.guild.id, "djrole")).name + " | " + guildConf.djrole : "❌❌❌ NOT FOUND ❌❌❌"}
+		supportrole   :: ${msg.guild.roles.cache.find(channel => channel.id === client.settings.get(msg.guild.id, "supportrole")) ? msg.guild.roles.cache.get(client.settings.get(msg.guild.id, "supportrole")).name + " | " + guildConf.supportrole : "❌❌❌ NOT FOUND ❌❌❌"}
+		roleonjoin    :: ${msg.guild.roles.cache.find(channel => channel.id === client.settings.get(msg.guild.id, "roleonjoin")) ? msg.guild.roles.cache.get(client.settings.get(msg.guild.id, "roleonjoin")).name + " | " + guildConf.roleonjoin : "❌❌❌ NOT FOUND ❌❌❌"}
 		`;
 		
 		const other = stripIndent`
 		prefix           :: ${guildConf.prefix}
-		ticketcategory   :: ${guildConf.ticketcategory}
-		musicchannelonly :: ${guildConf.musicchannelonly}
 		xpcooldown       :: ${guildConf.xpcooldown}
-		autodeletecmds   :: ${guildConf.autodeletecmds}	
+		musicchannelonly :: ${guildConf.musicchannelonly}
+		autodeletecmds   :: ${guildConf.autodeletecmds}
         `;
 
 		const settingsEmbed = new Discord.MessageEmbed()
@@ -67,13 +66,6 @@ module.exports = {
 			.addField('Roles', `\`\`\`asciidoc\n${roles}\`\`\``, false)
 			.addField('Other', `\`\`\`asciidoc\n${other}\`\`\``, false)
 
-		// Object.keys(guildConf).map(prop => {
-		// //   return `${prop}  :  ${guildConf[prop]}\n`;
-		// 	return settingsEmbed.addField(`${prop}`,`\`${guildConf[prop]}\``, true)
-		// });
-		// msg.channel.send(`The following are the server's current configuration:
-		// \`\`\`${configProps}\`\`\``);
-		
 		msg.channel.send(settingsEmbed).then(msg => msg.delete({timeout:30000}));
     }
 }
