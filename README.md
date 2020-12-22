@@ -5,6 +5,7 @@
 ![Build](https://img.shields.io/appveyor/ci/mirko93s/chill)
 ![Code-Quality](https://img.shields.io/codefactor/grade/github/mirko93s/Chill)
 ![Last-Commit](https://img.shields.io/github/last-commit/mirko93s/Chill)
+[![Discord Bots](https://top.gg/api/widget/status/605894942275141672.svg)](https://top.gg/bot/605894942275141672)
 
 <img src="https://s7.gifyu.com/images/chill.gif" data-canonical-src="https://s7.gifyu.com/images/chill.gif" />
 
@@ -28,9 +29,9 @@ Type ".help" or ".help (command)" in discord to get a detailed explanation of ea
 | Fun | 8ball, achievement, flipcoin, rockpaperscissors, ship, slotmachine|
 | Info | avatar, help, serveremojis, serverinfo, whois |
 | Moderation | ban, kick, mute, purge, report, say, ticket, unmute |
-| Music | play, skip, playskip, resume, stop, nowplaying, queue, summon, volume |
+| Music | musicchannelonly, play, skip, playskip, resume, stop, nowplaying, queue, summon, volume |
 | Other | calc, instagram, mcstat, nick, percentage, ping, remindme, today, urban, weather |
-| Owner | botactivity, guilds |
+| Owner | blast, botactivity, guilds |
 | Roles | addrole, removerole, roleinfo, rolelist |
 | Settings| resetconfig, setconfig, showconfig |
 | Xp | leaderboard, level, xp |
