@@ -94,13 +94,18 @@ module.exports = {
             .setURL(`https://www.mirko93s.it/`)
             .setThumbnail(client.user.avatarURL())
             .setTitle(`Thanks for inviting my bot!`)
-            .setDescription(`⚠️ Follow these instructions to setup the Bot (Don't skip them!) ⚠️
-            \n1️⃣ Type **.showconfig** \n> You can check the default settings in there. \n> **Then you can set them as you prefer using .setconfig.
-            \n2️⃣ Type **.setup** \n> It will create required channels, roles, etc according to the config you just set.
-            \n3️⃣ Set your role hierarchy\n> **Chill** (bot) role must be just below the owner/admin role.\n> **Muted** role must be above any other role that your members will get.
-            \n4️⃣ Extra settings\n> Sometimes you might need to adjust channel permissions to avoid that "Muted" members can still send messages.
-            \n5️⃣ Music\n> Don't forget to give **DJ** role to your members to make sure they can use Music commands.\n> If you will use "Music Only Channel" a hidden text channel will only be shown to people who are connected to the Music Vocal Channel`)
-            .setFooter(`©️ 2019-2020 by mirko93s`,`https://cdn.discordapp.com/avatars/278380909588381698/029d0578df3fa298132b3d85dd06bf3c.png?size=128`)
+            .setDescription(`⚠️ Follow the instructions to setup the Bot (Don't skip them!) ⚠️
+            \n1️⃣ **Type .showconfig** \n> You can check the default settings in there.
+            \n2️⃣ **Rename channels and roles**\n > Rename the channels and the roles you see in the config as you prefer, they are saved in the config using the id, so you can rename them at any time and they will still be linked to the config.
+            \n3️⃣ **Set other settings**\n> Set the settings you see in the **Other** paragraph as you prefer, if you want to get back to default, type .resetconfig (this wil only reset that paragraph).
+            \n4️⃣ **Set your role hierarchy**\n> **Chill** (bot) role must be just below the owner/admin role.\n> **Muted** role must be above any other role that your members will get.
+            \n5️⃣ **Music**\n> Don't forget to give **DJ** role to your members to make sure they can use Music commands.\n> If you will use "Music Only Channel" a hidden text channel will only be shown to people who are connected to the Music Vocal Channel and music commands will only work on the "Music Text Channel".
+            \n6️⃣ **Role Hierarchy**\n> Sometimes you might need to adjust channel permissions to avoid that "Muted" members can still send messages, depending on how your server has been set.
+            \n7️⃣ **Deleted Config Keys**\n> If you accidentally delete a bot's channel or role it will appear as "NOT FOUND" in .showconfig, to fix and create the missing keys of the config type .setup. This will create the missin/deleted channels and roles.
+            \n
+            \n**TL;DR**\n> You can now rename all the channels and roles the bot has just created, check them by doing .showconfig. Put Muted role above any other role that normal members can get, give DJ role to users. Do .setup if you accidentally deleted a bot's channel/role.
+            `)
+            .setFooter(`©️ 2019-2020 mirko93s`,`https://cdn.discordapp.com/avatars/278380909588381698/029d0578df3fa298132b3d85dd06bf3c.png?size=128`)
 	    guild.owner.send(dmonweronjoinEmbed);
     },
 

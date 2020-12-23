@@ -81,6 +81,7 @@ client.on('guildCreate', (guild) => {
 	client.settings.ensure(guild.id, defaultSettings);
 	setupGuildOnJoin(client, guild);
 	console.log(`+ Guild: ${guild.name}`);
+	//update bot activity counter
 	let users = client.guilds.cache.reduce((a, g) => a + g.memberCount - 1, 0)
 	client.user.setActivity(`${users} user${users !== 1 ? 's' : ''}`, {type: 'WATCHING'});
 	//msg guild owner with setup info

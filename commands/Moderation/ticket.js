@@ -35,27 +35,29 @@ module.exports = {
     
                 channel.setParent(channelcategory);
                 
-                channel.createOverwrite(msg.guild.roles.everyone, {
+                channel.createOverwrite(msg.guild.roles.everyone.id , {
                     VIEW_CHANNEL: false
-                })
-                
+                });          
                 channel.createOverwrite(msg.author.id, {
                     VIEW_CHANNEL: true,
                     SEND_MESSAGES: true
-                })
-
+                });
                 channel.createOverwrite(supportrole.id, {
                     VIEW_CHANNEL: true,
                     SEND_MESSAGES: true
-                })
+                });
 
-                r.overwritePermissions(everyoneRole, { VIEW_CHANNEL: false });
+                const ticketEmbed = new Discord.MessageEmbed()
+                    .setColor('RANDOM')
+                    .setTitle('🎟️ TICKET 🎟️')
+                    .setDescription(`**${msg.member.user} someone will be with you shortly.**`)
+
+                channel.send(ticketEmbed);
             });
             return;
         };
 
         if (arg [0] == "delete" && msg.channel.name.includes("ticket") == true) return msg.channel.delete();
-        // if (arg [0] == "delete" && msg.channel.name.indexOf("❌ticket") == true) return msg.channel.send(noticketchannelEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
         if (arg[0] == "close" && msg.channel.name.indexOf("ticket") == false) {
             if (msg.member.roles.cache.find(supportrole => supportrole.id === (client.settings.get(msg.guild.id, "supportrole"))) || msg.member.hasPermission("ADMINISTRATOR")) {
@@ -66,9 +68,9 @@ module.exports = {
                 })
                 
                 const ticketclosed = new Discord.MessageEmbed()
-                .setColor(`GREEN`)
-                .setTitle(`❌ The ticket has been closed.`)
-                .setDescription(`<@${user.id}>`)
+                    .setColor(`GREEN`)
+                    .setTitle(`❌ The ticket has been closed.`)
+                    .setDescription(`<@${user.id}>`)
 
                 let channelname = msg.channel.name;
 
