@@ -4,11 +4,9 @@ const fs = require("fs");
 const config = require('./config.json');
 const client = new Discord.Client;
 client.queue = new Map();
-const SQLite = require("better-sqlite3");
-const sql = new SQLite('./xp_database/scores.sqlite');
 const Enmap = require('enmap');
 const talkedRecently = new Set();
-const { xpAdd, setupCheck, dmOwnerOnJoin, welcomeMessage ,setupGuildOnJoin} = require("./functions.js");
+const { xpAdd, setupCheck, dmOwnerOnJoin, welcomeMessage ,setupGuildOnJoin, countersOnReady} = require("./functions.js");
 
 client.commands = new Collection();
 client.aliases = new Collection();
@@ -22,8 +20,17 @@ client.settings = new Enmap({
 	name: "settings",
 	fetchAll: false,
 	autoFetch: true,
-	cloneLevel: 'deep'
-  });
+	cloneLevel: 'deep',
+	dataDir: './databases/guild_settings'
+});
+
+client.xp = new Enmap({
+	name: "xp",
+	fetchAll: false,
+	autoFetch: true,
+	cloneLevel: 'deep',
+	dataDir: './databases/xp'
+});
 
 const defaultSettings = {
 	prefix: ".",
@@ -49,29 +56,7 @@ const defaultSettings = {
 client.on('warn', console.warn);
 client.on('error', console.error);
 client.on('ready', () => {
-	const table = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'scores';").get();
-  	if (!table['count(*)']) {
-		sql.prepare("CREATE TABLE scores (id TEXT PRIMARY KEY, user TEXT, guild TEXT, points INTEGER, level INTEGER);").run(); //create table if not exist
-		sql.prepare("CREATE UNIQUE INDEX idx_scores_id ON scores (id);").run();	// Ensure that the id row is always unique and indexed.
-		sql.pragma("synchronous = 1");
-		sql.pragma("journal_mode = wal");
-  	}
-	client.getScore = sql.prepare("SELECT * FROM scores WHERE user = ? AND guild = ?");
-	client.setScore = sql.prepare("INSERT OR REPLACE INTO scores (id, user, guild, points, level) VALUES (@id, @user, @guild, @points, @level);");
-	//set activity
-	let users = client.guilds.cache.reduce((a, g) => a + g.memberCount - 1, 0)
-	client.user.setActivity(`${users} user${users !== 1 ? 's' : ''}`, {type: 'WATCHING'});
-	//set channel counters in my server
-	client.channels.cache.get(config.users_counter_channel).setName(`USERS: ${users}`);
-	client.channels.cache.get(config.guilds_counter_channel).setName(`SERVERS: ${client.guilds.cache.size}`);
-	//update activity and counters every 30 minutes
-	setInterval(async () => { 
-		let users = client.guilds.cache.reduce((a, g) => a + g.memberCount - 1, 0)
-		client.channels.cache.get(config.users_counter_channel).setName(`USERS: ${users}`);
-		client.channels.cache.get(config.guilds_counter_channel).setName(`SERVERS: ${client.guilds.cache.size}`);
-	  	await client.user.setActivity(`${users} user${users !== 1 ? 's' : ''}`, {type: 'WATCHING'});
-	  	console.log(`Bot activity UPDATED! New user size is: ${users}. New guild size is: ${client.guilds.cache.size}`);
-	}, 30*60*1000);
+	countersOnReady(client);
 });
 client.on('disconnect', () => console.log('Chill BOT Disconnected! Trying to reconnect...'));
 client.on('reconnecting', () => console.log('Chill BOT Reconnecting!'));
@@ -94,6 +79,7 @@ client.on("guildDelete", guild => {
 });
 
 client.on("guildMemberAdd", member => {
+	client.settings.ensure(member.guild.id, defaultSettings);
 	member.roles.add(member.guild.roles.cache.find(role => role.id === client.settings.get(member.guild.id, "roleonjoin"))); //give default role to new members
 	const welcomechannel = member.guild.channels.cache.find(welcomechannel => welcomechannel.id === (client.settings.get(member.guild.id, "welcomechannel")));
 	if (!welcomechannel) return;
@@ -101,6 +87,7 @@ client.on("guildMemberAdd", member => {
 });
 
 client.on("voiceStateUpdate", (oldUser, newUser) => { //give temp role while on music voice channel
+	client.settings.ensure(newUser.guild.id, defaultSettings);
 	const channel = newUser.guild.channels.cache.find(musicvocalchannel => musicvocalchannel.id === (client.settings.get(newUser.guild.id, "musicvocalchannel")));
 	const role = newUser.guild.roles.cache.find(role => role.id === (client.settings.get(newUser.guild.id, "musictemprole")));
 	if (channel && role) {
@@ -125,11 +112,11 @@ client.on("message", async msg => {
 		}
 	}
 	//xp
-	if (msg.guild && !msg.content.startsWith(prefix) && !talkedRecently.has(msg.author.id) && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) {
+	if (msg.guild && !msg.content.startsWith(prefix) && !talkedRecently.has(msg.author.id) && msg.channel.id !== client.settings.get(msg.guild.id, "musictextchannel")) {
 		xpAdd(client, msg, talkedRecently);
 	}
 	//old main
-	if (!msg.content.startsWith(prefix) && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return;
+	if (!msg.content.startsWith(prefix) && msg.channel.id !== client.settings.get(msg.guild.id, "musictextchannel")) return;
   	if (!msg.member) msg.member = await msg.guild.fetchMember(msg);
 	//music-text-channel doesn't need .play command
 	if (msg.channel.name === client.settings.get(msg.guild.id, "musictextchannel") && !msg.content.startsWith(prefix)) {

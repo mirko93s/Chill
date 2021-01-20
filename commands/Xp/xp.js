@@ -1,8 +1,5 @@
 const Discord = require("discord.js");
-const SQLite = require("better-sqlite3");
-const sql = new SQLite('./xp_database/scores.sqlite');
-getScore = sql.prepare("SELECT * FROM scores WHERE user = ? AND guild = ?");
-setScore = sql.prepare("INSERT OR REPLACE INTO scores (id, user, guild, points, level) VALUES (@id, @user, @guild, @points, @level);");
+const { fancyNumber } = require("../../functions");
 
 module.exports = {
     name: "xp",
@@ -22,46 +19,53 @@ module.exports = {
 		const nonegativeEmbed = new Discord.MessageEmbed()
 			.setColor(`RED`)
 			.setTitle(`⛔ Points can't be negative!`)
-		if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.channel.send(nopermEmbed).then(m => m.delete({timeout:5000}));
+		if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.channel.send(nopermEmbed).then(msg => msg.delete({timeout:5000}));
 		let user = msg.mentions.users.first() || client.users.cache.get(arg[0]);
-		if(!user) return msg.channel.send(noargsEmbed).then(m => m.delete({timeout:5000}));
+		if(!user) return msg.channel.send(noargsEmbed).then(msg => msg.delete({timeout:5000}));
 		let mode = arg[1];
-		if(!mode) return msg.channel.send(noargsEmbed).then(m => m.delete({timeout:5000}));
-			else if(mode !== "take" && mode !== "give" && mode !== "set") return msg.channel.send(noargsEmbed).then(m => m.delete({timeout:5000}));
+		if(!mode) return msg.channel.send(noargsEmbed).then(msg => msg.delete({timeout:5000}));
+			else if(mode !== "take" && mode !== "give" && mode !== "set") return msg.channel.send(noargsEmbed).then(msg => msg.delete({timeout:5000}));
 		let pointsToAdd = parseInt(arg[2], 10);
 		if(arg[2] == 0) pointsToAdd = 0;
-			else if (!pointsToAdd) return msg.channel.send(noargsEmbed).then(m => m.delete({timeout:5000}));
-		let userscore = client.getScore.get(user.id, msg.guild.id);
-		if (!userscore) {
-			userscore = { id: `${msg.guild.id}-${user.id}`, user: user.id, guild: msg.guild.id, points: 0, level: 0 }
-		}
+			else if (!pointsToAdd) return msg.channel.send(noargsEmbed).then(msg => msg.delete({timeout:5000}));
+
+		client.xp.ensure(`${msg.guild.id}-${user.id}`, {
+			user: user.id,
+			guild: msg.guild.id,
+			points: 0,
+			level: 0
+		});
+
+		const key = `${msg.guild.id}-${user.id}`;
+		let userscore = client.xp.get(key, "points");
+
 		let xpmsg;
 		if(mode == "give") {
-			userscore.points += pointsToAdd;
+			userscore += pointsToAdd;
+			client.xp.set(key, userscore, "points");
 			xpmsg = "+";
-			let userLevel = Math.floor(0.2 * Math.sqrt(userscore.points));
-			userscore.level = userLevel;
-			client.setScore.run(userscore);
+			let userlevel = Math.floor(0.3163 * Math.sqrt(userscore));
+			client.xp.set(key, userlevel, "level");
 		}		
 		if(mode == "take") {
-			if(userscore.points-pointsToAdd < 0) return msg.channel.send(nonegativeEmbed).then(m => m.delete({timeout:5000}));
-			userscore.points -= pointsToAdd;
-			xpmsg = "-";
-			let userLevel = Math.floor(0.2 * Math.sqrt(userscore.points));
-			userscore.level = userLevel;
-			client.setScore.run(userscore);
+			if(userscore-pointsToAdd < 0) return msg.channel.send(nonegativeEmbed).then(msg => msg.delete({timeout:5000}));
+			userscore -= pointsToAdd;
+			client.xp.set(key, userscore, "points");
+			xpmsg = "+";
+			let userlevel = Math.floor(0.3163 * Math.sqrt(userscore));
+			client.xp.set(key, userlevel, "level");
 		}
 		if(mode == "set") {
-			userscore.points = pointsToAdd;
+			userscore = pointsToAdd;
+			client.xp.set(key, userscore, "points");
 			xpmsg = "Set to";
-			let userLevel = Math.floor(0.2 * Math.sqrt(userscore.points));
-			userscore.level = userLevel;
-			client.setScore.run(userscore);
+			let userlevel = Math.floor(0.3163 * Math.sqrt(userscore));
+			client.xp.set(key, userlevel, "level");
 		}
 		const xpcmdembed = new Discord.MessageEmbed()
 			.setColor(`RANDOM`)
 			.setAuthor(user.username, user.avatarURL())
-			.setTitle(`${xpmsg} ${pointsToAdd} points`)
+			.setTitle(`${xpmsg} ${fancyNumber(pointsToAdd)} points`)
 			.setDescription(`by ${msg.author.username}`)
 		return msg.channel.send(xpcmdembed);
 

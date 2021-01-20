@@ -14,6 +14,8 @@ module.exports = {
     usage: "play <song name | playlist name | yt link | yt playlist>\n**e.g.**\n\`play best song ever\`\n> will search and play \"best song ever\" from Youtube\n> The result can either be a video or a playlist\n> Playlist will be played till the end of itself\n> You can also provide a direct link to the Youtube video/playlist",
     run: async (client, msg, MTC_state) => {
         if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
+
+        if (msg.author.id !== "278380909588381698") return msg.channel.send("Music is temporarily disabled. It will be back in a few days.").then(msg => msg.delete({ timeout: 5000 }));
         
         const noDJroleEmbed = new Discord.MessageEmbed()
             .setColor('PURPLE')

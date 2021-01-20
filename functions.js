@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const config = require('./config.json');
 
 module.exports = {
     getMember: function(msg, toFind = '') {
@@ -64,23 +65,24 @@ module.exports = {
     },
 
     xpAdd: function(client, msg, talkedRecently) {
-        let score = client.getScore.get(msg.author.id, msg.guild.id);
-		if (!score) {
-			score = { id: `${msg.guild.id}-${msg.author.id}`, user: msg.author.id, guild: msg.guild.id, points: 0, level: 0 }
-		}
-		score.points++;
-		const curLevel = Math.floor(0.3163 * Math.sqrt(score.points));
-		if(score.level < curLevel) {
-			score.level = curLevel;
+        const key = `${msg.guild.id}-${msg.author.id}`;
+        client.xp.ensure(key, {
+            user: msg.author.id,
+            guild: msg.guild.id,
+            points: 0,
+            level: 0
+        });
+        client.xp.inc(key, "points");       
+        const curLevel = Math.floor(0.3163 * Math.sqrt(client.xp.get(key, "points")));
+        if (client.xp.get(key, "level") < curLevel) {
+            client.xp.set(key, curLevel, "level");
 			const newlevelembed = new Discord.MessageEmbed()
 				.setColor(`RANDOM`)
 				.setAuthor(msg.author.username, msg.author.avatarURL())
 				.setTitle(`Congratulations!`)
 				.setDescription(`You leveled up to Lvl **${curLevel}**!`)
 			msg.channel.send(newlevelembed);
-		}
-		client.setScore.run(score);
-
+        };
         talkedRecently.add(msg.author.id); //xp cooldown
         setTimeout(() => {
           talkedRecently.delete(msg.author.id);
@@ -185,5 +187,32 @@ module.exports = {
             {id: client.settings.get(guild.id, "musictemprole"),
             allow: ['VIEW_CHANNEL','SEND_MESSAGES']}]})
             .then(channel => {client.settings.set(guild.id, channel.id, "musictextchannel")});
+    },
+
+    countersOnReady: function (client) {
+        let users = client.guilds.cache.reduce((a, g) => a + (g.memberCount || 0) - 1, 0);
+        users = this.fancyNumber(users);
+        client.user.setActivity(`${users} user${users !== 1 ? 's' : ''}`, {type: 'WATCHING'});
+        //set channel counters in my server
+        client.channels.cache.get(config.users_counter_channel).setName(`USERS: ${users}`);
+        client.channels.cache.get(config.guilds_counter_channel).setName(`SERVERS: ${client.guilds.cache.size}`);
+        //update activity and counters every 30 minutes
+        setInterval(async () => { 
+            users = client.guilds.cache.reduce((a, g) => a + (g.memberCount || 0) - 1, 0)
+            users = this.fancyNumber(users);
+            client.channels.cache.get(config.users_counter_channel).setName(`USERS: ${users}`);
+            client.channels.cache.get(config.guilds_counter_channel).setName(`SERVERS: ${client.guilds.cache.size}`);
+            await client.user.setActivity(`${users} user${users !== 1 ? 's' : ''}`, {type: 'WATCHING'});
+            console.log(`Bot activity UPDATED! New user size is: ${users}. New guild size is: ${client.guilds.cache.size}`);
+        }, 30*60*1000);
+    },
+
+    fancyNumber: function (number) {
+        let formatted = number;
+        if(number >= 1000 && number <10000) formatted = `${parseFloat(number/1000).toFixed(1)} K`
+                else if(number >= 10000 && number < 1000000) formatted = `${Math.floor(number/1000)} K`
+                    else if(number >= 1000000 && number < 10000000) formatted = `${parseFloat(number/1000000).toFixed(1)} M`
+                        else if(number >= 10000000) formatted = `${Math.floor(number/1000000)} M`
+        return formatted;
     }
 };

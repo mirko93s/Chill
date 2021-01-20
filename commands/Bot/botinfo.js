@@ -21,7 +21,7 @@ module.exports = {
         
         const counters = stripIndent`
             Guilds    :: ${Math.ceil(client.guilds.cache.size)}
-            Users     :: ${client.guilds.cache.reduce((a, g) => a + g.memberCount - 1, 0)}
+            Users     :: ${client.guilds.cache.reduce((a, g) => a + (g.memberCount || 0) - 1, 0)}
             Channels  :: ${client.channels.cache.size}
         `;
             
