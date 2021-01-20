@@ -36,6 +36,8 @@ Type ".help" or ".help (command)" in discord to get a detailed explanation of ea
 | Settings| resetconfig, setconfig, showconfig |
 | Xp | leaderboard, level, xp |
 
+### Known bugs
+Discord new Rules Screening feature for communities won't work because the bot gives a role to all new members, currently in the latest discord.js v12 stable release there is no way to check if someone has accepted the rules, it will be implemented in discord.js v13
 
 [//]: # (Hidden stuff)
 <!--
