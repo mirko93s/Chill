@@ -16,6 +16,13 @@ client.categories = fs.readdirSync("./commands/");
   require(`./handlers/${handler}`)(client);
 });
 
+var dir_databases = './databases';
+if (!fs.existsSync(dir_databases)) fs.mkdirSync(dir_databases);
+var dir_guild_settings = './databases/guild_settings';
+if (!fs.existsSync(dir_guild_settings)) fs.mkdirSync(dir_guild_settings);
+var dir_xp = './databases/xp';
+if (!fs.existsSync(dir_xp)) fs.mkdirSync(dir_xp);
+
 client.settings = new Enmap({
 	name: "settings",
 	fetchAll: false,
