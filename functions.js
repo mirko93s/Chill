@@ -191,7 +191,7 @@ module.exports = {
 
     countersOnReady: function (client) {
         let users = client.guilds.cache.reduce((a, g) => a + (g.memberCount || 0) - 1, 0);
-        users = this.fancyNumber(users);
+        users = module.exports.fancyNumber(users);
         client.user.setActivity(`${users} user${users !== 1 ? 's' : ''}`, {type: 'WATCHING'});
         //set channel counters in my server
         client.channels.cache.get(config.users_counter_channel).setName(`USERS: ${users}`);
@@ -199,7 +199,7 @@ module.exports = {
         //update activity and counters every 30 minutes
         setInterval(async () => { 
             users = client.guilds.cache.reduce((a, g) => a + (g.memberCount || 0) - 1, 0)
-            users = this.fancyNumber(users);
+            users = module.exports.fancyNumber(users);
             client.channels.cache.get(config.users_counter_channel).setName(`USERS: ${users}`);
             client.channels.cache.get(config.guilds_counter_channel).setName(`SERVERS: ${client.guilds.cache.size}`);
             await client.user.setActivity(`${users} user${users !== 1 ? 's' : ''}`, {type: 'WATCHING'});
