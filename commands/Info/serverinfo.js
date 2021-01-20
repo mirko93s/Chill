@@ -33,7 +33,7 @@ module.exports = {
             Region             :: ${msg.guild.region}
             Verification Level :: ${verificationLevels[msg.guild.verificationLevel]}
             Explicit Filter    :: ${filterLevels[msg.guild.explicitContentFilter]}
-            Roles Count        :: ${msg.guild.roles.size}
+            Roles Count        :: ${msg.guild.roles.cache.size}
         `;
 
         const embed = new Discord.MessageEmbed()
