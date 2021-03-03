@@ -25,11 +25,13 @@ Type ".help" or ".help (command)" in discord to get a detailed explanation of ea
 | Modules | Commands |
 | ------ | ------ |
 | Admin | addchannel, broadcast, giveaway, poll, setup |
-| Bot | botinfo, bugreport, invite, project |
+| Autovocal | autovocal, autovocallock, autovocalinvite, autovocalkick |
+| Bot | botinfo, bugreport, invite, project, vote, website |
+| Commands | command, customcommand, customcommandremove, customcommandlist |
 | Fun | 8ball, achievement, flipcoin, rockpaperscissors, ship, slotmachine|
 | Info | avatar, help, serveremojis, serverinfo, whois |
 | Moderation | ban, kick, mute, purge, report, say, ticket, unmute |
-| Music | musicchannelonly, play, skip, playskip, resume, stop, nowplaying, queue, summon, volume |
+| Music | play, skip, playskip, resume, stop, nowplaying, queue, summon, volume |
 | Other | calc, instagram, mcstat, nick, percentage, ping, remindme, today, urban, weather |
 | Owner | blast, botactivity, guilds |
 | Roles | addrole, removerole, roleinfo, rolelist |
