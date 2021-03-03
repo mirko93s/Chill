@@ -6,14 +6,13 @@ module.exports = {
     description: "Ship 2 members",
     usage: "ship <name1> <name2>\n**e.g.**\n\`ship name_1 name_2\`\n> Check the affinity between 2 people",
     run: async (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const nonamesEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setTitle(`⛔ Enter 2 names to ship`)
 
         let user1 = arg[0];
-        let user2 = arg.slice(1).join(' ');
+        let user2 = arg[1];
         if (!user1 || !user2) return msg.channel.send(nonamesEmbed).then(msg => msg.delete({ timeout: 5000 }));
         var ship = Math.floor(Math.random() * 100) + 1;
 
@@ -27,6 +26,7 @@ module.exports = {
         }
 
         let shipEmbed = new Discord.MessageEmbed()
+            .setFooter(`${bar} ${ship}%`);
 
         switch (true) {
             case (ship>=0 && ship <=19):
@@ -34,7 +34,6 @@ module.exports = {
                     .setColor(`640000`)
                     .setTitle(`💔 SHIP 💔`)
                     .setDescription(`🔻 ${user1}\n🔺 ${user2}\n**Do not match at all**`)
-                    .setFooter(`${bar} ${ship}%`);
                 msg.channel.send(shipEmbed);
                 break;
             case (ship>=20 && ship <=49):
@@ -42,7 +41,6 @@ module.exports = {
                     .setColor(`960000`)
                     .setTitle(`❤️ SHIP ❤️`)
                     .setDescription(`🔻 ${user1}\n🔺 ${user2}\n**Do not match well**`)
-                    .setFooter(`${bar} ${ship}%`);
                 msg.channel.send(shipEmbed);
                 break;
             case (ship>=50 && ship <=89):
@@ -50,7 +48,6 @@ module.exports = {
                     .setColor(`C80000`)
                     .setTitle(`💓 SHIP 💓`)
                     .setDescription(`🔻 ${user1}\n🔺 ${user2}\n**Match very well**`)
-                    .setFooter(`${bar} ${ship}%`);
                 msg.channel.send(shipEmbed);
                 break;
             case (ship>=90 && ship <=100):
@@ -58,7 +55,6 @@ module.exports = {
                     .setColor(`FA0000`)
                     .setTitle(`💗 SHIP 💗`)
                     .setDescription(`🔻 ${user1}\n🔺 ${user2}\n**Are meant to eachother**`)
-                    .setFooter(`${bar} ${ship}%`);
                 msg.channel.send(shipEmbed);
                 break;
         };

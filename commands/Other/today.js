@@ -7,7 +7,7 @@ module.exports = {
     description: "History lessons",
     usage: "today\n**e.g.**\n\`today\`\n> Get a random fact that took place today",
     run: async (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
+
         const text = await fetch('http://history.muffinlabs.com/date')
             .then(response => response.json());
         const events = text.data.Events;

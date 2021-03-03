@@ -28,17 +28,10 @@ module.exports = {
     },
 
     promptMessage: async function (msg, author, time, validReactions) {
-        // We put in the time as seconds, with this it's being transfered to MS
+
         time *= 1000;
-
-        // For every emoji in the function parameters, react in the good order.
-        for (const reaction of validReactions) await msg.react(reaction);
-
-        // Only allow reactions from the author, 
-        // and the emoji must be in the array we provided.
+        for (const reaction of validReactions) await msg.react(reaction); //add reactions in order
         const filter = (reaction, user) => validReactions.includes(reaction.emoji.name) && user.id === author.id;
-
-        // And ofcourse, await the reactions
         return msg
             .awaitReactions(filter, { max: 1, time: time})
             .then(collected => collected.first() && collected.first().emoji.name);
@@ -103,11 +96,11 @@ module.exports = {
             \n4️⃣ **Set your role hierarchy**\n> **Chill** (bot) role must be just below the owner/admin role.\n> **Muted** role must be above any other role that your members will get.
             \n5️⃣ **Music**\n> Don't forget to give **DJ** role to your members to make sure they can use Music commands.\n> If you will use "Music Only Channel" a hidden text channel will only be shown to people who are connected to the Music Vocal Channel and music commands will only work on the "Music Text Channel".
             \n6️⃣ **Role Hierarchy**\n> Sometimes you might need to adjust channel permissions to avoid that "Muted" members can still send messages, depending on how your server has been set.
-            \n7️⃣ **Deleted Config Keys**\n> If you accidentally delete a bot's channel or role it will appear as "NOT FOUND" in .showconfig, to fix and create the missing keys of the config type .setup. This will create the missin/deleted channels and roles.
+            \n7️⃣ **Deleted Config Keys**\n> If you accidentally delete a bot's channel or role it will appear as "NOT FOUND" in .showconfig, to fix and create the missing keys of the config type .setup. This will create the missing/deleted channels and roles.
             \n
             \n**TL;DR**\n> You can now rename all the channels and roles the bot has just created, check them by doing .showconfig. Put Muted role above any other role that normal members can get, give DJ role to users. Do .setup if you accidentally deleted a bot's channel/role.
             `)
-            .setFooter(`©️ 2019-2020 mirko93s`,`https://cdn.discordapp.com/avatars/278380909588381698/029d0578df3fa298132b3d85dd06bf3c.png?size=128`)
+            .setFooter(`©️ 2019-2021 mirko93s`,`https://cdn.discordapp.com/avatars/278380909588381698/029d0578df3fa298132b3d85dd06bf3c.png?size=128`)
 	    guild.owner.send(dmonweronjoinEmbed);
     },
 
@@ -189,30 +182,53 @@ module.exports = {
             .then(channel => {client.settings.set(guild.id, channel.id, "musictextchannel")});
     },
 
-    countersOnReady: function (client) {
-        let users = client.guilds.cache.reduce((a, g) => a + (g.memberCount || 0) - 1, 0);
-        users = module.exports.fancyNumber(users);
-        client.user.setActivity(`${users} user${users !== 1 ? 's' : ''}`, {type: 'WATCHING'});
-        //set channel counters in my server
-        client.channels.cache.get(config.users_counter_channel).setName(`USERS: ${users}`);
-        client.channels.cache.get(config.guilds_counter_channel).setName(`SERVERS: ${client.guilds.cache.size}`);
-        //update activity and counters every 30 minutes
-        setInterval(async () => { 
-            users = client.guilds.cache.reduce((a, g) => a + (g.memberCount || 0) - 1, 0)
-            users = module.exports.fancyNumber(users);
-            client.channels.cache.get(config.users_counter_channel).setName(`USERS: ${users}`);
-            client.channels.cache.get(config.guilds_counter_channel).setName(`SERVERS: ${client.guilds.cache.size}`);
-            await client.user.setActivity(`${users} user${users !== 1 ? 's' : ''}`, {type: 'WATCHING'});
-            console.log(`Bot activity UPDATED! New user size is: ${users}. New guild size is: ${client.guilds.cache.size}`);
-        }, 30*60*1000);
-    },
-
     fancyNumber: function (number) {
         let formatted = number;
-        if(number >= 1000 && number <10000) formatted = `${parseFloat(number/1000).toFixed(1)} K`
-                else if(number >= 10000 && number < 1000000) formatted = `${Math.floor(number/1000)} K`
-                    else if(number >= 1000000 && number < 10000000) formatted = `${parseFloat(number/1000000).toFixed(1)} M`
-                        else if(number >= 10000000) formatted = `${Math.floor(number/1000000)} M`
+        if (number >= 10**3) {
+            const suffix = ['K','M','B','T'];
+            var selector = -1;    
+            do {
+                formatted /= 10**3;
+                selector++;
+            } while (formatted >= 10**3);
+            formatted = `${parseFloat(number/10**((selector+1)*3)).toFixed(1)}${suffix[selector] !== undefined ? ` ${suffix[selector]}` : `e${(selector+1)*3}`}`;
+        }
         return formatted;
+    },
+
+    setupDatabases: function (client) {
+        const fs = require("fs");
+        const Enmap = require('enmap');
+        //check if folders exist
+        var dir_databases = './databases';
+        if (!fs.existsSync(dir_databases)) fs.mkdirSync(dir_databases);
+        var dir_guild_settings = './databases/guild_settings';
+        if (!fs.existsSync(dir_guild_settings)) fs.mkdirSync(dir_guild_settings);
+        var dir_xp = './databases/xp';
+        if (!fs.existsSync(dir_xp)) fs.mkdirSync(dir_xp);
+        var dir_customcmd = './databases/customcommands';
+        if (!fs.existsSync(dir_customcmd)) fs.mkdirSync(dir_customcmd);
+        //create enmaps
+        client.settings = new Enmap({
+            name: "settings",
+            fetchAll: false,
+            autoFetch: true,
+            cloneLevel: 'deep',
+            dataDir: './databases/guild_settings'
+        });
+        client.xp = new Enmap({
+            name: "xp",
+            fetchAll: false,
+            autoFetch: true,
+            cloneLevel: 'deep',
+            dataDir: './databases/xp'
+        });
+        client.customcmd = new Enmap({
+            name: "customcmd",
+            fetchAll: false,
+            autoFetch: true,
+            cloneLevel: 'deep',
+            dataDir: './databases/customcommands'
+        });
     }
 };

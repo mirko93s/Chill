@@ -8,7 +8,6 @@ module.exports = {
     description: "Returns top 10 leaderboard",
     usage: "leaderboard\n**e.g.**\n\`leaderboard\`\n> Check the Top 10 users with the most xp(messages sent) in this server\n> Commands don't give xp",
     run: async (client, msg, arg) => {
-		if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
 		const filtered = client.xp.filter( p => p.guild === msg.guild.id ).array();
 		const sorted = filtered.sort((a, b) => b.points - a.points);

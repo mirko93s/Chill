@@ -8,7 +8,6 @@ module.exports = {
     usage: "setup\n**e.g.**\n> \`setup\`\n> It will create preset channels, roles, channel categories, etc...",
     permission: "ADMINISTRATOR",
     run: async (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const nopermEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
@@ -53,7 +52,7 @@ module.exports = {
             djmsg = created
         } else djmsg = already
         if (!musictemprole) {
-            msg.guild.roles.create({ data: {name: "Support",permissions: [], color: 'CCCC00'}})
+            msg.guild.roles.create({ data: {name: "Listening",permissions: [], color: 'CCCC00'}})
             .then(role => {client.settings.set(msg.guild.id, role.id, "musictemprole")});
             musictempmsg = created
         } else musictempmsg = already

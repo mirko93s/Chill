@@ -13,9 +13,6 @@ module.exports = {
     description: "Play a song from Youtube",
     usage: "play <song name | playlist name | yt link | yt playlist>\n**e.g.**\n\`play best song ever\`\n> will search and play \"best song ever\" from Youtube\n> The result can either be a video or a playlist\n> Playlist will be played till the end of itself\n> You can also provide a direct link to the Youtube video/playlist",
     run: async (client, msg, MTC_state) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
-
-        if (msg.author.id !== "278380909588381698") return msg.channel.send("Music is temporarily disabled. It will be back in a few days.").then(msg => msg.delete({ timeout: 5000 }));
         
         const noDJroleEmbed = new Discord.MessageEmbed()
             .setColor('PURPLE')
@@ -46,20 +43,18 @@ module.exports = {
             .setTitle(":musical_note: Music")
             .setDescription(`⛔ I could not obtain any search results.`)
 
-        let searchString;
-        let url;
         const arg = msg.content.split(' ');
        
         if (MTC_state === true) {
-            searchString = arg.slice(0).join(' ');
-            url = arg[0] ? arg[0].replace(/<(.+)>/g, '$1') : '';
+            var searchString = arg.slice(0).join(' ');
+            var url = arg[0] ? arg[0].replace(/<(.+)>/g, '$1') : '';
         } else {
-            searchString = arg.slice(1).join(' ');
-            url = arg[1] ? arg[1].replace(/<(.+)>/g, '$1') : '';
+            var searchString = arg.slice(1).join(' ');
+            var url = arg[1] ? arg[1].replace(/<(.+)>/g, '$1') : '';
         }
 
         if (msg.member.roles.cache.some(role => role.id === (client.settings.get(msg.guild.id, "djrole")))) {
-            if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 10000 }));
             if (!url) return msg.channel.send(nourlEmbed).then(msg => msg.delete({ timeout: 5000 }));
             const voiceChannel = msg.member.voice.channel;
             if (!voiceChannel) return msg.channel.send(novcEmbed).then(msg => msg.delete({ timeout: 5000 }));

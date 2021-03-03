@@ -7,7 +7,7 @@ module.exports = {
     description: "Return current playing song",
     usage: "nowplaying\n**e.g.**\n\`nowplaying\`\n> Wanna know the name of the song currently playing?\n> This is the right command",
     run: async (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
+
         const serverQueue = client.queue.get(msg.guild.id);
 
         const noDJroleEmbed = new Discord.MessageEmbed()
@@ -28,14 +28,14 @@ module.exports = {
             .setDescription(`Music Channel Only is active!\nYou can only use the music module in: <#${client.settings.get(msg.guild.id, "musictextchannel")}>`)
 
         if (msg.member.roles.cache.some(role => role.id === (client.settings.get(msg.guild.id, "djrole")))) {
-            if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 10000 }));
             if (!msg.member.voice.channel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
             if (!serverQueue) return msg.channel.send(noplayingEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
             const nowplayingEmbed = new Discord.MessageEmbed()
-            .setColor('PURPLE')
-            .setTitle(":musical_note: Music")
-            .setDescription(`🎶 **${serverQueue.songs[0].title}**`)
+                .setColor('PURPLE')
+                .setTitle(":musical_note: Music")
+                .setDescription(`🎶 **${serverQueue.songs[0].title}**`)
 
             return msg.channel.send(nowplayingEmbed).then(msg => msg.delete({ timeout: 5000 }));
         } else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete({ timeout: 5000 }));

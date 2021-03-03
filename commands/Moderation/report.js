@@ -7,7 +7,6 @@ module.exports = {
     description: "Report a member for breaking the rules",
     usage: "report <mention | id> <reason>\n**e.g.**\n\`report @mirko93s spamming in chat channel\`\n> You will report mirko93s for spammin in a channel\n> Your report will be sent to the report channel\n> Moderators can then take a decision about the reported member",
     run: async (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const noargsEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
@@ -23,13 +22,10 @@ module.exports = {
             .setTitle(`✅ Thanks for reporting this person.\nA staff member will take a decision as soon as possible`)
 
         let rMember = msg.mentions.members.first();
-
         if (!rMember || !arg[1]) return msg.channel.send(noargsEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        if (rMember.user.bot) return msg.channel.send(nobotEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        
+        if (rMember.user.bot) return msg.channel.send(nobotEmbed).then(msg => msg.delete({ timeout: 5000 }));     
         let reportchannel = msg.guild.channels.cache.find(reportchannel => reportchannel.id === (client.settings.get(msg.guild.id, "reportchannel")));
-        
-        if(!reportchannel) return msg.channel.send(nochannelEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!reportchannel) return msg.channel.send(nochannelEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
         msg.channel.send(thanksEmbed).then(msg => msg.delete({ timeout: 5000 }));
 

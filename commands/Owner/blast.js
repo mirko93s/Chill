@@ -6,9 +6,8 @@ module.exports = {
     category: "Owner",
     description: "DM to all server owners",
     usage: "blast <message>\n**e.g.**\n\`blast new update coming\`\n> Sends a DM to all guild owners.\n> Useful to update server owners about critical and important changes in the bot.",
-    permission: "DEV_ONLY",
+    permission: "DEV",
     run: async (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const nopermEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
@@ -24,7 +23,7 @@ module.exports = {
         const blastEmbed = new Discord.MessageEmbed()
             .setColor(`PURPLE`)
             .setTitle(`📢 **BOT UPDATE**`)
-            .setDescription(`**${text}**`)
+            .setDescription(`${text}`)
             .setFooter(`by ${msg.author.username}`,msg.author.displayAvatarURL())
 
         var owners = [];

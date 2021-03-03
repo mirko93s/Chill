@@ -8,7 +8,6 @@ module.exports = {
     description: "Allows you to set a reminder for yourself.",
     usage: "reminder <time-s-m-h-d-w> <text>\n**e.g.**\n\`remindme 10h buy milk\`\nThe bot will tag you and remind you the message after the given time\nThe text can't be longer than 2048 characthers.",
     run: async (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
         
         const noargsEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
@@ -24,8 +23,8 @@ module.exports = {
         function reminder() {
             const reminderEmbed = new Discord.MessageEmbed()
                 .setColor(`RANDOM`)
-                .setTitle("\n**REMINDER**\n")
-                .setDescription(text)
+                .setTitle(`**REMINDER**`)
+                .setDescription(`${msg.member.user} ${text}`)
             msg.reply(reminderEmbed);
         }
 

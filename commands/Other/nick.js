@@ -8,7 +8,6 @@ module.exports = {
     usage: "nickname <mention> <new nickname>\n**e.g.**\n\`nickname @mirko93s newnick\`\n> will nick the user mirko93s to \"newnick\"",
     permission: "MANAGE_NICKNAMES",
     run: async (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const nopermEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)

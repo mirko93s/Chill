@@ -9,7 +9,6 @@ module.exports = {
     usage: "mute <mention> <duration> <reason>\n**e.g.**\n\`mute @mirko93s 2d reason\`\n> will mute mirko93s for 2 days\n> The mute will be logged in the punishments channel",
     permission: "MANAGE_ROLES",
     run: async (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const nochannelEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
@@ -42,14 +41,14 @@ module.exports = {
             .setColor(`RED`)
             .setTitle(`⛔ Invalid time entered!`)
 
-        let mutedrole = msg.guild.roles.cache.find(mutedrole => mutedrole.id === (client.settings.get(msg.guild.id, "mutedrole")));
-        let puchannel = msg.guild.channels.cache.find(puchannel => puchannel.id === (client.settings.get(msg.guild.id, "puchannel")));
-
+            
         if (!msg.member.hasPermission("MANAGE_ROLES")) return msg.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
         if (!msg.guild.me.hasPermission("MANAGE_ROLES")) return msg.channel.send(nobotpermEmbed).then(msg => msg.delete({ timeout: 5000 }));
         if (!puchannel) return msg.channel.send (nochannelEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        let puchannel = msg.guild.channels.cache.find(puchannel => puchannel.id === (client.settings.get(msg.guild.id, "puchannel")));
         if (!mutedrole) return msg.channel.send(noroleEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        if (!arg[0] || !arg[1]) return msg.channel.send(noargsEmbed).then(m => m.delete({timeout:5000}));
+        let mutedrole = msg.guild.roles.cache.find(mutedrole => mutedrole.id === (client.settings.get(msg.guild.id, "mutedrole")));
+        if (!arg[0] || !arg[1] || !arg[2]) return msg.channel.send(noargsEmbed).then(m => m.delete({timeout:5000}));
         
         const toMute = msg.mentions.members.first();
 

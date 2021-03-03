@@ -9,7 +9,6 @@ module.exports = {
     usage: "kick <id | mention> <reason>\n**e.g.**\n\`kick @mirko93s reason\`\n> will kick mirko93s from your server\n> The kick will be logged in the punishments channel",
     permission: "KICK_MEMBERS",
     run: async (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const nochannelEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
@@ -36,10 +35,10 @@ module.exports = {
             .setColor(`RED`)
             .setTitle(`⛔ Kick canceled`)
 
-        let puchannel = msg.guild.channels.cache.find(puchannel => puchannel.id === (client.settings.get(msg.guild.id, "puchannel")));
-
+            
         if (!msg.member.hasPermission("KICK_MEMBERS")) return msg.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
         if (!msg.guild.me.hasPermission("KICK_MEMBERS")) return msg.channel.send(nobotpermEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        let puchannel = msg.guild.channels.cache.find(puchannel => puchannel.id === (client.settings.get(msg.guild.id, "puchannel")));
         if (!puchannel) return msg.channel.send (nochannelEmbed).then(msg => msg.delete({ timeout: 5000 }));
         if (!arg[0] || !arg[1]) return msg.channel.send(noargsEmbed).then(msg => msg.delete({ timeout: 5000 }));
 

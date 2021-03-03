@@ -6,7 +6,6 @@ module.exports = {
     description: "Summon the bot in your voice channel",
     usage: "summon\n**e.g.**\n\`summon\`\n> moves or connects the Bot to the voice channel you are currently in",
     run: async (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const noDJroleEmbed = new Discord.MessageEmbed()
             .setColor('PURPLE')
@@ -22,7 +21,7 @@ module.exports = {
             .setDescription(`Music Channel Only is active!\nYou can only use the music module in: <#${client.settings.get(msg.guild.id, "musictextchannel")}>`)
 
         if (msg.member.roles.cache.some(role => role.id === (client.settings.get(msg.guild.id, "djrole")))) {
-            if (client.settings.get(msg.guild.id, "musicchannelonly") === "true") return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            if (client.settings.get(msg.guild.id, "musicchannelonly") === "true") return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 10000 }));
             if (!msg.member.voice.channel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
             msg.member.voice.channel.join();
         } else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete({ timeout: 5000 }));

@@ -12,7 +12,6 @@ module.exports = {
     description: "Shows some bot statistics",
     usage: "botinfo\n**e.g.**\n> \`botinfo\`\n> It will show you some cool satistics, such cpu/ram usage, number of servers/users, etc...",
     run: async (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         cpuStat.usagePercent(function(err, percent, seconds) {
             if (err) {
@@ -50,7 +49,7 @@ module.exports = {
                 .addField('System', `\`\`\`asciidoc\n${system}\`\`\``, false)
                 .setTimestamp()
                 .setFooter(client.user.username, client.user.avatarURL());
-            msg.channel.send(embed).then(msg => msg.delete({ timeout: 30000}));
+            msg.channel.send(embed);
         })
     }
 }

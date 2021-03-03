@@ -8,7 +8,6 @@ module.exports = {
     usage: "removerole <user-mention> <role>\n**e.g.**\n\`removerole @mirko93s DJ\`\n> will remove the \"DJ\" role from the user mirko93s",
     permission: "MANAGE_ROLES",
     run: async (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const nopermEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)

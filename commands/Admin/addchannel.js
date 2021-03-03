@@ -8,7 +8,6 @@ module.exports = {
     usage: "addchannel <text | voice> <name>\n**e.g.**\n\`addchannel text textchannelname\`\n> will create a text channel named \"textchannelname\"\n\`addchannel voice voicechannelname\`\n> will create a voice channel named voicechannelname ",
     permission: "MANAGE_CHANNELS",
     run: async (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
         
         const nopermEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
@@ -27,10 +26,10 @@ module.exports = {
         let channeltype = arg[0];
         let channelname = arg[1];
         if (channelname.length > 100) return msg.channel.send(toolongEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        if(channeltype != "text" && channeltype != "voice") return msg.reply(notypeEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        if(!channelname) return msg.reply(nonameEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        if(channeltype == "text") msg.guild.channels.create(channelname, {type: 'text'});
-        if(channeltype == "voice") msg.guild.channels.create(channelname, {type: 'voice'});
+        if (channeltype != "text" && channeltype != "voice") return msg.reply(notypeEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!channelname) return msg.reply(nonameEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (channeltype == "text") msg.guild.channels.create(channelname, {type: 'text'});
+        if (channeltype == "voice") msg.guild.channels.create(channelname, {type: 'voice'});
         const createdEmbed = new Discord.MessageEmbed()
             .setColor(`GREEN`)
             .setTitle(`✅ Successfully created a new **${channeltype}** channel: **${channelname}**`)

@@ -7,7 +7,7 @@ module.exports = {
     description: "Bot's webiste link",
     usage: "website\n**e.g.**\n\`website\`\n> Return a link to the Bot's website",
     run: async (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
+        
         const embed = new Discord.MessageEmbed()
             .setColor(`RANDOM`)
             .setThumbnail(client.user.avatarURL)

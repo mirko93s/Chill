@@ -7,37 +7,21 @@ module.exports = {
     description: "Flips a coin",
     usage: "coinflip\n**e.g.**\n\`coinflip\`\n> The Bot will flip a coin for you\n> Heads or Tails?",
     run: async (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
+
         var coin = ["Heads","Tails"];
-        const embed = new Discord.MessageEmbed()
-            .setColor('RANDOM')
-            .setTitle("Coin Flip")
-            .setDescription("Flipping")
-
-        const embed1 = new Discord.MessageEmbed()
-            .setColor('RANDOM')
-            .setTitle("Coin Flip")
-            .setDescription("Flipping .")
-
-        const embed2 = new Discord.MessageEmbed()
-            .setColor('RANDOM')
-            .setTitle("Coin Flip")
-            .setDescription("Flipping . .")
-
-        const embed3 = new Discord.MessageEmbed()
+        const flippingEmbed = new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setTitle("Coin Flip")
             .setDescription("Flipping . . .")
-
-        const embed4 = new Discord.MessageEmbed()
+        const flippedEmbed = new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setTitle("Coin Flip")
             .setDescription(msg.author.toString() + " flipped **" + (coin[Math.floor(Math.random() * coin.length)]) + "**")
 
-        const m = await msg.channel.send(embed);
-        m.edit(embed1);
-        m.edit(embed2);
-        m.edit(embed3);
-        m.edit(embed4);
+        await msg.channel.send(flippingEmbed).then(m => {
+            setTimeout(() => {
+                m.edit(flippedEmbed)       
+            }, 500);
+        });
     }
 }

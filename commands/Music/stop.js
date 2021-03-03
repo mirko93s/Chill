@@ -6,10 +6,7 @@ module.exports = {
     description: "Stop music",
     usage: "stop\n**e.g.**\n\`stop\`\n> stops the music, delete the queue and disconnect the Bot from the voice channel",
     run: async (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
         
-        const serverQueue = client.queue.get(msg.guild.id);
-
         const noDJroleEmbed = new Discord.MessageEmbed()
             .setColor('PURPLE')
             .setTitle(":musical_note: Music")
@@ -28,7 +25,8 @@ module.exports = {
             .setDescription(`Music Channel Only is active!\nYou can only use the music module in: <#${client.settings.get(msg.guild.id, "musictextchannel")}>`)
 
         if (msg.member.roles.cache.some(role => role.id === (client.settings.get(msg.guild.id, "djrole")))) {
-            if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            const serverQueue = client.queue.get(msg.guild.id);
+            if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 10000 }));
             if (!msg.member.voice.channel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
             if (!serverQueue) return msg.channel.send(noplayingEmbed).then(msg => msg.delete({ timeout: 5000 }));
             serverQueue.songs = [];

@@ -6,7 +6,6 @@ module.exports = {
     usage: "say [embed] <message>\n**e.g.**\n\`say hello\`\n> The Bot will send a normal \"hello\" message\n\`say embed hello\`\n> The Bot will send an embedded \"hello\" message",
     permission: "MANAGE_MESSAGES",
     run: (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const nopermEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
@@ -21,11 +20,7 @@ module.exports = {
             const embed = new Discord.MessageEmbed()
                 .setColor(`RANDOM`)
                 .setDescription(arg.slice(1).join(" "))
-
-                msg.channel.send(embed);
-        }
-        else {
-            msg.channel.send(arg.join(" "));
-        }
+            msg.channel.send(embed);
+        } else msg.channel.send(arg.join(" "));
     }
 }

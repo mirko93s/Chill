@@ -13,7 +13,6 @@ module.exports = {
     description: "Play a song skipping all the queue",
     usage: "playskip <song name | playlist name | yt link | yt playlist>\n**e.g.**\n\`playskip best song ever\`\n> Like the \"play\" command. But if you have more songs in the queue this command will delete the whole queue and play the song you have just requested",
     run: async (client, msg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const noDJroleEmbed = new Discord.MessageEmbed()
             .setColor('PURPLE')
@@ -54,7 +53,7 @@ module.exports = {
         const serverQueue = client.queue.get(msg.guild.id);
 
         if (msg.member.roles.cache.some(role => role.id === (client.settings.get(msg.guild.id, "djrole")))) {
-            if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 10000 }));
             if (!serverQueue) return msg.channel.send(noplayingEmbed).then(msg => msg.delete({ timeout: 5000 }));
             if (!url) return msg.channel.send(nourlEmbed).then(msg => msg.delete({ timeout: 5000 }));
             const voiceChannel = msg.member.voice.channel;

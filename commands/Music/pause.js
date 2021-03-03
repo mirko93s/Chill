@@ -6,7 +6,6 @@ module.exports = {
     description: "Pause current song",
     usage: "pause\n**e.g.**\n\`pause\`\n> will pause the music stream",
     run: async (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const noDJroleEmbed = new Discord.MessageEmbed()
             .setColor('PURPLE')
@@ -27,7 +26,7 @@ module.exports = {
 
         const serverQueue = client.queue.get(msg.guild.id);
         if (msg.member.roles.cache.some(role => role.id === (client.settings.get(msg.guild.id, "djrole")))) {
-            if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.name !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 10000 }));
             if (!msg.member.voice.channel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
             if (serverQueue && serverQueue.playing) {
                 serverQueue.playing = false;

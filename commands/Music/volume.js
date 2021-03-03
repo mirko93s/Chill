@@ -7,11 +7,7 @@ module.exports = {
     permission: "ADMINISTRATOR",
     usage: "volume [value]\n**e.g.**\n\`volume\`\n> Get current volume value\n\`volume 10\`\n> Set volume to 10\n> Default value is 5, it is not reccomended to set too high values to avoid audio distortion\n> Values are logarithmic, so a small value increase will provide a big volume boost",
     run: async (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
         
-        const serverQueue = client.queue.get(msg.guild.id);
-        const newvolume = arg[0];
-
         const noplayingEmbed = new Discord.MessageEmbed()
             .setColor('PURPLE')
             .setTitle(":musical_note: Music")
@@ -31,6 +27,9 @@ module.exports = {
             .setFooter(`Default volume is 5`)
 
         if (msg.member.hasPermission("ADMINISTRATOR")) {
+            const serverQueue = client.queue.get(msg.guild.id);
+            const newvolume = arg[0];
+
             if (!msg.member.voice.channel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
             if (!serverQueue) return msg.channel.send(noplayingEmbed).then(msg => msg.delete({ timeout: 5000 }));
 

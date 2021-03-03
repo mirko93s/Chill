@@ -8,7 +8,6 @@ module.exports = {
     description: "Generate a Minecraft achievement",
     usage: "achievement <text>\n**e.g.**\n\`achievement Use your first command\`\n> This will generate an achievement image using Minecraft style",
     run: async (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const textErrEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
@@ -16,18 +15,17 @@ module.exports = {
 
         try {
             const text = arg.join(" ");
-            if (!text || text.length > 25) return msg.reply(textErrEmbed).then(msg => msg.delete({ timeout: 5000 }));		
-			 const { body } = await superagent
-				 .get('https://www.minecraftskinstealer.com/achievement/a.php')
-				 .query({
-					 i: 1,
-					 h: 'Achievement Unlocked!',
-					 t: text
-				 });
-			 msg.channel.send({ files: [{ attachment: body, name: 'achievement.png' }] 
-		   });
-		 } catch (err) {
-				 console.log(err)
+            if (!text || text.length > 25) return msg.channel.send(textErrEmbed).then(msg => msg.delete({ timeout: 5000 }));		
+			const { body } = await superagent
+				.get('https://www.minecraftskinstealer.com/achievement/a.php')
+				.query({
+                    i: 1,
+                    h: 'Achievement Unlocked!',
+                    t: text
+                });
+            msg.channel.send({ files: [{ attachment: body, name: 'achievement.png' }]});
+        } catch (err) {
+            console.log(err);
 		}
     }
 }

@@ -7,7 +7,6 @@ module.exports = {
     usage: "poll <question>\n**e.g.**\n\`poll What is your favourite fruit?\`\n> Then input the choices, separated by commas \`,\`\n> It will create a multiple choice poll in the \"poll-channel\" with the question \"What is your favourite food ?\"\n> Then people can vote 1 or more of your inputted choices",
     permission: "MANAGE_GUILD",
     run: async (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const nopermEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
@@ -21,8 +20,8 @@ module.exports = {
             .setFooter(`max 10 choices, use commas to separate choices`)
         const noquestionEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
-            .setTitle(`⛔ Please provide a question to start a poll`)
-            .setFooter(`Question must be longer than 10 characters`)
+            .setTitle(`⛔ Please provide a valid question to start a poll`)
+            .setFooter(`Question must be shorter than 256 characters`)
         const askchoicesEmbed = new Discord.MessageEmbed()
             .setColor(`RANDOM`)
             .setTitle(`Poll setup`)
@@ -31,21 +30,20 @@ module.exports = {
             .setColor(`RED`)
             .setTitle(`⛔ No answer after 30 seconds, operation canceled.`)
             
-        var filter = m => m.author.id === msg.author.id;
-        var choices;
         var emoji = ['🍏','🍎','🍐','🍊','🍋','🍌','🍉','🍇','🫐','🍓','🍈','🍒','🍑','🥭','🍍','🥥','🥝','🍅','🥑','🥒']
         var choicemsg = "";
-
+        
         if(!msg.guild.member(msg.author).hasPermission('MANAGE_GUILD')) return msg.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
         let pollchannel = msg.guild.channels.cache.find(pollchannel => pollchannel.id === (client.settings.get(msg.guild.id, "pollchannel")));
         if(!pollchannel) return msg.channel.send(nochannelEmbed).then(msg => msg.delete({ timeout: 5000 }));
-
+        
         let question = arg.join(" ");
-        if (!question) return msg.channel.send(noquestionEmbed).then(msg => msg.delete({ timeout: 5000 }));
-
+        if (!question || question.length > 256) return msg.channel.send(noquestionEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            
+        var filter = m => m.author.id === msg.author.id;
         msg.channel.send(askchoicesEmbed).then(msg => {
             msg.channel.awaitMessages(filter, {max: 1,time: 30000,errors: ['time']}).then(collected => {
-                choices = collected.first().content;
+                var choices = collected.first().content;
                 collected.first().delete()
                 msg.delete();
                 if (choices.endsWith(",") === true) choices = choices.slice(0,(choices.length-1)); //remove last "," from choices string

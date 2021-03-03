@@ -7,10 +7,6 @@ module.exports = {
     usage: "setconfig <key> <value>\n**e.g.**\n\`setconfig prefix ?\`\n> will set the prefix to \"?\"\n\`setconfig mutedrole 123456789012334567890\`\n> will change the mutedrole id to \"123456789012334567890\"\n\`setconfig welcomechannel 123456789012334567890\`\n> will change the welcomechannel id to 123456789012334567890\n\n> Run setup command to fix the missing channels/roles \n> Check showconfig command for keys/values list",
     permission: "ADMINISTRATOR",
     run: async (client, msg, arg) => {
-		if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
-
-		var channelrenamed;
-		var rolerenamed;
 
 		const nopermEmbed = new Discord.MessageEmbed()
 			.setColor(`RED`)

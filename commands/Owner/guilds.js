@@ -6,9 +6,8 @@ module.exports = {
     category: "Owner",
     description: "Get a list of all guilds the bot is in.",
     usage: "guilds\n**e.g.**\n\`guilds\`\n> List all guilds",
-    permission: "DEV_ONLY",
+    permission: "DEV",
     run: async (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const nopermEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)

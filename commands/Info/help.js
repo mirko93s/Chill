@@ -7,7 +7,7 @@ module.exports = {
     description: "Show help for a specific command",
     usage: "help [command | alias]\n**e.g.**\n\`help\`\n> shows a list with all the available commands\n\`help ping\`\n> shows help about the ping command and how to use it",
     run: async (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
+
         if (arg[0]) {
             return getCMD(client, msg, arg[0]);
         } else {
@@ -18,21 +18,25 @@ module.exports = {
 
 function getAll(client, msg) {
     const helpembed = new MessageEmbed()
-        .setTitle(":question: Chill Bot HELP :question:")
+        .setTitle("❓ Chill Bot HELP ❓")
         .setDescription("Type .help <command | alias> for more info.")
         .setColor(0x00AE86)
         .setThumbnail(client.user.displayAvatarURL())
-        /* Admin */.addField(":no_entry_sign: Admin", "`addchannel` `broadcast` `giveaway` `poll` `setup`")
-        /* Bot */.addField(":robot: Bot", "`botinfo` `bugreport` `invite` `project` `vote` `website`")
-        /* Fun */.addField(":game_die: Fun", "`8ball` `achievement` `coinflip` `rockpaperscissors` `ship` `slotmachine`")
-        /* Info */.addField(":information_source: Info", "`avatar` `help` `serveremojis` `serverinfo` `whois`")
-        /* Moderation */.addField(":hammer: Moderation", "`ban` `kick` `mute` `purge` `report` `say` `ticket` `unmute`")
-        /* Music */.addField(":musical_note: Music", "`musicchannelonly` `play` `skip` `playskip` `pause` `resume` `stop` `nowplaying` `queue` `summon` `volume`")
-        /* Other */.addField(":bulb: Other", "`calc`, `instagram` `mcstat` `nick` `percentage` `ping` `remindme` `today` `urban` `weather`")
-        /* Owner */.addField(":gear: Owner", "`blast` `botactivity` `guilds`")
-        /* Roles */.addField(":level_slider: Roles", "`addrole` `removerole` `roleinfo` `rolelist`")
-        /* Settings */.addField(":floppy_disk: Settings", "`resetconfig` `setconfig` `showconfig`")
-        /* Xp */.addField(":trophy: Xp", "`leaderboard` `level` `xp`")
+        /* Admin */.addField("🚫 Admin", "`addchannel` `broadcast` `giveaway` `poll` `setup`", true)
+        /* Auto-Vocal*/.addField("🔊 Auto-Vocal", "`autovocal` `autovocallock` `autovocalinvite` `autovocalkick`", true)
+        /* Bot */.addField("🤖 Bot", "`botinfo` `bugreport` `invite` `project` `vote` `website`", true)
+        /* Commands */.addField("🛃 Commands", "`command` `customcommand` `customcommandremove` `customcommandlist`", true)
+        /* Fun */.addField("🎲 Fun", "`8ball` `achievement` `coinflip` `rockpaperscissors` `ship` `slotmachine`", true)
+        /* Info */.addField("ℹ️ Info", "`avatar` `help` `serveremojis` `serverinfo` `whois`", true)
+        /* Moderation */.addField("🔨 Moderation", "`ban` `kick` `mute` `purge` `report` `say` `ticket` `unmute`", true)
+        /* Music */.addField("🎵 Music", "`play` `skip` `playskip` `pause` `resume` `stop` `nowplaying` `queue` `summon` `volume`", true)
+        /* Other */.addField("💡 Other", "`calc` `instagram` `mcstat` `nick` `percentage` `ping` `remindme` `today` `urban` `weather`", true)
+        /* Owner */.addField("⚙️ Owner", "`blast` `botactivity` `guilds`", true)
+        /* Roles */.addField("🎚️ Roles", "`addrole` `removerole` `roleinfo` `rolelist`", true)
+        /* Settings */.addField("💾 Settings", "`resetconfig` `setconfig` `showconfig`", true)
+        /* Xp */.addField("🏆 Xp", "`leaderboard` `level` `xp`", true)
+        /* blank-field-to-keep-column-width-reserved-for-future-categories */.addField('\u200b', '\u200b', true)
+        /* blank-field-to-keep-column-width-reserved-for-future-categories */.addField('\u200b', '\u200b', true)
 
     return msg.channel.send(helpembed);
 }

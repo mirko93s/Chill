@@ -9,7 +9,7 @@ module.exports = {
     description: "Returns user info",
     usage: "whois [name | id | mention]\n**e.g.**\n\`whois mirko\`\n> will return the closest username found on the server\n\`whois @mirko93s\`\n> will return the mentioned user\n> whois shows some info about that user",
     run: (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
+
         const member = getMember(msg, arg.join(" "));
 
         // Member variables

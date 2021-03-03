@@ -8,7 +8,6 @@ module.exports = {
     description: "Calculate a percentage",
     usage: "percentage <amount> <maximum>\n**e.g.**\n\`percentage 2 100\`\n> will return 50%",
     run: async (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const nonumEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
@@ -16,6 +15,7 @@ module.exports = {
 
         const amount = arg[0]
         const maximum = arg[1]
+        if (isNaN(amount) || isNaN(maximum)) return msg.channel.send(nonumEmbed).then(msg => {msg.delete({ timeout: 5000 })});
 
         try {
             const percentage = math.evaluate(`(${amount}/${maximum})*100`).toString();

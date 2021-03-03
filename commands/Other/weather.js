@@ -7,7 +7,6 @@ module.exports = {
     description: "Check the weather",
     usage: "weather <city>\n**e.g.**\n\`weather Tokyo\`\n> will return weather info about Tokyo",
     run: async (client, msg, arg) => {
-        if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
 
         const nolocationEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
