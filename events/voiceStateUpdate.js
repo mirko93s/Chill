@@ -22,6 +22,8 @@ module.exports = (client, oldUser, newUser) => {
 				newUser.member.voice.setChannel(newchannel);
 			})
 	}
+	//delete queue if bot is kicked from a vc while playing
+	if (newUser.member.user.bot && newUser.channel === null) return client.queue.delete(newUser.guild.id);
 };
 
 const defaultSettings = {
