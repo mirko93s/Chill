@@ -1,10 +1,9 @@
 const Discord = require("discord.js");
 const {Util} = require("discord.js");
-const YouTube = require('simple-youtube-api');
-const ytdl = require('ytdl-core');
 const config = require('../../config.json');
-const GOOGLE_API_KEY = config.google_api_key
-const youtube = new YouTube(GOOGLE_API_KEY);
+const ytdl = require('ytdl-core');
+const ytsr = require('ytsr');
+const ytpl = require('ytpl');
 
 module.exports = {
     name: "play",
@@ -41,7 +40,15 @@ module.exports = {
         const noresultEmbed = new Discord.MessageEmbed()
             .setColor('PURPLE')
             .setTitle(":musical_note: Music")
-            .setDescription(`⛔ I could not obtain any search results.`)
+            .setDescription(`⛔ I could not obtain any search result or the link provided was invalid`)
+        const queueLimit = new Discord.MessageEmbed()
+            .setColor('PURPLE')
+            .setTitle(":musical_note: Music")
+            .setDescription(`⛔ You can't queue more than 10 songs`)
+        const playlistQueueLimit = new Discord.MessageEmbed()
+            .setColor('PURPLE')
+            .setTitle(":musical_note: Music")
+            .setDescription(`⛔ Some songs in the playlist were not added due to the queue limit`)
 
         const arg = msg.content.split(' ');
        
@@ -61,28 +68,52 @@ module.exports = {
             const permissions = voiceChannel.permissionsFor(msg.client.user);
             if (!permissions.has('CONNECT')) return msg.channel.send(noconnectpermEmbed).then(msg => msg.delete({ timeout: 5000 }));
             if (!permissions.has('SPEAK')) return msg.channel.send(nospeakpermEmbed).then(msg => msg.delete({ timeout: 5000 }));
-            if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
-                const playlist = await youtube.getPlaylist(url);
-                const videos = await playlist.getVideos();
-                for (const video of Object.values(videos)) {
-                    const video2 = await youtube.getVideoByID(video.id);
-                    await handleVideo(video2, msg, voiceChannel, true);
-                }
-            } else {
-                    try {
-                        var video = await youtube.getVideo(url);
-                    } catch (error) {
-                        try {
-                            var videos = await youtube.searchVideos(searchString, 10);
-                            const videoIndex = 1;
-                            var video = await youtube.getVideoByID(videos[videoIndex - 1].id);
-                        } catch (err) {
-                            console.error(err);
-                            return msg.channel.send(noresultEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            //queue limit
+            const serverQueue = client.queue.get(msg.guild.id);
+            if (serverQueue && serverQueue.songs.length > config.music_queue_limit-1) return msg.channel.send(queueLimit).then(msg => msg.delete({ timeout: 5000 }));
+            //playlist url
+            if (url.match(/^.*(youtu.be\/|list=)([^#\&\?]*).*/gi)) {
+                if (ytpl.validateID(url)) {
+                    const playlist = await ytpl(url, {page: 1})
+                    const videos = playlist.items;
+                    for (const video of Object.values(videos)) {
+                        const serverQueue = client.queue.get(msg.guild.id);
+                        if (serverQueue && serverQueue.songs.length > config.music_queue_limit-1) {
+                            msg.channel.send(playlistQueueLimit).then(msg => msg.delete({ timeout: 5000 }));
+                            break;
                         }
+                        handleVideo(video, msg, voiceChannel, true);
                     }
-                    return handleVideo(video, msg, voiceChannel);
+                } else return msg.channel.send(noresultEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            }
+            //url
+            else if (url.match(/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/gi)) {
+                try {
+                    if (ytdl.validateURL(url)) {
+                        await ytdl.getBasicInfo(url).then(video => {
+                            var video = {
+                                id: video.player_response.videoDetails.videoId,
+                                title: video.player_response.videoDetails.title,
+                                url: url
+                            }
+                            return handleVideo(video, msg, voiceChannel);
+                        })
+                    }
+                } catch (err) {
+                    console.error(err);
+                    return msg.channel.send(noresultEmbed).then(msg => msg.delete({ timeout: 5000 }));
+                }       
+            }
+            //string
+            else {
+                try {
+                    const result = (await ytsr(searchString, { limit: 10 })).items.filter(a => a.type === 'video');
+                    return handleVideo(result[0], msg, voiceChannel);
+                } catch (err) {
+                    console.error(err);
+                    return msg.channel.send(noresultEmbed).then(msg => msg.delete({ timeout: 5000 }));
                 }
+            }
         } else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
         async function handleVideo(video, msg, voiceChannel, playlist = false) {

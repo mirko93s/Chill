@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const Discord = require("discord.js");
 
 module.exports = {
     name: "help",
@@ -17,7 +17,7 @@ module.exports = {
 }
 
 function getAll(client, msg) {
-    const helpembed = new MessageEmbed()
+    const helpembed = new Discord.MessageEmbed()
         .setTitle("❓ Chill Bot HELP ❓")
         .setDescription("Type .help <command | alias> for more info.")
         .setColor(0x00AE86)
@@ -42,15 +42,13 @@ function getAll(client, msg) {
 }
 
 function getCMD(client, msg, input) {
-    const embed = new MessageEmbed()
+    const embed = new Discord.MessageEmbed()
 
     const cmd = client.commands.get(input.toLowerCase()) || client.commands.get(client.aliases.get(input.toLowerCase()));
     
     let info = `⛔ No information found for command **${input.toLowerCase()}**`;
 
-    if (!cmd) {
-        return msg.channel.send(embed.setColor("RED").setDescription(info)).then(msg => msg.delete({ timeout: 5000 }));
-    }
+    if (!cmd) return msg.channel.send(embed.setColor("RED").setDescription(info)).then(msg => msg.delete({ timeout: 5000 }));
 
     //if (cmd.name) info = `**Command name**: ${cmd.name}`;
     if (cmd.aliases) info = `**Aliases**: ${cmd.aliases.map(a => `\`${a}\``).join(", ")}`;
