@@ -4,6 +4,7 @@
 ![discord.js](https://img.shields.io/github/package-json/dependency-version/mirko93s/Chill/discord.js?logo=discord&logoColor=blue)
 ![Build](https://img.shields.io/appveyor/ci/mirko93s/chill)
 ![Code-Quality](https://img.shields.io/codefactor/grade/github/mirko93s/Chill)
+![Lines-of-code](https://img.shields.io/tokei/lines/github/mirko93s/chill?color=darkcyan)
 ![Last-Commit](https://img.shields.io/github/last-commit/mirko93s/Chill)
 [![Discord Bots](https://top.gg/api/widget/status/605894942275141672.svg)](https://top.gg/bot/605894942275141672)
 
@@ -40,6 +41,7 @@ Type ".help" or ".help (command)" in discord to get a detailed explanation of ea
 
 ### Known bugs
 Discord new Rules Screening feature for communities won't work because the bot gives a role to all new members, currently in the latest discord.js v12 stable release there is no way to check if someone has accepted the rules, it will be implemented in discord.js v13
+If you need the Rules Screening a temporary fix is to delete the role given on join!
 
 [//]: # (Hidden stuff)
 <!--
