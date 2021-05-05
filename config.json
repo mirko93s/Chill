@@ -9,5 +9,6 @@
 	"bot_website_link": "paste_bot/your_website_link_here",
 	"bot_vote_link": "paste_bot_top.gg_vote_link",
 	"mc_default_ip": "paste_default/your_mc_server_ip_here",
-	"music_queue_limit": 10
+	"music_queue_limit": 10,
+	"rewards_limit": 15"don't set it above 25 and delete this message including quotes"
   }
