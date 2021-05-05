@@ -20,10 +20,13 @@ module.exports = {
         
         if (!arg[0] || !arg[1]) return msg.channel.send(noargsEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
-        let command = arg[0].toLowerCase();
-        let response = arg.slice(1).join(' ');
+        let command = arg[0].toLowerCase().toString();
+        let response = arg.slice(1).join(' ').toString();
 
-        client.customcmd.set(msg.guild.id, response, `${command}`);
+        client.settings.ensure(msg.guild.id, {customcmd: {}});
+
+        client.settings.set(msg.guild.id, response, `customcmd.${command}`);
+
         const okEmbed = new Discord.MessageEmbed()
             .setColor('GREEN')
             .setTitle('Custom Commands')

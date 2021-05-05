@@ -29,5 +29,11 @@ const defaultSettings = {
 	prefix: ".",
 	musicchannelonly: "false",
 	xpcooldown: 5,
-	autodeletecmds: "true"
+	autodeletecmds: "true",
+	xpmodule: "true",
+	welcomemessage: "true",
+	welcomerole: "true",
+	autovocalchannels: [],
+	autovocalcloned: [],
+	disabledcommands: []
 }

@@ -30,7 +30,7 @@ module.exports = {
             if (!msg.member.voice.channel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
             if (serverQueue && serverQueue.playing) {
                 serverQueue.playing = false;
-                serverQueue.connection.dispatcher.pause();
+                serverQueue.connection.dispatcher.pause(true);
 
                 const pauseEmbed = new Discord.MessageEmbed()
                     .setColor('PURPLE')

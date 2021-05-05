@@ -18,19 +18,21 @@ module.exports = {
         const noroleEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setTitle(`⛔ Couldn't find that role`)
-
+        
         if (!msg.member.hasPermission("MANAGE_ROLES")) return msg.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
         let rMember = msg.guild.member(msg.mentions.users.first()) || msg.guild.members.get(arg[0]);
         let role = arg.slice(1).join(" ")
-        if(!rMember || !role) return msg.channel.send(noargsEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!rMember || !role) return msg.channel.send(noargsEmbed).then(msg => msg.delete({ timeout: 5000 }));
         let gRole = msg.guild.roles.cache.find(grole => grole.name === (role));
-        if(!gRole) return msg.channel.send(noroleEmbed).then(msg => msg.delete({ timeout: 5000 }));
-
+        if (!gRole) return msg.channel.send(noroleEmbed).then(msg => msg.delete({ timeout: 5000 }));
         const nothaveEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setDescription(`⛔ ${rMember} doesn't have that role`)
-
         if (!rMember.roles.cache.some(r => r.id === gRole.id)) return msg.channel.send(nothaveEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        const hierarchyEmbed = new Discord.MessageEmbed()
+            .setColor(`RED`)
+            .setDescription(`⛔ ${rMember} I can't remove the role ${gRole.name} due to roles hierarchy.`)
+        if (msg.guild.me.roles.highest.position < grole.rawPosition) return msg.channel.send(hierarchyEmbed).then(msg => msg.delete({ timeout: 5000 }));
         await(rMember.roles.remove(gRole.id));
 
         const doneEmbed = new Discord.MessageEmbed()

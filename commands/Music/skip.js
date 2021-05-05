@@ -29,6 +29,8 @@ module.exports = {
             if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.id !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 10000 }));
             if (!msg.member.voice.channel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
             if (!serverQueue) return msg.channel.send(noplayingEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            
+            serverQueue.playing = true; //keep it otherwise skipping while paused will throw errors
             serverQueue.connection.dispatcher.end();
 
             const skipEmbed = new Discord.MessageEmbed()

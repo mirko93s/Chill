@@ -40,14 +40,18 @@ module.exports = {
         const invalidtimeEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setTitle(`⛔ Invalid time entered!`)
+        const hierarchyEmbed = new Discord.MessageEmbed()
+            .setColor(`RED`)
+            .setTitle(`⛔ I can't use muted role due to role hierarchy, please put my role above the muted one.`)
 
             
         if (!msg.member.hasPermission("MANAGE_ROLES")) return msg.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
         if (!msg.guild.me.hasPermission("MANAGE_ROLES")) return msg.channel.send(nobotpermEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        if (!puchannel) return msg.channel.send (nochannelEmbed).then(msg => msg.delete({ timeout: 5000 }));
         let puchannel = msg.guild.channels.cache.find(puchannel => puchannel.id === (client.settings.get(msg.guild.id, "puchannel")));
-        if (!mutedrole) return msg.channel.send(noroleEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!puchannel) return msg.channel.send (nochannelEmbed).then(msg => msg.delete({ timeout: 5000 }));
         let mutedrole = msg.guild.roles.cache.find(mutedrole => mutedrole.id === (client.settings.get(msg.guild.id, "mutedrole")));
+        if (!mutedrole) return msg.channel.send(noroleEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (msg.guild.me.roles.highest.position < mutedrole.rawPosition) return msg.channel.send(hierarchyEmbed).then(msg => msg.delete({ timeout: 5000 }));
         if (!arg[0] || !arg[1] || !arg[2]) return msg.channel.send(noargsEmbed).then(m => m.delete({timeout:5000}));
         
         const toMute = msg.mentions.members.first();

@@ -1,15 +1,18 @@
 const Discord = require("discord.js");
 const { stripIndent } = require('common-tags');
+const { ensureGuildSettings } = require("../../functions.js");
 
 module.exports = {
 	name: "showconfig",
-    aliases: ["config"],
+    aliases: ["config","controlpanel","cp"],
     category: "Settings",
 	description: "Show current guild's config",
 	usage: "showconfig\n**e.g**\n\`showconfig\`\n> get server settings (prefix, roles, channels, etc...)",
     run: async (client, msg, arg) => {
 		
-		let guildConf = client.settings.ensure(msg.guild.id, defaultSettings);
+		ensureGuildSettings(client,msg.guild.id);
+
+		let guildConf = client.settings.get(msg.guild.id);
 		
 		function channel(toFind) {
 			var text = msg.guild.channels.cache.find(ch => ch.id === toFind) ? toFind + " | " + msg.guild.channels.cache.get(toFind).name : "❌❌❌ NOT FOUND ❌❌❌";
@@ -43,15 +46,21 @@ module.exports = {
 		musicchannelonly :: ${guildConf.musicchannelonly}
 		autodeletecmds   :: ${guildConf.autodeletecmds}
         `;
+		const modules = stripIndent`
+		xpmodule       :: ${guildConf.xpmodule}
+		welcomemessage :: ${guildConf.welcomemessage}
+		welcomerole    :: ${guildConf.welcomerole}
+		`;
 		
 		const settingsEmbed = new Discord.MessageEmbed()
 			.setColor('BLUE')
 			.setTitle("💾Guild Settings")
 			.addField('Channels', `\`\`\`asciidoc\n${channels}\`\`\``, false)
 			.addField('Roles', `\`\`\`asciidoc\n${roles}\`\`\``, false)
-			.addField('Other', `\`\`\`asciidoc\n${other}\`\`\``, false)
+			.addField('Other', `\`\`\`asciidoc\n${other}\`\`\``, true)
+			.addField('Modules',`\`\`\`asciidoc\n${modules}\`\`\``, true)
 		
-		msg.channel.send(settingsEmbed).then(msg => msg.delete({timeout:30000}));
+		msg.channel.send(settingsEmbed).then(msg => msg.delete({timeout:60000}));
 		
 		if (channels.includes("❌❌❌ NOT FOUND ❌❌❌") || roles.includes("❌❌❌ NOT FOUND ❌❌❌") || other.includes("❌❌❌ NOT FOUND ❌❌❌")){
 			const missingkeysEmbed = new Discord.MessageEmbed()
@@ -61,25 +70,4 @@ module.exports = {
 			msg.channel.send(missingkeysEmbed).then(msg => msg.delete({timeout:30000}));
 		}
     }
-}
-
-const defaultSettings = {
-	prefix: ".",
-	welcomechannel: "👋welcome",
-	bcchannel: "🔴broadcast",
-	puchannel: "🔨punishments",
-	reportchannel: "🚨reports",
-	gachannel: "🎉giveaway",
-	pollchannel: "💡poll",
-	musicvocalchannel: "🔊music",
-	musictextchannel: "🎵song-request",
-	musictemprole: "Listening",
-	ticketcategory: "tickets",
-	mutedrole: "Muted",
-	djrole: "DJ",
-	supportrole: "Support",
-	roleonjoin: "Member",
-	musicchannelonly: "false",
-	xpcooldown: 5,
-	autodeletecmds: "true"
 }

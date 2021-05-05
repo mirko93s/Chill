@@ -35,12 +35,13 @@ module.exports = {
 		if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.reply(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
 		if (!arg[0] || !arg[1]) return msg.channel.send(novalueEmbed).then(msg => msg.delete({ timeout: 5000 }));
-		const [prop, ...value] = arg;
+		const prop = arg[0];
+		var value = arg.slice(1).join(" ");
 		if(!client.settings.has(msg.guild.id, prop)) {
 			return msg.reply(nokeyEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		  }
 
-		if (arg[0].includes("only") || arg[0].includes("delete")) {
+		if (arg[0].includes("only") || arg[0].includes("delete") || arg[0].includes("xpmodule") || arg[0].includes("welcomemessage") || arg[0].includes("welcomerole")) {
 			if (arg.slice(1).join('') !== "true" && arg.slice(1).join('') !== "false") return msg.channel.send(truefalseEmbed).then(msg => msg.delete({ timeout: 5000 }));
 		}
 		if (arg[0].includes("cooldown")) {
@@ -49,22 +50,36 @@ module.exports = {
 
 		if (arg[0].includes("channel") || arg[0].includes("category")) {
 			if (!arg[0].includes("only")) {
-				const channelnewid = msg.guild.channels.cache.find(c => c.id === (value.join(" ")));
-				if (!channelnewid) return msg.channel.send(nonewidEmbed).then(msg => msg.delete({ timeout: 5000 }));
+				var channelnewid = value;
+				if (isNaN(channelnewid)) { //if string search channel name in the guild
+					channelnewid = msg.guild.channels.cache.find(c => c.name === channelnewid);
+					if (!channelnewid) return msg.channel.send(nonewidEmbed).then(msg => msg.delete({ timeout: 5000 }));
+					else value = channelnewid.id;
+				} else { //else check if channel id exists
+					const checkchannel = msg.guild.channels.cache.find(c => c.id === channelnewid);
+					if (!checkchannel) return msg.channel.send(nonewidEmbed).then(msg => msg.delete({ timeout: 5000 }));
+				}
 			}
 		}
 
 		if (arg[0].includes("role")) {
-			const rolenewid = msg.guild.roles.cache.find(r => r.id === (value.join(" ")));
-			if (!rolenewid) return msg.channel.send(nonewidEmbed).then(msg => msg.delete({ timeout: 5000 }));
+			var rolenewid = value;
+				if (isNaN(rolenewid)) { //if string search role name in the guild
+					rolenewid = msg.guild.roles.cache.find(r => r.name === rolenewid);
+					if (!rolenewid) return msg.channel.send(nonewidEmbed).then(msg => msg.delete({ timeout: 5000 }));
+					else value = rolenewid.id;
+				} else { //else check if role id exists
+					const checkrole = msg.guild.roles.cache.find(r => r.id === rolenewid);
+					if (!checkrole) return msg.channel.send(nonewidEmbed).then(msg => msg.delete({ timeout: 5000 }));
+				}
 		}
 
-		client.settings.set(msg.guild.id, value.join(" "), prop);
+		client.settings.set(msg.guild.id, value, prop);
 
 		const changedEmbed = new Discord.MessageEmbed()
 			.setColor('RANDOM')
 			.setTitle("💾Guild Settings")
-			.setDescription(`**${prop}** has been changed to: \`${value.join(" ")}\``)
+			.setDescription(`**${prop}** has been changed to: \`${value}\``)
 		
 		msg.channel.send(changedEmbed).then(msg => msg.delete({ timeout: 5000 }));
     }

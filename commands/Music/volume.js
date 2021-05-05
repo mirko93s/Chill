@@ -24,7 +24,7 @@ module.exports = {
             .setColor('PURPLE')
             .setTitle(":musical_note: Music")
             .setDescription(`⛔ Please input a number to set the volume`)
-            .setFooter(`Default volume is 5`)
+            .setFooter(`Default volume is 100`)
 
         if (msg.member.hasPermission("ADMINISTRATOR")) {
             const serverQueue = client.queue.get(msg.guild.id);
@@ -36,7 +36,7 @@ module.exports = {
             const currentvolumeEmbed = new Discord.MessageEmbed()
                 .setColor('PURPLE')
                 .setTitle(":musical_note: Music")
-                .setDescription(`:speaker: Current volume: **${serverQueue.volume}**`)
+                .setDescription(`:speaker: Current volume: **${serverQueue.volume} %**`)
 
             if (!newvolume) return msg.channel.send(currentvolumeEmbed).then(msg => msg.delete({ timeout: 5000 }));
             if (isNaN(newvolume)) return msg.channel.send(notanumberEmbed);
@@ -45,9 +45,9 @@ module.exports = {
             const newvolumeEmbed = new Discord.MessageEmbed()
                 .setColor('PURPLE')
                 .setTitle(":musical_note: Music")
-                .setDescription(`:speaker: New volume: **${newvolume}**`)
+                .setDescription(`:speaker: New volume: **${newvolume} %**`)
 
-            serverQueue.connection.dispatcher.setVolumeLogarithmic(newvolume / 5);
+            serverQueue.connection.dispatcher.setVolumeLogarithmic(newvolume / 100);
             return msg.channel.send(newvolumeEmbed).then(msg => msg.delete({ timeout: 5000 }));
         } else return msg.channel.send(nopermvolumeEmbed).then(msg => msg.delete({ timeout: 5000 }));
     }

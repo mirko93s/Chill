@@ -22,7 +22,7 @@ function getAll(client, msg) {
         .setDescription("Type .help <command | alias> for more info.")
         .setColor(0x00AE86)
         .setThumbnail(client.user.displayAvatarURL())
-        /* Admin */.addField("🚫 Admin", "`addchannel` `broadcast` `giveaway` `poll` `setup`", true)
+        /* Admin */.addField("🚫 Admin", "`addchannel` `broadcast` `giveaway` `poll` `serverstats` `setup`", true)
         /* Auto-Vocal*/.addField("🔊 Auto-Vocal", "`autovocal` `autovocallock` `autovocalinvite` `autovocalkick`", true)
         /* Bot */.addField("🤖 Bot", "`botinfo` `bugreport` `invite` `project` `vote` `website`", true)
         /* Commands */.addField("🛃 Commands", "`command` `customcommand` `customcommandremove` `customcommandlist`", true)
@@ -34,7 +34,7 @@ function getAll(client, msg) {
         /* Owner */.addField("⚙️ Owner", "`blast` `botactivity` `guilds`", true)
         /* Roles */.addField("🎚️ Roles", "`addrole` `removerole` `roleinfo` `rolelist`", true)
         /* Settings */.addField("💾 Settings", "`resetconfig` `setconfig` `showconfig`", true)
-        /* Xp */.addField("🏆 Xp", "`leaderboard` `level` `xp`", true)
+        /* Xp */.addField("🏆 Xp", "`leaderboard` `level` `rewards` `xp`", true)
         /* blank-field-to-keep-column-width-reserved-for-future-categories */.addField('\u200b', '\u200b', true)
         /* blank-field-to-keep-column-width-reserved-for-future-categories */.addField('\u200b', '\u200b', true)
 

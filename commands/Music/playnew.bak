@@ -130,7 +130,7 @@ module.exports = {
                     voiceChannel: voiceChannel,
                     connection: null,
                     songs: [],
-                    volume: 100,
+                    volume: 5,
                     playing: true
                 };
                 client.queue.set(msg.guild.id, queueConstruct);
@@ -181,7 +181,7 @@ module.exports = {
                     play(guild, serverQueue.songs[0]);
                 })
                 .on('error', error => console.error(error));
-            dispatcher.setVolumeLogarithmic(serverQueue.volume / 100);
+            dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
             
             const playEmbed = new Discord.MessageEmbed()
                 .setImage(`https://i.ytimg.com/vi/${song.id}/hqdefault.jpg`)
@@ -189,7 +189,62 @@ module.exports = {
                 .setTitle(`:musical_note: Music`)
                 .setDescription(`:arrow_forward: **${song.title}**`)
             
-            serverQueue.textChannel.send(playEmbed);       
+            serverQueue.textChannel.send(playEmbed).then(async sent => {
+                const reactions = ["⏯️","⏹️","⏭️"];
+                for (const reaction of reactions) await sent.react(reaction);
+                const filter = (reaction, user) => reactions.includes(reaction.emoji.name) && user !== user.bot;
+                const collector = sent.createReactionCollector(filter, {time: 5*60*1000});
+
+                collector.on('collect', clicked => {
+                    clicked.users.remove(clicked.users.cache.filter(u => !u.bot).first());
+                    const serverQueue = client.queue.get(guild.id);
+
+                    switch(clicked.emoji.name) {
+                        case ("⏯️"):
+                            if (serverQueue && serverQueue.playing) {
+                                serverQueue.playing = false;
+                                serverQueue.connection.dispatcher.pause();
+                                const pauseEmbed = new Discord.MessageEmbed()
+                                    .setColor('PURPLE')
+                                    .setTitle(":musical_note: Music")
+                                    .setDescription(`⏸ Paused`)
+                                return msg.channel.send(pauseEmbed).then(msg => msg.delete({ timeout: 5000 }));
+                            }
+                            else if (serverQueue && !serverQueue.playing) {
+                                serverQueue.playing = true;
+                                serverQueue.connection.dispatcher.resume();
+                                const resumeEmbed = new Discord.MessageEmbed()              
+                                    .setColor('PURPLE')
+                                    .setTitle(":musical_note: Music")
+                                    .setDescription(`:play_pause: Resumed`)
+                                return msg.channel.send(resumeEmbed).then(msg => msg.delete({ timeout: 5000 }));
+                            }
+                            break;
+                        case ("⏹️"):
+                            if (serverQueue) {
+                                serverQueue.songs = [];
+                                serverQueue.connection.dispatcher.end();
+                                const stopEmbed = new Discord.MessageEmbed()
+                                    .setColor('PURPLE')
+                                    .setTitle(":musical_note: Music")
+                                    .setDescription(`:stop_button: Stopped`)
+                                return msg.channel.send(stopEmbed).then(msg => msg.delete({ timeout: 5000 }));
+                            }
+                            break;
+                        case ("⏭️"):
+                            if (serverQueue) {
+                                serverQueue.connection.dispatcher.end();
+                                const skipEmbed = new Discord.MessageEmbed()
+                                    .setColor('PURPLE')
+                                    .setTitle(":musical_note: Music")
+                                    .setDescription(`:track_next: Skipped`)
+                                return msg.channel.send (skipEmbed).then(msg => msg.delete({ timeout: 5000 }));
+                            }
+                            break;
+                    }
+
+                })
+            })
         }
     }
 }
