@@ -2,6 +2,7 @@ const { Collection } = require('discord.js');
 const Discord = require("discord.js");
 const fs = require("fs");
 const client = new Discord.Client;
+client.serverstatscooldown = new Set();
 client.queue = new Map();
 client.commands = new Collection();
 client.aliases = new Collection();

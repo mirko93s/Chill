@@ -58,23 +58,27 @@ module.exports = {
     },
 
     xpAdd: function(client, msg, talkedRecently) {
-        const key = `${msg.guild.id}-${msg.author.id}`;
-        client.xp.ensure(key, {
-            user: msg.author.id,
-            guild: msg.guild.id,
-            points: 0,
-            level: 0
-        });
-        client.xp.inc(key, "points");       
-        const curLevel = Math.floor(0.3163 * Math.sqrt(client.xp.get(key, "points")));
-        if (client.xp.get(key, "level") < curLevel) {
-            client.xp.set(key, curLevel, "level");
+        client.settings.ensure(msg.guild.id, {level: 0, points: 0}, `xp.${msg.author.id}`);
+        client.settings.inc(msg.guild.id, `xp.${msg.author.id}.points`);
+        const curLevel = Math.floor(0.3163 * Math.sqrt(client.settings.get(msg.guild.id, `xp.${msg.author.id}.points`)));
+        if (client.settings.get(msg.guild.id, `xp.${msg.author.id}.level`) < curLevel) { //level up
+            client.settings.set(msg.guild.id, curLevel, `xp.${msg.author.id}.level`);
 			const newlevelembed = new Discord.MessageEmbed()
-				.setColor(`RANDOM`)
-				.setAuthor(msg.author.username, msg.author.avatarURL())
-				.setTitle(`Congratulations!`)
-				.setDescription(`You leveled up to Lvl **${curLevel}**!`)
-			msg.channel.send(newlevelembed);
+                .setColor(`RANDOM`)
+                .setAuthor(`Congratulations`, msg.author.avatarURL())
+                .setDescription(`${msg.member.user} **leveled up to Lvl ${curLevel}**!`)
+            //check rewards
+            var rewards = client.settings.get(msg.guild.id, `rewards`);
+            var unlocked = "";
+            for (const [key, value] of Object.entries(rewards)) {
+                if (value == curLevel) {
+                    const checkrole = msg.guild.roles.cache.find(r => r.id === key); //check if role exists
+                    if (checkrole && msg.guild.me.roles.highest.position > checkrole.rawPosition) msg.member.roles.add(checkrole.id); //give role
+                    unlocked += `${msg.guild.roles.cache.find(r => r.id === key).name}\n`;
+                }
+            };
+            if (unlocked.length > 0) newlevelembed.setDescription(`${msg.member.user} **leveled up to Lvl ${curLevel}**\n*and unlocked these roles:*\n***${unlocked}***`)
+            msg.channel.send(newlevelembed);
         };
         talkedRecently.add(msg.author.id); //xp cooldown
         setTimeout(() => {
@@ -91,14 +95,16 @@ module.exports = {
             .setTitle(`Thanks for inviting my bot!`)
             .setDescription(`⚠️ Follow the instructions to setup the Bot (Don't skip them!) ⚠️
             \n1️⃣ **Type .showconfig** \n> You can check the default settings in there.
-            \n2️⃣ **Rename channels and roles**\n > Rename the channels and the roles you see in the config as you prefer, they are saved in the config using the id, so you can rename them at any time and they will still be linked to the config.
-            \n3️⃣ **Set other settings**\n> Set the settings you see in the **Other** paragraph as you prefer, if you want to get back to default, type .resetconfig (this wil only reset that paragraph).
+            \n2️⃣ **Rename channels and roles**\n > Rename the channels and the roles you see in the config as you prefer, they are saved in the config using their id, so you can rename them at any time and they will still be linked to the config.
+            \n3️⃣ **Other settings**\n> Check and set **Other** and **Modules** sections as you prefer, you can disable features you don't want such xp system, welcome messages and more. If you want to get back to default, type .resetconfig.
             \n4️⃣ **Set your role hierarchy**\n> **Chill** (bot) role must be just below the owner/admin role.\n> **Muted** role must be above any other role that your members will get.
             \n5️⃣ **Music**\n> Don't forget to give **DJ** role to your members to make sure they can use Music commands.\n> If you will use "Music Only Channel" a hidden text channel will only be shown to people who are connected to the Music Vocal Channel and music commands will only work on the "Music Text Channel".
-            \n6️⃣ **Role Hierarchy**\n> Sometimes you might need to adjust channel permissions to avoid that "Muted" members can still send messages, depending on how your server has been set.
-            \n7️⃣ **Deleted Config Keys**\n> If you accidentally delete a bot's channel or role it will appear as "NOT FOUND" in .showconfig, to fix and create the missing keys of the config type .setup. This will create the missing/deleted channels and roles.
+            \n6️⃣ **Mute command**\n> You might need to adjust channel permissions to avoid that "Muted" members can still send messages, depending on how your server has been set.
+            \n7️⃣ **Deleted Config Keys**\n> If you accidentally delete a bot's channel or role it will appear as "NOT FOUND" in .showconfig, to fix and create the missing keys of the config type .setup. This will create the missing/deleted channels and roles, or use .setconfig to link and existing channel/role to the config.
             \n
             \n**TL;DR**\n> You can now rename all the channels and roles the bot has just created, check them by doing .showconfig. Put Muted role above any other role that normal members can get, give DJ role to users. Do .setup if you accidentally deleted a bot's channel/role.
+            \n
+            \n*P.S. If you wish to use the same channel/role for multiple scopes use .setconfig*
             `)
             .setFooter(`©️ 2019-2021 mirko93s`,`https://cdn.discordapp.com/avatars/278380909588381698/029d0578df3fa298132b3d85dd06bf3c.png?size=128`)
 	    guild.owner.send(dmonweronjoinEmbed);
@@ -204,31 +210,61 @@ module.exports = {
         if (!fs.existsSync(dir_databases)) fs.mkdirSync(dir_databases);
         var dir_guild_settings = './databases/guild_settings';
         if (!fs.existsSync(dir_guild_settings)) fs.mkdirSync(dir_guild_settings);
-        var dir_xp = './databases/xp';
-        if (!fs.existsSync(dir_xp)) fs.mkdirSync(dir_xp);
-        var dir_customcmd = './databases/customcommands';
-        if (!fs.existsSync(dir_customcmd)) fs.mkdirSync(dir_customcmd);
         //create enmaps
         client.settings = new Enmap({
             name: "settings",
-            fetchAll: false,
+            fetchAll: true,
             autoFetch: true,
             cloneLevel: 'deep',
             dataDir: './databases/guild_settings'
         });
-        client.xp = new Enmap({
-            name: "xp",
-            fetchAll: false,
-            autoFetch: true,
-            cloneLevel: 'deep',
-            dataDir: './databases/xp'
-        });
-        client.customcmd = new Enmap({
-            name: "customcmd",
-            fetchAll: false,
-            autoFetch: true,
-            cloneLevel: 'deep',
-            dataDir: './databases/customcommands'
-        });
+    },
+
+    checkCustomCommand: function (client, msg, cmd) {
+        if(client.settings.has(msg.guild.id, `customcmd.${cmd}`)) {
+            if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
+            const customEmbed = new Discord.MessageEmbed()
+                .setColor(`RANDOM`)
+                .setDescription(client.settings.get(msg.guild.id, `customcmd.${cmd}`))
+            msg.channel.send(customEmbed);
+        }
+    },
+
+    ensureGuildSettings: function (client, guild) {
+        // if (!client.settings.has(guild)) {
+            const defaultSettings = {
+                prefix: ".",
+                musicchannelonly: "false",
+                xpcooldown: 5,
+                autodeletecmds: "true",
+                xpmodule: "true",
+                welcomemessage: "true",
+                welcomerole: "true",
+                autovocalchannels: [],
+                autovocalcloned: [],
+                disabledcommands: [],
+                xp: {},
+                customcmd: {},
+                rewards: {}
+            }
+            client.settings.ensure(guild, defaultSettings);
+        // }
+    },
+
+    updateServerStats: function (client, member) {
+        if (client.serverstatscooldown.has(member.guild.id)) return;
+		const usercounterchannel = member.guild.channels.cache.find(c => c.id === (client.settings.get(member.guild.id, "usercounter"))); //check if channel still exists
+		if (usercounterchannel) {
+			var memberCount = member.guild.members.cache.filter(member => !member.user.bot).size;
+            const fancyNumber = require('./functions').fancyNumber;
+            memberCount = fancyNumber(memberCount);
+			usercounterchannel.setName(`📊Users: ${memberCount}`);
+			client.serverstatscooldown.add(member.guild.id); //xp cooldown
+            setTimeout(() => {
+                client.serverstatscooldown.delete(member.guild.id);
+            }, 15*60*1000);
+		} else { //if channel doesnt exist delete usercounter from db disabling the feature
+			client.settings.delete(member.guild.id, "usercounter");
+		}
     }
 };
