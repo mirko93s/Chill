@@ -1,5 +1,7 @@
+const { ensureGuildSettings } = require("../functions.js");
+
 module.exports = (client, oldUser, newUser) => {
-    client.settings.ensure(newUser.guild.id, defaultSettings);
+	ensureGuildSettings(client,newUser.guild.id);
 	//music temp role
 	let musictemprole = newUser.guild.roles.cache.find(role => role.id === (client.settings.get(newUser.guild.id, "musictemprole")));
 	if (musictemprole) {
@@ -25,27 +27,3 @@ module.exports = (client, oldUser, newUser) => {
 	//delete queue if bot is kicked from a vc while playing
 	if (newUser.member.user.bot && newUser.channel === null) return client.queue.delete(newUser.guild.id);
 };
-
-const defaultSettings = {
-	prefix: ".",
-	welcomechannel: "👋welcome",
-	bcchannel: "🔴broadcast",
-	puchannel: "🔨punishments",
-	reportchannel: "🚨reports",
-	gachannel: "🎉giveaway",
-	pollchannel: "💡poll",
-	musicvocalchannel: "🔊music",
-	musictextchannel: "🎵song-request",
-	musictemprole: "Listening",
-	ticketcategory: "tickets",
-	mutedrole: "Muted",
-	djrole: "DJ",
-	supportrole: "Support",
-	roleonjoin: "Member",
-	musicchannelonly: "false",
-	xpcooldown: 5,
-	autodeletecmds: "true",
-	autovocalchannels: [],
-	autovocalcloned: [],
-	disabledcommands: []
-}

@@ -1,9 +1,9 @@
 const talkedRecently = new Set();
-const { xpAdd, setupCheck } = require("../functions.js");
+const { xpAdd, setupCheck, checkCustomCommand, ensureGuildSettings } = require("../functions.js");
 
 module.exports = async (client, msg) => {
     if (!msg.guild || msg.author.bot) return;
-    client.settings.ensure(msg.guild.id, defaultSettings);
+    ensureGuildSettings(client,msg.guild.id);
     prefix = client.settings.get(msg.guild.id, "prefix");
     //mention bot
     if (msg.mentions.has(client.user) && !msg.content.includes("@here") && !msg.content.includes("@everyone")) {
@@ -13,7 +13,7 @@ module.exports = async (client, msg) => {
         }
     }
     //xp
-    if (msg.guild && !msg.content.startsWith(prefix) && !talkedRecently.has(msg.author.id) && msg.channel.id !== client.settings.get(msg.guild.id, "musictextchannel")) {
+    if (client.settings.get(msg.guild.id, "xpmodule") === "true" && msg.guild && !msg.content.startsWith(prefix) && !talkedRecently.has(msg.author.id) && msg.channel.id !== client.settings.get(msg.guild.id, "musictextchannel")) {
         xpAdd(client, msg, talkedRecently);
     }
     //old main
@@ -38,35 +38,6 @@ module.exports = async (client, msg) => {
         commandh.run(client, msg, arg);
     }
     else { //custom command loader
-        if (!client.customcmd.has(msg.guild.id)) return;
-        else if(client.customcmd.has(msg.guild.id, cmd)) {
-            if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
-            let custommsg = client.customcmd.get(msg.guild.id, cmd);
-            msg.channel.send(custommsg);
-        }
+        checkCustomCommand(client, msg, cmd);
     }
 };
-
-const defaultSettings = {
-	prefix: ".",
-	welcomechannel: "👋welcome",
-	bcchannel: "🔴broadcast",
-	puchannel: "🔨punishments",
-	reportchannel: "🚨reports",
-	gachannel: "🎉giveaway",
-	pollchannel: "💡poll",
-	musicvocalchannel: "🔊music",
-	musictextchannel: "🎵song-request",
-	musictemprole: "Listening",
-	ticketcategory: "tickets",
-	mutedrole: "Muted",
-	djrole: "DJ",
-	supportrole: "Support",
-	roleonjoin: "Member",
-	musicchannelonly: "false",
-	xpcooldown: 5,
-	autodeletecmds: "true",
-	autovocalchannels: [],
-	autovocalcloned: [],
-	disabledcommands: []
-}
