@@ -25,7 +25,7 @@ Type ".help" or ".help (command)" in discord to get a detailed explanation of ea
 
 | Modules | Commands |
 | ------ | ------ |
-| Admin | addchannel, broadcast, giveaway, poll, setup |
+| Admin | addchannel, broadcast, giveaway, poll, serverstats, setup |
 | Autovocal | autovocal, autovocallock, autovocalinvite, autovocalkick |
 | Bot | botinfo, bugreport, invite, project, vote, website |
 | Commands | command, customcommand, customcommandremove, customcommandlist |
@@ -37,10 +37,10 @@ Type ".help" or ".help (command)" in discord to get a detailed explanation of ea
 | Owner | blast, botactivity, guilds |
 | Roles | addrole, removerole, roleinfo, rolelist |
 | Settings| resetconfig, setconfig, showconfig |
-| Xp | leaderboard, level, xp |
+| Xp | leaderboard, level, rewards, xp |
 
-### Known bugs
-Discord new Rules Screening feature for communities won't work because the bot gives a role to all new members, currently in the latest discord.js v12 stable release there is no way to check if someone has accepted the rules, it will be implemented in discord.js v13
+### Discord Rules Screening for communities
+Until the release of discordjs v13 there is no way to check if users accepted the rules, my bot will automatically give a role on join and this will skip your rules screening feature, to avoid this please disable the role on join by doing `.setconfing welcomerole false`
 
 If you need the Rules Screening a temporary fix is to delete the role given on join!
 
