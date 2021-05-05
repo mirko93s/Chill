@@ -40,9 +40,7 @@ Type ".help" or ".help (command)" in discord to get a detailed explanation of ea
 | Xp | leaderboard, level, rewards, xp |
 
 ### Discord Rules Screening for communities
-Until the release of discordjs v13 there is no way to check if users accepted the rules, my bot will automatically give a role on join and this will skip your rules screening feature, to avoid this please disable the role on join by doing `.setconfing welcomerole false`
-
-If you need the Rules Screening a temporary fix is to delete the role given on join!
+Until the release of discordjs v13 there is no way to check if users accepted the rules, my bot will automatically give a role on join and this will skip your rules screening feature, to avoid this please disable the role on join feature by doing `.setconfing welcomerole false`
 
 [//]: # (Hidden stuff)
 <!--
