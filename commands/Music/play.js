@@ -138,8 +138,11 @@ module.exports = {
                 queueConstruct.songs.push(song);
         
                 try {
-                    var connection = await voiceChannel.join();
-                    queueConstruct.connection = connection;
+                    await voiceChannel.join()
+                    .then(conn => {
+                        conn.voice.setSelfDeaf(true);
+                        queueConstruct.connection = conn;
+                        });
                     play(msg.guild, queueConstruct.songs[0]);
                 } catch (error) {
                     console.error(`I could not join the voice channel: ${error}`);
