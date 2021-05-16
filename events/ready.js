@@ -1,4 +1,4 @@
-const { fancyNumber, setupDatabases } = require("../functions.js");
+const { fancyNumber, setupDatabases, ensureGuildSettings } = require("../functions.js");
 const ascii = require("ascii-table");
 const config = require('../config.json');
 
@@ -20,6 +20,8 @@ module.exports = (client) => {
     users = fancyNumber(users);
     let guilds = client.guilds.cache.size;
     guilds = fancyNumber(guilds);
+    //ensure all guilds in the db
+    client.guilds.cache.forEach(guild => {ensureGuildSettings(client, guild.id);});
     //set counters
     client.user.setActivity(`${users} user${users !== 1 ? 's' : ''}`, {type: 'WATCHING'});
     client.channels.cache.get(config.users_counter_channel).setName(`USERS: ${users}`);

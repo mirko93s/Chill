@@ -1,9 +1,8 @@
 const talkedRecently = new Set();
-const { xpAdd, setupCheck, checkCustomCommand, ensureGuildSettings } = require("../functions.js");
+const { xpAdd, setupCheck, checkCustomCommand } = require("../functions.js");
 
 module.exports = async (client, msg) => {
     if (!msg.guild || msg.author.bot) return;
-    ensureGuildSettings(client,msg.guild.id);
     prefix = client.settings.get(msg.guild.id, "prefix");
     //mention bot
     if (msg.mentions.has(client.user) && !msg.content.includes("@here") && !msg.content.includes("@everyone")) {

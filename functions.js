@@ -231,7 +231,6 @@ module.exports = {
     },
 
     ensureGuildSettings: function (client, guild) {
-        // if (!client.settings.has(guild)) {
             const defaultSettings = {
                 prefix: ".",
                 musicchannelonly: "false",
@@ -248,7 +247,6 @@ module.exports = {
                 rewards: {}
             }
             client.settings.ensure(guild, defaultSettings);
-        // }
     },
 
     updateServerStats: function (client, member) {

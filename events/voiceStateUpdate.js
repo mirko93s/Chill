@@ -1,7 +1,4 @@
-const { ensureGuildSettings } = require("../functions.js");
-
 module.exports = (client, oldUser, newUser) => {
-	ensureGuildSettings(client,newUser.guild.id);
 	//music temp role
 	let musictemprole = newUser.guild.roles.cache.find(role => role.id === (client.settings.get(newUser.guild.id, "musictemprole")));
 	if (musictemprole) {
