@@ -2,6 +2,7 @@ module.exports = (client, oldUser, newUser) => {
 	//music temp role
 	let musictemprole = newUser.guild.roles.cache.find(role => role.id === (client.settings.get(newUser.guild.id, "musictemprole")));
 	if (musictemprole) {
+		if (newUser.guild.me.roles.highest.position < musictemprole.rawPosition) return; //check hierarchy
 		if (newUser.channel !== null && newUser.channel.id === client.settings.get(newUser.guild.id, "musicvocalchannel")) {
 				newUser.member.roles.add(musictemprole);
 			} else newUser.member.roles.remove(musictemprole);
