@@ -43,8 +43,3 @@ Type ".help" or ".help (command)" in discord to get a detailed explanation of ea
 Until the release of discordjs v13 there is no way to check if users accepted the rules, my bot will automatically give a role on join and this will skip your rules screening feature, to avoid this please disable the role on join feature by doing `.setconfing welcomerole false`
 
 [//]: # (Hidden stuff)
-<!--
-## Support on Beerpay
-Hey dude! Help me out for a couple of :beers:!  
-[![Beerpay](https://beerpay.io/mirko93s/Chill/badge.svg?style=beer)](https://beerpay.io/mirko93s/Chill)
--->
