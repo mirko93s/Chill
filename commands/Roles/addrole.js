@@ -20,7 +20,7 @@ module.exports = {
             .setTitle(`⛔ Couldn't find that role`)  
 
         if (!msg.member.hasPermission("MANAGE_ROLES")) return msg.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        let rMember = msg.guild.member(msg.mentions.users.first()) || msg.guild.members.get(arg[0]);
+        let rMember = msg.guild.member(msg.mentions.users.first()) || msg.guild.members.cache.get(arg[0]);
         let role = arg.slice(1).join(" ")
         if (!rMember || !role) return msg.channel.send(noargsEmbed).then(msg => msg.delete({ timeout: 5000 }));
         let gRole = msg.guild.roles.cache.find(grole => grole.name === (role));
