@@ -8,7 +8,7 @@
 ![Last-Commit](https://img.shields.io/github/last-commit/mirko93s/Chill)
 [![Discord Bots](https://top.gg/api/widget/status/605894942275141672.svg)](https://top.gg/bot/605894942275141672)
 
-<img src="https://s7.gifyu.com/images/chill.gif" data-canonical-src="https://s7.gifyu.com/images/chill.gif" />
+<img src="https://i.imgur.com/Ekzr8tX.gif" data-canonical-src="https://i.imgur.com/Ekzr8tX.gif" />
 
 [<img src="https://i.imgur.com/d7Eet0y.png">](https://discord.gg/2ktWcAb)
 [<img src="https://i.imgur.com/OJpg8dD.png">](https://discord.com/api/oauth2/authorize?client_id=605894942275141672&permissions=8&scope=bot)
