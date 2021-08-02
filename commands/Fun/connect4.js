@@ -18,6 +18,7 @@ module.exports = {
         ]
         var turn = `🔴`;
         const boardEmbed = new Discord.MessageEmbed()
+            .setcolor('RANDOM')
             .setAuthor(`CONNECT 4`)
             .setTitle(`🔴 Turn`)
             .setDescription(boardToString(boardarray))
@@ -30,7 +31,7 @@ module.exports = {
             const filter = (reaction, user) => reactions.includes(reaction.emoji.name) && !user.bot;
             const collector = sent.createReactionCollector(filter, {time: 60*1000});
             collector.on('collect', clicked => {
-                clicked.users.remove(clicked.users.cache.filter(u => u === msg.author).first()); //remove reaction          
+                clicked.users.remove(clicked.users.cache.filter(u => u.id !== client.user.id).first()); //remove reaction         
                 if (reactions.includes(clicked.emoji.name)) collector.resetTimer({ time: 60*1000 }); //if a valid emoji then reset collector timer
                 var x = 0;
                 var y = 0;
