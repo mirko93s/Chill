@@ -26,7 +26,7 @@ function getAll(client, msg) {
         /* Auto-Vocal*/.addField("🔊 Auto-Vocal", "`autovocal` `autovocallock` `autovocalinvite` `autovocalkick`", true)
         /* Bot */.addField("🤖 Bot", "`botinfo` `bugreport` `invite` `project` `vote` `website`", true)
         /* Commands */.addField("🛃 Commands", "`command` `customcommand` `customcommandremove` `customcommandlist`", true)
-        /* Fun */.addField("🎲 Fun", "`8ball` `achievement` `coinflip` `rockpaperscissors` `ship` `slotmachine`", true)
+        /* Fun */.addField("🎲 Fun", "`8ball` `achievement` `coinflip` `connect4` `rockpaperscissors` `ship` `slotmachine`", true)
         /* Info */.addField("ℹ️ Info", "`avatar` `help` `serveremojis` `serverinfo` `whois`", true)
         /* Moderation */.addField("🔨 Moderation", "`ban` `kick` `mute` `purge` `report` `say` `ticket` `unmute`", true)
         /* Music */.addField("🎵 Music", "`play` `skip` `playskip` `pause` `resume` `stop` `nowplaying` `queue` `summon` `volume`", true)
@@ -48,12 +48,12 @@ function getCMD(client, msg, input) {
     
     let info = `⛔ No information found for command **${input.toLowerCase()}**`;
 
-    if (!cmd) return msg.channel.send(embed.setColor("RED").setDescription(info)).then(msg => msg.delete({ timeout: 5000 }));
+    if (!cmd || cmd.debug) return msg.channel.send(embed.setColor("RED").setDescription(info)).then(msg => msg.delete({ timeout: 5000 }));
 
     //if (cmd.name) info = `**Command name**: ${cmd.name}`;
     if (cmd.aliases) info = `**Aliases**: ${cmd.aliases.map(a => `\`${a}\``).join(", ")}`;
     if (!cmd.aliases && cmd.description) info = `**Description**: ${cmd.description}`;
-    else info += `\n**Description**: ${cmd.description}`;
+    else if (cmd.description) info += `\n**Description**: ${cmd.description}`;
     if (cmd.usage) {
         info += `\n**Usage**: ${cmd.usage}`;
         embed.setFooter(`Syntax: <> = required, [] = optional, | = or`);
