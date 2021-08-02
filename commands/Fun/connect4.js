@@ -53,6 +53,11 @@ module.exports = {
                     boardEmbed.setTitle(`${turn} WON ! ! !`)
                     return sent.edit(boardEmbed);
                 }
+                else if (checkDraw(boardarray) == true) {
+                    collector.stop("draw");
+                    boardEmbed.setTitle(`DRAW!`)
+                    return sent.edit({embeds:[boardEmbed]});
+                }
                 turn == "🔴" ? turn = "🟡" : turn = "🔴"; //change turn
                 boardEmbed.setTitle(`${turn} Turn`);
                 return sent.edit(boardEmbed);
@@ -73,6 +78,11 @@ function boardToString (board) { //convert board array to string
         if (i != board.length) string += "\n";
     }
     return string;
+}
+
+function checkDraw (boardarray) {
+    if (boardarray[0][0] != "⚪" && boardarray[0][1] != "⚪" && boardarray[0][2] != "⚪" && boardarray[0][3] != "⚪" && boardarray[0][4] != "⚪" && boardarray[0][5] != "⚪" && boardarray[0][6] != "⚪") return true;
+    else return false;
 }
 
 function haswon (thisturn, boardarray, x, y) {
