@@ -1,6 +1,7 @@
 const { fancyNumber, setupDatabases, ensureGuildSettings } = require("../functions.js");
 const ascii = require("ascii-table");
 const config = require('../config.json');
+const package = require('../package.json');
 
 module.exports = (client) => {
 
@@ -9,12 +10,9 @@ module.exports = (client) => {
     setupDatabases(client);
     //define pm2 metrics
     const io = require('@pm2/io');
-    var guilds_pm2_metric = io.metric({
-        name    : 'Guilds'
-        })
-    var users_pm2_metric = io.metric({
-        name    : 'Users'
-        })
+    var guilds_pm2_metric = io.metric({name: 'Guilds'});
+    var users_pm2_metric = io.metric({name: 'Users'});
+    var version_pm2_metric = io.metric({name: 'Version'});
     //get and format counters
     let users = client.guilds.cache.reduce((a, g) => a + (g.memberCount || 0) - 1, 0);
     users = fancyNumber(users);
@@ -29,6 +27,7 @@ module.exports = (client) => {
     //set pm2 metrics
     guilds_pm2_metric.set(guilds);
     users_pm2_metric.set(users);
+    version_pm2_metric.set(package.version);
     //update counters every 30 minutes
     setInterval(async () => { 
         users = client.guilds.cache.reduce((a, g) => a + (g.memberCount || 0) - 1, 0)
