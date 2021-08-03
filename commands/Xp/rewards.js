@@ -35,7 +35,6 @@ module.exports = {
 			.setColor(`RED`)
             .setTitle(`⛔ You have reached the maximum number of rewards you can have at the same time. Delete some of them to add new ones.`)
 
-        if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.channel.send(nopermEmbed).then(msg => msg.delete({timeout:5000}));
 		if (client.settings.get(msg.guild.id, "xpmodule") === "false") return msg.channel.send(moduleDisabledEmbed).then(msg => msg.delete({timeout:5000}));
         
         let mode = arg[0];
@@ -56,6 +55,7 @@ module.exports = {
         } else if(mode !== "set" && mode !== "delete") return msg.channel.send(noargsEmbed).then(msg => msg.delete({timeout:5000}));
 
         if (mode === "set") { //create a new reward or change its level
+            if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.channel.send(nopermEmbed).then(msg => msg.delete({timeout:5000}));
             var level = arg[1];
             var role = arg.slice(2).join(" ");
             if (!role || !level) return msg.channel.send(noargsEmbed).then(msg => msg.delete({timeout:5000}));
@@ -80,6 +80,7 @@ module.exports = {
             return msg.channel.send(setEmbed).then(msg => msg.delete({timeout:10000}));
         }
         if (mode === "delete") { //delete a reward
+            if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.channel.send(nopermEmbed).then(msg => msg.delete({timeout:5000}));
             var role = arg.slice(1).join(" ");
             if (!role) return msg.channel.send(noargsEmbed).then(msg => msg.delete({timeout:5000}));
             if (isNaN(role)) { //if string search role in the guild
