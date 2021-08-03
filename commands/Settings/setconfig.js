@@ -62,7 +62,7 @@ module.exports = {
 			}
 		}
 
-		if (arg[0].includes("role")) {
+		if (arg[0].includes("role") && arg[0] !== "welcomerole") {
 			var rolenewid = value;
 				if (isNaN(rolenewid)) { //if string search role name in the guild
 					rolenewid = msg.guild.roles.cache.find(r => r.name === rolenewid);
