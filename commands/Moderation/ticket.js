@@ -56,7 +56,10 @@ module.exports = {
             return;
         };
 
-        if (arg [0] == "delete" && msg.channel.name.includes("ticket") == true) return msg.channel.delete();
+        if (arg [0] == "delete" && msg.channel.name.includes("ticket") == true) {
+            if (msg.member.roles.cache.find(supportrole => supportrole.id === (client.settings.get(msg.guild.id, "supportrole"))) || msg.member.hasPermission("ADMINISTRATOR")) return msg.channel.delete();
+            else return msg.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        }
 
         if (arg[0] == "close" && msg.channel.name.indexOf("ticket") == false) {
             if (msg.member.roles.cache.find(supportrole => supportrole.id === (client.settings.get(msg.guild.id, "supportrole"))) || msg.member.hasPermission("ADMINISTRATOR")) {
