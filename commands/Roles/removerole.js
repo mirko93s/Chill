@@ -32,7 +32,7 @@ module.exports = {
         const hierarchyEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setDescription(`⛔ ${rMember} I can't remove the role ${gRole.name} due to roles hierarchy.`)
-        if (msg.guild.me.roles.highest.position < grole.rawPosition) return msg.channel.send(hierarchyEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (msg.guild.me.roles.highest.position < gRole.rawPosition) return msg.channel.send(hierarchyEmbed).then(msg => msg.delete({ timeout: 5000 }));
         await(rMember.roles.remove(gRole.id));
 
         const doneEmbed = new Discord.MessageEmbed()
