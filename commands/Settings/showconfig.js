@@ -28,6 +28,7 @@ module.exports = {
 		bcchannel         :: ${channel(guildConf.bcchannel)}
 		puchannel         :: ${channel(guildConf.puchannel)}
 		reportchannel     :: ${channel(guildConf.reportchannel)}
+		gachannel         :: ${channel(guildConf.gachannel)}
 		pollchannel       :: ${channel(guildConf.pollchannel)}
 		musictextchannel  :: ${channel(guildConf.musictextchannel)}
 		musicvocalchannel :: ${channel(guildConf.musicvocalchannel)}
