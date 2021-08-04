@@ -21,7 +21,7 @@
 [Wiki](https://github.com/mirko93s/Chill/wiki) (w.i.p)
 
 ## Modules
-Type ".help" or ".help (command)" in discord to get a detailed explanation of each command.
+Type `.help` or `.help <command-name-or-alias>` in discord to get a detailed explanation of each command.
 
 | Modules | Commands |
 | ------ | ------ |
