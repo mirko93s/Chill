@@ -121,7 +121,7 @@ module.exports = {
             permissionOverwrites: [
             {id: msg.guild.roles.everyone.id, 
             deny: ['VIEW_CHANNEL']},
-            {id: musictemprole.id,
+            {id: musictemprole,
             allow: ['VIEW_CHANNEL','SEND_MESSAGES']}]})
             .then(channel => {client.settings.set(msg.guild.id, channel.id, "musictextchannel")});
             musictextmsg = created
