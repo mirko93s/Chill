@@ -18,7 +18,7 @@ module.exports = {
         ]
         var turn = `🔴`;
         const boardEmbed = new Discord.MessageEmbed()
-            .setcolor('RANDOM')
+            .setColor('RANDOM')
             .setAuthor(`CONNECT 4`)
             .setTitle(`🔴 Turn`)
             .setDescription(boardToString(boardarray))
