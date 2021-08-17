@@ -33,7 +33,7 @@ module.exports = {
         for (const reaction of validReactions) await msg.react(reaction); //add reactions in order
         const filter = (reaction, user) => validReactions.includes(reaction.emoji.name) && user.id === author.id;
         return msg
-            .awaitReactions(filter, { max: 1, time: time})
+            .awaitReactions({filter,  max: 1, time: time})
             .then(collected => collected.first() && collected.first().emoji.name);
     },
 
@@ -78,7 +78,7 @@ module.exports = {
                 }
             };
             if (unlocked.length > 0) newlevelembed.setDescription(`${msg.member.user} **leveled up to Lvl ${curLevel}**\n*and unlocked these roles:*\n***${unlocked}***`)
-            msg.channel.send(newlevelembed);
+            msg.channel.send({embeds:[newlevelembed]});
         };
         talkedRecently.add(msg.author.id); //xp cooldown
         setTimeout(() => {
@@ -107,7 +107,7 @@ module.exports = {
             \n*P.S. If you wish to use the same channel/role for multiple scopes use .setconfig*
             `)
             .setFooter(`©️ 2019-2021 mirko93s`,`https://cdn.discordapp.com/avatars/278380909588381698/029d0578df3fa298132b3d85dd06bf3c.png?size=128`)
-	    guild.owner.send(dmonweronjoinEmbed);
+	    guild.owner.send({embeds:[dmonweronjoinEmbed]});
     },
 
     welcomeMessage: function(member, guild) {
@@ -138,48 +138,48 @@ module.exports = {
 
     setupGuildOnJoin: async function(client, guild) {
         //roles
-        await guild.roles.create({ data: {name: "Listening",permissions: [], color: 'CCCC00'}})
+        await guild.roles.create({ name: "Listening",permissions: [], color: 'CCCC00'})
             .then(role => {client.settings.set(guild.id, role.id, "musictemprole")});
-        guild.roles.create({ data: {name: "Muted",permissions: [],color: '525252'}})
+        guild.roles.create({ name: "Muted",permissions: [],color: '525252'})
             .then(role => {client.settings.set(guild.id, role.id, "mutedrole")});
-        guild.roles.create({ data: {name: "DJ",permissions: ['CONNECT'], color: 'D00091'}})
+        guild.roles.create({ name: "DJ",permissions: ['CONNECT'], color: 'D00091'})
             .then(role => {client.settings.set(guild.id, role.id, "djrole")});
-        guild.roles.create({ data: {name: "Support",permissions: [], color: 'FC72F3'}})
+        guild.roles.create({ name: "Support",permissions: [], color: 'FC72F3'})
             .then(role => {client.settings.set(guild.id, role.id, "supportrole")});
-        guild.roles.create({ data: {name: "Member",permissions: ['VIEW_CHANNEL'], color: '33FFFF'}})
+        guild.roles.create({ name: "Member",permissions: ['VIEW_CHANNEL'], color: '33FFFF'})
             .then(role => {client.settings.set(guild.id, role.id, "roleonjoin")});
         //channels
-        guild.channels.create("🎫tickets", {type: 'category'})
+        guild.channels.create("🎫tickets", {type: 'GUILD_CATEGORY'})
             .then(channel => {client.settings.set(guild.id, channel.id, "ticketcategory")});
-        guild.channels.create("👋welcome", {type: 'text', 
+        guild.channels.create("👋welcome", {type: 'GUILD_TEXT', 
             permissionOverwrites: [{id: guild.roles.everyone.id, 
             deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`]}]})
             .then(channel => {client.settings.set(guild.id, channel.id, "welcomechannel")});
-        guild.channels.create("🔴broadcast", {type: 'text', 
+        guild.channels.create("🔴broadcast", {type: 'GUILD_TEXT', 
             permissionOverwrites: [{id: guild.roles.everyone.id, 
             deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`]}]})
             .then(channel => {client.settings.set(guild.id, channel.id, "bcchannel")});
-        guild.channels.create("🔨punishments", {type: 'text', 
+        guild.channels.create("🔨punishments", {type: 'GUILD_TEXT', 
             permissionOverwrites: [{id: guild.roles.everyone.id, 
             deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`]}]})
             .then(channel => {client.settings.set(guild.id, channel.id, "puchannel")});
-        guild.channels.create("🚨reports", {type: 'text', 
+        guild.channels.create("🚨reports", {type: 'GUILD_TEXT', 
             permissionOverwrites: [{id: guild.roles.everyone.id, 
             deny: [`VIEW_CHANNEL`]}]})
             .then(channel => {client.settings.set(guild.id, channel.id, "reportchannel")});
-        guild.channels.create("🎉giveaway", {type: 'text', 
+        guild.channels.create("🎉giveaway", {type: 'GUILD_TEXT', 
             permissionOverwrites: [{id: guild.roles.everyone.id, 
             deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`]}]})
             .then(channel => {client.settings.set(guild.id, channel.id, "gachannel")});
-        guild.channels.create("💡poll", {type: 'text', 
+        guild.channels.create("💡poll", {type: 'GUILD_TEXT', 
             permissionOverwrites: [{id: guild.roles.everyone.id, 
             deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`]}]})
             .then(channel => {client.settings.set(guild.id, channel.id, "pollchannel")});
-        guild.channels.create("🔊music", {type: 'voice',
+        guild.channels.create("🔊music", {type: 'GUILD_VOICE',
             permissionOverwrites: [{id: guild.roles.everyone.id, 
             deny: ['SPEAK']}]})
             .then(channel => {client.settings.set(guild.id, channel.id, "musicvocalchannel")});
-        guild.channels.create("🎵song-request", {type: 'text', 
+        guild.channels.create("🎵song-request", {type: 'GUILD_TEXT', 
             permissionOverwrites: [
             {id: guild.roles.everyone.id, 
             deny: ['VIEW_CHANNEL']},
@@ -226,7 +226,7 @@ module.exports = {
             const customEmbed = new Discord.MessageEmbed()
                 .setColor(`RANDOM`)
                 .setDescription(client.settings.get(msg.guild.id, `customcmd.${cmd}`))
-            msg.channel.send(customEmbed);
+            msg.channel.send({embeds:[customEmbed]});
         }
     },
 

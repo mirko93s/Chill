@@ -1,12 +1,14 @@
 const { Collection } = require('discord.js');
 const Discord = require("discord.js");
 const fs = require("fs");
-const client = new Discord.Client;
+const client = new Discord.Client({ intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_VOICE_STATES', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'DIRECT_MESSAGES', 'GUILD_PRESENCES', 'GUILD_INVITES'] });
 client.serverstatscooldown = new Set();
 client.queue = new Map();
 client.commands = new Collection();
 client.aliases = new Collection();
 client.categories = fs.readdirSync("./commands/");
+const { createAudioPlayer } = require ('@discordjs/voice');
+client.player = createAudioPlayer();
 //load commands
 ["command"].forEach(handler => {
   	require(`./handler/${handler}`)(client);
