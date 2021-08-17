@@ -19,15 +19,15 @@ module.exports = {
             .setTitle(`⛔ You can't report me`)
         const thanksEmbed = new Discord.MessageEmbed()
             .setColor(`GREEN`)
-            .setTitle(`✅ Thanks for reporting this person.\nA staff member will take a decision as soon as possible`)
+            .setTitle(`✅ Thanks for reporting this person.\nA staff member will review your report as soon as possible`)
 
         let rMember = msg.mentions.members.first();
-        if (!rMember || !arg[1]) return msg.channel.send(noargsEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        if (rMember.user.bot) return msg.channel.send(nobotEmbed).then(msg => msg.delete({ timeout: 5000 }));     
+        if (!rMember || !arg[1]) return msg.channel.send({embeds:[noargsEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+        if (rMember.user.bot) return msg.channel.send({embeds:[nobotEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));     
         let reportchannel = msg.guild.channels.cache.find(reportchannel => reportchannel.id === (client.settings.get(msg.guild.id, "reportchannel")));
-        if (!reportchannel) return msg.channel.send(nochannelEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!reportchannel) return msg.channel.send({embeds:[nochannelEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
 
-        msg.channel.send(thanksEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        msg.channel.send({embeds:[thanksEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
 
         const embed = new Discord.MessageEmbed()
             .setColor("#ff0000")
@@ -39,7 +39,7 @@ module.exports = {
             **> Reported in:** ${msg.channel}
             **> Reason:** ${arg.slice(1).join(" ")}`);
 
-        reportchannel.send(embed).then(sentEmbed => {
+        reportchannel.send({embeds:[embed]}).then(sentEmbed => {
             sentEmbed.react("✅")
             .then (() => sentEmbed.react("❔"))
             .then (() => sentEmbed.react("❌"))

@@ -26,29 +26,29 @@ module.exports = {
             .setDescription(`⛔ Please input a number to set the volume`)
             .setFooter(`Default volume is 100`)
 
-        if (msg.member.hasPermission("ADMINISTRATOR")) {
+        if (msg.member.permissions.has("ADMINISTRATOR")) {
             const serverQueue = client.queue.get(msg.guild.id);
             const newvolume = arg[0];
 
-            if (!msg.member.voice.channel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
-            if (!serverQueue) return msg.channel.send(noplayingEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            if (!msg.member.voice.channel) return msg.channel.send({embeds:[notinvcEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+            if (!serverQueue) return msg.channel.send({embeds:[noplayingEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
 
             const currentvolumeEmbed = new Discord.MessageEmbed()
                 .setColor('PURPLE')
                 .setTitle(":musical_note: Music")
                 .setDescription(`:speaker: Current volume: **${serverQueue.volume} %**`)
 
-            if (!newvolume) return msg.channel.send(currentvolumeEmbed).then(msg => msg.delete({ timeout: 5000 }));
-            if (isNaN(newvolume)) return msg.channel.send(notanumberEmbed);
+            if (!newvolume) return msg.channel.send({embeds:[currentvolumeEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+            if (isNaN(newvolume)) return msg.channel.send({embeds:[notanumberEmbed]});
             serverQueue.volume = newvolume;
+            client.player.state.resource.volume.setVolume(newvolume / 100);
 
             const newvolumeEmbed = new Discord.MessageEmbed()
                 .setColor('PURPLE')
                 .setTitle(":musical_note: Music")
                 .setDescription(`:speaker: New volume: **${newvolume} %**`)
 
-            serverQueue.connection.dispatcher.setVolumeLogarithmic(newvolume / 100);
-            return msg.channel.send(newvolumeEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        } else return msg.channel.send(nopermvolumeEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            return msg.channel.send({embeds:[newvolumeEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+        } else return msg.channel.send({embeds:[nopermvolumeEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
     }
 }

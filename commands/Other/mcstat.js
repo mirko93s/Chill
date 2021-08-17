@@ -28,11 +28,11 @@ module.exports = {
         }
         
         const embed = new Discord.MessageEmbed()
-            .setAuthor("Minecraft Server Status",icon_url="https://gamepedia.cursecdn.com/minecraft_gamepedia/4/44/Grass_Block_Revision_6.png?version=6fbedf976222daab354767540ccff4a1")
+            .setAuthor("Minecraft Server Status",icon_url="https://i.imgur.com/BupabSS.png")
             .setTitle(`***${serverip}***`)
             .setColor(`RANDOM`)
             .setImage("http://status.mclive.eu/Server/" + serverip_final + "/" + serverport_final + "/banner.png")
 
-        msg.channel.send({embed});
+        msg.channel.send({embeds:[embed]});
     }
 }

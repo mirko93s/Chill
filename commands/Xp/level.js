@@ -14,7 +14,7 @@ module.exports = {
 			.setColor(`RED`)
 			.setTitle(`⛔ This module is disabled on this server!`)
 
-		if (client.settings.get(msg.guild.id, "xpmodule") === "false") return msg.channel.send(moduleDisabledEmbed).then(msg => msg.delete({timeout:5000}));
+		if (client.settings.get(msg.guild.id, "xpmodule") === "false") return msg.channel.send({embeds:[moduleDisabledEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
 		
 		client.settings.ensure(msg.guild.id, {level: 0, points: 0}, `xp.${msg.author.id}`);
 
@@ -31,6 +31,6 @@ module.exports = {
 			.addField(`Level`,`**${level}**`,true)
 			.addField(`Experience`,`**${fancyNumber(points)}**`,true)
 			.addField(`${bar} **${levelprogress}%**`,`*${xptolevelup} to level up*`,false)
-		msg.channel.send(levelembed);
+		msg.channel.send({embeds:[levelembed]});
     }
 }

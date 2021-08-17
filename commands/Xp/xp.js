@@ -22,16 +22,16 @@ module.exports = {
 			.setColor(`RED`)
 			.setTitle(`⛔ This module is disabled on this server!`)
 
-		if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.channel.send(nopermEmbed).then(msg => msg.delete({timeout:5000}));
-		if (client.settings.get(msg.guild.id, "xpmodule") === "false") return msg.channel.send(moduleDisabledEmbed).then(msg => msg.delete({timeout:5000}));
+		if (!msg.member.permissions.has("ADMINISTRATOR")) return msg.channel.send({embeds:[nopermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+		if (client.settings.get(msg.guild.id, "xpmodule") === "false") return msg.channel.send({embeds:[moduleDisabledEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
 		let user = msg.mentions.users.first() || client.users.cache.get(arg[0]);
-		if(!user) return msg.channel.send(noargsEmbed).then(msg => msg.delete({timeout:5000}));
+		if(!user) return msg.channel.send({embeds:[noargsEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
 		let mode = arg[1];
-		if(!mode) return msg.channel.send(noargsEmbed).then(msg => msg.delete({timeout:5000}));
-			else if(mode !== "take" && mode !== "give" && mode !== "set") return msg.channel.send(noargsEmbed).then(msg => msg.delete({timeout:5000}));
+		if(!mode) return msg.channel.send({embeds:[noargsEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+			else if(mode !== "take" && mode !== "give" && mode !== "set") return msg.channel.send({embeds:[noargsEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
 		let pointsToAdd = parseInt(arg[2], 10);
 		if(arg[2] == 0) pointsToAdd = 0;
-			else if (!pointsToAdd || pointsToAdd < 1) return msg.channel.send(noargsEmbed).then(msg => msg.delete({timeout:5000}));
+			else if (!pointsToAdd || pointsToAdd < 1) return msg.channel.send({embeds:[noargsEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
 
 		client.settings.ensure(msg.guild.id, {level: 0, points: 0}, `xp.${user.id}`);	
 
@@ -41,7 +41,7 @@ module.exports = {
 			var xpmsg = "+";		
 		}		
 		if(mode == "take") {
-			if(userScore.points-pointsToAdd < 0) return msg.channel.send(nonegativeEmbed).then(msg => msg.delete({timeout:5000}));
+			if(userScore.points-pointsToAdd < 0) return msg.channel.send({embeds:[nonegativeEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
 			var newPoints = userScore.points - pointsToAdd;		
 			var xpmsg = "-";		
 		}
@@ -88,7 +88,7 @@ module.exports = {
 			else if (newLevel < userScore.level) xpEmbed.setDescription(`***Taken roles:\n${unlocked}***`)
 		}
 
-		return msg.channel.send(xpEmbed);
+		return msg.channel.send({embeds:[xpEmbed]});
 
     }
 }

@@ -26,19 +26,18 @@ module.exports = {
         
         if (msg.member.roles.cache.some(role => role.id === (client.settings.get(msg.guild.id, "djrole")))) {
             const serverQueue = client.queue.get(msg.guild.id);
-            if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.id !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 10000 }));
-            if (!msg.member.voice.channel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
-            if (!serverQueue) return msg.channel.send(noplayingEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.id !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send({embeds:[mconlyEmbed]}).then(msg =>setTimeout(() => msg.delete(), 10e3));
+            if (!msg.member.voice.channel) return msg.channel.send({embeds:[notinvcEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+            if (!serverQueue) return msg.channel.send({embeds:[noplayingEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
             
-            serverQueue.playing = true; //keep it otherwise skipping while paused will throw errors
-            serverQueue.connection.dispatcher.end();
+            client.player.stop();
 
             const skipEmbed = new Discord.MessageEmbed()
                 .setColor('PURPLE')
                 .setTitle(":musical_note: Music")
                 .setDescription(`:track_next: Skipped`)
 
-            return msg.channel.send (skipEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        } else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            return msg.channel.send ({embeds:[skipEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+        } else return msg.channel.send({embeds:[noDJroleEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
     }
 }

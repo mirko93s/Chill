@@ -4,7 +4,6 @@ const config = require('../../config.json');
 const ytdl = require('ytdl-core');
 const ytsr = require('ytsr');
 const ytpl = require('ytpl');
-const { joinVoiceChannel, createAudioResource, AudioPlayerStatus, getVoiceConnection } = require ('@discordjs/voice');
 
 module.exports = {
     name: "play",
@@ -62,16 +61,16 @@ module.exports = {
         }
 
         if (msg.member.roles.cache.some(role => role.id === (client.settings.get(msg.guild.id, "djrole")))) {
-            if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.id !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send({embeds:[mconlyEmbed]}).then(msg =>setTimeout(() => msg.delete(), 10e3));
-            if (!url) return msg.channel.send({embeds:[nourlEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+            if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.id !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 10000 }));
+            if (!url) return msg.channel.send(nourlEmbed).then(msg => msg.delete({ timeout: 5000 }));
             const voiceChannel = msg.member.voice.channel;
-            if (!voiceChannel) return msg.channel.send({embeds:[novcEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+            if (!voiceChannel) return msg.channel.send(novcEmbed).then(msg => msg.delete({ timeout: 5000 }));
             const permissions = voiceChannel.permissionsFor(msg.client.user);
-            if (!permissions.has('CONNECT')) return msg.channel.send({embeds:[noconnectpermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
-            if (!permissions.has('SPEAK')) return msg.channel.send({embeds:[nospeakpermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+            if (!permissions.has('CONNECT')) return msg.channel.send(noconnectpermEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            if (!permissions.has('SPEAK')) return msg.channel.send(nospeakpermEmbed).then(msg => msg.delete({ timeout: 5000 }));
             //queue limit
             const serverQueue = client.queue.get(msg.guild.id);
-            if (serverQueue && serverQueue.songs.length > config.music_queue_limit-1) return msg.channel.send({embeds:[queueLimit]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+            if (serverQueue && serverQueue.songs.length > config.music_queue_limit-1) return msg.channel.send(queueLimit).then(msg => msg.delete({ timeout: 5000 }));
             //playlist url
             if (url.match(/^.*(youtu.be\/|list=)([^#\&\?]*).*/gi)) {
                 if (ytpl.validateID(url)) {
@@ -80,12 +79,12 @@ module.exports = {
                     for (const video of Object.values(videos)) {
                         const serverQueue = client.queue.get(msg.guild.id);
                         if (serverQueue && serverQueue.songs.length > config.music_queue_limit-1) {
-                            msg.channel.send({embeds:[playlistQueueLimit]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+                            msg.channel.send(playlistQueueLimit).then(msg => msg.delete({ timeout: 5000 }));
                             break;
                         }
-                        play(video, msg, voiceChannel, true);
+                        handleVideo(video, msg, voiceChannel, true);
                     }
-                } else return msg.channel.send({embeds:[noresultEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+                } else return msg.channel.send(noresultEmbed).then(msg => msg.delete({ timeout: 5000 }));
             }
             //url
             else if (url.match(/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/gi)) {
@@ -97,27 +96,27 @@ module.exports = {
                                 title: video.player_response.videoDetails.title,
                                 url: url
                             }
-                            return play(video, msg, voiceChannel);
+                            return handleVideo(video, msg, voiceChannel);
                         })
                     }
                 } catch (err) {
                     console.error(err);
-                    return msg.channel.send({embeds:[noresultEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+                    return msg.channel.send(noresultEmbed).then(msg => msg.delete({ timeout: 5000 }));
                 }       
             }
             //string
             else {
                 try {
                     const result = (await ytsr(searchString, { limit: 10 })).items.filter(a => a.type === 'video');
-                    return play(result[0], msg, voiceChannel);
+                    return handleVideo(result[0], msg, voiceChannel);
                 } catch (err) {
                     console.error(err);
-                    return msg.channel.send({embeds:[noresultEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+                    return msg.channel.send(noresultEmbed).then(msg => msg.delete({ timeout: 5000 }));
                 }
             }
-        } else return msg.channel.send({embeds:[noDJroleEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+        } else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete({ timeout: 5000 }));
 
-        async function play(video, msg, voiceChannel, playlist = false) {
+        async function handleVideo(video, msg, voiceChannel, playlist = false) {
             const serverQueue = client.queue.get(msg.guild.id);
             const song = {
                 id: video.id,
@@ -131,7 +130,7 @@ module.exports = {
                     voiceChannel: voiceChannel,
                     connection: null,
                     songs: [],
-                    volume: 100,
+                    volume: 5,
                     playing: true
                 };
                 client.queue.set(msg.guild.id, queueConstruct);
@@ -139,30 +138,19 @@ module.exports = {
                 queueConstruct.songs.push(song);
         
                 try {
-                    await joinVoiceChannel({
-                        channelId: voiceChannel.id,
-                        guildId: voiceChannel.guild.id,
-                        adapterCreator: voiceChannel.guild.voiceAdapterCreator,
-                    });
-                    nextResource(msg.guild, client.queue.get(msg.guild.id).songs[0]);
-                    client.player.on('stateChange', (oldState, newState) => {
-                        if (newState.status === AudioPlayerStatus.Idle && oldState.status !== AudioPlayerStatus.Idle) {
-                            client.queue.get(msg.guild.id).songs.shift();
-                            nextResource(msg.guild, client.queue.get(msg.guild.id).songs[0]);
-                        } else return;
-                    }); 
-                    getVoiceConnection(voiceChannel.guild.id).subscribe(client.player);
+                    var connection = await voiceChannel.join();
+                    queueConstruct.connection = connection;
+                    play(msg.guild, queueConstruct.songs[0]);
                 } catch (error) {
                     console.error(`I could not join the voice channel: ${error}`);
                     client.queue.delete(msg.guild.id);
-                    getVoiceConnection(voiceChannel.guild.id).destroy();
         
                     const errjoinEmbed = new Discord.MessageEmbed()
                         .setColor('PURPLE')
                         .setTitle(":musical_note: Music")
                         .setDescription(`⛔ I couldn't join the voice channel: ${error}`)
         
-                    return msg.channel.send({embeds:[errjoinEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+                    return msg.channel.send(errjoinEmbed).then(msg => msg.delete({ timeout: 5000 }));
                 }
             } else {
                 
@@ -173,30 +161,90 @@ module.exports = {
         
                 serverQueue.songs.push(song);
                 if (playlist) return undefined;
-                else return msg.channel.send({embeds:[addtoqueueEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+                else return msg.channel.send(addtoqueueEmbed).then(msg => msg.delete({ timeout: 5000 }));
             }
             return undefined;
         }
-
-        function nextResource (guild, song) {
+        
+        function play(guild, song) {
+            const serverQueue = client.queue.get(guild.id);
+        
             if (!song) {
-                getVoiceConnection(guild.id).destroy();
-                console.log("destroyed");
+                serverQueue.voiceChannel.leave();
                 client.queue.delete(guild.id);
                 return;
             }
-            const resource = createAudioResource(ytdl(song.url, { filter: 'audioonly', highWaterMark: 1048576 * 32}),{inlineVolume: true});
-            resource.volume.setVolume(client.queue.get(guild.id).volume / 100);
-
-            client.player.play(resource);
-
+        
+            const dispatcher = serverQueue.connection.play(ytdl(song.url, { filter: 'audioonly'}))
+                .on('finish', reason => {
+                    serverQueue.songs.shift();
+                    play(guild, serverQueue.songs[0]);
+                })
+                .on('error', error => console.error(error));
+            dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
+            
             const playEmbed = new Discord.MessageEmbed()
                 .setImage(`https://i.ytimg.com/vi/${song.id}/hqdefault.jpg`)
                 .setColor('PURPLE')
                 .setTitle(`:musical_note: Music`)
                 .setDescription(`:arrow_forward: **${song.title}**`)
             
-                client.queue.get(guild.id).textChannel.send({embeds:[playEmbed]});      
+            serverQueue.textChannel.send(playEmbed).then(async sent => {
+                const reactions = ["⏯️","⏹️","⏭️"];
+                for (const reaction of reactions) await sent.react(reaction);
+                const filter = (reaction, user) => reactions.includes(reaction.emoji.name) && user !== user.bot;
+                const collector = sent.createReactionCollector(filter, {time: 5*60*1000});
+
+                collector.on('collect', clicked => {
+                    clicked.users.remove(clicked.users.cache.filter(u => !u.bot).first());
+                    const serverQueue = client.queue.get(guild.id);
+
+                    switch(clicked.emoji.name) {
+                        case ("⏯️"):
+                            if (serverQueue && serverQueue.playing) {
+                                serverQueue.playing = false;
+                                serverQueue.connection.dispatcher.pause();
+                                const pauseEmbed = new Discord.MessageEmbed()
+                                    .setColor('PURPLE')
+                                    .setTitle(":musical_note: Music")
+                                    .setDescription(`⏸ Paused`)
+                                return msg.channel.send(pauseEmbed).then(msg => msg.delete({ timeout: 5000 }));
+                            }
+                            else if (serverQueue && !serverQueue.playing) {
+                                serverQueue.playing = true;
+                                serverQueue.connection.dispatcher.resume();
+                                const resumeEmbed = new Discord.MessageEmbed()              
+                                    .setColor('PURPLE')
+                                    .setTitle(":musical_note: Music")
+                                    .setDescription(`:play_pause: Resumed`)
+                                return msg.channel.send(resumeEmbed).then(msg => msg.delete({ timeout: 5000 }));
+                            }
+                            break;
+                        case ("⏹️"):
+                            if (serverQueue) {
+                                serverQueue.songs = [];
+                                serverQueue.connection.dispatcher.end();
+                                const stopEmbed = new Discord.MessageEmbed()
+                                    .setColor('PURPLE')
+                                    .setTitle(":musical_note: Music")
+                                    .setDescription(`:stop_button: Stopped`)
+                                return msg.channel.send(stopEmbed).then(msg => msg.delete({ timeout: 5000 }));
+                            }
+                            break;
+                        case ("⏭️"):
+                            if (serverQueue) {
+                                serverQueue.connection.dispatcher.end();
+                                const skipEmbed = new Discord.MessageEmbed()
+                                    .setColor('PURPLE')
+                                    .setTitle(":musical_note: Music")
+                                    .setDescription(`:track_next: Skipped`)
+                                return msg.channel.send (skipEmbed).then(msg => msg.delete({ timeout: 5000 }));
+                            }
+                            break;
+                    }
+
+                })
+            })
         }
     }
 }

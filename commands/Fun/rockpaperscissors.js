@@ -16,7 +16,7 @@ module.exports = {
             .setFooter(msg.author.username, msg.author.displayAvatarURL())
             .setDescription("React to play!")
 
-        const m = await msg.channel.send(embed);
+        const m = await msg.channel.send({embeds:[embed]});
         const reacted = await promptMessage(m, msg.author, 30, chooseArr);
         const botChoice = chooseArr[Math.floor(Math.random() * chooseArr.length)];
         const result = await getResult(reacted, botChoice);
@@ -26,7 +26,7 @@ module.exports = {
             .setDescription("")
             .addField(result, `${reacted} vs ${botChoice}`);
 
-        m.edit(embed);
+        m.edit({embeds:[embed]});
 
         function getResult(me, clientChosen) {
             if ((me === "🗻" && clientChosen === "✂") ||

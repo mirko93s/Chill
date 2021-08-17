@@ -13,9 +13,9 @@ module.exports = {
             .setTitle(`⛔ Server has no emojis`)
 
         const emoji = msg.guild.emojis;
-        if (!emoji.size) return msg.channel.send(noemojiEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!emoji.size) return msg.channel.send({embeds:[noemojiEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         const embed = new Discord.MessageEmbed()
             .addField("Server Emojis", emoji.map((e) => e).join(' '))
-        msg.channel.send({embed});
+        msg.channel.send({embeds:{embed}});
     }
 }

@@ -18,7 +18,7 @@ module.exports = {
             .setTitle(`Successfully listed all guilds`)
             .setDescription(`Check the console.`)
 
-        if (msg.author.id !== config.bot_owner) return msg.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (msg.author.id !== config.bot_owner) return msg.channel.send({embeds:[nopermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
 
         console.log(`Guilds Size: ${client.guilds.cache.size}`);
         console.log("---------------------------");
@@ -27,6 +27,6 @@ module.exports = {
         });
         console.log("---------------------------");
 
-        msg.channel.send(doneEmbed).then(msg => msg.delete({timeout:5000}));
+        msg.channel.send({embeds:[doneEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
     }
 }

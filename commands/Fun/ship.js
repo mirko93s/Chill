@@ -13,7 +13,7 @@ module.exports = {
 
         let user1 = arg[0];
         let user2 = arg[1];
-        if (!user1 || !user2) return msg.channel.send(nonamesEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!user1 || !user2) return msg.channel.send({embeds:[nonamesEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         var ship = Math.floor(Math.random() * 100) + 1;
 
         let bar = "";
@@ -34,28 +34,28 @@ module.exports = {
                     .setColor(`640000`)
                     .setTitle(`💔 SHIP 💔`)
                     .setDescription(`🔻 ${user1}\n🔺 ${user2}\n**Do not match at all**`)
-                msg.channel.send(shipEmbed);
+                msg.channel.send({embeds:[shipEmbed]});
                 break;
             case (ship>=20 && ship <=49):
                 shipEmbed
                     .setColor(`960000`)
                     .setTitle(`❤️ SHIP ❤️`)
                     .setDescription(`🔻 ${user1}\n🔺 ${user2}\n**Do not match well**`)
-                msg.channel.send(shipEmbed);
+                msg.channel.send({embeds:[shipEmbed]});
                 break;
             case (ship>=50 && ship <=89):
                 shipEmbed
                     .setColor(`C80000`)
                     .setTitle(`💓 SHIP 💓`)
                     .setDescription(`🔻 ${user1}\n🔺 ${user2}\n**Match very well**`)
-                msg.channel.send(shipEmbed);
+                msg.channel.send({embeds:[shipEmbed]});
                 break;
             case (ship>=90 && ship <=100):
                 shipEmbed
                     .setColor(`FA0000`)
                     .setTitle(`💗 SHIP 💗`)
                     .setDescription(`🔻 ${user1}\n🔺 ${user2}\n**Are meant to eachother**`)
-                msg.channel.send(shipEmbed);
+                msg.channel.send({embeds:[shipEmbed]});
                 break;
         };
     }

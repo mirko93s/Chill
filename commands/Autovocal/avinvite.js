@@ -23,19 +23,19 @@ module.exports = {
             .setTitle(`⛔ This Auto-Vocal channel is not locked.`)
 
         let temprole = msg.guild.roles.cache.find(role => role.name === (`av-${msg.member.voice.channelID}`));
-        if (!temprole) return msg.channel.send(notlockedEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!temprole) return msg.channel.send({embeds:[notlockedEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
 
         if (client.settings.includes(msg.guild.id, msg.member.voice.channelID, "autovocalcloned")) {
             if (msg.member.roles.cache.find(temprole => temprole.name === ("av-"+msg.member.voice.channelID))) {
                 let invited = msg.guild.member(msg.mentions.users.first());
-                if (!invited) return msg.channel.send(nomentionEmbed).then(msg => msg.delete({ timeout: 5000 }));
-                if (invited.roles.cache.some(role => role.id === temprole.id)) return msg.channel.send(alreadyEmbed).then(msg => msg.delete({ timeout: 5000 }));
+                if (!invited) return msg.channel.send({embeds:[nomentionEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+                if (invited.roles.cache.some(role => role.id === temprole.id)) return msg.channel.send({embeds:[alreadyEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
                 invited.roles.add(temprole.id);
                 const invitedEmbed = new Discord.MessageEmbed()
                     .setColor('RANDOM')
                     .setDescription(`${invited} has been whitelisted in your Auto-Vocal channel`)
-                msg.channel.send(invitedEmbed).then(msg => msg.delete({ timeout: 5000 }));
-            } else return msg.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        } else return msg.channel.send(noavchannelEmbed).then(msg => msg.delete({ timeout: 5000 }));
+                msg.channel.send({embeds:[invitedEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+            } else return msg.channel.send({embeds:[nopermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+        } else return msg.channel.send({embeds:[noavchannelEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
     }
 }

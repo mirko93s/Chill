@@ -23,15 +23,15 @@ module.exports = {
             .setTitle(`🔴 Turn`)
             .setDescription(boardToString(boardarray))
             .addField(`1️⃣ 2️⃣ 3️⃣ 4️⃣ 5️⃣ 6️⃣ 7️⃣`,`*React to place a chip*`)
-        msg.channel.send(boardEmbed).then(sent => {
+        msg.channel.send({embeds:[boardEmbed]}).then(sent => {
             // add reactions
             const reactions = [`1️⃣`,`2️⃣`,`3️⃣`,`4️⃣`,`5️⃣`,`6️⃣`,`7️⃣`];
             for (const reaction of reactions) sent.react(reaction);
             //create reaction collector and its filter
             const filter = (reaction, user) => reactions.includes(reaction.emoji.name) && !user.bot;
-            const collector = sent.createReactionCollector(filter, {time: 60*1000});
+            const collector = sent.createReactionCollector({filter, time: 60*1000});
             collector.on('collect', clicked => {
-                clicked.users.remove(clicked.users.cache.filter(u => u.id !== client.user.id).first()); //remove reaction         
+                clicked.users.remove(clicked.users.cache.filter(u => u.id !== client.user.id).first()); //remove reaction          
                 if (reactions.includes(clicked.emoji.name)) collector.resetTimer({ time: 60*1000 }); //if a valid emoji then reset collector timer
                 var x = 0;
                 var y = 0;
@@ -51,7 +51,7 @@ module.exports = {
                 if (haswon(turn, boardarray, x, y) == true) {
                     collector.stop("hasWon");
                     boardEmbed.setTitle(`${turn} WON ! ! !`)
-                    return sent.edit(boardEmbed);
+                    return sent.edit({embeds:[boardEmbed]});
                 }
                 else if (checkDraw(boardarray) == true) {
                     collector.stop("draw");
@@ -60,12 +60,12 @@ module.exports = {
                 }
                 turn == "🔴" ? turn = "🟡" : turn = "🔴"; //change turn
                 boardEmbed.setTitle(`${turn} Turn`);
-                return sent.edit(boardEmbed);
+                return sent.edit({embeds:[boardEmbed]});
             });
             collector.on('end', (collection, reason) => {
                 if (reason == "time") {
                     boardEmbed.setTitle(`Game stopped due to inactivity`);
-                    return sent.edit(boardEmbed);
+                    return sent.edit({embeds:[boardEmbed]});
                 }
             });
         })

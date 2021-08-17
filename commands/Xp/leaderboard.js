@@ -12,7 +12,7 @@ module.exports = {
 		const moduleDisabledEmbed = new Discord.MessageEmbed()
 			.setColor(`RED`)
 			.setTitle(`⛔ This module is disabled on this server!`)
-		if (client.settings.get(msg.guild.id, "xpmodule") === "false") return msg.channel.send(moduleDisabledEmbed).then(msg => msg.delete({timeout:5000}));
+		if (client.settings.get(msg.guild.id, "xpmodule") === "false") return msg.channel.send({embeds:[moduleDisabledEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
 		var users = client.settings.get(msg.guild.id,"xp"); //get object
 		var sorted = {};  
             Object //sort object
@@ -38,6 +38,6 @@ module.exports = {
 			emojiposition++;
 		}
 		if (pos4to10.length > 1) embed.setFooter(pos4to10);
-		return msg.channel.send(embed);
+		return msg.channel.send({embeds:[embed]});
     }
 }

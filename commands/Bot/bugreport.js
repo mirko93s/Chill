@@ -21,9 +21,9 @@ module.exports = {
             .setColor(`GREEN`)
             .setTitle(`✅ Your bug report has been sent. Thanks!`)
 
-        if (talkedRecently.has(msg.author.id)) return msg.channel.send(cooldownEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (talkedRecently.has(msg.author.id)) return msg.channel.send({embeds:[cooldownEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         let feedback = arg.join(' ');
-        if (feedback.length < 10) return msg.reply(tooshortEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (feedback.length < 10) return msg.channel.send({embeds:[tooshortEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
 
         const bugembed = new Discord.MessageEmbed()
             .setColor(`RED`)
@@ -32,13 +32,13 @@ module.exports = {
             .setDescription(`*by: ${msg.author.tag}*`)
             .setTimestamp()
 
-        client.channels.cache.get(config.bugreport_channel).send(bugembed).then(sentEmbed => {
+        client.channels.cache.get(config.bugreport_channel).send({embeds:[bugembed]}).then(sentEmbed => {
             sentEmbed.react("✅")
                 .then (() => sentEmbed.react("❔"))
                 .then (() => sentEmbed.react("❌"))
         });
 
-        msg.reply(thanksEmbed).then(msg => {msg.delete({ timeout: 5000 })});
+        msg.reply({embeds:[thanksEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         talkedRecently.add(msg.author.id);
         setTimeout(() => {
             talkedRecently.delete(msg.author.id);

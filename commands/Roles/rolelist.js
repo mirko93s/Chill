@@ -11,6 +11,6 @@ module.exports = {
         const embed = new Discord.MessageEmbed()
             .setColor (`RANDOM`)
             .addField("Server Roles", role.map((e) => e).join("\n"))
-        msg.channel.send(embed);
+        msg.channel.send({embeds:[embed]});
     }
 }

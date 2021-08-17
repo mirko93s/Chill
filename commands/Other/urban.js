@@ -20,7 +20,7 @@ module.exports = {
         try {
             const query = querystring.stringify({ term: arg.join(' ') });
             const body = await fetch(`https://api.urbandictionary.com/v0/define?${query}`).then(response => response.json());
-            if (!body.list.length) return msg.channel.send(noresultEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            if (!body.list.length) return msg.channel.send({embeds:[noresultEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
             const data = body.list[types === 'top' ? 0 : Math.floor(Math.random() * body.list.length)];
             const embed = new Discord.MessageEmbed()
                 .setColor(0x32A8F0)
@@ -30,14 +30,14 @@ module.exports = {
                 .setDescription((data.definition))
                 .addField('Example', data.example);
             const filtercheck = ["xxx", "porn", "sex", "18+","nsfw", "hentai", "dick", "vagina", "pussy"]
-            if (filtercheck.some(word2 => data.definition.toLowerCase().includes(word2))) return msg.channel.send(nonsfwEmbed).then(msg => msg.delete({ timeout: 5000 }));
-            if (filtercheck.some(word3 => data.word.toLowerCase().includes(word3))) return msg.channel.send(nonsfwEmbed).then(msg => msg.delete({ timeout: 5000 }));
-            msg.channel.send(embed);
+            if (filtercheck.some(word2 => data.definition.toLowerCase().includes(word2))) return msg.channel.send({embeds:[nonsfwEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+            if (filtercheck.some(word3 => data.word.toLowerCase().includes(word3))) return msg.channel.send({embeds:[nonsfwEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+            msg.channel.send({embeds:[embed]});
         } catch (err) {
             const errorEmbed = new Discord.MessageEmbed()
                 .setColor(`RED`)
                 .setTitle(`⛔ ${err.msg}`)
-            return msg.channel.send(errorEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            return msg.channel.send({embeds:[errorEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         }
     }
 }

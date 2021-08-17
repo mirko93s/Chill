@@ -19,13 +19,13 @@ module.exports = {
             .setTitle(`⛔ Couldn't find any instagram profile with that username!`)
 
         const name = arg.join(" ");
-        if (!name) return msg.channel.send(nonameEmbed).then(m => m.delete({timeout:5000}));
+        if (!name) return msg.channel.send({embeds:[nonameEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         
         try {
             var account = (await fetch(`https://instagram.com/${name}/?__a=1`).then(res => res.json())).graphql.user;
         } catch (err) {
             console.log(err);
-            return msg.channel.send(noprofileEmbed).then(m => m.delete({timeout:5000}));
+            return msg.channel.send({embeds:[noprofileEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         }
 
         const profileEmbed = new Discord.MessageEmbed()
@@ -42,6 +42,6 @@ module.exports = {
             **Private account:** ${account.is_private ? "Yes 🔐" : "Nope 🔓"}`);
         if (account.category_name !== null) profileEmbed.setDescription(account.category_name)
 
-        msg.channel.send(profileEmbed);
+        msg.channel.send({embeds:[profileEmbed]});
     }
 }

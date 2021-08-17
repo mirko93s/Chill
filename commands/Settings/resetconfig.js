@@ -13,7 +13,7 @@ module.exports = {
 			.setColor(`RED`)
 			.setTitle(`⛔ You don't have permission to use this!`)
 		
-		if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.reply(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
+		if (!msg.member.permissions.has("ADMINISTRATOR")) return msg.channel.send({embeds:[nopermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
 		
         const resetEmbed = new Discord.MessageEmbed()
 			.setColor('RANDOM')
@@ -21,7 +21,7 @@ module.exports = {
 			.setDescription("Settings resetted to default values!")
 		
         client.settings.update(msg.guild.id , defaultSettings);
-        msg.channel.send(resetEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        msg.channel.send({embeds:[resetEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
     }
 }
 

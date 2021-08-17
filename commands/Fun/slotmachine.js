@@ -25,6 +25,6 @@ module.exports = {
         } else {
             slotEmbed.setFooter("Awww **" + msg.author.username + "** lost that sucks!");
         }
-        msg.channel.send(slotEmbed);
+        msg.channel.send({embeds:[slotEmbed]});
     }
 }

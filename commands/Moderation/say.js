@@ -14,13 +14,13 @@ module.exports = {
             .setColor(`RED`)
             .setTitle(`⛔ Please provide a message`)
 
-        if (!msg.member.hasPermission("MANAGE_MESSAGES")) return msg.channel.send(nopermEmbed).then(m => m.delete(5000));
-        if (!arg[0]) return msg.channel.send(nomsgEmbed).then(m => m.delete(5000));
+        if (!msg.member.permissions.has("MANAGE_MESSAGES")) return msg.channel.send({embeds:[nopermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+        if (!arg[0]) return msg.channel.send({embeds:[nomsgEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         if (arg[0] === "embed") {
             const embed = new Discord.MessageEmbed()
                 .setColor(`RANDOM`)
                 .setDescription(arg.slice(1).join(" "))
-            msg.channel.send(embed);
+            msg.channel.send({embeds:[embed]});
         } else msg.channel.send(arg.join(" "));
     }
 }

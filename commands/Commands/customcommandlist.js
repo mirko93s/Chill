@@ -21,17 +21,17 @@ module.exports = {
         let cmdmsg = "";
         if (!arg[0]) {
             var cmds = client.settings.get(msg.guild.id, `customcmd`);
-            if (!cmds) return msg.channel.send(nocmdyetEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            if (!cmds) return msg.channel.send({embeds:[nocmdyetEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
             for (const [key] of Object.entries(cmds)) {
                 cmdmsg += (`\`${key}\` `);
             };
-            if (cmdmsg.length<=0) return msg.channel.send(nocmdyetEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            if (cmdmsg.length<=0) return msg.channel.send({embeds:[nocmdyetEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
             ccEmbed.setDescription(cmdmsg);
-            return msg.channel.send(ccEmbed).then(msg => msg.delete({ timeout: 30000 }));
+            return msg.channel.send({embeds:[ccEmbed]}).then(msg =>setTimeout(() => msg.delete(), 30000));
         } else if (client.settings.has(msg.guild.id, `customcmd.${arg[0]}`)) {
             cmdmsg = `\`\`\`asciidoc\n${arg[0]} :: ${client.settings.get(msg.guild.id, `customcmd.${arg[0]}`)}\n\`\`\``
             ccEmbed.setDescription(cmdmsg);
-            return msg.channel.send(ccEmbed).then(msg => msg.delete({ timeout: 10000 }));
-        } else return msg.channel.send(nocmdEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            return msg.channel.send({embeds:[ccEmbed]}).then(msg =>setTimeout(() => msg.delete(), 10000));
+        } else return msg.channel.send({embeds:[nocmdEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
     }
 }

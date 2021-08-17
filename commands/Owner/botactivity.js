@@ -17,14 +17,14 @@ module.exports = {
             .setColor(`RED`)
             .setTitle(`⛔ Please provide a valid message`)
 
-        if (msg.author.id !== config.bot_owner) return msg.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (msg.author.id !== config.bot_owner) return msg.channel.send({embeds:[nopermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         let activity = arg.join(" ");
-        if (!activity) return msg.channel.send(nomsgEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        let baEmbed = new Discord.MessageEmbed()
+        if (!activity) return msg.channel.send({embeds:[nomsgEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+        const baEmbed = new Discord.MessageEmbed()
             .setColor(`RANDOM`)
             .setTitle("Bot Activity")
             .setDescription(activity)
         client.user.setActivity(activity);
-        msg.channel.send(baEmbed).then(msg => msg.delete({ timeout: 5000 }))
+        msg.channel.send({embeds:[baEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
     }
 }

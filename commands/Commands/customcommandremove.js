@@ -19,20 +19,20 @@ module.exports = {
 			.setColor(`RED`)
             .setTitle(`⛔ That command doesn't exist on this server!`)
             
-        if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.reply(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!msg.member.permissions.has("ADMINISTRATOR")) return msg.channel.send({embeds:[nopermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
 
-        if (!arg[0]) return msg.channel.send(noargsEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!arg[0]) return msg.channel.send({embeds:[noargsEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
 
         let command = arg[0].toLowerCase();
 
-        if(!client.settings.has(msg.guild.id, `customcmd.${command}`)) return msg.channel.send(nocmdEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if(!client.settings.has(msg.guild.id, `customcmd.${command}`)) return msg.channel.send({embeds:[nocmdEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
 
         client.settings.delete(msg.guild.id, `customcmd.${command}`);
         const deletedEmbed = new Discord.MessageEmbed()
             .setColor('GREEN')
             .setTitle('Custom Commands')
             .setDescription(`Custom command \`${command}\` has been deleted.`)
-        msg.channel.send(deletedEmbed).then(msg => msg.delete({ timeout: 10000 }));
+        msg.channel.send({embeds:[deletedEmbed]}).then(msg =>setTimeout(() => msg.delete(), 10000));
         
     }
 }

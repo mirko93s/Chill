@@ -14,7 +14,7 @@ module.exports = {
             .setColor(`RED`)
             .setTitle(`⛔ You don't have permission to use this!`)
 
-        if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.reply(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!msg.member.permissions.has("ADMINISTRATOR")) return msg.channel.send({embeds:[nopermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
  
         if (client.settings.has(msg.guild.id, "usercounter")) {
             const channel = msg.guild.channels.cache.find(c => c.id === (client.settings.get(msg.guild.id, "usercounter")));
@@ -24,12 +24,12 @@ module.exports = {
                 .setColor(`RED`)
                 .setTitle(`Server Stats`)
                 .setDescription(`**Disabled**`)
-            return msg.channel.send(disabledEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            return msg.channel.send({embeds:[disabledEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         } else {
             var memberCount = msg.guild.members.cache.filter(member => !member.user.bot).size; //filtering bots
             memberCount = fancyNumber(memberCount);
             msg.guild.channels.create(`📊Users: ${memberCount}`, {
-                type: 'voice', 
+                type: 'GUILD_VOICE', 
                 permissionOverwrites: [
                     {id: msg.guild.roles.everyone.id, 
                     deny: [`CONNECT`],
@@ -42,7 +42,7 @@ module.exports = {
                 .setColor(`GREEN`)
                 .setTitle(`Server Stats`)
                 .setDescription(`**Enabled**`)
-            return msg.channel.send(enabledEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            return msg.channel.send({embeds:[enabledEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         }
         
     }

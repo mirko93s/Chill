@@ -18,9 +18,9 @@ module.exports = {
             .setTitle("Coin Flip")
             .setDescription(msg.author.toString() + " flipped **" + (coin[Math.floor(Math.random() * coin.length)]) + "**")
 
-        await msg.channel.send(flippingEmbed).then(m => {
+        await msg.channel.send({embeds:[flippingEmbed]}).then(m => {
             setTimeout(() => {
-                m.edit(flippedEmbed)       
+                m.edit({embeds:[flippedEmbed]})       
             }, 500);
         });
     }

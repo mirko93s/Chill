@@ -18,6 +18,6 @@ module.exports = {
             .setTitle(`On this day (${text.date})...`)
             .setTimestamp()
             .setDescription(`${event.year}: ${event.text}`);
-        return msg.channel.send(embed).catch(console.error);
+        return msg.channel.send({embeds:[embed]}).catch(console.error);
     }
 }

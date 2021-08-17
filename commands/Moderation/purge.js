@@ -17,7 +17,7 @@ module.exports = {
             .setTitle(`⛔ Please provide a number between 2 and 100`)
             .setFooter(`Due to Discord API you can't delete more than 100 messages at a time`)
                 
-        if (!msg.member.hasPermission("MANAGE_MESSAGES")) return msg.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!msg.member.permissions.has("MANAGE_MESSAGES")) return msg.channel.send({embeds:[nopermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
 
         const deleteCount = parseInt(arg[0], 10);
 
@@ -25,11 +25,11 @@ module.exports = {
             .setColor(`GREEN`)
             .setTitle(`♻️ ${deleteCount} messages deleted`)
 
-        if (!deleteCount || deleteCount < 2 || deleteCount > 100) return msg.channel.send(invalidEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!deleteCount || deleteCount < 2 || deleteCount > 100) return msg.channel.send({embeds:[invalidEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         
         const fetched = await msg.channel.messages.fetch({limit: deleteCount});
         msg.channel.bulkDelete(fetched).catch(error => console.log(error));
         
-        msg.channel.send(purgeEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        msg.channel.send({embeds:[purgeEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
     }
 }

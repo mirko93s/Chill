@@ -61,14 +61,14 @@ module.exports = {
 			.addField('Other', `\`\`\`asciidoc\n${other}\`\`\``, true)
 			.addField('Modules',`\`\`\`asciidoc\n${modules}\`\`\``, true)
 		
-		msg.channel.send(settingsEmbed).then(msg => msg.delete({timeout:60000}));
+		msg.channel.send({embeds:[settingsEmbed]}).then(msg =>setTimeout(() => msg.delete(), 60000));
 		
 		if (channels.includes("❌❌❌ NOT FOUND ❌❌❌") || roles.includes("❌❌❌ NOT FOUND ❌❌❌") || other.includes("❌❌❌ NOT FOUND ❌❌❌")){
 			const missingkeysEmbed = new Discord.MessageEmbed()
 				.setColor('RED')
 				.setTitle('⚠️⚠️⚠️ WARNING ⚠️⚠️⚠️')
 				.setDescription('One or more keys are missing in the settings and some features won\'t work, this probably happened because you deleted bot roles or channels\n**Do `.setup` to fix the missing keys, it will recreate missing roles and channels.**')
-			msg.channel.send(missingkeysEmbed).then(msg => msg.delete({timeout:30000}));
+			msg.channel.send({embeds:[missingkeysEmbed]}).then(msg =>setTimeout(() => msg.delete(), 30000));
 		}
     }
 }

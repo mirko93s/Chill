@@ -16,9 +16,9 @@ module.exports = {
             .setColor(`RED`)
             .setTitle(`⛔ Please provide a valid message`)
 
-        if (msg.author.id !== config.bot_owner) return msg.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (msg.author.id !== config.bot_owner) return msg.channel.send({embeds:[nopermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         const text = arg.join(" ");
-        if (!text) return msg.channel.send(nomsgEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!text) return msg.channel.send({embeds:[nomsgEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
 
         const blastEmbed = new Discord.MessageEmbed()
             .setColor(`PURPLE`)
@@ -27,8 +27,8 @@ module.exports = {
             .setFooter(`by ${msg.author.username}`,msg.author.displayAvatarURL())
 
         var owners = [];
-        client.guilds.cache.forEach(guild => owners.push(guild.ownerID));
+        client.guilds.cache.forEach(guild => owners.push(guild.ownerId));
         owners = owners.filter(function(elem, index, self) {return index === self.indexOf(elem);})
-        owners.forEach(owner => client.users.cache.get(owner).send(blastEmbed));
+        owners.forEach(owner => client.users.cache.get(owner).send({embeds:[blastEmbed]}));
     }
 }

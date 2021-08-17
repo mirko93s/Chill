@@ -36,17 +36,17 @@ module.exports = {
             .setTitle(`⛔ Ban canceled`)
 
             
-        if (!msg.member.hasPermission("BAN_MEMBERS")) return msg.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        if (!msg.guild.me.hasPermission("BAN_MEMBERS")) return msg.channel.send(nobotpermEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!msg.member.permissions.has("BAN_MEMBERS")) return msg.channel.send({embeds:[nopermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+        if (!msg.guild.me.permissions.has("BAN_MEMBERS")) return msg.channel.send({embeds:[nobotpermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         let puchannel = msg.guild.channels.cache.find(puchannel => puchannel.id === (client.settings.get(msg.guild.id, "puchannel")));
-        if (!puchannel) return msg.channel.send (nochannelEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        if (!arg[0] || !arg[1]) return msg.channel.send(noargsEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!puchannel) return msg.channel.send({embeds:[nochannelEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+        if (!arg[0] || !arg[1]) return msg.channel.send({embeds:[noargsEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
 
         const toBan = msg.mentions.members.first();
 
-        if (!toBan) return msg.channel.send(nomemberEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        if (toBan.id === msg.author.id) return msg.channel.send(noyourselfEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        if (!toBan.bannable) return msg.channel.send(hierarchyEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!toBan) return msg.channel.send({embeds:[nomemberEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+        if (toBan.id === msg.author.id) return msg.channel.send({embeds:[noyourselfEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+        if (!toBan.bannable) return msg.channel.send({embeds:[hierarchyEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
 
         const embed = new Discord.MessageEmbed()
             .setColor(`RED`)
@@ -64,9 +64,7 @@ module.exports = {
             .setAuthor(`This verification becomes invalid after 30s.`)
             .setDescription(`Do you want to ban ${toBan}?`)
 
-        // Send the msg
-        await msg.channel.send(promptEmbed).then(async promptmsg => {
-            // Await the reactions and the reactioncollector
+        await msg.channel.send({embeds:[promptEmbed]}).then(async promptmsg => {
             const emoji = await promptMessage(promptmsg, msg.author, 30, ["✅", "❌"]);
 
             // Verification stuffs
@@ -78,14 +76,14 @@ module.exports = {
                         const errorEmbed = new Discord.MessageEmbed()
                             .setColor(`RED`)
                             .setTitle(`⛔ Error: **${err}**`)
-                        if (err) return msg.channel.send(errorEmbed).then(msg => msg.delete({ timeout: 5000 }));
+                        if (err) return msg.channel.send({embeds:[errorEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
                     });
 
-                puchannel.send(embed);
+                puchannel.send({embeds:[embed]});
             }
             else if (emoji === "❌") {
                 promptmsg.delete();
-                msg.channel.send(canceledEmbed).then(msg => msg.delete({ timeout: 5000 }));
+                msg.channel.send({embeds:[canceledEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
             }
         });
     }

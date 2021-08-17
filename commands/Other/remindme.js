@@ -16,7 +16,7 @@ module.exports = {
         let time = arg[0];
         let text = arg.slice(1).join(' ');
 
-        if(!time || !time.match(/[1-60][s,m,h,d,w]/g) || !text || text.length > 2048) return msg.channel.send(noargsEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if(!time || !time.match(/[1-60][s,m,h,d,w]/g) || !text || text.length > 2048) return msg.channel.send({embeds:[noargsEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
 
         let timems = ms(time);
 
@@ -24,11 +24,11 @@ module.exports = {
             const reminderEmbed = new Discord.MessageEmbed()
                 .setColor(`RANDOM`)
                 .setTitle(`**REMINDER**`)
-                .setDescription(`${msg.member.user} ${text}`)
-            msg.reply(reminderEmbed);
+                .setDescription(`${msg.member.user}\n${text}`)
+            msg.channel.send({embeds:[reminderEmbed]});
         }
 
-        msg.reply(`Your reminder has been set, I will remind you in ${time}.`).then(msg => msg.delete({timeout:10000}));
+        msg.channel.send(`Your reminder has been set, I will remind you in ${time}.`).then(msg =>setTimeout(() => msg.delete(), 10000));
         setTimeout(reminder, timems);
     }
 }

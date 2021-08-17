@@ -19,26 +19,26 @@ module.exports = {
             .setColor(`RED`)
             .setTitle(`⛔ Couldn't find that role`)  
 
-        if (!msg.member.hasPermission("MANAGE_ROLES")) return msg.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        let rMember = msg.guild.member(msg.mentions.users.first()) || msg.guild.members.cache.get(arg[0]);
+        if (!msg.member.permissions.has("MANAGE_ROLES")) return msg.channel.send({embeds:[nopermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+        let rMember = msg.mentions.members.first() || msg.guild.members.cache.get(arg[0]);
         let role = arg.slice(1).join(" ")
-        if (!rMember || !role) return msg.channel.send(noargsEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!rMember || !role) return msg.channel.send({embeds:[noargsEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         let gRole = msg.guild.roles.cache.find(grole => grole.name === (role));
-        if (!gRole) return msg.channel.send(noroleEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!gRole) return msg.channel.send({embeds:[noroleEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         const alreadyEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setDescription(`⛔ ${rMember} already has that role`)
-        if (rMember.roles.cache.some(r => r.id === gRole.id)) return msg.channel.send(alreadyEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (rMember.roles.cache.some(r => r.id === gRole.id)) return msg.channel.send({embeds:[alreadyEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         const hierarchyEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setDescription(`⛔ ${rMember} I can't give the role ${gRole.name} due to roles hierarchy.`)
-        if (msg.guild.me.roles.highest.position < gRole.rawPosition) return msg.channel.send(hierarchyEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (msg.guild.me.roles.highest.position < gRole.rawPosition) return msg.channel.send({embeds:[hierarchyEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         await (rMember.roles.add(gRole.id));
 
         const doneEmbed = new Discord.MessageEmbed()
             .setColor(`GREEN`)
             .setDescription(`✅ **${gRole.name}** has been given to ${rMember}`)
 
-        msg.channel.send(doneEmbed);
+        msg.channel.send({embeds:[doneEmbed]});
     }
 }

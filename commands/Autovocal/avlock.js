@@ -20,7 +20,7 @@ module.exports = {
             .setTitle(`⛔ This Auto-Vocal channel is already locked.`)
 
         let temprole = msg.guild.roles.cache.find(role => role.name === (`av-${msg.member.voice.channelID}`));
-        if (temprole) return msg.channel.send(alreadylockedEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (temprole) return msg.channel.send({embeds:[alreadylockedEmbed]}).then(msg => msg.delete({ timeout: 5000 }));
 
         if (client.settings.includes(msg.guild.id, msg.member.voice.channelID, "autovocalcloned")) {
             if (msg.member.voice.channel.name.includes(msg.author.username)) {
@@ -30,12 +30,12 @@ module.exports = {
                         member.roles.add(temprole.id);
                     })
     
-                    msg.member.voice.channel.updateOverwrite(msg.guild.roles.everyone.id, {
+                    msg.member.voice.channel.permissionOverwrites.edit(msg.guild.roles.everyone.id, {
                         VIEW_CHANNEL: false,
                         SPEAK: false,
                         CONNECT: false
                     });
-                    msg.member.voice.channel.updateOverwrite(temprole.id, {
+                    msg.member.voice.channel.permissionOverwrites.edit(temprole.id, {
                         VIEW_CHANNEL: true,
                         SPEAK: true,
                         STREAM: true,
@@ -46,8 +46,8 @@ module.exports = {
                     .setColor('RANDOM')
                     .setTitle('🔒Channel Locked')
                     .setDescription('You can now invite other users to join this vocal chat doing `.autovocalinvite @user`.')
-                msg.reply(lockedEmbed).then(msg => msg.delete({ timeout: 10000 }));
-            } else return msg.channel.send(nocreatorEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        } else return msg.channel.send(noavchannelEmbed).then(msg => msg.delete({ timeout: 5000 }));
+                msg.channel.send({embeds:[lockedEmbed]}).then(msg =>setTimeout(() => msg.delete(), 10000));
+            } else return msg.channel.send({embeds:[nocreatorEmbed]}).then(msg => msg.delete({ timeout: 5000 }));
+        } else return msg.channel.send({embeds:[noavchannelEmbed]}).then(msg => msg.delete({ timeout: 5000 }));
     }
 }

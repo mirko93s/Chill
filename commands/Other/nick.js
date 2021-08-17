@@ -25,17 +25,17 @@ module.exports = {
             .setColor(`RED`)
             .setTitle(`⛔ Couldn't find that member`)
 
-        if (!msg.member.hasPermission("MANAGE_NICKNAMES")) return msg.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        if (!msg.guild.member(client.user).hasPermission('MANAGE_NICKNAMES')) return msg.channel.send(nobotpermEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        if (!arg[0] || !arg[1]) return msg.channel.send(noargsEmbed).then(m => m.delete({timeout:5000}));
+        if (!msg.member.permissions.has("MANAGE_NICKNAMES")) return msg.channel.send({embeds:[nopermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+        if (!msg.guild.members.cache.get(client.user.id).permissions.has('MANAGE_NICKNAMES')) return msg.channel.send({embeds:[nobotpermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+        if (!arg[0] || !arg[1]) return msg.channel.send({embeds:[noargsEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         const user = msg.mentions.members.first();
-        if (!user) return msg.channel.send(nomemberEmbed).then(m => m.delete({timeout:5000}));
-        if (user.roles.highest.position > msg.guild.me.roles.highest.position || user.id === msg.guild.ownerID) return msg.channel.send(hierarchyEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!user) return msg.channel.send({embeds:[nomemberEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+        if (user.roles.highest.position > msg.guild.me.roles.highest.position || user.id === msg.guild.ownerID) return msg.channel.send({embeds:[hierarchyEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         let newusername = arg.slice(1).join(' ')
         msg.guild.members.cache.get(user.user.id).setNickname(newusername);
         const embed = new Discord.MessageEmbed()
             .setColor(`RANDOM`)
             .addField("Username set successfully!", newusername + " is now the nickname for " + user.user.username + " :white_check_mark:");
-        msg.channel.send({embed})
+        msg.channel.send({embeds:[embed]});
     }
 }

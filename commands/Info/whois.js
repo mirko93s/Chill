@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
-const { getMember, formatDate } = require("../../functions.js");
+const { formatDate } = require("../../functions.js");
 
 module.exports = {
     name: "whois",
@@ -8,38 +8,37 @@ module.exports = {
     category: "Info",
     description: "Returns user info",
     usage: "whois [name | id | mention]\n**e.g.**\n\`whois mirko\`\n> will return the closest username found on the server\n\`whois @mirko93s\`\n> will return the mentioned user\n> whois shows some info about that user",
-    run: (client, msg, arg) => {
+    run: async (client, msg, arg) => {
 
-        const member = getMember(msg, arg.join(" "));
-
-        // Member variables
-        const joined = formatDate(member.joinedAt);
-        const roles = member.roles.cache
-            .filter(r => r.id !== msg.guild.id)
-            .map(r => r).join(", ") || 'none';
-
-        // User variables
-        const created = formatDate(member.user.createdAt);
+        let member = msg.mentions.members.first();
+        if (!msg.mentions.members.size) member = msg.member;
 
         const embed = new MessageEmbed()
             .setFooter(member.displayName, member.user.displayAvatarURL())
             .setThumbnail(member.user.displayAvatarURL())
             .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
 
-            .addField('Guild information:', stripIndents`**> Display name:** ${member.displayName}
-            **> Joined at:** ${joined}
-            **> Roles:** ${roles}`, true)
+            .addField('Guild information:',stripIndents`
+            **> Display name:** ${member.displayName}
+            **> Joined at:** ${formatDate(member.joinedAt)}
+            **> Roles:** ${member.roles.cache.filter(r => r.id !== msg.guild.id).map(r => r).join(", ") || 'none'}`, true)
 
-            .addField('Personal information:', stripIndents`**> ID:** ${member.user.id}
-            **> Username**: ${member.user.username}
-            **> Tag**: ${member.user.tag}
-            **> Created at**: ${created}`, true)
+            .addField('Personal information:', stripIndents`
+            **> ID:** ${member.user.id}
+            **> Username:** ${member.user.username}
+            **> Tag:** ${member.user.tag}
+            **> Created at:** ${formatDate(member.user.createdAt)}`, true)
             
             .setTimestamp()
 
-        if (member.user.presence.game) 
-            embed.addField('Currently playing', stripIndents`**> Name:** ${member.user.presence.game.name}`);
-
-        msg.channel.send(embed);
+        if (member.presence.activities) {
+            const activitytype = {PLAYING: 'Playing', STREAMING: 'Streaming', LISTENING: 'Listening', WATCHING: 'Watching', CUSTOM: 'Custom', COMPETING: 'Competing'}
+            let activitystring = "";
+            member.presence.activities.forEach(activity => {
+                activitystring +=`\n> **${activitytype[activity.type]}**${activity.name == "Custom Status" ? `\n${activity.state}` : `\n${activity.name} - *${activity.details}*`}` 
+            })
+            embed.addField('Activites', activitystring);
+        }
+        msg.channel.send({embeds:[embed]});
     }
 }

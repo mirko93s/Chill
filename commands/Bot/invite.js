@@ -14,6 +14,6 @@ module.exports = {
             .setTitle(`**Chill** BOT`)
             .setDescription(`[**Invite**](${config.bot_invite_link})`);
 
-        msg.channel.send(inviteEmbed);
+        msg.channel.send({embeds:[inviteEmbed]});
     }
 }

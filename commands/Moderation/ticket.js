@@ -23,25 +23,25 @@ module.exports = {
         
         if (!arg[0]) {
             let ticketalready = msg.guild.channels.cache.find(ticketalready => ticketalready.name === `ticket-${msg.author.username}`);
-            if (ticketalready) return msg.reply(alreadyEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            if (ticketalready) return msg.channel.send({embeds:[alreadyEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
     
             let channelname = `ticket-${msg.author.username}`
             let channelcategory = msg.guild.channels.cache.find(channelcategory => channelcategory.id === (client.settings.get(msg.guild.id, "ticketcategory")));
-            if(!channelcategory) return msg.channel.send(noticketcategoryEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            if(!channelcategory) return msg.channel.send({embeds:[noticketcategoryEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
             let supportrole = msg.guild.roles.cache.find(supportrole => supportrole.id === (client.settings.get(msg.guild.id, "supportrole")));
     
-            msg.guild.channels.create(channelname, {type: 'text'}).then((channel) => {
+            msg.guild.channels.create(channelname, {type: 'GUILD_TEXT'}).then(channel => {
     
                 channel.setParent(channelcategory);
                 
-                channel.createOverwrite(msg.guild.roles.everyone.id , {
+                channel.permissionOverwrites.create(msg.guild.roles.everyone.id , {
                     VIEW_CHANNEL: false
                 });          
-                channel.createOverwrite(msg.author.id, {
+                channel.permissionOverwrites.create(msg.author.id, {
                     VIEW_CHANNEL: true,
                     SEND_MESSAGES: true
                 });
-                channel.createOverwrite(supportrole.id, {
+                channel.permissionOverwrites.create(supportrole.id, {
                     VIEW_CHANNEL: true,
                     SEND_MESSAGES: true
                 });
@@ -51,21 +51,21 @@ module.exports = {
                     .setTitle('🎟️ TICKET 🎟️')
                     .setDescription(`**${msg.member.user} someone will be with you shortly.**`)
 
-                channel.send(ticketEmbed);
+                channel.send({embeds:[ticketEmbed]});
             });
             return;
         };
 
         if (arg [0] == "delete" && msg.channel.name.includes("ticket") == true) {
-            if (msg.member.roles.cache.find(supportrole => supportrole.id === (client.settings.get(msg.guild.id, "supportrole"))) || msg.member.hasPermission("ADMINISTRATOR")) return msg.channel.delete();
-            else return msg.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            if (msg.member.roles.cache.find(supportrole => supportrole.id === (client.settings.get(msg.guild.id, "supportrole"))) || msg.member.permissions.has("ADMINISTRATOR")) return msg.channel.delete();
+            else return msg.channel.send({embeds:[nopermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         }
 
         if (arg[0] == "close" && msg.channel.name.indexOf("ticket") == false) {
-            if (msg.member.roles.cache.find(supportrole => supportrole.id === (client.settings.get(msg.guild.id, "supportrole"))) || msg.member.hasPermission("ADMINISTRATOR")) {
+            if (msg.member.roles.cache.find(supportrole => supportrole.id === (client.settings.get(msg.guild.id, "supportrole"))) || msg.member.permissions.has("ADMINISTRATOR")) {
                 let user = client.users.cache.find(user => user.username == `${msg.channel.name.substring(7,msg.channel.length)}`);
 
-                msg.channel.createOverwrite(user.id, {
+                msg.channel.permissionOverwrites.create(user.id, {
                     SEND_MESSAGES: false
                 })
                 
@@ -76,9 +76,9 @@ module.exports = {
 
                 let channelname = msg.channel.name;
 
-                msg.channel.send(ticketclosed).then (() => msg.channel.setName(`❌${channelname}`));
-            } else return msg.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        } else return msg.channel.send(noticketchannelEmbed).then(msg => msg.delete({ timeout: 5000 }));
+                msg.channel.send({embeds:[ticketclosed]}).then (() => msg.channel.setName(`❌${channelname}`));
+            } else return msg.channel.send({embeds:[nopermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+        } else return msg.channel.send({embeds:[noticketchannelEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
 
     }
 }

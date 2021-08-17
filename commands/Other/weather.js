@@ -17,7 +17,8 @@ module.exports = {
             degreeType: 'C'
           }, function(err, result) {
             //if (err) console.log(err);
-            if (result === undefined || result.length === 0) return msg.channel.send(nolocationEmbed).then(msg => {msg.delete({ timeout: 5000 })});
+            if (result === undefined || result.length === 0) return msg.channel.send({embeds:[nolocationEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+            setTimeout(() => msg.delete(), 5000);
             var current = result[0].current;
             const tempF = [Math.round(current.temperature * 1.8) + 32];
             const feelslikeF = [Math.round(current.feelslike * 1.8) + 32];
@@ -30,7 +31,7 @@ module.exports = {
                 .addField('Feels like', `${current.feelslike} °C | ${feelslikeF} °F`, true)
                 .addField('Winds', current.winddisplay, true)
                 .addField('Humidity', `${current.humidity}%`, true)
-            msg.channel.send({embed});
+            msg.channel.send({embeds:[embed]});
           })
     }
 }

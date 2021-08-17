@@ -38,7 +38,7 @@ function getAll(client, msg) {
         /* blank-field-to-keep-column-width-reserved-for-future-categories */.addField('\u200b', '\u200b', true)
         /* blank-field-to-keep-column-width-reserved-for-future-categories */.addField('\u200b', '\u200b', true)
 
-    return msg.channel.send(helpembed);
+    return msg.channel.send({embeds:[helpembed]});
 }
 
 function getCMD(client, msg, input) {
@@ -48,7 +48,7 @@ function getCMD(client, msg, input) {
     
     let info = `⛔ No information found for command **${input.toLowerCase()}**`;
 
-    if (!cmd || cmd.debug) return msg.channel.send(embed.setColor("RED").setDescription(info)).then(msg => msg.delete({ timeout: 5000 }));
+    if (!cmd || cmd.debug) return msg.channel.send({embeds:[embed.setColor("RED").setDescription(info)]}).then(msg =>setTimeout(() => msg.delete(), 5000));
 
     //if (cmd.name) info = `**Command name**: ${cmd.name}`;
     if (cmd.aliases) info = `**Aliases**: ${cmd.aliases.map(a => `\`${a}\``).join(", ")}`;
@@ -60,5 +60,5 @@ function getCMD(client, msg, input) {
     }
     if (cmd.permission) info += `\n\n**Permission**: \`\`\`${cmd.permission}\`\`\``;
 
-    return msg.channel.send(embed.setColor("GREEN").setTitle(`**${cmd.name}**`).setDescription(info));
+    return msg.channel.send({embeds:[embed.setColor("GREEN").setTitle(`**${cmd.name}**`).setDescription(info)]});
 }

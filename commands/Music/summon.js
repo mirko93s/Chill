@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const { joinVoiceChannel } = require ('@discordjs/voice');
 
 module.exports = {
     name: "summon",
@@ -21,12 +22,15 @@ module.exports = {
             .setDescription(`Music Channel Only is active!\nYou can only use the music module in: <#${client.settings.get(msg.guild.id, "musictextchannel")}>`)
 
         if (msg.member.roles.cache.some(role => role.id === (client.settings.get(msg.guild.id, "djrole")))) {
-            if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.id !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send(mconlyEmbed).then(msg => msg.delete({ timeout: 10000 }));
-            if (!msg.member.voice.channel) return msg.channel.send(notinvcEmbed).then(msg => msg.delete({ timeout: 5000 }));
-            msg.member.voice.channel.join()
-            .then(connection => {
-                connection.voice.setSelfDeaf(true);
-                });
-        } else return msg.channel.send(noDJroleEmbed).then(msg => msg.delete({ timeout: 5000 }));
+            if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.id !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send({embeds:[mconlyEmbed]}).then(msg =>setTimeout(() => msg.delete(), 10e3));
+            if (!msg.member.voice.channel) return msg.channel.send({embeds:[notinvcEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+
+            await joinVoiceChannel({
+                channelId: msg.member.voice.channel.id,
+                guildId: msg.member.voice.channel.guild.id,
+                adapterCreator: msg.member.voice.channel.guild.voiceAdapterCreator,
+            });
+            
+        } else return msg.channel.send({embeds:[noDJroleEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
     }
 }

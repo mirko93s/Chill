@@ -16,9 +16,9 @@ module.exports = {
 			.setColor(`RED`)
             .setTitle(`⛔ Please provide a valid name and a valid response in order to create a new custom command!`)
             
-        if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.reply(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!msg.member.permissions.has("ADMINISTRATOR")) return msg.channel.send({embeds:[nopermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         
-        if (!arg[0] || !arg[1]) return msg.channel.send(noargsEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!arg[0] || !arg[1]) return msg.channel.send({embeds:[noargsEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
 
         let command = arg[0].toLowerCase().toString();
         let response = arg.slice(1).join(' ').toString();
@@ -31,7 +31,7 @@ module.exports = {
             .setColor('GREEN')
             .setTitle('Custom Commands')
             .setDescription(`New custom command created\n**Command:** \`${command}\`\n**Response:** \`${response}\``)
-        msg.channel.send(okEmbed).then(msg => msg.delete({ timeout: 10000 }));
+        msg.channel.send({embeds:[okEmbed]}).then(msg =>setTimeout(() => msg.delete(), 10000));
         
     }
 }

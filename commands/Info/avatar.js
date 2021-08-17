@@ -10,11 +10,11 @@ module.exports = {
         let user = msg.mentions.users.first();
         if (!msg.mentions.users.size) user = msg.author;
 
-        let avatarEmbed = new Discord.MessageEmbed()
+        const avatarEmbed = new Discord.MessageEmbed()
             .setColor(`RANDOM`)
             .setTitle(`Avatar`)
             .setDescription(user.username)
             .setImage(user.displayAvatarURL())
-        msg.channel.send(avatarEmbed);
+        msg.channel.send({embeds:[avatarEmbed]});
     }
 }

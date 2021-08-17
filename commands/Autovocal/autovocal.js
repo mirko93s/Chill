@@ -13,9 +13,9 @@ module.exports = {
             .setColor(`RED`)
             .setTitle(`⛔ You don't have permission to use this!`)
         
-        if (!msg.member.hasPermission("MANAGE_CHANNELS")) return msg.reply(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!msg.member.permissions.has("MANAGE_CHANNELS")) return msg.channel.send({embeds:[nopermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         
-        msg.guild.channels.create(`auto-vocal`, {type: 'voice'}).then(channel => {
+        msg.guild.channels.create(`auto-vocal`, {type: 'GUILD_VOICE'}).then(channel => {
             client.settings.ensure(msg.guild.id, defaultSettings);
             client.settings.push(msg.guild.id, channel.id, "autovocalchannels");
         });
@@ -25,7 +25,7 @@ module.exports = {
             .setTitle(`Auto-Vocal`)
             .setDescription(`The channel was successfully created.\nYou can now rename it, set the permissions, users limit, bitrate, etc...`)
         
-        msg.channel.send(doneEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        msg.channel.send({embeds:[doneEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         
     }
 }

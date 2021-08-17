@@ -25,7 +25,7 @@ module.exports = {
             .setColor(`RED`)
             .setTitle(`⛔ Description can't be longer than 2048 chatacters`)
         
-        if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.reply(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!msg.member.permissions.has("ADMINISTRATOR")) return msg.channel.send({embeds:[nopermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         
         const titleembed = new Discord.MessageEmbed()
             .setColor('GREEN')
@@ -44,21 +44,19 @@ module.exports = {
 
         const filter = m => m.author.id === msg.author.id;
 
-        msg.channel.send(titleembed)           
-            
-            .then(msg => {//collect title
-            msg.channel.awaitMessages(filter, {max: 1,time: 60000,errors: ['time']})
+        msg.channel.send({embeds:[titleembed]}).then(msg => {//collect title
+            msg.channel.awaitMessages({filter, max: 1,time: 60000,errors: ['time']})
                 .then(collected => {
                 var title = collected.first().content;
-                if (title.length > 256) return msg.channel.send(toolongtitleEmbed).then(msg => msg.delete({ timeout: 5000 }));
+                if (title.length > 256) return msg.channel.send({embeds:[toolongtitleEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
                 collected.first().delete();
-                msg.edit(descriptionembed)                  
+                msg.edit({embeds:[descriptionembed]})                  
                     
                     .then(msg => {//collect description
-                    msg.channel.awaitMessages(filter, {max: 1,time: 60000,errors: ['time']})
+                    msg.channel.awaitMessages({filter, max: 1,time: 60000,errors: ['time']})
                         .then(collected => {
                         var description = collected.first().content;
-                        if (description.length > 256) return msg.channel.send(toolongdescriptionEmbed).then(msg => msg.delete({ timeout: 5000 }));
+                        if (description.length > 256) return msg.channel.send({embeds:[toolongdescriptionEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
                         collected.first().delete();
                         msg.delete();
                             
@@ -69,24 +67,24 @@ module.exports = {
                                     .setColor("#00ff00")
                                     .setAuthor(msg.author.username, msg.author.displayAvatarURL())    
                                 let bcchannel = msg.guild.channels.cache.find(bcchannel => bcchannel.id === (client.settings.get(msg.guild.id, "bcchannel")));
-                                if(!bcchannel) return msg.channel.send(nochannelEmbed).then(msg => msg.delete({ timeout: 5000 }));
+                                if(!bcchannel) return msg.channel.send({embeds:[nochannelEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
                                 bcchannel.send("@everyone");
-                                bcchannel.send(bcEmbed);
+                                bcchannel.send({embeds:[bcEmbed]});
                                 } catch(err) {//bot no perm error
-                                msg.channel.send(nobotpermEmbed).then(msg => msg.delete({ timeout: 5000 }));
+                                msg.channel.send({embeds:[nobotpermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
                                 console.log(err);
                                 }
 
                         }).catch(err => {//title time error
-                            msg.edit(timeembed);
-                            msg.delete({ timeout: 5000 });
+                            msg.edit({embeds:[timeembed]});
+                            setTimeout(() => msg.delete(), 5000);
                             console.log(err);
                             });
                     }).catch(err => console.log(err));
 
                 }).catch(err => {//description time error
-                    msg.edit(timeembed);
-                    msg.delete({ timeout: 5000 });
+                    msg.edit({embeds:[timeembed]});
+                    setTimeout(() => msg.delete(), 5000);
                     console.log(err);
                     });
             }).catch(err => console.log(err));

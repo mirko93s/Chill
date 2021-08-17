@@ -33,22 +33,22 @@ module.exports = {
         var emoji = ['🍏','🍎','🍐','🍊','🍋','🍌','🍉','🍇','🫐','🍓','🍈','🍒','🍑','🥭','🍍','🥥','🥝','🍅','🥑','🥒']
         var choicemsg = "";
         
-        if(!msg.guild.member(msg.author).hasPermission('MANAGE_GUILD')) return msg.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if(!msg.guild.members.cache.get(msg.author.id).permissions.has('MANAGE_GUILD')) return msg.channel.send({embeds:[nopermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         let pollchannel = msg.guild.channels.cache.find(pollchannel => pollchannel.id === (client.settings.get(msg.guild.id, "pollchannel")));
-        if(!pollchannel) return msg.channel.send(nochannelEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if(!pollchannel) return msg.channel.send({embeds:[nochannelEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         
         let question = arg.join(" ");
-        if (!question || question.length > 256) return msg.channel.send(noquestionEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!question || question.length > 256) return msg.channel.send({embeds:[noquestionEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
             
         var filter = m => m.author.id === msg.author.id;
-        msg.channel.send(askchoicesEmbed).then(msg => {
-            msg.channel.awaitMessages(filter, {max: 1,time: 30000,errors: ['time']}).then(collected => {
+        msg.channel.send({embeds:[askchoicesEmbed]}).then(msg => {
+            msg.channel.awaitMessages({filter, max: 1,time: 30000,errors: ['time']}).then(collected => {
                 var choices = collected.first().content;
                 collected.first().delete()
                 msg.delete();
                 if (choices.endsWith(",") === true) choices = choices.slice(0,(choices.length-1)); //remove last "," from choices string
                 choices = choices.split(","); //convert choices to an array
-                if (choices.length > 10 || choices.length < 2) return msg.channel.send(wrongchoicesEmbed).then(msg => msg.delete({ timeout: 5000 })); //choices can't be > 10
+                if (choices.length > 10 || choices.length < 2) return msg.channel.send({embeds:[wrongchoicesEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000)); //choices can't be > 10
 
                 for (var i = emoji.length - 1; i > 0; i--) { //scramble emoji array
                     var j = Math.floor(Math.random() * (i + 1));
@@ -67,12 +67,12 @@ module.exports = {
                     .setDescription(`**React to vote**\n`+choicemsg)
                     .setTimestamp()
 
-                pollchannel.send(pollEmbed).then(msg => {
+                pollchannel.send({embeds:[pollEmbed]}).then(msg => {
                     for (var i = 0; i < choices.length; i++) { 
                         msg.react(emoji[i]);
                     }
                 });
-            }).catch(() => {return msg.edit(outoftimeEmbed).then(msg => msg.delete({ timeout: 5000 }));});
+            }).catch(() => {return msg.edit({embeds:[outoftimeEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));});
         });       
     }
 }

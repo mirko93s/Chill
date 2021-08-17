@@ -41,20 +41,20 @@ module.exports = {
             .setTitle(`⛔ I can't use muted role due to role hierarchy, please put my role above the muted one.`)
 
             
-        if (!msg.member.hasPermission("MANAGE_ROLES")) return msg.channel.send(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        if (!msg.guild.me.hasPermission("MANAGE_ROLES")) return msg.channel.send(nobotpermEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!msg.member.permissions.has("MANAGE_ROLES")) return msg.channel.send({embeds:[nopermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+        if (!msg.guild.me.permissions.has("MANAGE_ROLES")) return msg.channel.send({embeds:[nobotpermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         let puchannel = msg.guild.channels.cache.find(puchannel => puchannel.id === (client.settings.get(msg.guild.id, "puchannel")));
-        if (!puchannel) return msg.channel.send (nochannelEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!puchannel) return msg.channel.send ({embeds:[nochannelEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         let mutedrole = msg.guild.roles.cache.find(mutedrole => mutedrole.id === (client.settings.get(msg.guild.id, "mutedrole")));
-        if (!mutedrole) return msg.channel.send(noroleEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        if (msg.guild.me.roles.highest.position < mutedrole.rawPosition) return msg.channel.send(hierarchyEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        if (!arg[0] || !arg[1]) return msg.channel.send(noargsEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!mutedrole) return msg.channel.send({embeds:[noroleEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+        if (msg.guild.me.roles.highest.position < mutedrole.rawPosition) return msg.channel.send({embeds:[hierarchyEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+        if (!arg[0] || !arg[1]) return msg.channel.send({embeds:[noargsEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         
         const toUnmute = msg.mentions.members.first();
         
-        if (!toUnmute.roles.cache.some(r => r.id === mutedrole)) return msg.channel.send(alreadyEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        if (!toUnmute) return msg.channel(nomemberEmbed).then(msg => msg.delete({ timeout: 5000 }));
-        if (toUnmute.id === msg.author.id) return msg.channel.send(noyourselfEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!toUnmute.roles.cache.some(r => r.id === mutedrole)) return msg.channel.send({embeds:[alreadyEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+        if (!toUnmute) return msg.channel.send({embeds:[nomemberEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+        if (toUnmute.id === msg.author.id) return msg.channel.send({embeds:[noyourselfEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
 
         const embed = new Discord.MessageEmbed()
             .setColor(`AQUA`)
@@ -73,7 +73,7 @@ module.exports = {
             .setDescription(`Do you want to unmute ${toUnmute}?`)
 
         // Send the msg
-        await msg.channel.send(promptEmbed).then(async promptmsg => {
+        await msg.channel.send({embeds:[promptEmbed]}).then(async promptmsg => {
             // Await the reactions and the reactioncollector
             const emoji = await promptMessage(promptmsg, msg.author, 30, ["✅", "❌"]);
 
@@ -86,14 +86,14 @@ module.exports = {
                         const errorEmbed = new Discord.MessageEmbed()
                             .setColor(`RED`)
                             .setTitle(`⛔ Error: **${err}**`)
-                        if (err) return msg.channel.send(errorEmbed).then(msg => msg.delete({ timeout: 5000 }));
+                        if (err) return msg.channel.send({embeds:[errorEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
                     });
 
-                puchannel.send(embed);
+                puchannel.send({embeds:[embed]});
             }
             else if (emoji === "❌") {
                 promptmsg.delete();
-                msg.channel.send(canceledEmbed).then(msg => msg.delete({ timeout: 5000 }));
+                msg.channel.send({embeds:[canceledEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
             }
         });
     }

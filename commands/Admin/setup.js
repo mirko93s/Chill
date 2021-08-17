@@ -13,7 +13,7 @@ module.exports = {
             .setColor(`RED`)
             .setTitle(`⛔ You don't have permission to use this!`)
 
-        if (!msg.member.hasPermission("ADMINISTRATOR")) return msg.reply(nopermEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!msg.member.permissions.has("ADMINISTRATOR")) return msg.channel.send({embeds:[nopermEmbed]}).then(msg => msg.delete({ timeout: 5000 }));
 
         let welcomechannel = msg.guild.channels.cache.find(welcomechannel => welcomechannel.id === (client.settings.get(msg.guild.id, "welcomechannel")));
         let bcchannel = msg.guild.channels.cache.find(bcchannel => bcchannel.id === (client.settings.get(msg.guild.id, "bcchannel")));
@@ -34,94 +34,94 @@ module.exports = {
 
         const created = "✅"
         const already = "❌"
-
+        //cateogories
         if(!ticketcategory) {
-            msg.guild.channels.create("🎫tickets", {type: 'category'})
+            msg.guild.channels.create("🎫tickets", {type: 'GUILD_CATEGORY'})
             .then(channel => {client.settings.set(msg.guild.id, channel.id, "ticketcategory")});
             ticketmsg = created
         } else ticketmsg = already
-
+        //roles
         if (!mutedrole) {
-            msg.guild.roles.create({ data: {name: "Muted",permissions: [],color: '525252'}})
+            msg.guild.roles.create({ name: "Muted",permissions: [],color: '525252'})
             .then(role => {client.settings.set(msg.guild.id, role.id, "mutedrole")});
             mutedmsg = created
         } else mutedmsg = already
         if (!djrole) {
-            msg.guild.roles.create({ data: {name: "DJ",permissions: ['CONNECT'], color: 'D00091'}})
+            msg.guild.roles.create({ name: "DJ",permissions: ['CONNECT'], color: 'D00091'})
             .then(role => {client.settings.set(msg.guild.id, role.id, "djrole")});
             djmsg = created
         } else djmsg = already
         if (!musictemprole) {
-            msg.guild.roles.create({ data: {name: "Listening",permissions: [], color: 'CCCC00'}})
+            msg.guild.roles.create({ name: "Listening",permissions: [], color: 'CCCC00'})
             .then(role => {client.settings.set(msg.guild.id, role.id, "musictemprole")});
             musictempmsg = created
         } else musictempmsg = already
         if (!supportrole) {
-            msg.guild.roles.create({ data: {name: "Support",permissions: [], color: 'FC72F3'}})
+            msg.guild.roles.create({ name: "Support",permissions: [], color: 'FC72F3'})
             .then(role => {client.settings.set(msg.guild.id, role.id, "supportrole")});
             supportmsg = created
         } else supportmsg = already
         if (!roleonjoin) {
-            msg.guild.roles.create({ data: {name: "Member",permissions: ['VIEW_CHANNEL'], color: '33FFFF'}})
+            msg.guild.roles.create({ name: "Member",permissions: ['VIEW_CHANNEL'], color: '33FFFF'})
             .then(role => {client.settings.set(msg.guild.id, role.id, "roleonjoin")});
             roleonmsg = created
         } else roleonmsg = already
-
+        //channels
         if(!welcomechannel) {
-            msg.guild.channels.create("👋welcome", {type: 'text', 
+            msg.guild.channels.create("👋welcome", {type: 'GUILD_TEXT', 
                 permissionOverwrites: [{id: msg.guild.roles.everyone.id, 
                 deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`]}]})
                 .then(channel => {client.settings.set(msg.guild.id, channel.id, "welcomechannel")});
             welcomemsg = created
         } else welcomemsg = already
         if(!bcchannel) {
-            msg.guild.channels.create("🔴broadcast", {type: 'text', 
+            msg.guild.channels.create("🔴broadcast", {type: 'GUILD_TEXT', 
                 permissionOverwrites: [{id: msg.guild.roles.everyone.id, 
                 deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`]}]})
                 .then(channel => {client.settings.set(msg.guild.id, channel.id, "bcchannel")});
             bcmsg = created
         } else bcmsg = already
         if(!puchannel) {
-            msg.guild.channels.create("🔨punishments", {type: 'text', 
+            msg.guild.channels.create("🔨punishments", {type: 'GUILD_TEXT', 
             permissionOverwrites: [{id: msg.guild.roles.everyone.id, 
             deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`]}]})
             .then(channel => {client.settings.set(msg.guild.id, channel.id, "puchannel")});
             pumsg = created
         } else pumsg = already
         if(!reportchannel) {
-            msg.guild.channels.create("🚨reports", {type: 'text', 
+            msg.guild.channels.create("🚨reports", {type: 'GUILD_TEXT', 
             permissionOverwrites: [{id: msg.guild.roles.everyone.id, 
             deny: [`VIEW_CHANNEL`]}]})
             .then(channel => {client.settings.set(msg.guild.id, channel.id, "reportchannel")});
             reportmsg = created
         } else reportmsg = already
         if(!gachannel) {
-            msg.guild.channels.create("🎉giveaway", {type: 'text', 
+            msg.guild.channels.create("🎉giveaway", {type: 'GUILD_TEXT', 
             permissionOverwrites: [{id: msg.guild.roles.everyone.id, 
             deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`]}]})
             .then(channel => {client.settings.set(msg.guild.id, channel.id, "gachannel")});
             gamsg = created
         } else gamsg = already
         if(!pollchannel) {
-            msg.guild.channels.create("💡poll", {type: 'text', 
+            msg.guild.channels.create("💡poll", {type: 'GUILD_TEXT', 
             permissionOverwrites: [{id: msg.guild.roles.everyone.id, 
             deny: ['SEND_MESSAGES',`SEND_TTS_MESSAGES`,`EMBED_LINKS`,`ATTACH_FILES`]}]})
             .then(channel => {client.settings.set(msg.guild.id, channel.id, "pollchannel")});
             pollmsg = created
         } else pollmsg = already
         if(!musicvocalchannel) {
-            msg.guild.channels.create("🔊music", {type: 'voice',
+            msg.guild.channels.create("🔊music", {type: 'GUILD_VOICE',
             permissionOverwrites: [{id: msg.guild.roles.everyone.id, 
             deny: ['SPEAK']}]})
             .then(channel => {client.settings.set(msg.guild.id, channel.id, "musicvocalchannel")});
             musicvocalmsg = created
         } else musicvocalmsg = already
         if(!musictextchannel) {
-            msg.guild.channels.create("🎵song-request", {type: 'text', 
+            msg.guild.channels.create("🎵song-request", {type: 'GUILD_TEXT', 
             permissionOverwrites: [
             {id: msg.guild.roles.everyone.id, 
             deny: ['VIEW_CHANNEL']},
-            {id: musictemprole,
+            {id: musictemprole.id,
             allow: ['VIEW_CHANNEL','SEND_MESSAGES']}]})
             .then(channel => {client.settings.set(msg.guild.id, channel.id, "musictextchannel")});
             musictextmsg = created
@@ -159,6 +159,6 @@ module.exports = {
             .addField(`**Roles**`, `\`\`\`${roles}\`\`\``, false)
             .addField(`**Categories**`, `\`\`\`${categories}\`\`\``, false)
             .setFooter(`${created} Created\n${already} Already exists`)
-        msg.channel.send(setupembed);
+        msg.channel.send({embeds:[setupembed]});
     }
 }

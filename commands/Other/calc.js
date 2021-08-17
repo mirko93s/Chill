@@ -14,19 +14,19 @@ module.exports = {
             .setTitle(`⛔ No expression provided`)
 
         const expression = arg.join(" ");
-        if (!expression) return msg.channel.send (noexpressionEmbed).then(msg => {msg.delete({ timeout: 5000 })});
+        if (!expression) return msg.channel.send({embeds:[noexpressionEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         try {
             const solved = math.evaluate(expression).toString();
             let calcEmbed = new Discord.MessageEmbed()
                 .setColor(`RANDOM`)
                 .setTitle(`Calc`)
                 .setDescription(`${expression} = **${solved}**`)
-            return msg.channel.send(calcEmbed);
+            return msg.channel.send({embeds:[calcEmbed]});
         } catch (err) {
             const errorEmbed = new Discord.MessageEmbed()
                 .setColor(`RED`)
                 .setTitle(`⛔ ${err}`)
-            return msg.channel.send(errorEmbed).then(msg => {msg.delete({ timeout: 5000 })});
+            return msg.channel.send({embeds:[errorEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         }
     }
 }

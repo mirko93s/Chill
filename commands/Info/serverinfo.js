@@ -11,26 +11,26 @@ module.exports = {
 
         const filterLevels = {DISABLED: 'Off',MEMBERS_WITHOUT_ROLES: 'No Role',ALL_MEMBERS: 'Everyone',0: 'Off',1: 'No Role',2: 'Everyone'};
         const verificationLevels = {NONE: 'None', LOW: 'Low', MEDIUM: 'Medium', HIGH: 'High',VERY_HIGH: 'Highest',0: 'None',  1: 'Low', 2: 'Medium',3: 'High',4: 'Highest'};
+        const tierLevels = {NONE: 'None', TIER_1: '1', TIER_2: '2', TIER_3: '3'};
 
         const channels = stripIndent`
-            Text  :: ${msg.guild.channels.cache.filter(chan => chan.type === 'text').size}
-            Voice :: ${msg.guild.channels.cache.filter(chan => chan.type === 'voice').size}
+            Text  :: ${msg.guild.channels.cache.filter(chan => chan.type === 'GUILD_TEXT').size}
+            Voice :: ${msg.guild.channels.cache.filter(chan => chan.type === 'GUILD_VOICE').size}
         `;
 
         const boost = stripIndent`
             Count :: ${msg.guild.premiumSubscriptionCount || 0}
-            Tier  :: ${msg.guild.premiumTier ? `Tier ${msg.guild.premiumTier}` : 'None'}
+            Tier  :: ${tierLevels[msg.guild.premiumTier]}
         `;
 
         const members = stripIndent`
-            Online :: ${msg.guild.members.cache.filter(member => member.presence.status !== "offline").size}
+            Online :: ${await msg.guild.members.fetch().then(f => f.filter(m => m.presence !== "offline" && m.presence !== null).size)}
             Total  :: ${msg.guild.memberCount}
         `;
 
         const other = stripIndent`
-            Owner              :: ${msg.guild.owner.user.tag}
+            Owner              :: ${await msg.guild.fetchOwner().then(o => o.user.tag)}
             Created at         :: ${msg.guild.createdAt.toLocaleString()}
-            Region             :: ${msg.guild.region}
             Verification Level :: ${verificationLevels[msg.guild.verificationLevel]}
             Explicit Filter    :: ${filterLevels[msg.guild.explicitContentFilter]}
             Roles Count        :: ${msg.guild.roles.cache.size}
@@ -45,6 +45,6 @@ module.exports = {
             .addField(`Boost`, `\`\`\`asciidoc\n${boost}\`\`\``,true)
             .addField(`Other`, `\`\`\`asciidoc\n${other}\`\`\``,false)
             
-        msg.channel.send(embed);
+        msg.channel.send({embeds:[embed]});
     }
 }

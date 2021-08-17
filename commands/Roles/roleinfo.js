@@ -14,13 +14,13 @@ module.exports = {
 
         let roletocheck = arg.join(" ")
         let role = msg.guild.roles.cache.find(grole => grole.name === (roletocheck));
-        if (!role) return msg.channel.send(noroleEmbed).then(msg => msg.delete({ timeout: 5000 }));
+        if (!role) return msg.channel.send({embeds:[noroleEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         const embed = new Discord.MessageEmbed()
             .setColor('RANDOM')
             .addField('Role name', `${role.name}`, true)
             .addField('Role ID', `${role.id}`, true)
             .addField('Created At', role.createdAt.toDateString())
             .addField("Mentionable: ", role.mentionable ? 'Yes' : 'No')
-        msg.channel.send(embed);
+        msg.channel.send({embeds:[embed]});
     }
 }

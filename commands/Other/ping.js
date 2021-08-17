@@ -11,14 +11,13 @@ module.exports = {
         const awaitEmbed = new Discord.MessageEmbed()
             .setColor(`RANDOM`)
             .setTitle(`📶 Calculating . . .`)
-        
-        await msg.channel.send(awaitEmbed).then(m => {
+        await msg.channel.send({embeds:[awaitEmbed]}).then(sent => {
             const pingEmbed = new Discord.MessageEmbed()
                 .setColor(`RANDOM`)
-                .setTitle(`📶 ${m.createdTimestamp - msg.createdTimestamp} ms`)
+                .setTitle(`📶 ${sent.createdTimestamp - msg.createdTimestamp} ms`)
                 //client.ws.ping for API latency
     
-            m.edit(pingEmbed);
+            sent.edit({embeds:[pingEmbed]});
         })
     }
 }
