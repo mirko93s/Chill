@@ -4,7 +4,6 @@ const config = require('../config.json');
 const package = require('../package.json');
 
 module.exports = (client) => {
-
     console1337();
     //check if databases and their folders exist, if not create them
     setupDatabases(client);
@@ -52,18 +51,19 @@ function consolecounters (users, guilds) {
 }
 
 function console1337 () {
-    setTimeout(() => {console.log(`\n ▄▄▄▄▄▄▄▄▄▄▄  ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄            ▄                                 `);}, 100);
-    setTimeout(() => {console.log(`▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░▌          ▐░▌                                  `);}, 200);
-    setTimeout(() => {console.log(`▐░█▀▀▀▀▀▀▀▀▀ ▐░▌       ▐░▌ ▀▀▀▀█░█▀▀▀▀ ▐░▌          ▐░▌                                  `);}, 300);
-    setTimeout(() => {console.log(`▐░▌          ▐░▌       ▐░▌     ▐░▌     ▐░▌          ▐░▌                                  `);}, 400);
-    setTimeout(() => {console.log(`▐░▌          ▐░█▄▄▄▄▄▄▄█░▌     ▐░▌     ▐░▌          ▐░▌                                  `);}, 500);
-    setTimeout(() => {console.log(`▐░▌          ▐░░░░░░░░░░░▌     ▐░▌     ▐░▌          ▐░▌                    █████╗     ██╗`);}, 600);
-    setTimeout(() => {console.log(`▐░▌          ▐░█▀▀▀▀▀▀▀█░▌     ▐░▌     ▐░▌          ▐░▌                   ██╔══██╗   ███║`);}, 700);
-    setTimeout(() => {console.log(`▐░▌          ▐░▌       ▐░▌     ▐░▌     ▐░▌          ▐░▌                   ╚██████║   ╚██║`);}, 800);
-    setTimeout(() => {console.log(`▐░█▄▄▄▄▄▄▄▄▄ ▐░▌       ▐░▌ ▄▄▄▄█░█▄▄▄▄ ▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄▄▄           ╚═══██║    ██║`);}, 900);
-    setTimeout(() => {console.log(`▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌          █████╔╝██╗ ██║`);}, 1000);
-    setTimeout(() => {console.log(` ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀           ╚════╝ ╚═╝ ╚═╝`);}, 1100);
-    setTimeout(() => {console.log(`┬─┐┌─┐┌─┐┌┬┐┬ ┬`);}, 1200);
-    setTimeout(() => {console.log(`├┬┘├┤ ├─┤ ││└┬┘`);}, 1300);
-    setTimeout(() => {console.log(`┴└─└─┘┴ ┴─┴┘ ┴ \n`);}, 1400);
+    // console.log('\x1b[33m\x1b[5m ___TEST___ \x1b[0m',)
+    setTimeout(() => {console.log(`\n\x1b[33m\x1b[5m ▄▄▄▄▄▄▄▄▄▄▄  ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄            ▄  \x1b[0m                                         `);}, 1e2);
+    setTimeout(() => {console.log(`\x1b[33m\x1b[5m▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░▌          ▐░▌   \x1b[0m                                         `);}, 2e2);
+    setTimeout(() => {console.log(`\x1b[33m\x1b[5m▐░█▀▀▀▀▀▀▀▀▀ ▐░▌       ▐░▌ ▀▀▀▀█░█▀▀▀▀ ▐░▌          ▐░▌   \x1b[0m                                         `);}, 3e2);
+    setTimeout(() => {console.log(`\x1b[33m\x1b[5m▐░▌          ▐░▌       ▐░▌     ▐░▌     ▐░▌          ▐░▌   \x1b[0m                                         `);}, 4e2);
+    setTimeout(() => {console.log(`\x1b[33m\x1b[5m▐░▌          ▐░█▄▄▄▄▄▄▄█░▌     ▐░▌     ▐░▌          ▐░▌   \x1b[0m                                         `);}, 5e2);
+    setTimeout(() => {console.log(`\x1b[33m\x1b[5m▐░▌          ▐░░░░░░░░░░░▌     ▐░▌     ▐░▌          ▐░▌            \x1b[0m\x1b[35m     ██╗ ██████╗     ██████╗ \x1b[0m`);}, 6e2);
+    setTimeout(() => {console.log(`\x1b[33m\x1b[5m▐░▌          ▐░█▀▀▀▀▀▀▀█░▌     ▐░▌     ▐░▌          ▐░▌            \x1b[0m\x1b[35m    ███║██╔═████╗   ██╔═████╗\x1b[0m`);}, 7e2);
+    setTimeout(() => {console.log(`\x1b[33m\x1b[5m▐░▌          ▐░▌       ▐░▌     ▐░▌     ▐░▌          ▐░▌            \x1b[0m\x1b[35m    ╚██║██║██╔██║   ██║██╔██║\x1b[0m`);}, 8e2);
+    setTimeout(() => {console.log(`\x1b[33m\x1b[5m▐░█▄▄▄▄▄▄▄▄▄ ▐░▌       ▐░▌ ▄▄▄▄█░█▄▄▄▄ ▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄▄▄   \x1b[0m\x1b[35m     ██║████╔╝██║   ████╔╝██║\x1b[0m`);}, 9e2);
+    setTimeout(() => {console.log(`\x1b[33m\x1b[5m▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌  \x1b[0m\x1b[35m     ██║╚██████╔╝██╗╚██████╔╝\x1b[0m`);}, 10e2);
+    setTimeout(() => {console.log(`\x1b[33m\x1b[5m ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀   \x1b[0m\x1b[35m     ╚═╝ ╚═════╝ ╚═╝ ╚═════╝ \x1b[0m`);}, 11e2);
+    setTimeout(() => {console.log(`\x1b[32m┬─┐┌─┐┌─┐┌┬┐┬ ┬\x1b[0m`);}, 12e2);
+    setTimeout(() => {console.log(`\x1b[32m├┬┘├┤ ├─┤ ││└┬┘\x1b[0m`);}, 13e2);
+    setTimeout(() => {console.log(`\x1b[32m┴└─└─┘┴ ┴─┴┘ ┴ \x1b[0m\n`);}, 14e2);
 }

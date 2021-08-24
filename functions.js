@@ -82,7 +82,7 @@ module.exports = {
         };
         talkedRecently.add(msg.author.id); //xp cooldown
         setTimeout(() => {
-          talkedRecently.delete(msg.author.id);
+            talkedRecently.delete(msg.author.id);
         }, client.settings.get(msg.guild.id, "xpcooldown")*1000);
     },
 
@@ -107,7 +107,13 @@ module.exports = {
             \n*P.S. If you wish to use the same channel/role for multiple scopes use .setconfig*
             `)
             .setFooter(`©️ 2019-2021 mirko93s`,`https://cdn.discordapp.com/avatars/278380909588381698/029d0578df3fa298132b3d85dd06bf3c.png?size=128`)
-	    guild.owner.send({embeds:[dmonweronjoinEmbed]});
+	    guild.fetchOwner().then(o => {
+            try {
+                o.send({embeds:[dmonweronjoinEmbed]});
+            } catch (error) {
+                return;
+            }
+        });
     },
 
     welcomeMessage: function(member, guild) {
@@ -264,5 +270,32 @@ module.exports = {
 		} else { //if channel doesnt exist delete usercounter from db disabling the feature
 			client.settings.delete(member.guild.id, "usercounter");
 		}
+    },
+
+    buttonLinks: async function (msg, embed) {
+        const links = new Discord.MessageActionRow()
+            .addComponents(
+                new Discord.MessageButton()
+                    .setLabel('Invite')
+                    .setStyle('LINK')
+                    .setURL(config.bot_invite_link)
+                    .setEmoji('😃'),
+                new Discord.MessageButton()
+                    .setLabel('Vote')
+                    .setStyle('LINK')
+                    .setURL(config.bot_vote_link)
+                    .setEmoji('💜'),
+                new Discord.MessageButton()
+                    .setLabel('Github')
+                    .setStyle('LINK')
+                    .setURL(config.bot_project_link),
+                    // .setEmoji('🧬'),
+                new Discord.MessageButton()
+                    .setLabel('Website')
+                    .setStyle('LINK')
+                    .setURL(config.bot_website_link)
+                    // .setEmoji('🔗'),
+            );
+        return msg.channel.send({embeds:[embed],components:[links]});
     }
 };
