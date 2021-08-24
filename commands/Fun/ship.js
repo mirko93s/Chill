@@ -13,7 +13,7 @@ module.exports = {
 
         let user1 = arg[0];
         let user2 = arg[1];
-        if (!user1 || !user2) return msg.channel.send({embeds:[nonamesEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+        if (!user1 || !user2) return msg.channel.send({embeds:[nonamesEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
         var ship = Math.floor(Math.random() * 100) + 1;
 
         let bar = "";

@@ -23,7 +23,7 @@ module.exports = {
         const notanumberEmbed = new Discord.MessageEmbed()
             .setColor('PURPLE')
             .setTitle(":musical_note: Music")
-            .setDescription(`⛔ Please input a number to set the volume`)
+            .setDescription(`⛔ Please input a valid number to set the volume`)
             .setFooter(`Default volume is 100`)
 
         if (msg.member.permissions.has("ADMINISTRATOR")) {
@@ -39,7 +39,7 @@ module.exports = {
                 .setDescription(`:speaker: Current volume: **${serverQueue.volume} %**`)
 
             if (!newvolume) return msg.channel.send({embeds:[currentvolumeEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
-            if (isNaN(newvolume)) return msg.channel.send({embeds:[notanumberEmbed]});
+            if (isNaN(newvolume) || newvolume < 0) return msg.channel.send({embeds:[notanumberEmbed]});
             serverQueue.volume = newvolume;
             client.player.state.resource.volume.setVolume(newvolume / 100);
 

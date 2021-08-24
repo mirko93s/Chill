@@ -85,6 +85,7 @@ module.exports = {
                         }
                         play(video, msg, voiceChannel, true);
                     }
+                    return;
                 } else return msg.channel.send({embeds:[noresultEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
             }
             //url
@@ -122,7 +123,8 @@ module.exports = {
             const song = {
                 id: video.id,
                 title: Util.escapeMarkdown(video.title),
-                url: `https://www.youtube.com/watch?v=${video.id}`
+                url: `https://www.youtube.com/watch?v=${video.id}`,
+                duration: video.duration
             };
         
             if (!serverQueue) {
@@ -147,7 +149,7 @@ module.exports = {
                     nextResource(msg.guild, client.queue.get(msg.guild.id).songs[0]);
                     client.player.on('stateChange', (oldState, newState) => {
                         if (newState.status === AudioPlayerStatus.Idle && oldState.status !== AudioPlayerStatus.Idle) {
-                            client.queue.get(msg.guild.id).songs.shift();
+                            if (client.queue.get(msg.guild.id).songs) client.queue.get(msg.guild.id).songs.shift();
                             nextResource(msg.guild, client.queue.get(msg.guild.id).songs[0]);
                         } else return;
                     }); 
@@ -181,7 +183,6 @@ module.exports = {
         function nextResource (guild, song) {
             if (!song) {
                 getVoiceConnection(guild.id).destroy();
-                console.log("destroyed");
                 client.queue.delete(guild.id);
                 return;
             }
@@ -193,10 +194,11 @@ module.exports = {
             const playEmbed = new Discord.MessageEmbed()
                 .setImage(`https://i.ytimg.com/vi/${song.id}/hqdefault.jpg`)
                 .setColor('PURPLE')
-                .setTitle(`:musical_note: Music`)
-                .setDescription(`:arrow_forward: **${song.title}**`)
+                .setTitle(`🎵 Music`)
+                .setDescription(`> ▶️ **${song.title}**`)
+                .setFooter(`⏲️ ${song.duration}`)
             
-                client.queue.get(guild.id).textChannel.send({embeds:[playEmbed]});      
+            client.queue.get(guild.id).textChannel.send({embeds:[playEmbed]});      
         }
     }
 }

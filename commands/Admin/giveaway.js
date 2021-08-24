@@ -46,7 +46,7 @@ module.exports = {
         msg.channel.send({embeds:[sendtimeEmbed]}).then(msg => {//collect duration
             msg.channel.awaitMessages({filter, max: 1,time: 30000,errors: ['time']}).then(collected => {
                 if(!collected.first().content.match(/[1-60][s,m,h,d,w]/g)) return msg.channel.send({embeds:[invalidtimeEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
-                var duration = collected.first().content
+                var duration = collected.first().content;
                 collected.first().delete();
                 msg.edit({embeds:[sendprizeEmbed]}).then(msg => {//collect prize
                     msg.channel.awaitMessages({filter, max: 1,time: 30000,errors: ['time']}).then(collected => {

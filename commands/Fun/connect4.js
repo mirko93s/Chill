@@ -29,10 +29,10 @@ module.exports = {
             for (const reaction of reactions) sent.react(reaction);
             //create reaction collector and its filter
             const filter = (reaction, user) => reactions.includes(reaction.emoji.name) && !user.bot;
-            const collector = sent.createReactionCollector({filter, time: 60*1000});
+            const collector = sent.createReactionCollector({filter, time: 60e3 });
             collector.on('collect', clicked => {
-                clicked.users.remove(clicked.users.cache.filter(u => u.id !== client.user.id).first()); //remove reaction          
-                if (reactions.includes(clicked.emoji.name)) collector.resetTimer({ time: 60*1000 }); //if a valid emoji then reset collector timer
+                clicked.users.remove(clicked.users.cache.filter(u => u.id !== client.user.id).first());          
+                if (reactions.includes(clicked.emoji.name)) collector.resetTimer({ time: 60e3 });
                 var x = 0;
                 var y = 0;
                 //set column
@@ -45,7 +45,7 @@ module.exports = {
                         boardEmbed.setDescription(boardToString(boardarray));
                         break;
                     }
-                    else if (y==0 && boardarray[y][x] != "⚪") return/*column full message*/;
+                    else if (y==0 && boardarray[y][x] != "⚪") return/*if column full return*/;
                 }
                 // //check if player won
                 if (haswon(turn, boardarray, x, y) == true) {

@@ -17,7 +17,7 @@ module.exports = {
         "Concentrate and ask again","Don't count on it.","My reply is no.","My sources say no.","Outlook not so good.","Very doubtful."];
 
         let question = arg.join(" ");
-        if (!question) return msg.channel.send({embeds:[noquestionEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+        if (!question) return msg.channel.send({embeds:[noquestionEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
         else {
             let answer = fortunes[Math.floor(Math.random() * fortunes.length)];
             const embed = new Discord.MessageEmbed()

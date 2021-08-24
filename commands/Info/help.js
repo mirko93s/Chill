@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const { buttonLinks } = require('../../functions.js');
 
 module.exports = {
     name: "help",
@@ -24,7 +25,7 @@ function getAll(client, msg) {
         .setThumbnail(client.user.displayAvatarURL())
         /* Admin */.addField("🚫 Admin", "`addchannel` `broadcast` `giveaway` `poll` `serverstats` `setup`", true)
         /* Auto-Vocal*/.addField("🔊 Auto-Vocal", "`autovocal` `autovocallock` `autovocalinvite` `autovocalkick`", true)
-        /* Bot */.addField("🤖 Bot", "`botinfo` `bugreport` `invite` `project` `vote` `website`", true)
+        /* Bot */.addField("🤖 Bot", "`bot` `bug`", true)
         /* Commands */.addField("🛃 Commands", "`command` `customcommand` `customcommandremove` `customcommandlist`", true)
         /* Fun */.addField("🎲 Fun", "`8ball` `achievement` `coinflip` `connect4` `rockpaperscissors` `ship` `slotmachine`", true)
         /* Info */.addField("ℹ️ Info", "`avatar` `help` `serveremojis` `serverinfo` `whois`", true)
@@ -38,7 +39,7 @@ function getAll(client, msg) {
         /* blank-field-to-keep-column-width-reserved-for-future-categories */.addField('\u200b', '\u200b', true)
         /* blank-field-to-keep-column-width-reserved-for-future-categories */.addField('\u200b', '\u200b', true)
 
-    return msg.channel.send({embeds:[helpembed]});
+    return buttonLinks(msg, helpembed);
 }
 
 function getCMD(client, msg, input) {

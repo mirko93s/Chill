@@ -21,7 +21,7 @@ module.exports = {
         await msg.channel.send({embeds:[flippingEmbed]}).then(m => {
             setTimeout(() => {
                 m.edit({embeds:[flippedEmbed]})       
-            }, 500);
+            }, 5e2);
         });
     }
 }

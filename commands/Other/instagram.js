@@ -5,7 +5,7 @@ const { fancyNumber } = require("../../functions.js");
 
 module.exports = {
     name: "instagram",
-    aliases: ["insta"],
+    aliases: ["insta","ig"],
     category: "Other",
     description: "Find out some nice instagram statistics",
     usage: "instagram <username>\n**e.g.**\n\`instagram randomusername\`\n> will show some info about an instagram profile",
@@ -42,6 +42,13 @@ module.exports = {
             **Private account:** ${account.is_private ? "Yes 🔐" : "Nope 🔓"}`);
         if (account.category_name !== null) profileEmbed.setDescription(account.category_name)
 
-        msg.channel.send({embeds:[profileEmbed]});
+        const link = new Discord.MessageActionRow()
+            .addComponents(
+                new Discord.MessageButton()
+                    .setLabel('Check it on Instagram')
+                    .setStyle('LINK')
+                    .setURL(`https://instagram.com/${name}/`)
+            );
+        msg.channel.send({embeds:[profileEmbed], components:[link]});
     }
 }

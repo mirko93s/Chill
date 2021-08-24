@@ -79,8 +79,8 @@ module.exports = {
                         }
                         play(video, msg, voiceChannel, true);
                     }
-                    return getVoiceConnection(msg.guild.id).destroy();; //skip to next/last song
-                }
+                    return client.player.stop(); //skip to next/last song
+                } else return msg.channel.send({embeds:[noresultEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
             }
             //url
             else if (url.match(/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/gi)) {
@@ -94,7 +94,7 @@ module.exports = {
                             }
                             serverQueue.songs = serverQueue.songs.slice(-1); //clear queue except last song
                             play(video, msg, voiceChannel);
-                            return getVoiceConnection(msg.guild.id).destroy();; //skip to next/last song
+                            return client.player.stop(); //skip to next/last song
                         })
                     }
                 } catch (err) {
@@ -108,7 +108,7 @@ module.exports = {
                     const result = (await ytsr(searchString, { limit: 10 })).items.filter(a => a.type === 'video');
                     serverQueue.songs = serverQueue.songs.slice(-1); //clear queue except last song
                     play(result[0], msg, voiceChannel);
-                    return getVoiceConnection(msg.guild.id).destroy(); //skip to next/last song
+                    return client.player.stop(); //skip to next/last song
                 } catch (err) {
                     console.error(err);
                     return msg.channel.send({embeds:[noresultEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
@@ -121,7 +121,8 @@ module.exports = {
             const song = {
                 id: video.id,
                 title: Util.escapeMarkdown(video.title),
-                url: `https://www.youtube.com/watch?v=${video.id}`
+                url: `https://www.youtube.com/watch?v=${video.id}`,
+                duration: video.duration
             };
             serverQueue.songs.push(song);
             if (playlist) return undefined;

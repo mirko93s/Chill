@@ -15,7 +15,7 @@ module.exports = {
 
         try {
             const text = arg.join(" ");
-            if (!text || text.length > 25) return msg.channel.send({embeds:[textErrEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+            if (!text || text.length > 25) return msg.channel.send({embeds:[textErrEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
 			const { body } = await superagent
 				.get('https://www.minecraftskinstealer.com/achievement/a.php')
 				.query({

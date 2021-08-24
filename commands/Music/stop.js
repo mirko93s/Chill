@@ -27,18 +27,19 @@ module.exports = {
 
         if (msg.member.roles.cache.some(role => role.id === (client.settings.get(msg.guild.id, "djrole")))) {
             const serverQueue = client.queue.get(msg.guild.id);
-            if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.id !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send({embeds:[mconlyEmbed]}).then(msg =>setTimeout(() => msg.delete(), 10000));
-            if (!msg.member.voice.channel) return msg.channel.send({embeds:[notinvcEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
-            if (!serverQueue) return msg.channel.send({embeds:[noplayingEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
-            serverQueue.songs = [];
-            getVoiceConnection(msg.guild.id).destroy();
+            if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.id !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send({embeds:[mconlyEmbed]}).then(msg =>setTimeout(() => msg.delete(), 10e3));
+            if (!msg.member.voice.channel) return msg.channel.send({embeds:[notinvcEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+            if (serverQueue) serverQueue.songs = [];
+            if (getVoiceConnection(msg.guild.id)) {
+                getVoiceConnection(msg.guild.id).destroy();
 
-            const stopEmbed = new Discord.MessageEmbed()
-                .setColor('PURPLE')
-                .setTitle(":musical_note: Music")
-                .setDescription(`:stop_button: Stopped`)
+                const stopEmbed = new Discord.MessageEmbed()
+                    .setColor('PURPLE')
+                    .setTitle(":musical_note: Music")
+                    .setDescription(`:stop_button: Stopped`)
 
-            return msg.channel.send({embeds:[stopEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
-        } else return msg.channel.send({embeds:[noDJroleEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+                return msg.channel.send({embeds:[stopEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+            } else return msg.channel.send({embeds:[noplayingEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+        } else return msg.channel.send({embeds:[noDJroleEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
     }
 }
