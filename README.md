@@ -27,9 +27,9 @@ Type `.help` or `.help <command-name-or-alias>` in discord to get a detailed exp
 | ------ | ------ |
 | Admin | addchannel, broadcast, giveaway, poll, serverstats, setup |
 | Autovocal | autovocal, autovocallock, autovocalinvite, autovocalkick |
-| Bot | botinfo, bugreport, invite, project, vote, website |
+| Bot | bot, bug |
 | Commands | command, customcommand, customcommandremove, customcommandlist |
-| Fun | 8ball, achievement, flipcoin, rockpaperscissors, ship, slotmachine|
+| Fun | 8ball, achievement, connect4, flipcoin, rockpaperscissors, ship, slotmachine|
 | Info | avatar, help, serveremojis, serverinfo, whois |
 | Moderation | ban, kick, mute, purge, report, say, ticket, unmute |
 | Music | play, skip, playskip, resume, stop, nowplaying, queue, summon, volume |
