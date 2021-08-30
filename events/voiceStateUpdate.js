@@ -23,12 +23,15 @@ module.exports = (client, oldUser, newUser) => {
 			})
 	}
 	//delete queue if bot is kicked from a vc while playing
-	if ((newUser.channel === null && newUser.member.user.bot) ||
-		(oldUser.channel !== null && oldUser.guild.me.voice.channelId === oldUser.channelId && oldUser.channel.members.size === 1) ||
-		(newUser.channel !== null && newUser.member.user.bot && newUser.channel.members.size === 1)	
+	if ((client.queue.get(oldUser.guild.id)) && (
+		(newUser.channel === null && newUser.member.user.bot) || // bot kicked
+		(oldUser.channel !== null && oldUser.guild.me.voice.channelId === oldUser.channelId && oldUser.channel.members.size === 1) || // users leave bot alone in a channel
+		(newUser.channel !== null && newUser.member.user.bot && newUser.channel.members.size === 1)	// bot is moved to a new empty channel
+		)
 	) {
 		const { getVoiceConnection } = require ('@discordjs/voice');
-		client.queue.delete(oldUser.guild.id);
+			client.queue.get(oldUser.guild.id).player.stop();
+			client.queue.delete(oldUser.guild.id);
 		if (getVoiceConnection(oldUser.guild.id)) return getVoiceConnection(oldUser.guild.id).destroy();
 	}
 };

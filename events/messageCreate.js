@@ -6,7 +6,7 @@ module.exports = async (client, msg) => {
     prefix = client.settings.get(msg.guild.id, "prefix");
     //mention bot
     if (msg.mentions.has(client.user) && !msg.content.includes("@here") && !msg.content.includes("@everyone")) {
-        msg.reply(`Hi ${msg.author}! My prefix is currently set to \`${prefix}\` Type \`${prefix}help\` for more info! :smiley:`);
+        msg.reply(`Hi ${msg.author}! My prefix is currently set to \`${client.settings.get(msg.guild.id, 'prefix')}\` Type \`${client.settings.get(msg.guild.id, 'prefix')}help\` for more info! :smiley:`);
         if(msg.member.permissions.has("ADMINISTRATOR")){ //if admin check for setup
             if (setupCheck(client, msg) === false) return msg.channel.send (":warning: Ops! It looks like you didn't complete the setup. Type .setup to create preset channels, roles, channel categories, etc...\nDon't worry you can later rename them.")
         }
