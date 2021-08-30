@@ -5,8 +5,6 @@ const package = require('../package.json');
 
 module.exports = (client) => {
     console1337();
-    //check if databases and their folders exist, if not create them
-    setupDatabases(client);
     //define pm2 metrics
     const io = require('@pm2/io');
     var guilds_pm2_metric = io.metric({name: 'Guilds'});
