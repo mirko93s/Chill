@@ -60,7 +60,7 @@ module.exports = {
             var url = arg[1] ? arg[1].replace(/<(.+)>/g, '$1') : '';
         }
 
-        if (msg.member.roles.cache.some(role => role.id === (client.settings.get(msg.guild.id, "djrole"))) && client.settings.get(msg.guild.id, 'djrequired') === 'true') return msg.channel.send({embeds:[noDJroleEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+        if (!msg.member.roles.cache.some(role => role.id === (client.settings.get(msg.guild.id, "djrole"))) && client.settings.get(msg.guild.id, 'djrequired') === 'true') return msg.channel.send({embeds:[noDJroleEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
         if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.id !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send({embeds:[mconlyEmbed]}).then(msg =>setTimeout(() => msg.delete(), 10e3));
         if (!url) return msg.channel.send({embeds:[nourlEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
         const voiceChannel = msg.member.voice.channel;
@@ -104,7 +104,8 @@ module.exports = {
         else {
             try {
                 const result = (await ytsr(searchString, { limit: 10 })).items.filter(a => a.type === 'video');
-                return play(result[0], msg, voiceChannel);
+                if (result.length < 1) throw 'no ytsr result';
+                else return play(result[0], msg, voiceChannel);
             } catch (err) {
                 console.error(err);
                 return msg.channel.send({embeds:[noresultEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
