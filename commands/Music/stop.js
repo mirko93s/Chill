@@ -25,21 +25,20 @@ module.exports = {
             .setTitle(":musical_note: Music")
             .setDescription(`Music Channel Only is active!\nYou can only use the music module in: <#${client.settings.get(msg.guild.id, "musictextchannel")}>`)
 
-        if (msg.member.roles.cache.some(role => role.id === (client.settings.get(msg.guild.id, "djrole")))) {
-            const serverQueue = client.queue.get(msg.guild.id);
-            if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.id !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send({embeds:[mconlyEmbed]}).then(msg =>setTimeout(() => msg.delete(), 10e3));
-            if (!msg.member.voice.channel) return msg.channel.send({embeds:[notinvcEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
-            if (serverQueue) serverQueue.songs = [];
-            if (getVoiceConnection(msg.guild.id)) {
-                getVoiceConnection(msg.guild.id).destroy();
+        if (msg.member.roles.cache.some(role => role.id === (client.settings.get(msg.guild.id, "djrole"))) && client.settings.get(msg.guild.id, 'djrequired') === 'true') return msg.channel.send({embeds:[noDJroleEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+        if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.id !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send({embeds:[mconlyEmbed]}).then(msg =>setTimeout(() => msg.delete(), 10e3));
+        if (!msg.member.voice.channel) return msg.channel.send({embeds:[notinvcEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+        if (getVoiceConnection(msg.guild.id)) {
+            client.queue.get(msg.guild.id).songs = [];
+            client.queue.get(msg.guild.id).player.stop();
+            // getVoiceConnection(msg.guild.id).destroy(); // handled in voicestateupdate
 
-                const stopEmbed = new Discord.MessageEmbed()
-                    .setColor('PURPLE')
-                    .setTitle(":musical_note: Music")
-                    .setDescription(`:stop_button: Stopped`)
+            const stopEmbed = new Discord.MessageEmbed()
+                .setColor('PURPLE')
+                .setTitle(":musical_note: Music")
+                .setDescription(`:stop_button: Stopped`)
 
-                return msg.channel.send({embeds:[stopEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
-            } else return msg.channel.send({embeds:[noplayingEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
-        } else return msg.channel.send({embeds:[noDJroleEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+            return msg.channel.send({embeds:[stopEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+        } else return msg.channel.send({embeds:[noplayingEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
     }
 }

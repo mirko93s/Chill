@@ -15,60 +15,55 @@ module.exports = {
 		let guildConf = client.settings.get(msg.guild.id);
 		
 		function channel(toFind) {
-			var text = msg.guild.channels.cache.find(ch => ch.id === toFind) ? toFind + " | " + msg.guild.channels.cache.get(toFind).name : "❌❌❌ NOT FOUND ❌❌❌";
+			var text = msg.guild.channels.cache.find(ch => ch.id === toFind) ? msg.guild.channels.cache.get(toFind).name : "❌❌❌ NOT FOUND ❌❌❌";
 			return text;
 		}
 		function role(toFind) {
-			var text = msg.guild.roles.cache.find(r => r.id === toFind) ? toFind + " | " + msg.guild.roles.cache.get(toFind).name : "❌❌❌ NOT FOUND ❌❌❌";
+			var text = msg.guild.roles.cache.find(r => r.id === toFind) ? msg.guild.roles.cache.get(toFind).name : "❌❌❌ NOT FOUND ❌❌❌";
 			return text;
 		}
 		
 		const channels = stripIndent`
-		welcomechannel    :: ${channel(guildConf.welcomechannel)}
-		bcchannel         :: ${channel(guildConf.bcchannel)}
-		puchannel         :: ${channel(guildConf.puchannel)}
-		reportchannel     :: ${channel(guildConf.reportchannel)}
-		gachannel         :: ${channel(guildConf.gachannel)}
-		pollchannel       :: ${channel(guildConf.pollchannel)}
-		musictextchannel  :: ${channel(guildConf.musictextchannel)}
-		musicvocalchannel :: ${channel(guildConf.musicvocalchannel)}
-		ticketcategory    :: ${channel(guildConf.ticketcategory)}
+		welcome     :: ${channel(guildConf.welcomechannel)}
+		broadcast   :: ${channel(guildConf.bcchannel)}
+		punishments :: ${channel(guildConf.puchannel)}
+		reports     :: ${channel(guildConf.reportchannel)}
+		giveaway    :: ${channel(guildConf.gachannel)}
+		poll        :: ${channel(guildConf.pollchannel)}
+		musictext   :: ${channel(guildConf.musictextchannel)}
+		musicvoice  :: ${channel(guildConf.musicvocalchannel)}
+		ticket      :: ${channel(guildConf.ticketcategory)}
 		`;		
 		const roles = stripIndent`
-		musictemprole :: ${role(guildConf.musictemprole)}
-		mutedrole     :: ${role(guildConf.mutedrole)}
-		djrole        :: ${role(guildConf.djrole)}
-		supportrole   :: ${role(guildConf.supportrole)}
-		roleonjoin    :: ${role(guildConf.roleonjoin)}
+		musictemp :: ${role(guildConf.musictemprole)}
+		muted     :: ${role(guildConf.mutedrole)}
+		dj        :: ${role(guildConf.djrole)}
+		support   :: ${role(guildConf.supportrole)}
+		onjoin    :: ${role(guildConf.roleonjoin)}
 		`;		
-		const other = stripIndent`
-		prefix           :: ${guildConf.prefix}
-		xpcooldown       :: ${guildConf.xpcooldown}
-		musicchannelonly :: ${guildConf.musicchannelonly}
-		autodeletecmds   :: ${guildConf.autodeletecmds}
-        `;
-		const modules = stripIndent`
-		xpmodule       :: ${guildConf.xpmodule}
-		welcomemessage :: ${guildConf.welcomemessage}
+		const toggles = stripIndent`
+		musictextonly  :: ${guildConf.musicchannelonly}
+		autodeletecmds :: ${guildConf.autodeletecmds}
+		xp             :: ${guildConf.xpmodule}
+		welcomemsg     :: ${guildConf.welcomemessage}
 		welcomerole    :: ${guildConf.welcomerole}
+		djrequired     :: ${guildConf.djrequired}
 		`;
+		const other = stripIndent`
+		prefix     :: ${guildConf.prefix}
+		xpcooldown :: ${guildConf.xpcooldown}
+        `;
 		
 		const settingsEmbed = new Discord.MessageEmbed()
 			.setColor('BLUE')
 			.setTitle("💾Guild Settings")
-			.addField('Channels', `\`\`\`asciidoc\n${channels}\`\`\``, false)
-			.addField('Roles', `\`\`\`asciidoc\n${roles}\`\`\``, false)
-			.addField('Other', `\`\`\`asciidoc\n${other}\`\`\``, true)
-			.addField('Modules',`\`\`\`asciidoc\n${modules}\`\`\``, true)
+			.addField('> Channels', `\`\`\`asciidoc\n${channels}\`\`\``, false)
+			.addField('> Roles', `\`\`\`asciidoc\n${roles}\`\`\``, false)
+			.addField('> Toggles',`\`\`\`asciidoc\n${toggles}\`\`\``, true)
+			.addField('> Other', `\`\`\`asciidoc\n${other}\`\`\``, true)
+					
+		if (channels.includes("❌❌❌ NOT FOUND ❌❌❌") || roles.includes("❌❌❌ NOT FOUND ❌❌❌")) settingsEmbed.addField('⚠️ ⚠️ ⚠️ WARNING ⚠️ ⚠️ ⚠️','One or more keys are missing in the settings and some features won\'t work, this probably happened because you deleted bot roles or channels\n**Do `.setup` to fix the missing keys, it will recreate missing roles and channels. \nOr use `.setconfig` to manually set the them.**',false);
 		
 		msg.channel.send({embeds:[settingsEmbed]}).then(msg =>setTimeout(() => msg.delete(), 60000));
-		
-		if (channels.includes("❌❌❌ NOT FOUND ❌❌❌") || roles.includes("❌❌❌ NOT FOUND ❌❌❌") || other.includes("❌❌❌ NOT FOUND ❌❌❌")){
-			const missingkeysEmbed = new Discord.MessageEmbed()
-				.setColor('RED')
-				.setTitle('⚠️⚠️⚠️ WARNING ⚠️⚠️⚠️')
-				.setDescription('One or more keys are missing in the settings and some features won\'t work, this probably happened because you deleted bot roles or channels\n**Do `.setup` to fix the missing keys, it will recreate missing roles and channels.**')
-			msg.channel.send({embeds:[missingkeysEmbed]}).then(msg =>setTimeout(() => msg.delete(), 30000));
-		}
     }
 }

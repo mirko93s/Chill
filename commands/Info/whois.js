@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const Discord = require("discord.js");
 const { stripIndents } = require("common-tags");
 const { formatDate } = require("../../functions.js");
 
@@ -13,22 +13,19 @@ module.exports = {
         let member = msg.mentions.members.first();
         if (!msg.mentions.members.size) member = msg.member;
 
-        const embed = new MessageEmbed()
+        const embed = new Discord.MessageEmbed()
             .setFooter(member.displayName, member.user.displayAvatarURL())
             .setThumbnail(member.user.displayAvatarURL())
             .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
-
             .addField('Guild information:',stripIndents`
             **> Display name:** ${member.displayName}
             **> Joined at:** ${formatDate(member.joinedAt)}
             **> Roles:** ${member.roles.cache.filter(r => r.id !== msg.guild.id).map(r => r).join(", ") || 'none'}`, true)
-
             .addField('Personal information:', stripIndents`
             **> ID:** ${member.user.id}
             **> Username:** ${member.user.username}
             **> Tag:** ${member.user.tag}
-            **> Created at:** ${formatDate(member.user.createdAt)}`, true)
-            
+            **> Created at:** ${formatDate(member.user.createdAt)}`, true)      
             .setTimestamp()
 
         if (member.presence.activities) {

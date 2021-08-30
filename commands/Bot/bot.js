@@ -4,7 +4,6 @@ const cpuStat = require("cpu-stat");
 const package = require('../../package.json');
 const ms = require("ms");
 const { stripIndent } = require('common-tags');
-const config = require('../../config.json');
 const { buttonLinks } = require('../../functions.js');
 
 module.exports = {

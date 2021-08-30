@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const { buttonLinks } = require("../../functions");
 
 module.exports = {
     name: "slotmachine",

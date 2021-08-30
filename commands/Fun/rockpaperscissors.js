@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const Discord = require("discord.js");
 const { promptMessage } = require("../../functions.js");
 
 const chooseArr = ["🗻", "📰", "✂"];
@@ -11,7 +11,7 @@ module.exports = {
     usage: "rockpaperscissors\n**e.g.**\n\`rockpaperscissors\`\n> Play a rock-paper-scissors game with the Bot",
     run: async (client, msg, arg) => {
 
-        const embed = new MessageEmbed()
+        const embed = new Discord.MessageEmbed()
             .setColor(`RANDOM`)
             .setFooter(msg.author.username, msg.author.displayAvatarURL())
             .setDescription("React to play!")

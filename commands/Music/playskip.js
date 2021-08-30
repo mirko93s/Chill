@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const {Util} = require("discord.js");
 const config = require('../../config.json');
 const ytdl = require('ytdl-core');
 const ytsr = require('ytsr');
@@ -56,73 +55,72 @@ module.exports = {
         let url = arg[1] ? arg[1].replace(/<(.+)>/g, '$1') : '';
         const serverQueue = client.queue.get(msg.guild.id);
 
-        if (msg.member.roles.cache.some(role => role.id === (client.settings.get(msg.guild.id, "djrole")))) {
-            if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.id !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send({embeds:[mconlyEmbed]}).then(msg =>setTimeout(() => msg.delete(), 10e3));
-            if (!serverQueue) return msg.channel.send({embeds:[noplayingEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
-            if (!url) return msg.channel.send({embeds:[nourlEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
-            const voiceChannel = msg.member.voice.channel;
-            if (!voiceChannel) return msg.channel.send({embeds:[novcEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
-            const permissions = voiceChannel.permissionsFor(msg.client.user);
-            if (!permissions.has('CONNECT')) return msg.channel.send({embeds:[noconnectpermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
-            if (!permissions.has('SPEAK')) return msg.channel.send({embeds:[nospeakpermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
-            //playlist url
-            if (url.match(/^.*(youtu.be\/|list=)([^#\&\?]*).*/gi)) {
-                if (ytpl.validateID(url)) { //checkl if url is a valid playlist
-                    const playlist = await ytpl(url, {page: 1})
-                    const videos = playlist.items;
-                    serverQueue.songs = serverQueue.songs.slice(-1); //clear queue except last song
-                    for (const video of Object.values(videos)) {
-                        const serverQueue2 = client.queue.get(msg.guild.id);
-                        if (serverQueue2 && serverQueue2.songs.length > config.music_queue_limit-1) {
-                            msg.channel.send({embeds:[playlistQueueLimit]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
-                            break;
-                        }
-                        play(video, msg, voiceChannel, true);
+        if (msg.member.roles.cache.some(role => role.id === (client.settings.get(msg.guild.id, "djrole"))) && client.settings.get(msg.guild.id, 'djrequired') === 'true') return msg.channel.send({embeds:[noDJroleEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+        if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.id !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send({embeds:[mconlyEmbed]}).then(msg =>setTimeout(() => msg.delete(), 10e3));
+        if (!serverQueue) return msg.channel.send({embeds:[noplayingEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+        if (!url) return msg.channel.send({embeds:[nourlEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+        const voiceChannel = msg.member.voice.channel;
+        if (!voiceChannel) return msg.channel.send({embeds:[novcEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+        const permissions = voiceChannel.permissionsFor(msg.client.user);
+        if (!permissions.has('CONNECT')) return msg.channel.send({embeds:[noconnectpermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+        if (!permissions.has('SPEAK')) return msg.channel.send({embeds:[nospeakpermEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+        //playlist url
+        if (url.match(/^.*(youtu.be\/|list=)([^#\&\?]*).*/gi)) {
+            if (ytpl.validateID(url)) { //checkl if url is a valid playlist
+                const playlist = await ytpl(url, {page: 1})
+                const videos = playlist.items;
+                serverQueue.songs = serverQueue.songs.slice(-1); //clear queue except last song
+                for (const video of Object.values(videos)) {
+                    const serverQueue2 = client.queue.get(msg.guild.id);
+                    if (serverQueue2 && serverQueue2.songs.length > config.music_queue_limit-1) {
+                        msg.channel.send({embeds:[playlistQueueLimit]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+                        break;
                     }
-                    return client.player.stop(); //skip to next/last song
-                } else return msg.channel.send({embeds:[noresultEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
-            }
-            //url
-            else if (url.match(/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/gi)) {
-                try {
-                    if (ytdl.validateURL(url)) {
-                        await ytdl.getBasicInfo(url).then(video => {
-                            var video = {
-                                id: video.player_response.videoDetails.videoId,
-                                title: video.player_response.videoDetails.title,
-                                url: url
-                            }
-                            serverQueue.songs = serverQueue.songs.slice(-1); //clear queue except last song
-                            play(video, msg, voiceChannel);
-                            return client.player.stop(); //skip to next/last song
-                        })
-                    }
-                } catch (err) {
-                    console.error(err);
-                    return msg.channel.send({embeds:[noresultEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
-                }       
-            }
-            //string
-            else {
-                try {
-                    const result = (await ytsr(searchString, { limit: 10 })).items.filter(a => a.type === 'video');
-                    serverQueue.songs = serverQueue.songs.slice(-1); //clear queue except last song
-                    play(result[0], msg, voiceChannel);
-                    return client.player.stop(); //skip to next/last song
-                } catch (err) {
-                    console.error(err);
-                    return msg.channel.send({embeds:[noresultEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+                    play(video, msg, true);
                 }
+                return client.queue.get(msg.guild.id).player.stop(); //skip to next/last song
+            } else return msg.channel.send({embeds:[noresultEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+        }
+        //url
+        else if (url.match(/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/gi)) {
+            try {
+                if (ytdl.validateURL(url)) {
+                    await ytdl.getBasicInfo(url).then(video => {
+                        var video = {
+                            id: video.player_response.videoDetails.videoId,
+                            title: video.player_response.videoDetails.title,
+                            url: url
+                        }
+                        serverQueue.songs = serverQueue.songs.slice(-1); //clear queue except last song
+                        play(video, msg);
+                        return client.queue.get(msg.guild.id).player.stop(); //skip to next/last song
+                    })
+                }
+            } catch (err) {
+                console.error(err);
+                return msg.channel.send({embeds:[noresultEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+            }       
+        }
+        //string
+        else {
+            try {
+                const result = (await ytsr(searchString, { limit: 10 })).items.filter(a => a.type === 'video');
+                serverQueue.songs = serverQueue.songs.slice(-1); //clear queue except last song
+                play(result[0], msg);
+                return client.queue.get(msg.guild.id).player.stop(); //skip to next/last song
+            } catch (err) {
+                console.error(err);
+                return msg.channel.send({embeds:[noresultEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
             }
-        } else return msg.channel.send({embeds:[noDJroleEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+        }
 
-        async function play(video, msg, voiceChannel, playlist = false) {
+        async function play(video, msg, playlist = false) {
             const serverQueue = client.queue.get(msg.guild.id);
             const song = {
-                id: video.id,
-                title: Util.escapeMarkdown(video.title),
-                url: `https://www.youtube.com/watch?v=${video.id}`,
-                duration: video.duration
+                id: video.id ? video.id : video.videoId,
+                title: Discord.Util.escapeMarkdown(video.title),
+                url: `https://www.youtube.com/watch?v=${video.id ? video.id : video.videoId}`,
+                duration: video.duration ? video.duration : new Date(video.lengthSeconds*1e3).toISOString().substr(11, 8).replace(/^[0:]+/, '')
             };
             serverQueue.songs.push(song);
             if (playlist) return undefined;

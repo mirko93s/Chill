@@ -25,21 +25,20 @@ module.exports = {
             .setDescription(`Music Channel Only is active!\nYou can only use the music module in: <#${client.settings.get(msg.guild.id, "musictextchannel")}>`)
 
         const serverQueue = client.queue.get(msg.guild.id);
-        if (msg.member.roles.cache.some(role => role.id === (client.settings.get(msg.guild.id, "djrole")))) {
-            if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.id !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send({embeds:[mconlyEmbed]}).then(msg =>setTimeout(() => msg.delete(), 10e3));
-            if (!msg.member.voice.channel) return msg.channel.send({embeds:[notinvcEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
-            if (serverQueue && serverQueue.playing) {
-                serverQueue.playing = false;
-                client.player.pause();
+        if (msg.member.roles.cache.some(role => role.id === (client.settings.get(msg.guild.id, "djrole"))) && client.settings.get(msg.guild.id, 'djrequired') === 'true') return msg.channel.send({embeds:[noDJroleEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+        if (client.settings.get(msg.guild.id, "musicchannelonly") === "true" && msg.channel.id !== client.settings.get(msg.guild.id, "musictextchannel")) return msg.channel.send({embeds:[mconlyEmbed]}).then(msg =>setTimeout(() => msg.delete(), 10e3));
+        if (!msg.member.voice.channel) return msg.channel.send({embeds:[notinvcEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+        if (serverQueue && serverQueue.playing) {
+            serverQueue.playing = false;
+            client.queue.get(msg.guild.id).player.pause();
 
-                const pauseEmbed = new Discord.MessageEmbed()
-                    .setColor('PURPLE')
-                    .setTitle(":musical_note: Music")
-                    .setDescription(`⏸ Paused`)
+            const pauseEmbed = new Discord.MessageEmbed()
+                .setColor('PURPLE')
+                .setTitle(":musical_note: Music")
+                .setDescription(`⏸ Paused`)
 
-                return msg.channel.send({embeds:[pauseEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
-            }
-            return msg.channel.send({embeds:[noplayingEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
-        } else return msg.channel.send({embeds:[noDJroleEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+            return msg.channel.send({embeds:[pauseEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
+        }
+        return msg.channel.send({embeds:[noplayingEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
     }
 }

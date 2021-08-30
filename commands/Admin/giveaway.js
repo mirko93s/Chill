@@ -62,8 +62,8 @@ module.exports = {
                                 .addField(`Prize: **${prize}**`, `Time Left: **${duration}**`)
                                 .setFooter("Created at:")
                                 .setTimestamp()
-                            gachannel.send({embeds:[startEmbed]}).then(m => {
-                                m.react('🎉');
+                            gachannel.send({embeds:[startEmbed]}).then(sent => {
+                                sent.react('🎉');
                                 //update time left
                                 let live = ms(duration);
                                 var livetest = setInterval (liveupdate, 30000);
@@ -77,7 +77,7 @@ module.exports = {
                                             .addField(`Prize: **${prize}**`, `Time Left: **${ms(live)}**`)
                                             .setFooter("Created at:")
                                             .setTimestamp()
-                                        m.edit({embeds:[liveEmbed]});
+                                        sent.edit({embeds:[liveEmbed]});
                                     } else {
                                         clearInterval(livetest);
                                         return;
@@ -85,7 +85,7 @@ module.exports = {
                                 }
                                 //set timeout
                                 setTimeout(() => {
-                                    m.reactions.cache.get("🎉").users.fetch().then(r => {
+                                    sent.reactions.cache.get("🎉").users.fetch().then(r => {
                                         let winner = r.filter(u => u.id !== client.user.id).random(1);
                                         let endEmbed = new Discord.MessageEmbed()
                                             .setColor(`RANDOM`)
@@ -93,7 +93,7 @@ module.exports = {
                                             .addField(`**Prize:** ${prize}`,`**Winner:** ${winner == 0 ? "*No Participants*" : winner}`)
                                             .setFooter("Ended at:")
                                             .setTimestamp()
-                                        m.edit({embeds:[endEmbed]});
+                                        sent.edit({embeds:[endEmbed]});
                                         if(winner == 0) return;
                                         gachannel.send(`**Congratulations ${winner}!\nYou won: \`${prize}\`**`)
                                     });

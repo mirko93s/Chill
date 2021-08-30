@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const { stripIndents } = require("common-tags");
 const { promptMessage } = require("../../functions.js");
 
 module.exports = {

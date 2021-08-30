@@ -1,7 +1,6 @@
 const Discord = require("discord.js");
 const fetch = require('node-fetch');
 const querystring = require('querystring');
-const types = ['top'];
 
 module.exports = {
     name: "urban",
@@ -21,7 +20,7 @@ module.exports = {
             const query = querystring.stringify({ term: arg.join(' ') });
             const body = await fetch(`https://api.urbandictionary.com/v0/define?${query}`).then(response => response.json());
             if (!body.list.length) return msg.channel.send({embeds:[noresultEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
-            const data = body.list[types === 'top' ? 0 : Math.floor(Math.random() * body.list.length)];
+            const data = body.list[Math.floor(Math.random() * body.list.length)];
             const embed = new Discord.MessageEmbed()
                 .setColor(0x32A8F0)
                 .setAuthor('Urban Dictionary', 'https://i.imgur.com/Fo0nRTe.png', 'https://www.urbandictionary.com/')

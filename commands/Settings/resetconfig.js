@@ -33,6 +33,7 @@ const defaultSettings = {
 	xpmodule: "true",
 	welcomemessage: "true",
 	welcomerole: "true",
+	djrequired: "true",
 	autovocalchannels: [],
 	autovocalcloned: [],
 	disabledcommands: []
