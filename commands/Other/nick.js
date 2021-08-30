@@ -20,7 +20,7 @@ module.exports = {
             .setTitle(`⛔ Please mention someone and provide a new nickname`)
         const hierarchyEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
-            .setTitle(`⛔ I can't change that member's nickname due to role hierarchy, I suppose`)
+            .setTitle(`⛔ I can't change that member's nickname due to role hierarchy`)
         const nomemberEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setTitle(`⛔ Couldn't find that member`)
@@ -30,7 +30,7 @@ module.exports = {
         if (!arg[0] || !arg[1]) return msg.channel.send({embeds:[noargsEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         const user = msg.mentions.members.first();
         if (!user) return msg.channel.send({embeds:[nomemberEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
-        if (user.roles.highest.position > msg.guild.me.roles.highest.position || user.id === msg.guild.ownerID) return msg.channel.send({embeds:[hierarchyEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+        if (user.roles.highest.position > msg.guild.me.roles.highest.position || user.id === msg.guild.ownerId) return msg.channel.send({embeds:[hierarchyEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         let newusername = arg.slice(1).join(' ')
         msg.guild.members.cache.get(user.user.id).setNickname(newusername);
         const embed = new Discord.MessageEmbed()
