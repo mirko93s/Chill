@@ -25,18 +25,18 @@ Type `.help` or `.help <command-name-or-alias>` in discord to get a detailed exp
 
 | Modules | Commands |
 | ------ | ------ |
-| Admin | addchannel, broadcast, giveaway, poll, serverstats, setup |
+| Admin | addchannel, broadcast, giveaway, poll, serverstats |
 | Autovocal | autovocal, autovocallock, autovocalinvite, autovocalkick |
 | Bot | bot, bug |
 | Commands | command, customcommand, customcommandremove, customcommandlist |
 | Fun | 8ball, achievement, connect4, flipcoin, rockpaperscissors, ship, slotmachine|
 | Info | avatar, help, serveremojis, serverinfo, whois |
-| Moderation | ban, kick, mute, purge, report, say, ticket, unmute |
+| Moderation | ban, clear, kick, mute, report, say, slowmode, ticket, unmute |
 | Music | play, skip, playskip, resume, stop, nowplaying, queue, summon, volume |
 | Other | calc, instagram, mcstat, nick, percentage, ping, remindme, today, urban, weather |
 | Owner | blast, botactivity, guilds |
 | Roles | addrole, removerole, roleinfo, rolelist |
-| Settings| resetconfig, setconfig, showconfig |
+| Settings| resetconfig, setconfig, setup, showconfig |
 | Xp | leaderboard, level, rewards, xp |
 
 ### Discord Rules Screening for communities
