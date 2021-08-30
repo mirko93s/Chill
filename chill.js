@@ -6,6 +6,7 @@ client.queue = new Map();
 client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
 client.categories = fs.readdirSync("./commands/");
+require('./functions.js').setupDatabases(client);
 //load commands
 ["command"].forEach(handler => {
   	require(`./handler/${handler}`)(client);
