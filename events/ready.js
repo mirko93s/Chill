@@ -19,8 +19,8 @@ module.exports = (client) => {
     client.guilds.cache.forEach(guild => {ensureGuildSettings(client, guild.id);});
     //set counters
     client.user.setActivity(`${users} user${users !== 1 ? 's' : ''}`, {type: 'WATCHING'});
-            // client.channels.cache.get(config.users_counter_channel).setName(`USERS: ${users}`);
-            // client.channels.cache.get(config.guilds_counter_channel).setName(`SERVERS: ${guilds}`);
+    client.channels.cache.get(config.users_counter_channel).setName(`USERS: ${users}`);
+    client.channels.cache.get(config.guilds_counter_channel).setName(`SERVERS: ${guilds}`);
     //set pm2 metrics
     guilds_pm2_metric.set(guilds);
     users_pm2_metric.set(users);
@@ -31,8 +31,8 @@ module.exports = (client) => {
         users = fancyNumber(users);
         guilds = client.guilds.cache.size;
         guilds = fancyNumber(guilds);
-                // client.channels.cache.get(config.users_counter_channel).setName(`USERS: ${users}`);
-                // client.channels.cache.get(config.guilds_counter_channel).setName(`SERVERS: ${guilds}`);
+        client.channels.cache.get(config.users_counter_channel).setName(`USERS: ${users}`);
+        client.channels.cache.get(config.guilds_counter_channel).setName(`SERVERS: ${guilds}`);
         guilds_pm2_metric.set(guilds);
         users_pm2_metric.set(users);
         await client.user.setActivity(`${users} user${users !== 1 ? 's' : ''}`, {type: 'WATCHING'});
