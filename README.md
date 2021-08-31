@@ -21,25 +21,8 @@
 [Wiki](https://github.com/mirko93s/Chill/wiki) (w.i.p)
 
 ## Modules
-Type `.help` or `.help <command-name-or-alias>` in discord to get a detailed explanation of each command.
 
-| Modules | Commands |
-| ------ | ------ |
-| Admin | addchannel, broadcast, giveaway, poll, serverstats |
-| Autovocal | autovocal, autovocallock, autovocalinvite, autovocalkick |
-| Bot | bot, bug |
-| Commands | command, customcommand, customcommandremove, customcommandlist |
-| Fun | 8ball, achievement, connect4, flipcoin, rockpaperscissors, ship, slotmachine|
-| Info | avatar, help, serveremojis, serverinfo, whois |
-| Moderation | ban, clear, kick, mute, report, say, slowmode, ticket, unmute |
-| Music | play, skip, playskip, resume, stop, nowplaying, queue, summon, volume |
-| Other | calc, instagram, mcstat, nick, percentage, ping, remindme, today, urban, weather |
-| Owner | blast, botactivity, guilds |
-| Roles | addrole, removerole, roleinfo, rolelist |
-| Settings| resetconfig, setconfig, setup, showconfig |
-| Xp | leaderboard, level, rewards, xp |
+![Help](https://i.imgur.com/0XPUQBq.png)
 
 ### Discord Rules Screening for communities
 Until the release of discordjs v13 there is no way to check if users accepted the rules, my bot will automatically give a role on join and this will skip your rules screening feature, to avoid this please disable the role on join feature by doing `.setconfing welcomerole false`
-
-[//]: # (Hidden stuff)
