@@ -20,7 +20,7 @@
 
 [Wiki](https://github.com/mirko93s/Chill/wiki) (w.i.p)
 
-## Modules
+## Commands
 
 ![Help](https://i.imgur.com/0XPUQBq.png)
 
