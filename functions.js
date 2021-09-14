@@ -311,9 +311,9 @@ module.exports = {
         return msg.channel.send({embeds:[embed],components:[links]});
     },
 
-    guildLogWebhook: function (client, guild, join) {
+    guildLogWebhook: async function (client, guild, join) {
         const webhook = new Discord.WebhookClient({url: config.guild_log_webhook_link})
-        webhook.edit({name:guild.name,avatar:guild.iconURL()},'Update name and icon');
+        await webhook.edit({name:guild.name,avatar:guild.iconURL()},'Update name and icon');
         const webhookEmbed = new Discord.MessageEmbed()
             .setColor(join === true ? 'GREEN' : 'RED')
             .setTitle(`\`${client.guilds.cache.size}\` ・ ${join === true ? 'Joined' : 'Left'}`)
