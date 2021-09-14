@@ -18,8 +18,8 @@ module.exports = {
 		
 		client.settings.ensure(msg.guild.id, {level: 0, points: 0}, `xp.${msg.author.id}`);
 
-		let points = client.settings.get(msg.guild.id, `xp.${msg.author.id}.points`);
-		let level = client.settings.get(msg.guild.id, `xp.${msg.author.id}.level`);
+		const points = client.settings.get(msg.guild.id, `xp.${msg.author.id}.points`);
+		const level = client.settings.get(msg.guild.id, `xp.${msg.author.id}.level`);
 
 		//xp needed for a certain level = l^2/k^2 = (level^2)/(0.3163^2)
 		const xptolevelup = (Math.round(math.evaluate(`((${level}+1)^2)/(0.3163^2)`)) - Math.round(math.evaluate(`(${level}^2)/(0.3163^2)`))) - (points - Math.round(math.evaluate(`(${level}^2)/(0.3163^2)`)));
@@ -30,7 +30,31 @@ module.exports = {
 			.setAuthor(`${msg.author.username}`, msg.author.avatarURL())
 			.addField(`Level`,`**${level}**`,true)
 			.addField(`Experience`,`**${fancyNumber(points)}**`,true)
+			.addField('Rank',`**${await getRank(client, msg)}**`,true)
 			.addField(`${bar} **${levelprogress}%**`,`*${xptolevelup} to level up*`,false)
 		msg.channel.send({embeds:[levelembed]});
     }
+}
+
+async function getRank(client, msg) {
+	var i = 1 ;
+	var users = client.settings.get(msg.guild.id,"xp"); //get object
+	var sorted = {};  
+	Object //sort object
+		.keys(users).sort(function(a, b){
+			return users[b].points - users[a].points;
+		})
+		.forEach(function(key) {
+			sorted[key] = users[key];
+		});
+
+	sorted = Object.keys(sorted).map((key) => [key, sorted[key]]);
+
+	for (const [user,data] of sorted) {
+		if(user===msg.author.id) {
+			return i;
+		}
+		i++;
+	}
+	return 'N/A';
 }

@@ -30,11 +30,10 @@ module.exports = {
 		var emoji = ["🥇","🥈","🥉","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣","🔟"];
 		var pos4to10 = "";
 		for(const [user,data] of top10) {
-			data.points = fancyNumber(data.points);
-			if (emojiposition === 0) embed.setTitle(`${emoji[emojiposition]}**${client.users.cache.get(user).username}**\n> **Lvl ${data.level}** - ${data.points} xp`, true);
-			else if (emojiposition === 1 || emojiposition === 2) embed.addField(`${emoji[emojiposition]}**${client.users.cache.get(user).username}**`, `> **Lvl ${data.level}** - ${data.points} xp`, true);
-			else if (emojiposition === 3) pos4to10 = `${emoji[emojiposition]}${client.users.cache.get(user).username}\n\tLvl ${data.level} - ${data.points} xp`;
-			else pos4to10 += `\n${emoji[emojiposition]}${client.users.cache.get(user).username}\n\tLvl ${data.level} - ${data.points} xp`;
+			if (emojiposition === 0) embed.setTitle(`${emoji[emojiposition]}**${client.users.cache.get(user).username}**\n> **Lvl ${data.level}** - ${fancyNumber(data.points)} xp`, true);
+			else if (emojiposition === 1 || emojiposition === 2) embed.addField(`${emoji[emojiposition]}**${client.users.cache.get(user).username}**`, `> **Lvl ${data.level}** - ${fancyNumber(data.points)} xp`, true);
+			else if (emojiposition === 3) pos4to10 = `${emoji[emojiposition]}${client.users.cache.get(user).username}\n\tLvl ${data.level} - ${fancyNumber(data.points)} xp`;
+			else pos4to10 += `\n${emoji[emojiposition]}${client.users.cache.get(user).username}\n\tLvl ${data.level} - ${fancyNumber(data.points)} xp`;
 			emojiposition++;
 		}
 		if (pos4to10.length > 1) embed.setFooter(pos4to10);

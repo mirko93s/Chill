@@ -12,10 +12,11 @@ module.exports = {
             .setColor(`RED`)
             .setTitle(`⛔ Server has no emojis`)
 
-        const emoji = msg.guild.emojis;
-        if (!emoji.size) return msg.channel.send({embeds:[noemojiEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
+        const emojis = await msg.guild.emojis.cache.map((e) => `${e}`).join('').toString();
+        console.log(emojis);
+        if (emojis.length < 1) return msg.channel.send({embeds:[noemojiEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         const embed = new Discord.MessageEmbed()
-            .addField("Server Emojis", emoji.map((e) => e).join(' '))
+            .setDescription(`Server Emojis:\n${emojis}`)
         msg.channel.send({embeds:{embed}});
     }
 }

@@ -44,7 +44,7 @@ module.exports = {
                 .setAuthor(client.user.username)
                 .setColor(`RANDOM`)
                 .setThumbnail(client.user.avatarURL())
-                .addField('Bot Created', `\`\`\`${client.user.createdAt.toLocaleString()}\`\`\``, false)//
+                .addField('Bot Created', `\`\`\`${client.user.createdAt.toLocaleString()}\`\`\``, false)
                 .addField('Counters', `\`\`\`asciidoc\n${counters}\`\`\``, true)
                 .addField('Versions', `\`\`\`asciidoc\n${versions}\`\`\``, true)
                 .addField('System', `\`\`\`asciidoc\n${system}\`\`\``, false)

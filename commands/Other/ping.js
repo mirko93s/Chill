@@ -15,7 +15,7 @@ module.exports = {
             const pingEmbed = new Discord.MessageEmbed()
                 .setColor(`RANDOM`)
                 .setTitle(`📶 ${sent.createdTimestamp - msg.createdTimestamp} ms`)
-                //client.ws.ping for API latency
+                .setDescription(`\`API: ${client.ws.ping} ms\``)
     
             sent.edit({embeds:[pingEmbed]});
         })

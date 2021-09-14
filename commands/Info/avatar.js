@@ -12,9 +12,9 @@ module.exports = {
 
         const avatarEmbed = new Discord.MessageEmbed()
             .setColor(`RANDOM`)
-            .setTitle(`Avatar`)
-            .setDescription(user.username)
-            .setImage(user.displayAvatarURL())
+            .setTitle(`${user.username}'s avatar`)
+            .setImage(user.displayAvatarURL({size: 4096, dynamic: true}))
+            .setURL(user.displayAvatarURL({size: 4096, dynamic: true}))
         msg.channel.send({embeds:[avatarEmbed]});
     }
 }

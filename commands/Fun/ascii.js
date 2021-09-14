@@ -16,7 +16,7 @@ module.exports = {
         if(!string || string.length > 50) return msg.channel.send({embeds:[argErrEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5e3));
 
         figlet.text(string, {
-            font: 'standard',
+            font: 'Standard',
             horizontalLayout: 'default',
             verticalLayout: 'default',
             width: 120,
