@@ -19,8 +19,8 @@ module.exports = (client) => {
     client.guilds.cache.forEach(guild => {ensureGuildSettings(client, guild.id);});
     //set counters
     client.user.setActivity(`${users} user${users !== 1 ? 's' : ''}`, {type: 'WATCHING'});
-    client.channels.cache.get(config.users_counter_channel).setName(`USERS: ${users}`);
-    client.channels.cache.get(config.guilds_counter_channel).setName(`SERVERS: ${guilds}`);
+            // client.channels.cache.get(config.users_counter_channel).setName(`USERS: ${users}`);
+            // client.channels.cache.get(config.guilds_counter_channel).setName(`SERVERS: ${guilds}`);
     //set pm2 metrics
     guilds_pm2_metric.set(guilds);
     users_pm2_metric.set(users);
@@ -31,8 +31,8 @@ module.exports = (client) => {
         users = fancyNumber(users);
         guilds = client.guilds.cache.size;
         guilds = fancyNumber(guilds);
-        client.channels.cache.get(config.users_counter_channel).setName(`USERS: ${users}`);
-        client.channels.cache.get(config.guilds_counter_channel).setName(`SERVERS: ${guilds}`);
+                // client.channels.cache.get(config.users_counter_channel).setName(`USERS: ${users}`);
+                // client.channels.cache.get(config.guilds_counter_channel).setName(`SERVERS: ${guilds}`);
         guilds_pm2_metric.set(guilds);
         users_pm2_metric.set(users);
         await client.user.setActivity(`${users} user${users !== 1 ? 's' : ''}`, {type: 'WATCHING'});
@@ -55,12 +55,12 @@ function console1337 () {
     setTimeout(() => {console.log(`\x1b[33m\x1b[5m▐░█▀▀▀▀▀▀▀▀▀ ▐░▌       ▐░▌ ▀▀▀▀█░█▀▀▀▀ ▐░▌          ▐░▌   \x1b[0m                                         `);}, 3e2);
     setTimeout(() => {console.log(`\x1b[33m\x1b[5m▐░▌          ▐░▌       ▐░▌     ▐░▌     ▐░▌          ▐░▌   \x1b[0m                                         `);}, 4e2);
     setTimeout(() => {console.log(`\x1b[33m\x1b[5m▐░▌          ▐░█▄▄▄▄▄▄▄█░▌     ▐░▌     ▐░▌          ▐░▌   \x1b[0m                                         `);}, 5e2);
-    setTimeout(() => {console.log(`\x1b[33m\x1b[5m▐░▌          ▐░░░░░░░░░░░▌     ▐░▌     ▐░▌          ▐░▌            \x1b[0m\x1b[35m     ██╗ ██████╗     ██╗\x1b[0m`);}, 6e2);
-    setTimeout(() => {console.log(`\x1b[33m\x1b[5m▐░▌          ▐░█▀▀▀▀▀▀▀█░▌     ▐░▌     ▐░▌          ▐░▌            \x1b[0m\x1b[35m    ███║██╔═████╗   ███║\x1b[0m`);}, 7e2);
-    setTimeout(() => {console.log(`\x1b[33m\x1b[5m▐░▌          ▐░▌       ▐░▌     ▐░▌     ▐░▌          ▐░▌            \x1b[0m\x1b[35m    ╚██║██║██╔██║   ╚██║\x1b[0m`);}, 8e2);
-    setTimeout(() => {console.log(`\x1b[33m\x1b[5m▐░█▄▄▄▄▄▄▄▄▄ ▐░▌       ▐░▌ ▄▄▄▄█░█▄▄▄▄ ▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄▄▄   \x1b[0m\x1b[35m     ██║████╔╝██║    ██║\x1b[0m`);}, 9e2);
-    setTimeout(() => {console.log(`\x1b[33m\x1b[5m▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌  \x1b[0m\x1b[35m     ██║╚██████╔╝██╗ ██║\x1b[0m`);}, 10e2);
-    setTimeout(() => {console.log(`\x1b[33m\x1b[5m ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀   \x1b[0m\x1b[35m     ╚═╝ ╚═════╝ ╚═╝ ╚═╝\x1b[0m`);}, 11e2);
+    setTimeout(() => {console.log(`\x1b[33m\x1b[5m▐░▌          ▐░░░░░░░░░░░▌     ▐░▌     ▐░▌          ▐░▌            \x1b[0m\x1b[35m     ██╗ ██████╗    ██████╗ \x1b[0m`);}, 6e2);
+    setTimeout(() => {console.log(`\x1b[33m\x1b[5m▐░▌          ▐░█▀▀▀▀▀▀▀█░▌     ▐░▌     ▐░▌          ▐░▌            \x1b[0m\x1b[35m    ███║██╔═████╗   ╚════██╗\x1b[0m`);}, 7e2);
+    setTimeout(() => {console.log(`\x1b[33m\x1b[5m▐░▌          ▐░▌       ▐░▌     ▐░▌     ▐░▌          ▐░▌            \x1b[0m\x1b[35m    ╚██║██║██╔██║    █████╔╝\x1b[0m`);}, 8e2);
+    setTimeout(() => {console.log(`\x1b[33m\x1b[5m▐░█▄▄▄▄▄▄▄▄▄ ▐░▌       ▐░▌ ▄▄▄▄█░█▄▄▄▄ ▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄▄▄   \x1b[0m\x1b[35m     ██║████╔╝██║   ██╔═══╝ \x1b[0m`);}, 9e2);
+    setTimeout(() => {console.log(`\x1b[33m\x1b[5m▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌  \x1b[0m\x1b[35m     ██║╚██████╔╝██╗███████╗\x1b[0m`);}, 10e2);
+    setTimeout(() => {console.log(`\x1b[33m\x1b[5m ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀   \x1b[0m\x1b[35m     ╚═╝ ╚═════╝ ╚═╝╚══════╝\x1b[0m`);}, 11e2);
     setTimeout(() => {console.log(`\x1b[32m┬─┐┌─┐┌─┐┌┬┐┬ ┬\x1b[0m`);}, 12e2);
     setTimeout(() => {console.log(`\x1b[32m├┬┘├┤ ├─┤ ││└┬┘\x1b[0m`);}, 13e2);
     setTimeout(() => {console.log(`\x1b[32m┴└─└─┘┴ ┴─┴┘ ┴ \x1b[0m\n`);}, 14e2);

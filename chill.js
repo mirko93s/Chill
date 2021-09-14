@@ -1,6 +1,18 @@
 const Discord = require("discord.js");
 const fs = require("fs");
-const client = new Discord.Client({ intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_VOICE_STATES', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'DIRECT_MESSAGES', 'GUILD_PRESENCES', 'GUILD_INVITES'] });
+const client = new Discord.Client({ intents: [
+	'GUILDS',
+	'GUILD_MEMBERS',
+	'GUILD_BANS',
+	'GUILD_EMOJIS_AND_STICKERS',
+	'GUILD_VOICE_STATES',
+	'GUILD_PRESENCES',
+	'GUILD_MESSAGES',
+	'GUILD_MESSAGE_REACTIONS',
+	'DIRECT_MESSAGES',
+	'GUILD_WEBHOOKS'
+	]
+});
 client.serverstatscooldown = new Set();
 client.queue = new Map();
 client.commands = new Discord.Collection();

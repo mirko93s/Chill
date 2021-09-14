@@ -33,7 +33,7 @@ module.exports = {
         for (const reaction of validReactions) await msg.react(reaction); //add reactions in order
         const filter = (reaction, user) => validReactions.includes(reaction.emoji.name) && user.id === author.id;
         return msg
-            .awaitReactions({filter,  max: 1, time: time})
+            .awaitReactions({filter, max: 1, time: time})
             .then(collected => collected.first() && collected.first().emoji.name);
     },
 
@@ -116,7 +116,7 @@ module.exports = {
         });
     },
 
-    welcomeMessage: function(member, guild) {
+    welcomeMessage: function(member, guild, join = true) {
         let count = guild.memberCount.toString();
         if (count.endsWith("1") === true) count += "st";
             else if (count.endsWith("2") === true) count += "nd";
@@ -126,7 +126,7 @@ module.exports = {
             `${member.user} has joined.`,
             `${member.user} joined ${guild.name}.`,
             `Welcome, ${member.user}.`,
-            `${member.user} is our 1,000,000th visitor. React for a free IPhone.`,
+            `${member.user} is our 1,000,000th visitor. React for a free iPhone.`,
             `Let's all give a warm welcome to ${member.user}.`,
             `Wild ${member.user} appeared!`,
             `👋 ${member.user} 👋`,
@@ -136,8 +136,9 @@ module.exports = {
             `●●●${member.user} is typing...`
         ];
         const welcomeEmbed = new Discord.MessageEmbed()
-            .setColor('GREEN')
-            .setDescription(message[Math.floor(Math.random() * message.length)])
+            .setAuthor(member.user.tag,member.user.displayAvatarURL())
+        if (join === true) welcomeEmbed.setColor('GREEN').setDescription(message[Math.floor(Math.random() * message.length)]);
+        else if (join === false) welcomeEmbed.setColor('RED').setDescription(`${member.user} left the game.`);
             
         return welcomeEmbed;
     },
@@ -216,13 +217,23 @@ module.exports = {
         if (!fs.existsSync(dir_databases)) fs.mkdirSync(dir_databases);
         var dir_guild_settings = './databases/guild_settings';
         if (!fs.existsSync(dir_guild_settings)) fs.mkdirSync(dir_guild_settings);
-        //create enmaps
+        var dir_command_stats = './databases/command_stats';
+        if(!fs.existsSync(dir_command_stats)) fs.mkdirSync(dir_command_stats);
+        // guild settings enmap
         client.settings = new Enmap({
             name: "settings",
             fetchAll: true,
             autoFetch: true,
             cloneLevel: 'deep',
             dataDir: './databases/guild_settings'
+        });
+        // command stats enmap
+        client.cmdstats = new Enmap({
+            name: "cmdstats",
+            fetchAll: true,
+            autoFetch: true,
+            cloneLevel: 'deep',
+            dataDir: './databases/command_stats'
         });
     },
 
@@ -264,7 +275,7 @@ module.exports = {
             const fancyNumber = require('./functions').fancyNumber;
             memberCount = fancyNumber(memberCount);
 			usercounterchannel.setName(`📊Users: ${memberCount}`);
-			client.serverstatscooldown.add(member.guild.id); //xp cooldown
+			client.serverstatscooldown.add(member.guild.id); // cooldown
             setTimeout(() => {
                 client.serverstatscooldown.delete(member.guild.id);
             }, 15*60*1000);
@@ -298,5 +309,14 @@ module.exports = {
                     // .setEmoji('🔗'),
             );
         return msg.channel.send({embeds:[embed],components:[links]});
+    },
+
+    guildLogWebhook: function (client, guild, join) {
+        const webhook = new Discord.WebhookClient({url: config.guild_log_webhook_link})
+        webhook.edit({name:guild.name,avatar:guild.iconURL()},'Update name and icon');
+        const webhookEmbed = new Discord.MessageEmbed()
+            .setColor(join === true ? 'GREEN' : 'RED')
+            .setTitle(`\`${client.guilds.cache.size}\` ・ ${join === true ? 'Joined' : 'Left'}`)
+        webhook.send({embeds:[webhookEmbed]});
     }
 };

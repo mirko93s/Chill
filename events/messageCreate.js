@@ -32,6 +32,7 @@ module.exports = async (client, msg) => {
     let commandh = client.commands.get(cmd);
     if (!commandh) commandh = client.commands.get(client.aliases.get(cmd));
     if (commandh) {
+        client.cmdstats.inc('usage',commandh.name);
         if (client.settings.includes(msg.guild.id, commandh.name, "disabledcommands")) return msg.channel.send({content: `\`${commandh.name}\` is disabled on this server!`}).then(msg =>setTimeout(() => msg.delete(), 5000)); //check if command is disabled on the guild
         if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
         commandh.run(client, msg, arg);

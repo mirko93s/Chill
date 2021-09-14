@@ -1,4 +1,4 @@
-const { dmOwnerOnJoin, setupGuildOnJoin, ensureGuildSettings, fancyNumber } = require("../functions.js");
+const { dmOwnerOnJoin, setupGuildOnJoin, ensureGuildSettings, fancyNumber, guildLogWebhook } = require("../functions.js");
 
 module.exports = (client, guild) => {
     //add guild to db and set default values
@@ -11,4 +11,6 @@ module.exports = (client, guild) => {
     client.user.setActivity(`${users} user${users !== 1 ? 's' : ''}`, {type: 'WATCHING'});
     //msg guild owner with setup info
     dmOwnerOnJoin(client, guild);
-};
+    //webhook-log
+    guildLogWebhook(client, guild, true);
+}

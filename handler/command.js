@@ -20,6 +20,7 @@ module.exports = (client) => {
             let pull = require(`../commands/${dir}/${file}`);
             if (pull.name) {
                 client.commands.set(pull.name, pull);
+                client.cmdstats.ensure('usage', 0, pull.name);
                 b1.increment();
             }
             if (pull.aliases && Array.isArray(pull.aliases)) pull.aliases.forEach(alias => client.aliases.set(alias, pull.name));
