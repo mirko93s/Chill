@@ -1,14 +1,15 @@
 {
-	"token": "paste_bot_token_here",
-	"bot_owner": "paste_your_discord_account_id_here",
-	"users_counter_channel": "paste_channel_id_for_users_counter_here",
-	"guilds_counter_channel": "paste_channel_id_for_guilds_counter_here",
-	"bugreport_channel": "paste_channel_id_for_bug_reports_here",
-	"bot_invite_link": "paste_bot_invite_link_here",
-	"bot_project_link": "paste_bot_github/project_link_here",
-	"bot_website_link": "paste_bot/your_website_link_here",
-	"bot_vote_link": "paste_bot_top.gg_vote_link",
-	"mc_default_ip": "paste_default/your_mc_server_ip_here",
+	"token": "bot secret token",
+	"bot_owner": "your discord account id here",
+	"users_counter_channel": "channel id used for users counter",
+	"guilds_counter_channel": "channel id used for guilds counter",
+	"bugreport_channel": "channel id for bug reports",
+	"bot_invite_link": "bot's invite link",
+	"bot_project_link": "project/github link",
+	"bot_website_link": "your website link",
+	"bot_vote_link": "top.gg or any other voting website link",
+	"mc_default_ip": "default mcstat ip",
 	"music_queue_limit": 10,
-	"rewards_limit": 15"don't set it above 25 and delete this message including quotes"
+	"rewards_limit": 15, (must be a number between 1 and 25, delete this message including brackets)
+  	"guild_log_webhook_link": "create a webhook in a channel and psate the link here"
   }
