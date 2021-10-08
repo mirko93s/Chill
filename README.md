@@ -14,7 +14,7 @@
 [<img src="https://i.imgur.com/OJpg8dD.png">](https://discord.com/api/oauth2/authorize?client_id=605894942275141672&permissions=8&scope=bot&response_type=code&redirect_uri=https%3A%2F%2Fdiscord.com%2Finvite%2F2ktWcAb)
 [<img src="https://i.imgur.com/xN1Y074.png">](https://github.com/mirko93s/Chill/releases)
 
-### Join the Support server to try the bot or ask for help.  
+### Join the Support server to try the bot or if you need help.  
 
 [Installation guide](https://github.com/mirko93s/Chill/wiki/Installation)
 
