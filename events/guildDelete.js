@@ -1,9 +1,7 @@
-const { guildLogWebhook } = require("../functions.js");
-
 module.exports = (client, guild) => {
     if (guild.available === true) {
         console.log(`- Guild: ${guild.name}`);
-        guildLogWebhook(client, guild, false);
+        client.chill.guildLogWebhook(client, guild, false);
     }
     //remove guild from settings db
     if (client.settings.has(guild.id)) client.settings.delete(guild.id);

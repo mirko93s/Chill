@@ -1,5 +1,4 @@
 const talkedRecently = new Set();
-const { xpAdd, setupCheck, checkCustomCommand } = require("../functions.js");
 
 module.exports = async (client, msg) => {
     if (!msg.guild || msg.author.bot) return;
@@ -8,12 +7,12 @@ module.exports = async (client, msg) => {
     if (msg.mentions.has(client.user) && !msg.content.includes("@here") && !msg.content.includes("@everyone")) {
         msg.reply(`Hi ${msg.author}! My prefix is currently set to \`${client.settings.get(msg.guild.id, 'prefix')}\` Type \`${client.settings.get(msg.guild.id, 'prefix')}help\` for more info! :smiley:`);
         if(msg.member.permissions.has("ADMINISTRATOR")){ //if admin check for setup
-            if (setupCheck(client, msg) === false) return msg.channel.send (":warning: Ops! It looks like you didn't complete the setup. Type .setup to create preset channels, roles, channel categories, etc...\nDon't worry you can later rename them.")
+            if (client.chill.setupCheck(client, msg) === false) return msg.channel.send (":warning: Ops! It looks like you didn't complete the setup. Type .setup to create preset channels, roles, channel categories, etc...\nDon't worry you can later rename them.")
         }
     }
     //xp
     if (client.settings.get(msg.guild.id, "xpmodule") === "true" && msg.guild && !msg.content.startsWith(prefix) && !talkedRecently.has(msg.author.id) && msg.channel.id !== client.settings.get(msg.guild.id, "musictextchannel")) {
-        xpAdd(client, msg, talkedRecently);
+        client.chill.xpAdd(client, msg, talkedRecently);
     }
     //old main
     if (!msg.content.startsWith(prefix) && msg.channel.id !== client.settings.get(msg.guild.id, "musictextchannel")) return;
@@ -38,6 +37,6 @@ module.exports = async (client, msg) => {
         commandh.run(client, msg, arg);
     }
     else { //custom command loader
-        checkCustomCommand(client, msg, cmd);
+        client.chill.checkCustomCommand(client, msg, cmd);
     }
 };

@@ -16,9 +16,8 @@ module.exports = (client, oldUser, newUser) => {
 	}
 	//autovocal clone channel
 	if (newUser.channel !== null && client.settings.includes(newUser.guild.id, newUser.channel.id, "autovocalchannels")) {
-			newUser.channel.clone().then(newchannel =>{
+			newUser.channel.clone({name : `${newUser.channel.name} - ${newUser.member.user.username}`}).then(newchannel =>{
 				client.settings.push(newUser.guild.id, newchannel.id, "autovocalcloned");
-				newchannel.setName(`${newchannel.name} - ${newUser.member.user.username}`);
 				newUser.member.voice.setChannel(newchannel);
 			})
 	}
