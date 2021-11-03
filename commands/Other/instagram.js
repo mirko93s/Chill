@@ -1,7 +1,6 @@
 const Discord = require("discord.js");
 const { stripIndents } = require("common-tags");
 const fetch = require("node-fetch");
-const { fancyNumber } = require("../../functions.js");
 
 module.exports = {
     name: "instagram",
@@ -36,9 +35,9 @@ module.exports = {
             .addField("Profile information", stripIndents`
             **Full name:** ${account.full_name}
             **Biography:** ${account.biography.length == 0 ? "none" : `*${account.biography}*`}
-            **Posts:** ${fancyNumber(account.edge_owner_to_timeline_media.count)}
-            **Followers:** ${fancyNumber(account.edge_followed_by.count)}
-            **Following:** ${fancyNumber(account.edge_follow.count)}
+            **Posts:** ${client.chill.fancyNumber(account.edge_owner_to_timeline_media.count)}
+            **Followers:** ${client.chill.fancyNumber(account.edge_followed_by.count)}
+            **Following:** ${client.chill.fancyNumber(account.edge_follow.count)}
             **Private account:** ${account.is_private ? "Yes 🔐" : "Nope 🔓"}`);
         if (account.category_name !== null) profileEmbed.setDescription(account.category_name)
 

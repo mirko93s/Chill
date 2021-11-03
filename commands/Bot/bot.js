@@ -4,7 +4,6 @@ const cpuStat = require("cpu-stat");
 const package = require('../../package.json');
 const ms = require("ms");
 const { stripIndent } = require('common-tags');
-const { buttonLinks } = require('../../functions.js');
 
 module.exports = {
     name: "bot",
@@ -51,7 +50,7 @@ module.exports = {
                 .setTimestamp()
                 .setFooter(client.user.username, client.user.avatarURL());
             
-            buttonLinks(msg, embed);
+            client.chill.buttonLinks(msg, embed);
         })
     }
 }

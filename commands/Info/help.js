@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const { buttonLinks } = require('../../functions.js');
 
 module.exports = {
     name: "help",
@@ -23,7 +22,7 @@ function getAll(client, msg) {
         .setDescription(`Type ${client.settings.get(msg.guild.id,'prefix')}help <command | alias> for more info.`)
         .setColor(0x00AE86)
         .setThumbnail(client.user.displayAvatarURL())
-        /* Admin */.addField("🚫 Admin", "`addchannel` `broadcast` `giveaway` `poll` `serverstats`", true)
+        /* Admin */.addField("🚫 Admin", "`addchannel` `broadcast` `giveaway` `poll` `reactionroles` `serverstats`", true)
         /* Auto-Vocal*/.addField("🔊 Auto-Vocal", "`autovocal` `autovocallock` `autovocalinvite` `autovocalkick`", true)
         /* Bot */.addField("🤖 Bot", "`bot` `bug`", true)
         /* Commands */.addField("🛃 Commands", "`command` `customcommand` `customcommandremove` `customcommandlist`", true)
@@ -39,7 +38,7 @@ function getAll(client, msg) {
         /* blank-field-to-keep-column-width-reserved-for-future-categories */.addField('\u200b', '\u200b', true)
         /* blank-field-to-keep-column-width-reserved-for-future-categories */.addField('\u200b', '\u200b', true)
 
-    return buttonLinks(msg, helpembed);
+    return client.chill.buttonLinks(msg, helpembed);
 }
 
 function getCMD(client, msg, input) {

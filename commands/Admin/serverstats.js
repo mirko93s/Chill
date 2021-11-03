@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const { fancyNumber } = require("../../functions.js");
 
 module.exports = {
     name: "serverstats",
@@ -27,7 +26,7 @@ module.exports = {
             return msg.channel.send({embeds:[disabledEmbed]}).then(msg =>setTimeout(() => msg.delete(), 5000));
         } else {
             var memberCount = msg.guild.members.cache.filter(member => !member.user.bot).size; //filtering bots
-            memberCount = fancyNumber(memberCount);
+            memberCount = client.chill.fancyNumber(memberCount);
             msg.guild.channels.create(`📊Users: ${memberCount}`, {
                 type: 'GUILD_VOICE', 
                 permissionOverwrites: [

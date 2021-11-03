@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const { fancyNumber } = require("../../functions");
 
 module.exports = {
     name: "xp",
@@ -79,10 +78,10 @@ module.exports = {
 		const xpEmbed = new Discord.MessageEmbed()
 			.setColor(`RANDOM`)
 			.setAuthor(`${user.username}'s experience`, user.avatarURL())
-			.setTitle(`${xpmsg} **${fancyNumber(pointsToAdd)}** point${pointsToAdd > 1 || pointsToAdd == 0 ? "s" : ""}`)
+			.setTitle(`${xpmsg} **${client.chill.fancyNumber(pointsToAdd)}** point${pointsToAdd > 1 || pointsToAdd == 0 ? "s" : ""}`)
 			.setFooter(`by ${msg.author.username}`)
 
-		if (newLevel != userScore.level) xpEmbed.setTitle(`**${xpmsg} ${fancyNumber(pointsToAdd)} points**\n*New level is: ${newLevel}*`)
+		if (newLevel != userScore.level) xpEmbed.setTitle(`**${xpmsg} ${client.chill.fancyNumber(pointsToAdd)} points**\n*New level is: ${newLevel}*`)
 		if (unlocked.length > 0) {
 			if (newLevel > userScore.level) xpEmbed.setDescription(`***Unlocked roles:\n${unlocked}***`)
 			else if (newLevel < userScore.level) xpEmbed.setDescription(`***Taken roles:\n${unlocked}***`)

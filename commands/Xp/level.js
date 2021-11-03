@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const { fancyNumber } = require("../../functions.js");
 const math = require('mathjs');
 
 module.exports = {
@@ -29,7 +28,7 @@ module.exports = {
 			.setColor(`RANDOM`)
 			.setAuthor(`${msg.author.username}`, msg.author.avatarURL())
 			.addField(`Level`,`**${level}**`,true)
-			.addField(`Experience`,`**${fancyNumber(points)}**`,true)
+			.addField(`Experience`,`**${client.chill.fancyNumber(points)}**`,true)
 			.addField('Rank',`**${await getRank(client, msg)}**`,true)
 			.addField(`${bar} **${levelprogress}%**`,`*${xptolevelup} to level up*`,false)
 		msg.channel.send({embeds:[levelembed]});

@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const { promptMessage } = require("../../functions.js");
 
 module.exports = {
     name: "ban",
@@ -64,7 +63,7 @@ module.exports = {
             .setDescription(`Do you want to ban ${toBan}?`)
 
         await msg.channel.send({embeds:[promptEmbed]}).then(async promptmsg => {
-            const emoji = await promptMessage(promptmsg, msg.author, 30, ["✅", "❌"]);
+            const emoji = await client.chill.promptMessage(promptmsg, msg.author, 30, ["✅", "❌"]);
 
             // Verification stuffs
             if (emoji === "✅") {

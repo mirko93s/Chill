@@ -1,6 +1,5 @@
 const Discord = require("discord.js");
 const { stripIndent } = require('common-tags');
-const { ensureGuildSettings } = require("../../functions.js");
 
 module.exports = {
 	name: "showconfig",
@@ -10,7 +9,7 @@ module.exports = {
 	usage: "showconfig\n**e.g**\n\`showconfig\`\n> get server settings (prefix, roles, channels, etc...)",
     run: async (client, msg, arg) => {
 		
-		ensureGuildSettings(client,msg.guild.id);
+		client.chill.ensureGuildSettings(client,msg.guild.id);
 
 		let guildConf = client.settings.get(msg.guild.id);
 		

@@ -1,6 +1,5 @@
 const Discord = require("discord.js");
 const { stripIndents } = require("common-tags");
-const { formatDate } = require("../../functions.js");
 
 module.exports = {
     name: "whois",
@@ -25,7 +24,7 @@ module.exports = {
             **> ID:** ${member.user.id}
             **> Username:** ${member.user.username}
             **> Tag:** ${member.user.tag}
-            **> Created at:** ${formatDate(member.user.createdAt)}`, true)      
+            **> Created at:** ${client.chill.formatDate(member.user.createdAt)}`, true)      
             .setTimestamp()
 
         if (member.presence.activities) {

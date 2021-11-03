@@ -1,6 +1,5 @@
 const Discord = require("discord.js");
 const ms = require('ms');
-const { promptMessage } = require("../../functions.js");
 
 module.exports = {
     name: "mute",
@@ -91,7 +90,7 @@ module.exports = {
         // Send the msg
         await msg.channel.send({embeds:[promptEmbed]}).then(async promptmsg => {
             // Await the reactions and the reactioncollector
-            const emoji = await promptMessage(promptmsg, msg.author, 30, ["✅", "❌"]);
+            const emoji = await client.chill.promptMessage(promptmsg, msg.author, 30, ["✅", "❌"]);
 
             // Verification stuffs
             if (emoji === "✅") {
