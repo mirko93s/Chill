@@ -17,9 +17,9 @@
 
 # 👉 [Documentation](https://mirko93s.github.io/Chill/) 👈
 
-#### You can find a list of all commands with a detailed explanation of each one and a small guide on how to self-host.
+### You can find a list of all commands with a detailed explanation of each one and a small guide on how to self-host.
 
-### For any other question join the [Support server](https://discord.gg/2ktWcAb).  
+#### For any other question join the [Support server](https://discord.gg/2ktWcAb).  
 
 ## Commands
 
