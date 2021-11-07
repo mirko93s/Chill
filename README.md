@@ -15,11 +15,11 @@
 
 [![Discord Bots](https://top.gg/api/widget/status/605894942275141672.svg)](https://top.gg/bot/605894942275141672)
 
-### Join the Support server to try the bot or if you need help.  
+# 👉 [Documentation](https://mirko93s.github.io/Chill/) 👈
 
-[Installation guide](https://github.com/mirko93s/Chill/wiki/Installation)
+#### You can find a list of all commands with a detailed explanation of each one and a small guide on how to self-host.
 
-[Wiki](https://github.com/mirko93s/Chill/wiki) (w.i.p)
+### For any other question join the [Support server](https://discord.gg/2ktWcAb).  
 
 ## Commands
 
