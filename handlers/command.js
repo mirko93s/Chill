@@ -42,8 +42,7 @@ module.exports = (client) => {
     });
     client.once("ready", async() => {
         try {
-            await client.guilds.cache.get("765365684036304906").commands.set(slashs);
-            await client.guilds.cache.get("878276639455338570").commands.set(slashs);
+            await client.application.commands.set(slashs);
         } catch(err) {
             console.error(err)
         }
