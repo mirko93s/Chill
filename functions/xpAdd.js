@@ -13,7 +13,7 @@ module.exports = function(client, msg, talkedRecently) {
         client.settings.set(msg.guild.id, curLevel, `xp.${msg.author.id}.level`);
         const newlevelembed = new Discord.MessageEmbed()
             .setColor(`RANDOM`)
-            .setAuthor(`Congratulations`, msg.author.avatarURL())
+            .setAuthor({name:`Congratulations`, iconURL:msg.author.displayAvatarURL()})
             .setDescription(`${msg.member.user} **leveled up to Lvl ${curLevel}**!`)
         //check rewards
         var rewards = client.settings.get(msg.guild.id, `rewards`);

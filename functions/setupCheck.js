@@ -14,7 +14,6 @@ module.exports = function(client, msg) {
     let musictextchannel = msg.guild.channels.cache.find(musictextchannel => musictextchannel.id === (client.settings.get(msg.guild.id, "musictextchannel")));
     let ticketcategory = msg.guild.channels.cache.find(ticketcategory => ticketcategory.id === (client.settings.get(msg.guild.id, "ticketcategory")));
     let musictemprole = msg.guild.roles.cache.find(musictemprole => musictemprole.id === (client.settings.get(msg.guild.id, "musictemprole")));
-    let mutedrole = msg.guild.roles.cache.find(mutedrole => mutedrole.id === (client.settings.get(msg.guild.id, "mutedrole")));
     let djrole = msg.guild.roles.cache.find(djrole => djrole.id === (client.settings.get(msg.guild.id, "djrole")));
     let supportrole = msg.guild.roles.cache.find(supportrole => supportrole.id === (client.settings.get(msg.guild.id, "supportrole")));
     let roleonjoin = msg.guild.roles.cache.find(roleonjoin => roleonjoin.id === (client.settings.get(msg.guild.id, "roleonjoin")));	

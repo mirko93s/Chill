@@ -1,11 +1,11 @@
 const Discord = require('discord.js');
 const config = require('../config.json');
 /**
- * @param {Object} msg 
+ * @param {Object} interaction 
  * @param {MessageEmbed} embed 
  * @returns adds buttons to given embed
  */
-module.exports = async function (msg, embed) {
+module.exports = async function (interaction, embed) {
     const links = new Discord.MessageActionRow()
         .addComponents(
             new Discord.MessageButton()
@@ -29,5 +29,5 @@ module.exports = async function (msg, embed) {
                 .setURL(config.bot_website_link)
                 // .setEmoji('🔗'),
         );
-    return msg.channel.send({embeds:[embed],components:[links]});
+    return interaction.reply({embeds:[embed],components:[links]});
 }

@@ -26,7 +26,7 @@ module.exports = function(member, guild, join = true) {
         `●●●${member.user} is typing...`
     ];
     const welcomeEmbed = new Discord.MessageEmbed()
-        .setAuthor(member.user.tag,member.user.displayAvatarURL())
+        .setAuthor({name: member.user.tag, iconURL: member.user.displayAvatarURL()})
     if (join === true) welcomeEmbed.setColor('GREEN').setDescription(message[Math.floor(Math.random() * message.length)]);
     else if (join === false) welcomeEmbed.setColor('RED').setDescription(`${member.user} left the game.`);
         
