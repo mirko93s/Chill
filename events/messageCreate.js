@@ -4,12 +4,7 @@ module.exports = async (client, msg) => {
     if (!msg.guild || msg.author.bot) return;
     prefix = client.settings.get(msg.guild.id, "prefix");
     //mention bot
-    if (msg.mentions.has(client.user) && !msg.content.includes("@here") && !msg.content.includes("@everyone")) {
-        msg.reply(`Hi ${msg.author}! My prefix is currently set to \`${client.settings.get(msg.guild.id, 'prefix')}\` Type \`${client.settings.get(msg.guild.id, 'prefix')}help\` for more info! :smiley:`);
-        if(msg.member.permissions.has("ADMINISTRATOR")){ //if admin check for setup
-            if (client.chill.setupCheck(client, msg) === false) return msg.channel.send (":warning: Ops! It looks like you didn't complete the setup. Type .setup to create preset channels, roles, channel categories, etc...\nDon't worry you can later rename them.")
-        }
-    }
+    if (msg.mentions.has(client.user) && !msg.content.includes("@here") && !msg.content.includes("@everyone")) msg.reply(`Hi ${msg.author}! Type \`/help\` for more info! :smiley:`);
     //xp
     if (client.settings.get(msg.guild.id, "xpmodule") === "true" && msg.guild && !msg.content.startsWith(prefix) && !talkedRecently.has(msg.author.id) && msg.channel.id !== client.settings.get(msg.guild.id, "musictextchannel")) {
         client.chill.xpAdd(client, msg, talkedRecently);
@@ -28,13 +23,13 @@ module.exports = async (client, msg) => {
     const cmd = arg.shift().toLowerCase();
     //command handler
     if (cmd.length === 0) return;
-    let commandh = client.commands.get(cmd);
-    if (!commandh) commandh = client.commands.get(client.aliases.get(cmd));
-    if (commandh) {
-        client.cmdstats.inc('usage',commandh.name);
-        if (client.settings.includes(msg.guild.id, commandh.name, "disabledcommands")) return msg.channel.send({content: `\`${commandh.name}\` is disabled on this server!`}).then(msg =>setTimeout(() => msg.delete(), 5000)); //check if command is disabled on the guild
+    let command = client.commands.get(cmd);
+    if (!command) command = client.commands.get(client.aliases.get(cmd));
+    if (command) {
+        client.cmdstats.inc('usage',command.name);
+        if (client.settings.includes(msg.guild.id, command.name, "disabledcommands")) return msg.channel.send({content: `\`${command.name}\` has been disabled on this server by an Administrator!`}).then(msg =>setTimeout(() => msg.delete(), 5000)); //check if command is disabled on the guild
         if (client.settings.get(msg.guild.id, "autodeletecmds") === "true") msg.delete();
-        commandh.run(client, msg, arg);
+        command.run(client, msg, arg);
     }
     else { //custom command loader
         client.chill.checkCustomCommand(client, msg, cmd);

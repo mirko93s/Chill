@@ -10,5 +10,5 @@ module.exports = (client, guild) => {
     //msg guild owner with setup info
     client.chill.dmOwnerOnJoin(client, guild);
     //webhook-log
-    client.chillguildLogWebhook(client, guild, true);
+    client.chill.guildLogWebhook(client, guild, true);
 }
