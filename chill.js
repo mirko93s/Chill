@@ -16,10 +16,9 @@ const client = new Discord.Client({ intents: [
 		'REACTION'
 	]
 });
-const { DiscordTogether } = require('discord-together');
-client.discordTogether = new DiscordTogether(client);
 client.serverstatscooldown = new Set();
 client.queue = new Map();
+client.slashs = new Discord.Collection();
 client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
 // load modules
