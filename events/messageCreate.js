@@ -13,11 +13,10 @@ module.exports = async (client, msg) => {
     if (!msg.content.startsWith(prefix) && msg.channel.id !== client.settings.get(msg.guild.id, "musictextchannel")) return;
     if (!msg.member) msg.member = await msg.guild.fetchMember(msg);
     //music-text-channel doesn't need .play command
-    if (msg.channel.id === client.settings.get(msg.guild.id, "musictextchannel") && !msg.content.startsWith(prefix)) {
-        var MTC_state = true;
-        let cmdplay = client.commands.get("play");
-        return cmdplay.run(client, msg, MTC_state);
-    }
+    // if (msg.channel.id === client.settings.get(msg.guild.id, "musictextchannel") && !msg.content.startsWith(prefix)) {
+    //     let cmdplay = client.commands.get("play");
+    //     return cmdplay.run(client, msg, true);
+    // }
     //commands stuff
     const arg = msg.content.slice(prefix.length).trim().split(/ +/g);
     const cmd = arg.shift().toLowerCase();

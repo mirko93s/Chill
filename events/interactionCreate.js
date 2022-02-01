@@ -6,7 +6,7 @@ module.exports = async(client, interaction) => {
     // get command
     const command = client.slashs.get(interaction.commandName);
     if (!command) return interaction.reply({ephemeral:true, content: 'An error occured while trying to execute that command!' });
-    // check if owner only
+    // check if dev only
     const noDevEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
             .setDescription(`⛔ This command is limited to the bot Developer!`)
@@ -45,6 +45,7 @@ module.exports = async(client, interaction) => {
         await command.run(client, interaction, args)
         client.cmdstats.inc('usage',command.name);
     } catch (err) {
-        interaction.reply({ephemeral:true, content: '**ERROR **'+err.message });
+        console.log(err);
+        interaction.reply({ephemeral:true, content: '**ERROR: **'+err.message });
     }
 }

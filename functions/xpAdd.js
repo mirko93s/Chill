@@ -31,5 +31,5 @@ module.exports = function(client, msg, talkedRecently) {
     talkedRecently.add(msg.author.id); //xp cooldown
     setTimeout(() => {
         talkedRecently.delete(msg.author.id);
-    }, client.settings.get(msg.guild.id, "xpcooldown")*1000);
+    }, client.settings.get(msg.guild.id, "xpcooldown")*1e3);
 }

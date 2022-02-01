@@ -31,7 +31,7 @@ module.exports = {
                 }
                 let memberCount = interaction.guild.members.cache.filter(member => !member.user.bot).size; //filtering bots
                 memberCount = client.chill.fancyNumber(memberCount);
-                interaction.guild.channels.create(`📊Users: ${memberCount}`, {
+                interaction.guild.channels.create(`👥Users: ${memberCount}`, {
                     type: 'GUILD_VOICE', 
                     permissionOverwrites: [
                         {id: interaction.guild.roles.everyone.id, 

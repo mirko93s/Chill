@@ -69,64 +69,48 @@ module.exports = {
             .setTitle(`⛔ Giveaway channel not found!`)
         const invalidprizeEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
-            .setTitle(`⛔ Prize can't be longer than 240 chatacters`)
+            .setTitle(`⛔ Prize can't be longer than 250 chatacters`)
         
         const gachannel = interaction.options.getChannel('channel') || interaction.guild.channels.cache.find(gachannel => gachannel.id === (client.settings.get(interaction.guild.id, "gachannel")));
         if(!gachannel) return interaction.reply({ephemeral:true, embeds:[nochannelEmbed]});
         const time = interaction.options.getInteger('time')+interaction.options.getString('unit');
         const prize = interaction.options.getString('prize');
-        if (prize.length > 240) return interaction.reply({ephemeral:true, embeds:[invalidprizeEmbed]});
+        if (prize.length > 250) return interaction.reply({ephemeral:true, embeds:[invalidprizeEmbed]});
         let winnersnum = interaction.options.getInteger('winners') || 1;
         const host = interaction.user;
 
         try {
             const startEmbed = new Discord.MessageEmbed()
                 .setColor(`RANDOM`)
-                .setTitle(`🎉Giveaway Started`)
+                .setTitle(`🎉 Giveaway Started`)
                 .setDescription(`*React With 🎉 To Enter!*`)
-                .addField(`Prize: **${prize}**`, `Time Left: **${time}**\nMax winners: ${winnersnum}`)
+                .addField(`🎁 Prize`, `**${prize}**`, false)
+                .addField(`🕒 Ends **<t:${((Date.now()+ms(time))/1e3).toFixed()}:R>**`, `Max winners: ${winnersnum}`)
                 .setFooter({text: `Hosted by ${host.tag}\nAt`, iconURL: host.displayAvatarURL()})
                 .setTimestamp()
-            const keepdate = Date.now();
             gachannel.send({embeds:[startEmbed]}).then(sent => {
-                client.intervals.set('giveaways',{timestamp: keepdate+ms(time),channel: gachannel.id}, sent.id)
+                client.intervals.set('giveaways',{timestamp: Date.now()+ms(time),channel: gachannel.id}, sent.id)
                 const doneEmbed = new Discord.MessageEmbed()
                     .setColor('RANDOM')
                     .setDescription(`✅ Giveaway started in ${gachannel}`)
                 interaction.reply({ephemeral:true, embeds:[doneEmbed]});
                 sent.react('🎉');
-                //update time left
-                let live = ms(time);
-                var livetest = setInterval (liveupdate, 30e3);
-                function liveupdate() {
-                    live -= 30e3;
-                    if (live > 0) {
-                        let liveEmbed = new Discord.MessageEmbed()
-                            .setColor(`RANDOM`)
-                            .setTitle(`🎉Giveaway Started`)
-                            .setDescription(`*React With 🎉 To Enter!*`)
-                            .addField(`Prize: **${prize}**`, `Time Left: **${ms(live)}**\nMax winners: ${winnersnum}`)
-                            .setFooter({text: `Hosted by ${host.tag}\nAt`, iconURL: host.displayAvatarURL()})
-                            .setTimestamp(keepdate)
-                        sent.edit({embeds:[liveEmbed]});
-                    } else return clearInterval(livetest);
-                }
-                //set timeout
                 setTimeout(() => {
                     sent.reactions.cache.get("🎉").users.fetch().then(r => {
                         if (r.size < winnersnum) winnersnum = r.size;
                         let winner = r.filter(u => u.id !== client.user.id).random(winnersnum);
                         const endEmbed = new Discord.MessageEmbed()
                             .setColor(`RANDOM`)
-                            .setTitle(`🎉Giveaway Ended`)
-                            .addField(`**Prize:** ${prize}`,`**Winner${winner.length > 1 ? 's' : ''}:** ${winner == 0 ? "*No Participants*" : winner}`)
+                            .setTitle(`🎉 Giveaway Ended`)
+                            .addField(`🎁 Prize`, `**${prize}**`, false)
+                            .addField(`**Winner${winner.length > 1 ? 's' : ''}**`, `**${winner == 0 ? "No Participants" : winner}**`)
                             .setFooter({text: `Hosted by ${host.tag}\nEnded at`, iconURL: host.displayAvatarURL()})
                             .setTimestamp()
                         sent.edit({embeds:[endEmbed]});
                         if(winner == 0) return;
                         else gachannel.send(`**Congratulations ${winner}!\nYou won: \`${prize}\`**`)
                     });
-                    client.intervals.delete('giveaways',id);
+                    client.intervals.delete('giveaways',sent.id);
                 }, ms(time));
             });
         } catch(err) {

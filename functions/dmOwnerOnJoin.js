@@ -24,7 +24,7 @@ module.exports = function(client, guild) {
         \n*P.S. You can use the same channel/role for multiple scopes using /setconfig*
         `)
         .setFooter({text: `©️ 2019-2022 mirko93s#4389`, iconURL: client.user.displayAvatarURL()})
-    guild.fetchOwner().then(o => {
-        o.send({embeds:[dmonweronjoinEmbed]}).catch(err => {return});
+    guild.fetchOwner().then(owner => {
+        owner.send({embeds:[dmonweronjoinEmbed]}).catch(err => {return});
     });
 }

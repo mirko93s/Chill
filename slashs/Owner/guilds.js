@@ -10,7 +10,7 @@ module.exports = {
         console.log(`Guilds Size: ${client.guilds.cache.size}`);
         console.log("---------------------------");
         client.guilds.cache.forEach(guild => {
-            console.log(guild.name);           
+            console.log(guild.name);
         });
         console.log("---------------------------");
 

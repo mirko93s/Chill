@@ -13,18 +13,35 @@ module.exports = {
         },
         {
             name: 'embed',
-            description: 'True if you want the message to be sent as a cool embed',
+            description: 'Send the message as embed',
+            type: 'BOOLEAN',
+        },
+        {
+            name: 'anonymous',
+            description: 'If you want the bot message to be anonymous',
             type: 'BOOLEAN',
         },
     ],
     run: (client, interaction, arg) => {
 
-        if (!interaction.options.getBoolean('embed')) return interaction.reply({content:interaction.options.getString('text')});
-            else {
-                const embed = new Discord.MessageEmbed()
-                    .setColor(`RANDOM`)
-                    .setDescription(interaction.options.getString('text').substring(0,2048))
-                interaction.reply({embeds:[embed]});
-            }
+        if (interaction.options.getBoolean('anonymous')) {
+            const anonymousEmbed = new Discord.MessageEmbed()
+                .setColor(`RANDOM`)
+                .setDescription('✅ Message correctly sent.')
+            interaction.reply({ephemeral:true, embeds:[anonymousEmbed]});
+        }
+        const text = interaction.options.getString('text').substring(0,2048);
+        
+        const sayEmbed = new Discord.MessageEmbed()
+            .setColor(`RANDOM`)
+            .setDescription(text)
+
+        if (interaction.options.getBoolean('embed')) {
+            if (interaction.options.getBoolean('anonymous')) return interaction.channel.send({embeds:[sayEmbed]});
+            else return interaction.reply({embeds:[sayEmbed]});
+        } else {
+            if (interaction.options.getBoolean('anonymous')) return interaction.channel.send({content:text});
+            else return interaction.reply({content:text});
+        }            
     }
 }

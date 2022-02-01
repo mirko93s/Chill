@@ -9,7 +9,7 @@ module.exports = function (client, member) {
         if (usercounterchannel) { // check if channel still exists
             var memberCount = member.guild.members.cache.filter(member => !member.user.bot).size;
             memberCount = client.chill.fancyNumber(memberCount);
-            usercounterchannel.setName(`📊Users: ${memberCount}`);
+            usercounterchannel.setName(`👥Users: ${memberCount}`);
             client.serverstatscooldown.add(member.guild.id); // cooldown
             setTimeout(() => {
                 client.serverstatscooldown.delete(member.guild.id);

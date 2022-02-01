@@ -25,7 +25,7 @@ client.aliases = new Discord.Collection();
 client.chill = require('./handlers/module.js');
 client.chill.setupDatabases(client);
 // load handlers
-['command','event'].forEach(handler => {
+['command','event','errors'].forEach(handler => {
 	require(`./handlers/${handler}`)(client);
 });
 client.login(require('./config.json').token);
