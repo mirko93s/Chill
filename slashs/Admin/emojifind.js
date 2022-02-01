@@ -79,7 +79,6 @@ module.exports = {
             else var matches = emojis.filter(s => s.category === interaction.options.getInteger('category'));
         }
         matches = matches.sort((a, b) => b.faves - a.faves);        
-        console.log(matches);
         if (!matches.length) {
             const noResultEmbed = new Discord.MessageEmbed()
                 .setColor(`RED`)
