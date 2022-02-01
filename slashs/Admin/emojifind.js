@@ -66,17 +66,18 @@ module.exports = {
       
         let emojis = await fetch("https://emoji.gg/api/").then(res => res.json());
         if (interaction.options.getSubcommand() === 'name') {
-            const q = interaction.options.getString('name').toLowerCase().trim().split(" ").join("_");
+            var q = await interaction.options.getString('name').toLowerCase().trim().split(" ").join("_");
             var matches = emojis.filter(s => s.title == q || s.title.includes(q));
             // animated filter
             if (interaction.options.getBoolean('animated')) matches = matches.filter(s => s.category == 8);
+            // remove emojis bigger than 256KB
+            matches = matches.filter(s => s.filesize < 256e3);
             // remove nsfw
             matches.filter(e => e.category == 9).forEach(f => matches.splice(matches.findIndex(e => e.title === f.title),1));
         } else {
             if (interaction.options.getInteger('category') === 0) var matches = emojis;
             else var matches = emojis.filter(s => s.category === interaction.options.getInteger('category'));
         }
-        console.log(matches);
         matches = matches.sort((a, b) => b.faves - a.faves);        
         console.log(matches);
         if (!matches.length) {
