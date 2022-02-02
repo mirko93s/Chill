@@ -45,7 +45,7 @@
 </p>
 
 <h1 align="center">
-  👉<a href="https://mirko93s.github.io/Chill/"> Documentation </a>👈
+  👉<a href="https://docs.chill.ovh/"> Documentation </a>👈
 </h1>
 
 ### You can find a list of all commands with a detailed explanation of each one and a small guide on how to self-host.
