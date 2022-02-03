@@ -38,11 +38,11 @@ module.exports = async function (client, interaction, embed) {
                             .setTimestamp()
                         sent.edit({embeds:[endEmbed]});
                         if(winner == 0) return;
-                        else channel.send(`**Congratulations ${winner}!\nYou won: \`${embed_data.fields[0].value}\`**`)
+                        else channel.send(`**Congratulations ${winner}!\nYou won: ${embed_data.fields[0].value}**`)
                     });
                     client.intervals.delete('giveaways',id);
                 }
-                if(data.timestamp > Date.now()) setTimeout(gaEmbed(), time);
+                if(data.timestamp > Date.now()) setTimeout(gaEmbed, time);
                 else gaEmbed();
             })
         })
