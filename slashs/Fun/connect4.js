@@ -4,8 +4,18 @@ module.exports = {
     name: "connect4",
     description: "Play the classic Connect 4 game with a friend",
     botPerms: ['ADMINISTRATOR'],
-    options: null,
+    options: [
+        {
+            name: 'user',
+            description: '2nd player',
+            type: 'USER',
+            required: true,
+        },
+    ],
     run: async (client, interaction, arg) => {
+
+        const p1 = interaction.member;
+        const p2 = interaction.options.getMember('user');
 
         var boardarray = [
             [`⚪`,`⚪`,`⚪`,`⚪`,`⚪`,`⚪`,`⚪`],
@@ -18,8 +28,8 @@ module.exports = {
         var turn = `🔴`;
         const boardEmbed = new Discord.MessageEmbed()
             .setColor('RANDOM')
-            .setAuthor({name: `CONNECT 4`})
-            .setTitle(`🔴 Turn`)
+            .setAuthor({name: `${p1.displayName}'s Turn ${turn}`, iconURL: p1.displayAvatarURL()})
+            .setTitle('CONNECT 4')
             .setDescription(boardToString(boardarray))
             .addField(`1️⃣ 2️⃣ 3️⃣ 4️⃣ 5️⃣ 6️⃣ 7️⃣`,`*React to place a chip*`)
         interaction.reply({embeds:[boardEmbed]}).then(() => {
@@ -28,10 +38,17 @@ module.exports = {
                 const reactions = [`1️⃣`,`2️⃣`,`3️⃣`,`4️⃣`,`5️⃣`,`6️⃣`,`7️⃣`];
                 for (const reaction of reactions) sent.react(reaction);
                 //create reaction collector and its filter
-                const filter = (reaction, user) => reactions.includes(reaction.emoji.name) && !user.bot; // && (user.id === interaction.user.id || interaction.options.getUser('user').id)
+                // const filter = (reaction, user) => reactions.includes(reaction.emoji.name) && !user.bot;
+                const filter = (reaction, user) => reactions.includes(reaction.emoji.name) && !user.bot && user.id === (p1.id || p2.id);
                 const collector = sent.createReactionCollector({filter, time: 60e3 });
                 collector.on('collect', clicked => {
-                    clicked.users.remove(clicked.users.cache.filter(u => u.id !== client.user.id).first());          
+
+                    const reactionUser = clicked.users.cache.filter(u => u.id !== client.user.id).first();
+                    clicked.users.remove(reactionUser);
+                    // check player turn
+                    if (turn === "🔴" && reactionUser.id !== p1.id) return;
+                    if (turn === "🟡" && reactionUser.id !== p2.id) return;
+
                     if (reactions.includes(clicked.emoji.name)) collector.resetTimer({ time: 60e3 });
                     var x = 0;
                     var y = 0;
@@ -58,11 +75,18 @@ module.exports = {
                         boardEmbed.setTitle(`DRAW!`)
                         return sent.edit({embeds:[boardEmbed]});
                     }
-                    turn == "🔴" ? turn = "🟡" : turn = "🔴"; //change turn
-                    boardEmbed.setTitle(`${turn} Turn`);
+
+                    if (turn == "🔴") {
+                        turn = "🟡";
+                        boardEmbed.setAuthor({name: `${p2.displayName}'s Turn ${turn}`, iconURL: p2.displayAvatarURL()})
+                    } else {
+                        turn = "🔴";
+                        boardEmbed.setAuthor({name: `${p1.displayName}'s Turn ${turn}`, iconURL: p1.displayAvatarURL()})
+                    }
                     return sent.edit({embeds:[boardEmbed]});
                 });
                 collector.on('end', (collection, reason) => {
+                    sent.reactions.removeAll();
                     if (reason == "time") {
                         boardEmbed.setTitle(`Game stopped due to inactivity`);
                         return sent.edit({embeds:[boardEmbed]});
