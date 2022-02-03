@@ -38,8 +38,7 @@ module.exports = {
                 const reactions = [`1️⃣`,`2️⃣`,`3️⃣`,`4️⃣`,`5️⃣`,`6️⃣`,`7️⃣`];
                 for (const reaction of reactions) sent.react(reaction);
                 //create reaction collector and its filter
-                // const filter = (reaction, user) => reactions.includes(reaction.emoji.name) && !user.bot;
-                const filter = (reaction, user) => reactions.includes(reaction.emoji.name) && !user.bot && user.id === (p1.id || p2.id);
+                const filter = (reaction, user) => reactions.includes(reaction.emoji.name) && !user.bot && (user.id === p1.id || user.id === p2.id);
                 const collector = sent.createReactionCollector({filter, time: 60e3 });
                 collector.on('collect', clicked => {
 
@@ -67,28 +66,29 @@ module.exports = {
                     // //check if player won
                     if (haswon(turn, boardarray, x, y) == true) {
                         collector.stop("hasWon");
-                        boardEmbed.setTitle(`${turn} WON ! ! !`)
+                        boardEmbed.setAuthor({name: `${turn === '🔴' ? p1.displayName : p2.displayName} WON! 🏆`, iconURL: turn === '🔴' ? p1.displayAvatarURL() : p2.displayAvatarURL()})
                         return sent.edit({embeds:[boardEmbed]});
                     }
                     else if (checkDraw(boardarray) == true) {
                         collector.stop("draw");
-                        boardEmbed.setTitle(`DRAW!`)
+                        boardEmbed.setAuthor({name: `DRAW! 😐`})
                         return sent.edit({embeds:[boardEmbed]});
                     }
-
-                    if (turn == "🔴") {
-                        turn = "🟡";
-                        boardEmbed.setAuthor({name: `${p2.displayName}'s Turn ${turn}`, iconURL: p2.displayAvatarURL()})
-                    } else {
-                        turn = "🔴";
-                        boardEmbed.setAuthor({name: `${p1.displayName}'s Turn ${turn}`, iconURL: p1.displayAvatarURL()})
+                    else {
+                        if (turn == "🔴") {
+                            turn = "🟡";
+                            boardEmbed.setAuthor({name: `${p2.displayName}'s Turn ${turn}`, iconURL: p2.displayAvatarURL()})
+                        } else {
+                            turn = "🔴";
+                            boardEmbed.setAuthor({name: `${p1.displayName}'s Turn ${turn}`, iconURL: p1.displayAvatarURL()})
+                        }
                     }
                     return sent.edit({embeds:[boardEmbed]});
                 });
                 collector.on('end', (collection, reason) => {
                     sent.reactions.removeAll();
                     if (reason == "time") {
-                        boardEmbed.setTitle(`Game stopped due to inactivity`);
+                        boardEmbed.setAuthor({name: `Game stopped due to inactivity`});
                         return sent.edit({embeds:[boardEmbed]});
                     }
                 });
