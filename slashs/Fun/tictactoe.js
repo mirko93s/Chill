@@ -51,14 +51,15 @@ module.exports = {
                     if (turn === "❌" && collected.user.id !== p1.id) return;
                     if (turn === "⭕" && collected.user.id !== p2.id) return;
                     const id = collected.customId;
-                    buttons[id-1].emoji = { animated: false, name: turn, id: null };
-                    buttons[id-1].disabled = true;
+                    buttons[id-1].setEmoji(turn);
+                    buttons[id-1].setDisabled(true);
+                    buttons[id-1].setStyle(turn === '❌' ? 'SUCCESS' : 'PRIMARY');
                     //check win
                     if (checkWin(buttons) === true) {
                         collector.stop('won');
                         embed.setAuthor({name: `${turn === '❌' ? p1.displayName : p2.displayName} WON! 🏆`, iconURL: turn === '❌' ? p1.displayAvatarURL() : p2.displayAvatarURL()})
                         for (let i=0; i<9; i++) { //disable all buttons
-                            buttons[i].disabled = true;
+                            buttons[i].setDisabled(true);
                         };
                     } else {
                         collector.resetTimer({ time: 60e3 });
@@ -74,7 +75,7 @@ module.exports = {
                 });
                 collector.on('end', (collected, reason) => {
                     for (let i=0; i<9; i++) { //disable all buttons
-                        buttons[i].disabled = true;
+                        buttons[i].setDisabled(true);
                     };
                     if (reason === 'time') embed.setAuthor({name: `Game stopped due to inactivity`})
                     sent.edit({embeds:[embed], components:[row1,row2,row3]});
@@ -87,20 +88,16 @@ module.exports = {
 function checkWin (buttons) {
     for (var i = 0; i < 3; i++) {
         //horizontal
-        if(buttons[i*3].emoji?.name === buttons[i*3+1].emoji?.name && buttons[i].emoji?.name === buttons[i*3+2].emoji?.name )
-            if(buttons[i*3].emoji && buttons[i*3+1].emoji && buttons[i*3+2].emoji)
-                return true;
+        if(buttons[i*3].emoji?.name === buttons[i*3+1].emoji?.name && buttons[i*3].emoji?.name === buttons[i*3+2].emoji?.name )
+            if(buttons[i*3].emoji && buttons[i*3+1].emoji && buttons[i*3+2].emoji)  return true;
         //vertical
         if(buttons[i].emoji?.name === buttons[i+3].emoji?.name && buttons[i].emoji?.name === buttons[i+6].emoji?.name )
-            if(buttons[i].emoji && buttons[i+3].emoji && buttons[i+6].emoji)
-                return true;
+            if(buttons[i].emoji && buttons[i+3].emoji && buttons[i+6].emoji) return true;
     }
     //ascending
     if(buttons[0].emoji?.name === buttons[4].emoji?.name && buttons[0].emoji?.name === buttons[8].emoji?.name )
-        if(buttons[0].emoji && buttons[4].emoji && buttons[8].emoji)
-            return true;
+        if(buttons[0].emoji && buttons[4].emoji && buttons[8].emoji) return true;
     //descending
     if(buttons[2].emoji?.name === buttons[4].emoji?.name && buttons[2].emoji?.name === buttons[6].emoji?.name )
-        if(buttons[2].emoji && buttons[4].emoji && buttons[6].emoji)
-            return true;
+        if(buttons[2].emoji && buttons[4].emoji && buttons[6].emoji) return true;
 }
