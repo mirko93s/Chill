@@ -13,7 +13,8 @@ const client = new Discord.Client({ intents: [
 	],
 	partials: [
 		'MESSAGE',
-		'REACTION'
+		'REACTION',
+		'CHANNEL'
 	]
 });
 client.serverstatscooldown = new Set();
