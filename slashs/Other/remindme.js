@@ -7,7 +7,7 @@ module.exports = {
     options: [
         {
             name: "time",
-            description: "Time",
+            description: "Time (automatically caps at approximately 25 days)",
             type: 'INTEGER',
             required: true,
             minValue: 1,
@@ -47,11 +47,11 @@ module.exports = {
     
     run: async (client, interaction, arg) => {
         
-        let time = interaction.options.getInteger('time')+interaction.options.getString('unit');
+        let time = ms(interaction.options.getInteger('time')+interaction.options.getString('unit'));
+        time > 2147483647 ? time = 2147483647 : time = time;
         let text = interaction.options.getString('text').substring(0,3072);
-        let timems = ms(time);
 
-        const id_time = `${interaction.member.id}-${Date.now()+timems}`
+        const id_time = `${interaction.member.id}-${Date.now()+time}`;
 
         function reminder() {
             const reminderEmbed = new Discord.MessageEmbed()
@@ -62,7 +62,7 @@ module.exports = {
             interaction.member.send({embeds:[reminderEmbed]}).catch(() => {return});
         }
         client.intervals.set('reminders', text, id_time);
-        interaction.reply({ephemeral:true, content:`Your reminder has been set, I will remind you in ${time}.`});
-        setTimeout(reminder, timems);
+        interaction.reply({ephemeral:true, content:`Your reminder has been set, I will remind you in ${ms(time)}.`});
+        setTimeout(reminder, time);
     }
 }
