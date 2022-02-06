@@ -3,6 +3,12 @@ const Discord = require("discord.js");
 module.exports = async(client, interaction) => {
     const devID = require('../config.json').bot_owner;
     if (!interaction.isApplicationCommand()) return;
+    if (interaction.channel.type === "DM") {
+        const noDmsEmbed = new Discord.MessageEmbed()
+            .setColor('RED')
+            .setDescription('⛔ You can\'t use slash commands in DMs')
+        return interaction.followUp({embeds:[noDmsEmbed]});
+    }
     // get command
     const command = client.slashs.get(interaction.commandName);
     if (!command) return interaction.reply({ephemeral:true, content: 'An error occured while trying to execute that command!' });
