@@ -9,7 +9,7 @@ module.exports = {
     options: [
         {
             name: "time",
-            description: "Time",
+            description: "Time (automatically caps at approximately 25 days)",
             type: 'INTEGER',
             required: true,
             minValue: 1,
@@ -73,7 +73,8 @@ module.exports = {
         
         const gachannel = interaction.options.getChannel('channel') || interaction.guild.channels.cache.find(gachannel => gachannel.id === (client.settings.get(interaction.guild.id, "gachannel")));
         if(!gachannel) return interaction.reply({ephemeral:true, embeds:[nochannelEmbed]});
-        const time = interaction.options.getInteger('time')+interaction.options.getString('unit');
+        let time = ms(interaction.options.getInteger('time')+interaction.options.getString('unit'));
+        time > 2147483647 ? time = 2147483647 : time = time;
         const prize = interaction.options.getString('prize');
         if (prize.length > 250) return interaction.reply({ephemeral:true, embeds:[invalidprizeEmbed]});
         let winnersnum = interaction.options.getInteger('winners') || 1;
@@ -85,11 +86,11 @@ module.exports = {
                 .setTitle(`🎉 Giveaway Started`)
                 .setDescription(`*React With 🎉 To Enter!*`)
                 .addField(`🎁 Prize`, `**${prize}**`, false)
-                .addField(`🕒 Ends **<t:${((Date.now()+ms(time))/1e3).toFixed()}:R>**`, `Max winners: ${winnersnum}`)
+                .addField(`🕒 Ends **<t:${((Date.now()+time)/1e3).toFixed()}:R>**`, `Max winners: ${winnersnum}`)
                 .setFooter({text: `Hosted by ${host.tag}\nAt`, iconURL: host.displayAvatarURL()})
                 .setTimestamp()
             gachannel.send({embeds:[startEmbed]}).then(sent => {
-                client.intervals.set('giveaways',{timestamp: Date.now()+ms(time),channel: gachannel.id}, sent.id)
+                client.intervals.set('giveaways',{timestamp: Date.now()+time,channel: gachannel.id}, sent.id)
                 const doneEmbed = new Discord.MessageEmbed()
                     .setColor('RANDOM')
                     .setDescription(`✅ Giveaway started in ${gachannel}`)
@@ -111,7 +112,7 @@ module.exports = {
                         else gachannel.send(`**Congratulations ${winner}!\nYou won: \`${prize}\`**`)
                     });
                     client.intervals.delete('giveaways',sent.id);
-                }, ms(time));
+                }, time);
             });
         } catch(err) {
             interaction.reply({embeds:[nobotpermEmbed]});
