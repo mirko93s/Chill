@@ -7,7 +7,7 @@ module.exports = async(client, interaction) => {
         const noDmsEmbed = new Discord.MessageEmbed()
             .setColor('RED')
             .setDescription('⛔ You can\'t use slash commands in DMs')
-        return interaction.followUp({embeds:[noDmsEmbed]});
+        return interaction.reply({embeds:[noDmsEmbed]});
     }
     // get command
     const command = client.slashs.get(interaction.commandName);
