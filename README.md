@@ -31,7 +31,7 @@
   <a href="https://discord.gg/2ktWcAb">
     <img src="https://i.imgur.com/d7Eet0y.png">
   </a>
-  <a href="https://discord.com/api/oauth2/authorize?client_id=605894942275141672&permissions=8&scope=bot%20applications.commands&response_type=code&redirect_uri=https%3A%2F%2Fdiscord.com%2Finvite%2F2ktWcAb">
+  <a href="https://discord.com/api/oauth2/authorize?client_id=605617264628203520&permissions=8&scope=bot%20applications.commands&response_type=code&redirect_uri=https%3A%2F%2Fdiscord.com%2Finvite%2F2ktWcAb">
     <img src="https://i.imgur.com/OJpg8dD.png">
   </a>
   <a href="https://github.com/mirko93s/Chill/releases">
