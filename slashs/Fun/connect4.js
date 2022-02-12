@@ -23,7 +23,8 @@ module.exports = {
             [`⚪`,`⚪`,`⚪`,`⚪`,`⚪`,`⚪`,`⚪`],
             [`⚪`,`⚪`,`⚪`,`⚪`,`⚪`,`⚪`,`⚪`],
             [`⚪`,`⚪`,`⚪`,`⚪`,`⚪`,`⚪`,`⚪`],
-            [`⚪`,`⚪`,`⚪`,`⚪`,`⚪`,`⚪`,`⚪`]
+            [`⚪`,`⚪`,`⚪`,`⚪`,`⚪`,`⚪`,`⚪`],
+            [`1️⃣`,`2️⃣`,`3️⃣`,`4️⃣`,`5️⃣`,`6️⃣`,`7️⃣`]
         ]
         var turn = `🔴`;
         const boardEmbed = new Discord.MessageEmbed()
@@ -31,7 +32,8 @@ module.exports = {
             .setAuthor({name: `${p1.displayName}'s Turn ${turn}`, iconURL: p1.displayAvatarURL()})
             .setTitle('CONNECT 4')
             .setDescription(boardToString(boardarray))
-            .addField(`1️⃣ 2️⃣ 3️⃣ 4️⃣ 5️⃣ 6️⃣ 7️⃣`,`*React to place a chip*`)
+            .setFooter({text: `React to place a chip`})
+            // .addField(`1️⃣ 2️⃣ 3️⃣ 4️⃣ 5️⃣ 6️⃣ 7️⃣`,`*React to place a chip*`)
         interaction.reply({embeds:[boardEmbed]}).then(() => {
             interaction.fetchReply().then(sent => {
                 // add reactions
