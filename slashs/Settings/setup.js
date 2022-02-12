@@ -34,11 +34,6 @@ module.exports = {
             ticketmsg = created
         } else ticketmsg = already
         //roles
-        if (!mutedrole) {
-            interaction.guild.roles.create({ name: "Muted",permissions: [],color: '525252'})
-            .then(role => {client.settings.set(interaction.guild.id, role.id, "mutedrole")});
-            mutedmsg = created
-        } else mutedmsg = already
         if (!djrole) {
             interaction.guild.roles.create({ name: "DJ",permissions: ['CONNECT'], color: 'D00091'})
             .then(role => {client.settings.set(interaction.guild.id, role.id, "djrole")});
@@ -135,7 +130,6 @@ module.exports = {
         `;
         
         const roles = stripIndent`
-        ${mutedmsg} | Muted      | ${interaction.guild.roles.cache.find(r => r.id === (client.settings.get(interaction.guild.id, "mutedrole"))).name}
         ${djmsg} | DJ         | ${interaction.guild.roles.cache.find(r => r.id === (client.settings.get(interaction.guild.id, "djrole"))).name}
         ${musictempmsg} | Music Temp | ${interaction.guild.roles.cache.find(r => r.id === (client.settings.get(interaction.guild.id, "musictemprole"))).name}
         ${supportmsg} | Support    | ${interaction.guild.roles.cache.find(r => r.id === (client.settings.get(interaction.guild.id, "supportrole"))).name}
