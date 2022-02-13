@@ -39,6 +39,7 @@ module.exports = function (client) {
         cloneLevel: 'deep',
         dataDir: './databases/intervals'
     });
-    client.intervals.ensure('reminders',{})
-    client.intervals.ensure('giveaways',{})
+    client.intervals.ensure('reminders',{});
+    client.intervals.ensure('giveaways',{});
+    client.cmdstats.ensure('disabled',[]);
 }
