@@ -7,7 +7,7 @@ module.exports = {
     options: [
         {
             name: 'text',
-            description: 'What do i have to say?',
+            description: 'What do i have to say? (use \\n to create new lines)',
             type: 'STRING',
             required: true,
         },
@@ -30,7 +30,10 @@ module.exports = {
                 .setDescription('✅ Message correctly sent.')
             interaction.reply({ephemeral:true, embeds:[anonymousEmbed]});
         }
-        const text = interaction.options.getString('text').substring(0,2048);
+        let text = '';
+        interaction.options.getString('text').substring(0,2048).split('\\n').forEach(x => {
+            text += x + '\n';
+        });        
         
         const sayEmbed = new Discord.MessageEmbed()
             .setColor(`RANDOM`)
