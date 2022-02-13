@@ -14,11 +14,16 @@ module.exports = {
     ],
     run: async (client, interaction, arg) => {
 
+        let text = '';
+        interaction.options.getString('text').split('\\n').forEach(x => {
+            text += x + '\n';
+        });   
+
         const blastEmbed = new Discord.MessageEmbed()
             .setColor(`PURPLE`)
             .setTitle(`📢 **BOT UPDATE**`)
-            .setDescription(interaction.options.getString('text'))
-            .setFooter({text: `by ${interaction.member.username}`,iconURL: interaction.member.displayAvatarURL()})
+            .setDescription(text)
+            .setFooter({text: `by ${interaction.member.user.tag}`,iconURL: interaction.member.displayAvatarURL()})
 
         var owners = [];
         client.guilds.cache.forEach(guild => owners.push(guild.ownerId));
@@ -26,7 +31,7 @@ module.exports = {
         
         owners.forEach((owner, delay) => {
             setTimeout(() => {
-                client.users.cache.get(owner).send({embeds:[blastEmbed]});
+                client.users.cache.get(owner).send({embeds:[blastEmbed]}).catch(err => { return });
             }, delay*5e3);
         });
 
