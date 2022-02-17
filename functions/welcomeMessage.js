@@ -64,7 +64,7 @@ module.exports = function(member, guild, join = true) {
     ];
     const welcomeEmbed = new Discord.MessageEmbed()
         .setAuthor({name: member.user.tag, iconURL: member.user.displayAvatarURL()})
-    if (join === true) welcomeEmbed.setColor('GREEN').setDescription(message[Math.floor(Math.random() * message.length + 1)]);
+    if (join === true) welcomeEmbed.setColor('GREEN').setDescription(message[Math.floor(Math.random() * message.length)]);
     else if (join === false) welcomeEmbed.setColor('RED').setDescription(`${member.user} left the game.`);
         
     return welcomeEmbed;
