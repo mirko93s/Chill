@@ -1,9 +1,11 @@
 const Discord = require('discord.js');
+const CryptoJS = require("crypto-js");
 
 module.exports = async function (client, interaction, embed) {
     // resume remindme
     const reminders = client.intervals.get('reminders');
     function reminder(id, text) {
+        text = CryptoJS.AES.decrypt(text, id).toString(CryptoJS.enc.Utf8);
         const reminderEmbed = new Discord.MessageEmbed()
             .setColor(`RANDOM`)
             .setTitle(`**REMINDER**`)
