@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
-const ms = require ("ms");
+const ms = require("ms");
+const CryptoJS = require("crypto-js");
 
 module.exports = {
     name: "remindme",
@@ -50,6 +51,8 @@ module.exports = {
         let time = ms(interaction.options.getInteger('time')+interaction.options.getString('unit'));
         time > 2147483647 ? time = 2147483647 : time = time;
         let text = interaction.options.getString('text').substring(0,3072);
+        var encrypted = CryptoJS.AES.encrypt(text, interaction.member.id).toString();
+        var decrypted  = CryptoJS.AES.decrypt(encrypted, interaction.member.id).toString(CryptoJS.enc.Utf8);
 
         const id_time = `${interaction.member.id}-${Date.now()+time}`;
 
@@ -57,11 +60,11 @@ module.exports = {
             const reminderEmbed = new Discord.MessageEmbed()
                 .setColor(`RANDOM`)
                 .setTitle(`**REMINDER**`)
-                .setDescription(text)
+                .setDescription(decrypted)
             client.intervals.delete('reminders',id_time)
             interaction.member.send({embeds:[reminderEmbed]}).catch(() => {return});
         }
-        client.intervals.set('reminders', text, id_time);
+        client.intervals.set('reminders', encrypted, id_time);
         interaction.reply({ephemeral:true, content:`Your reminder has been set, I will remind you in ${ms(time)}.`});
         setTimeout(reminder, time);
     }
