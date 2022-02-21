@@ -12,6 +12,13 @@ module.exports = async(client, interaction) => {
     // get command
     const command = client.slashs.get(interaction.commandName);
     if (!command) return interaction.reply({ephemeral:true, content: 'An error occured while trying to execute that command!' });
+    // check if command is disabled by dev
+    if (client.cmdstats.includes('disabled', interaction.commandName)) {
+        const disabledEmbed = new Discord.MessageEmbed()
+            .setColor('RANDOM')
+            .setDescription(`⛔ Command \`${interaction.commandName}\` has been temporarily disabled by the dev!`)
+        return interaction.reply({ephemeral:true, embeds:[disabledEmbed]});
+    }
     // check if dev only
     const noDevEmbed = new Discord.MessageEmbed()
             .setColor(`RED`)
@@ -52,6 +59,7 @@ module.exports = async(client, interaction) => {
         client.cmdstats.inc('usage',command.name);
     } catch (err) {
         console.log(err);
-        interaction.reply({ephemeral:true, content: '**ERROR: **'+err.message });
+        if (!interaction.replied) interaction.reply({ephemeral:true, content: '**ERROR: **'+err.message });
+        else interaction.followUp({ephemeral:true, content: '**ERROR: **'+err.message });
     }
 }
