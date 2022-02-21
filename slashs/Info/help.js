@@ -32,7 +32,7 @@ function getAll(client, interaction) {
         /* Commands */.addField("🛃 Commands", "`command` `customcommand` `customcommandlist`", true)
         /* Fun */.addField("🎲 Fun", "`8ball` `achievement` `activity` `ascii` `coinflip` `ship`", true)
         /* Games */.addField("🎮 Games", "`connect4` `flood` `hangman` `match` `rockpaperscissors` `slotmachine` `tictactoe`", true)
-        /* Info */.addField("ℹ️ Info", "`avatar` `github` `help` `serveremojis` `serverinfo` `userinfo`", true)
+        /* Info */.addField("ℹ️ Info", "`akinator` `avatar` `github` `help` `serveremojis` `serverinfo` `userinfo`", true)
         /* Moderation */.addField("🔨 Moderation", "`ban` `clear` `kick` `report` `say` `slowmode` `ticket` `timeout`", true)
         /* Music */.addField("🎵 Music", "`nowplaying` `pause` `play` `queue` `resume` `skip` `stop` `summon` `volume`", true)
         /* Other */.addField("💡 Other", "`calc` `instagram` `mcstat` `nick` `percentage` `ping` `qr` `remindme` `today` `translate` `urban` `weather`", true)
