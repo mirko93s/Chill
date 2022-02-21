@@ -1,6 +1,6 @@
 {
   "name": "chill",
-  "version": "12.7.0",
+  "version": "12.8.0",
   "description": "Just Another Discord Bot",
   "main": "chill.js",
   "scripts": {
@@ -16,6 +16,7 @@
     "@discordjs/voice": "^0.8.0",
     "@pm2/io": "^5.0.0",
     "@vitalets/google-translate-api": "^7.0.0",
+    "aki-api": "^6.0.8",
     "ascii-table": "0.0.9",
     "cli-progress": "^3.10.0",
     "common-tags": "^1.8.2",
