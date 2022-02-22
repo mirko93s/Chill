@@ -39,8 +39,8 @@
   </a>
 </p>
 <p align="center">
-  <a href="https://top.gg/bot/605617264628203520">
-    <img src="https://top.gg/api/widget/status/605617264628203520.svg">
+  <a href="https://top.gg/bot/945659412817772575">
+    <img src="https://top.gg/api/widget/status/945659412817772575.svg">
   </a>
 </p>
 
