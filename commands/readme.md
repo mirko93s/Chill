@@ -6,7 +6,7 @@
 
 ##### *This method is deprecated and won't receive any update.*
 <details>
-  <summary>chat command template</summary> 
+  <summary>command_template.js</summary> 
   
   ```js
 const Discord = require("discord.js");
