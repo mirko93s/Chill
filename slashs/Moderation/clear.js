@@ -4,7 +4,7 @@ module.exports = {
     name: "clear",
     description: "Get rid of mutiple messages at once",
     userPerms: ['MANAGE_MESSAGES'],
-    botPerms: ['ADMINISTRATOR'],
+    botPerms: ['VIEW_CHANNEL','MANAGE_MESSAGES','READ_MESSAGE_HISTORY'],
     options: [
         {
             name: 'amount',
@@ -17,7 +17,7 @@ module.exports = {
     ],
     run: async (client, interaction, arg) => {
 
-        const fetched = await interaction.channel.messages.fetch({limit: interaction.options.getInteger('amount')});
+        const fetched = await interaction.channel.messages.fetch({limit: interaction.options.getInteger('amount'), before: interaction.id});
         
         await interaction.channel.bulkDelete(fetched, true).then(deleted => {
             const purgeEmbed = new Discord.MessageEmbed()

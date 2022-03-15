@@ -18,6 +18,7 @@ module.exports = {
 module.exports.user = {
     name: "Avatar",
     type: 'USER',
+    contextdescription: 'Display user\'s Avatar',
     run: async (client, interaction, arg) => {
         getPfp(interaction, interaction.targetMember);        
     }

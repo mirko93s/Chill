@@ -3,6 +3,7 @@ const Discord = require("discord.js");
 module.exports = {
     name: "ticket",
     description: "Create and manage Tickets",
+    botPerms: ['ADMINISTRATOR'],
     options: [
         {
             name: 'create',

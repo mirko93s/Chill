@@ -9,6 +9,11 @@ module.exports = async function (interaction, embed) {
     const links = new Discord.MessageActionRow()
         .addComponents(
             new Discord.MessageButton()
+                .setLabel('Dashboard')
+                .setStyle('LINK')
+                .setURL(config.bot_dashboard_link)
+                .setEmoji('⚙️'),
+            new Discord.MessageButton()
                 .setLabel('Invite')
                 .setStyle('LINK')
                 .setURL(config.bot_invite_link)

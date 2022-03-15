@@ -40,9 +40,6 @@ module.exports = {
     ],
     run: async (client, interaction, arg) => {
 
-        const noargsEmbed = new Discord.MessageEmbed()
-			.setColor(`RED`)
-            .setTitle(`⛔ Wrong arguments, Please type \`help command\` to check how to use this command!`)
         const nocmdEmbed = new Discord.MessageEmbed()
 			.setColor(`RED`)
             .setTitle(`⛔ That command doesn't exist!`)

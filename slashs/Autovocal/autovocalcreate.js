@@ -4,7 +4,7 @@ module.exports = {
     name: "autovocal_create",
     description: "Create a new auto-vocal channel",
     userPerms: ['MANAGE_CHANNELS'],
-    botPerms: ['ADMINISTRATOR'],
+    botPerms: ['VIEW_CHANNEL','MANAGE_CHANNELS','CONNECT','MOVE_MEMBERS'],
     options: null,
     run: async (client, interaction, arg) => {
         

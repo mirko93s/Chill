@@ -3,6 +3,7 @@ const Discord = require("discord.js");
 module.exports = {
     name: "autovocal",
     description: "Lock your Auto-Vocal channel and invite/kick people to/from it",
+    botPerms: ['ADMINISTRATOR'],
     options: [
         {
             name: 'lock',
@@ -72,17 +73,16 @@ module.exports = {
                             interaction.guild.channels.cache.get(interaction.member.voice.channelId).members.forEach((member) => {
                                 member.roles.add(temprole.id);
                             })
-            
-                            interaction.member.voice.channel.permissionOverwrites.edit(interaction.guild.roles.everyone.id, {
-                                VIEW_CHANNEL: false,
-                                SPEAK: false,
-                                CONNECT: false
-                            });
                             interaction.member.voice.channel.permissionOverwrites.edit(temprole.id, {
                                 VIEW_CHANNEL: true,
                                 SPEAK: true,
                                 STREAM: true,
                                 CONNECT: true
+                            });
+                            interaction.member.voice.channel.permissionOverwrites.edit(interaction.guild.roles.everyone.id, {
+                                VIEW_CHANNEL: false,
+                                SPEAK: false,
+                                CONNECT: false
                             });
                         });
                         const lockedEmbed = new Discord.MessageEmbed()

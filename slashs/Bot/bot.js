@@ -34,7 +34,7 @@ module.exports = {
             CPU Usage :: ${percent.toFixed(2)} %
             RAM Usage :: ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB / ${Math.round(os.totalmem()/1024/1024)} MB
             OS        :: ${os.platform()} ${os.release} ${os.arch()}
-            Uptime    :: ${ms(os.uptime()*1000)}
+            Uptime    :: ${ms(process.uptime().toFixed()*1e3)}
         `;
 
             const embed = new Discord.MessageEmbed()

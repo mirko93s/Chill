@@ -10,13 +10,20 @@ module.exports = {
         const text = await fetch('http://history.muffinlabs.com/date')
             .then(response => response.json());
         const events = text.data.Events;
-        const event = events[Math.floor(Math.random() * events.length)];
-        const embed = new Discord.MessageEmbed()
-            .setColor(0x00A2E8)
-            .setURL(text.url)
-            .setTitle(`On this day (${text.date})...`)
-            .setTimestamp()
-            .setDescription(`${event.year}: ${event.text}`);
-        return interaction.reply({embeds:[embed]}).catch(console.error);
+        if (!events) {
+            const noEventEmbed = new Discord.MessageEmbed()
+                .setColor('RANDOM')
+                .setTitle(text.date)
+                .setDescription('*Nothing happened. Just a normal boring day...*')
+            return interaction.reply({embeds:[noEventEmbed]});
+        } else {
+            const event = events[Math.floor(Math.random() * events.length)];
+            const embed = new Discord.MessageEmbed()
+                .setColor('RANDOM')
+                .setURL(text.url)
+                .setTitle(text.date)
+                .setDescription(`${event.year}: ${event.text}`);
+            return interaction.reply({embeds:[embed]}).catch(console.error);
+        }
     }
 }

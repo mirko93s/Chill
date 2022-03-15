@@ -30,16 +30,16 @@ function getAll(client, interaction) {
         /* Auto-Vocal*/.addField("🔊 Auto-Vocal", "`autovocal` `autovocal_create`", true)
         /* Bot */.addField("🤖 Bot", "`bot` `bug`", true)
         /* Commands */.addField("🛃 Commands", "`command` `customcommand` `customcommandlist`", true)
-        /* Fun */.addField("🎲 Fun", "`8ball` `achievement` `activity` `ascii` `coinflip` `ship`", true)
+        /* Fun */.addField("🎲 Fun", "`akinator` `8ball` `achievement` `ascii` `coinflip` `ship`", true)
         /* Games */.addField("🎮 Games", "`connect4` `flood` `hangman` `match` `rockpaperscissors` `slotmachine` `tictactoe`", true)
-        /* Info */.addField("ℹ️ Info", "`akinator` `avatar` `github` `help` `serveremojis` `serverinfo` `userinfo`", true)
+        /* Info */.addField("ℹ️ Info", "`avatar` `github` `help` `serveremojis` `serverinfo` `userinfo`", true)
         /* Moderation */.addField("🔨 Moderation", "`ban` `clear` `kick` `report` `say` `slowmode` `ticket` `timeout`", true)
-        /* Music */.addField("🎵 Music", "`nowplaying` `pause` `play` `queue` `resume` `skip` `stop` `summon` `volume`", true)
-        /* Other */.addField("💡 Other", "`calc` `instagram` `mcstat` `nick` `percentage` `ping` `qr` `remindme` `today` `translate` `urban` `weather`", true)
+        /* Other */.addField("💡 Other", "`calc` `mcstat` `nick` `percentage` `ping` `qr` `remindme` `today` `urban` `weather`", true)
         /* Owner */.addField("⚙️ Owner", "`blast` `botactivity` `cmd` `cmdstats` `guilds`", true)
         /* Roles */.addField("🎚️ Roles", "`roleinfo` `rolelist` `userrole`", true)
         /* Settings */.addField("💾 Settings", "`resetconfig` `setconfig` `setup` `showconfig`", true)
         /* Xp */.addField("🏆 Xp", "`leaderboard` `level` `rewards` `xp`", true)
+        /* blank-field-to-keep-column-width-reserved-for-future-categories */.addField('\u200b', '\u200b', true)
         /* blank-field-to-keep-column-width-reserved-for-future-categories */.addField('\u200b', '\u200b', true)
 
     return client.chill.buttonLinks(interaction, helpembed);
@@ -54,7 +54,8 @@ function getCMD(client, interaction, input) {
 
     embed.setDescription (`\n**Description**\n> ${cmd.description}`);
     if (cmd.usage) embed.description += `\n**Info**\n> ${cmd.usage}`;
-    if (cmd.userPerms) embed.description += `\n\n**Permissions**\n> \`${cmd.userPerms.join('`, `')}\``;
+    if (cmd.userPerms) embed.description += `\n\n**User Permissions**\n> \`${cmd.userPerms.join('`, `')}\``;
+    if (cmd.botPerms) embed.description += `\n\n**Bot Permissions**\n> \`${cmd.botPerms.join('`, `')}\``;
 
     return interaction.reply({embeds:[embed.setColor("GREEN").setTitle(`**${cmd.name}**`)]});
 }

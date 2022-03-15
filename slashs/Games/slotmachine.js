@@ -3,7 +3,7 @@ const Discord = require("discord.js");
 module.exports = {
     name: "slotmachine",
     description: "Play a slot machine",
-    botPerms: ['ADMINISTRATOR'],
+    botPerms: ['VIEW_CHANNEL','EMBED_LINKS'],
     options: null,
     run: async (client, interaction, arg) => {
         
@@ -19,12 +19,13 @@ module.exports = {
                     if (_interaction.user.id === interaction.user.id) return true;
                     return;
                 }
-                const collector = sent.createMessageComponentCollector({ filter, componentType: 'BUTTON', time: 10e3 });  
+                const collector = sent.createMessageComponentCollector({ filter, componentType: 'BUTTON', time: 60e3 });  
                 collector.on('collect', collected => {
-                    collector.resetTimer({ time: 10e3 });
+                    collector.resetTimer({ time: 60e3 });
                     if(collected.customId == "spin") return sent.edit({ embeds:[slot(interaction)]});
                 });
-                collector.on('end', collected => {
+                collector.on('end', (collected, reason) => {
+                    if (reason === 'time') return sent.edit({components:[]});
                     spinButton.setDisabled(true);
                     row = new Discord.MessageActionRow().addComponents(spinButton);
                     sent.edit({components:[row]});

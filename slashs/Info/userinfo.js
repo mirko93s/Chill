@@ -19,6 +19,7 @@ module.exports = {
 module.exports.user = {
     name: "Profile",
     type: 'USER',
+    contextdescription: 'Shows some user statistics',
     run: async (client, interaction, arg) => {
         getProfile(interaction, interaction.targetMember);        
     }

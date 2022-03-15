@@ -3,6 +3,7 @@ const Discord = require("discord.js");
 module.exports = {
     name: "match",
     description: "Match the couples to win!",
+    botPerms: ['VIEW_CHANNEL','EMBED_LINKS'],
     options: null,
     run: async (client, interaction, arg) => {
 

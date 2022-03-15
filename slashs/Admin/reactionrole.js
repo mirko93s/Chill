@@ -4,7 +4,7 @@ module.exports = {
     name: "reactionroles",
     description: "Create a reaction role message. Users will be able to get these roles by reacting to the message",
     userPerms: ['MANAGE_ROLES'],
-    botPerms: ['ADMINISTRATOR'],
+    botPerms: ['VIEW_CHANNEL','MANAGE_ROLES','ADD_REACTIONS','MANAGE_MESSAGES','READ_MESSAGE_HISTORY'],
     options: null,
     run: async (client, interaction, arg) => {
 

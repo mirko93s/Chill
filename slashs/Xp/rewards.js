@@ -4,6 +4,7 @@ const config = require('../../config.json');
 module.exports = {
     name: "rewards",
     description: "Unlockable roles based on XP level",
+    botPerms: ['MANAGE_ROLES'],
     options: [
         {
 			name: 'list',

@@ -21,6 +21,7 @@ module.exports = {
             .setDescription(`${role} \`${role.id}\``)
             .addField('Created At', role.createdAt.toDateString(), true)
             .addField("Mentionable", role.mentionable ? 'Yes' : 'No', true)
+            .addField('Position', role.position.toString(), true)
             .addField("Separate Category", role.hoist.toString(), true)
             .addField("Users counter", role.members.size.toString(), true)
             .addField("Hex Color", role.hexColor, true)

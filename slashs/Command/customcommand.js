@@ -4,6 +4,7 @@ module.exports = {
     name: "customcommand",
     description: "Creates a new custom command",
     userPerms: ['ADMINISTRATOR'],
+    botPerms: ['VIEW_CHANNEL','SEND_MESSAGES','EMBED_LINKS'],
     options: [
         {
             name: 'create',

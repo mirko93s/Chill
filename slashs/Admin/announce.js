@@ -4,7 +4,7 @@ module.exports = {
     name: "announce",
     description: "Announce a message mentioning @everyone in the server",
     userPerms: ['ADMINISTRATOR'],
-    botPerms: ['ADMINISTRATOR'],
+    botPerms: ['VIEW_CHANNEL','SEND_MESSAGES','EMBED_LINKS'],
     options: [
         {
             name: 'title',

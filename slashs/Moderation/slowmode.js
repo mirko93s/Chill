@@ -5,7 +5,7 @@ module.exports = {
     name: "slowmode",
     description: "Enable/Disable slow-mode in the channel you are in",
     userPerms: ['MANAGE_CHANNELS'],
-    botPerms: ['ADMINISTRATOR'],
+    botPerms: ['VIEW_CHANNEL','MANAGE_CHANNELS'],
     options: [
         {
             name: 'delay',

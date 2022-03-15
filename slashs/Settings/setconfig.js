@@ -12,7 +12,7 @@ module.exports = {
 			options: [
 				{
 					name: 'text',
-					description: 'Change bot\' text channels',
+					description: 'Change bot\'s text channels',
 					type: 'SUB_COMMAND',
 					options: [
 						{
@@ -34,7 +34,6 @@ module.exports = {
 							name: 'newchannel',
 							description: 'Set new channel',
 							type: 'CHANNEL',
-							channelTypes: ['GUILD_TEXT'],
 							required: true,
 						}
 					]
@@ -58,6 +57,7 @@ module.exports = {
 							description: 'Set new channel',
 							type: 'CHANNEL',
 							channelTypes: ['GUILD_VOICE'],
+							channelTypes: ['GUILD_TEXT','GUILD_NEWS'],
 							required: true,
 						}
 					]

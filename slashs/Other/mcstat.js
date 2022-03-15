@@ -1,4 +1,3 @@
-const { replaceResultTransformer } = require("common-tags");
 const Discord = require("discord.js");
 const config = require('../../config.json');
 

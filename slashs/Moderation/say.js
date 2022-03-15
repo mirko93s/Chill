@@ -4,6 +4,7 @@ module.exports = {
     name: "say",
     description: "Let the bot say something for you",
     userPerms: ['MANAGE_MESSAGES'],
+    botPerms: ['VIEW_CHANNEL','SEND_MESSAGES','EMBED_LINKS'],
     options: [
         {
             name: 'text',
@@ -22,7 +23,7 @@ module.exports = {
             type: 'BOOLEAN',
         },
     ],
-    run: (client, interaction, arg) => {
+    run: async (client, interaction, arg) => {
 
         if (interaction.options.getBoolean('anonymous')) {
             const anonymousEmbed = new Discord.MessageEmbed()

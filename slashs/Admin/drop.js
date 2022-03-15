@@ -5,7 +5,7 @@ module.exports = {
     name: "drop",
     description: "Host a Drop",
     userPerms: ['MANAGE_GUILD'],
-    botPerms: ['ADMINISTRATOR'],
+    botPerms: ['VIEW_CHANNEL','SEND_MESSAGES','EMBED_LINKS'],
     options: [
         {
             name: 'prize',

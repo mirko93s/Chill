@@ -40,7 +40,7 @@ module.exports = {
             .setThumbnail(interaction.guild.iconURL())
             .addField(`Members`, `\`\`\`asciidoc\n${members}\`\`\``,true)
             .addField(`Channels`, `\`\`\`asciidoc\n${channels}\`\`\``,true)
-            .addField(`Boost`, `\`\`\`asciidoc\n${boost}\`\`\``,true)
+            .addField(`Boost`, `\`\`\`asciidoc\n${boost}\`\`\``,false)
             .addField(`Other`, `\`\`\`asciidoc\n${other}\`\`\``,false)
             
         interaction.reply({embeds:[embed]});

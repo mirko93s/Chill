@@ -4,8 +4,8 @@ const ms = require('ms');
 module.exports = {
     name: "timeout",
     description: "timemout someone in your server",
-    botPerms: ['ADMINISTRATOR'],
     userPerms: ['MODERATE_MEMBERS'],
+    botPerms: ['VIEW_CHANNEL','MODERATE_MEMBERS','SEND_MESSAGES','EMBED_LINKS'],
     options: [
         {
             name: 'add',

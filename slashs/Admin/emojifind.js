@@ -4,8 +4,8 @@ const fetch = require("node-fetch")
 module.exports = {
     name: "emojifind",
     description: "Find emojis online and add them directly in your server!",
-    userPerms: ['MANAGE_GUILD'],
-    botPerms: ['ADMINISTRATOR'],
+    userPerms: ['MANAGE_EMOJIS_AND_STICKERS'],
+    botPerms: ['VIEW_CHANNEL','EMBED_LINKS','MANAGE_EMOJIS_AND_STICKERS'],
     options: [
         {
             name: 'name',
@@ -64,6 +64,8 @@ module.exports = {
     ],
     run: async (client, interaction, arg) => {
       
+        interaction.deferReply();
+
         let emojis = await fetch("https://emoji.gg/api/").then(res => res.json());
         if (interaction.options.getSubcommand() === 'name') {
             var q = await interaction.options.getString('name').toLowerCase().trim().split(" ").join("_");
@@ -78,7 +80,7 @@ module.exports = {
             if (interaction.options.getInteger('category') === 0) var matches = emojis;
             else var matches = emojis.filter(s => s.category === interaction.options.getInteger('category'));
         }
-        matches = matches.sort((a, b) => b.faves - a.faves);        
+        matches = matches.sort((a, b) => b.faves - a.faves);
         if (!matches.length) {
             const noResultEmbed = new Discord.MessageEmbed()
                 .setColor(`RED`)
@@ -119,8 +121,7 @@ module.exports = {
 
         let row = new Discord.MessageActionRow().addComponents(prevButton, nextButton, addButton);
 
-        interaction.reply({embeds:[embedUpdate(matches, page)], components:[row]})
-        interaction.fetchReply().then(sent => {
+        interaction.followUp({embeds:[embedUpdate(matches, page)], components:[row], fetchReply:true}).then(sent => {
             const filter = (i) => {
                 i.deferUpdate();
                 if (i.user.id === interaction.user.id) return true;

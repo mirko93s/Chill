@@ -4,7 +4,7 @@ module.exports = {
     name: "channel",
     description: "Create or Delete a channel",
     userPerms: ['MANAGE_CHANNELS'],
-    botPerms: ['ADMINISTRATOR'],
+    botPerms: ['MANAGE_CHANNELS'],
     options: [
         {
             name: 'create',

@@ -4,7 +4,8 @@ module.exports = {
     name: "usercounter",
     description: "Create a User Counter channel to keep tracking how many people are in your server",
     userPerms: ['ADMINISTRATOR'],
-    botPerms: ['ADMINISTRATOR'],
+    botPerms: ['VIEW_CHANNEL','MANAGE_CHANNELS','CONNECT'],
+
     options: [
         {
             name: 'mode',
@@ -31,12 +32,17 @@ module.exports = {
                 }
                 let memberCount = interaction.guild.members.cache.filter(member => !member.user.bot).size; //filtering bots
                 memberCount = client.chill.fancyNumber(memberCount);
-                interaction.guild.channels.create(`👥Users: ${memberCount}`, {
+                interaction.guild.channels.create(`👥・${memberCount} users`, {
                     type: 'GUILD_VOICE', 
                     permissionOverwrites: [
-                        {id: interaction.guild.roles.everyone.id, 
-                        deny: [`CONNECT`],
-                        allow: [`VIEW_CHANNEL`]
+                        {
+                            id: interaction.guild.me.id,
+                            allow: [`CONNECT`]
+                        },
+                        {
+                            id: interaction.guild.roles.everyone.id, 
+                            deny: [`CONNECT`],
+                            allow: [`VIEW_CHANNEL`]
                         }
                     ]
                 })
