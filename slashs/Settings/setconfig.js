@@ -34,6 +34,7 @@ module.exports = {
 							name: 'newchannel',
 							description: 'Set new channel',
 							type: 'CHANNEL',
+							channelTypes: ['GUILD_TEXT','GUILD_NEWS'],
 							required: true,
 						}
 					]
@@ -57,7 +58,6 @@ module.exports = {
 							description: 'Set new channel',
 							type: 'CHANNEL',
 							channelTypes: ['GUILD_VOICE'],
-							channelTypes: ['GUILD_TEXT','GUILD_NEWS'],
 							required: true,
 						}
 					]
