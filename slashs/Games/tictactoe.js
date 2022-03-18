@@ -17,6 +17,7 @@ module.exports = {
         const p1 = interaction.member;
         const p2 = interaction.options.getMember('user');
         var turn = `❌`;
+        let _turn = 0;
 
         const embed = new Discord.MessageEmbed()
             .setColor('RANDOM')
@@ -47,6 +48,7 @@ module.exports = {
                 const collector = sent.createMessageComponentCollector({ filter, componentType: 'BUTTON', time: 60e3 });
         
                 collector.on('collect', collected => {
+                    _turn++;
                     // check turn
                     if (turn === "❌" && collected.user.id !== p1.id) return;
                     if (turn === "⭕" && collected.user.id !== p2.id) return;
@@ -56,11 +58,9 @@ module.exports = {
                     buttons[id-1].setStyle(turn === '❌' ? 'SUCCESS' : 'PRIMARY');
                     //check win
                     if (checkWin(buttons) === true) {
-                        collector.stop('won');
-                        embed.setAuthor({name: `${turn === '❌' ? p1.displayName : p2.displayName} WON! 🏆`, iconURL: turn === '❌' ? p1.displayAvatarURL() : p2.displayAvatarURL()})
-                        for (let i=0; i<9; i++) { //disable all buttons
-                            buttons[i].setDisabled(true);
-                        };
+                        collector.stop('win');
+                    } else if (_turn === 9) {
+                        collector.stop('draw');
                     } else {
                         collector.resetTimer({ time: 60e3 });
                         if (turn == "❌") {
@@ -70,14 +70,18 @@ module.exports = {
                             turn = "❌";
                             embed.setAuthor({name: `${p1.displayName}'s Turn ${turn}`, iconURL: p1.displayAvatarURL()});
                         }
+                        sent.edit({embeds:[embed], components:[row1,row2,row3]});
                     }
-                    sent.edit({embeds:[embed], components:[row1,row2,row3]});
                 });
                 collector.on('end', (collected, reason) => {
+                    if (reason === 'win') {
+                        embed.setAuthor({name: `${turn === '❌' ? p1.displayName : p2.displayName} WON! 🏆`, iconURL: turn === '❌' ? p1.displayAvatarURL() : p2.displayAvatarURL()});
+                    } else if (reason === 'draw') {
+                        embed.setAuthor({name: `It's a draw!`});
+                    } else embed.setAuthor({name: `Game stopped due to inactivity`});
                     for (let i=0; i<9; i++) { //disable all buttons
                         buttons[i].setDisabled(true);
                     };
-                    if (reason === 'time') embed.setAuthor({name: `Game stopped due to inactivity`})
                     sent.edit({embeds:[embed], components:[row1,row2,row3]});
                 });
             });
@@ -100,4 +104,5 @@ function checkWin (buttons) {
     //descending
     if(buttons[2].emoji?.name === buttons[4].emoji?.name && buttons[2].emoji?.name === buttons[6].emoji?.name )
         if(buttons[2].emoji && buttons[4].emoji && buttons[6].emoji) return true;
+    return false;
 }
