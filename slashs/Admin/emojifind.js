@@ -85,7 +85,7 @@ module.exports = {
             const noResultEmbed = new Discord.MessageEmbed()
                 .setColor(`RED`)
                 .setTitle(`⛔ No result found for \`${q}\``)
-            return interaction.reply({ephemeral:true, embeds:[noResultEmbed]});
+            return interaction.followUp({ephemeral:true, embeds:[noResultEmbed]});
         }
         let page = 0;
 
