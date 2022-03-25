@@ -27,6 +27,7 @@ module.exports = {
 module.exports.message = {
     name: 'Report',
     type: 'MESSAGE',
+    botPerms: ['VIEW_CHANNEL','SEND_MESSAGES','EMBED_LINKS'],
     contextdescription: 'Report a message (and its author) for breaking the rules',
     run: async (client, interaction, arg) => {
         interaction.guild.members.fetch(interaction.targetMessage.author.id).then(reported => {
@@ -90,11 +91,9 @@ async function report(client, interaction, reported, isMessage = false) {
                 > ${interaction.channel}
                 **Message:**
                 > [LINK](https://discord.com/channels/${interaction.targetMessage.guildId}/${interaction.targetMessage.channelId}/${interaction.targetMessage.id}/)`);
-        }
 
-        reportchannel.send({embeds:[reportEmbed]}).then(sentEmbed => {
-            sentEmbed.react("✅")
-            .then (() => sentEmbed.react("❔"))
-            .then (() => sentEmbed.react("❌"))
-            })
+                if (interaction.targetMessage.content.length > 1e3) reportEmbed.addField('Message Preview', interaction.targetMessage.content.slice(0,1e3) + `\n\`+${(interaction.targetMessage.content.length - 1e3).toString()} characters\``);
+                else reportEmbed.addField('Message Preview', interaction.targetMessage.content);
+        }
+        reportchannel.send({embeds:[reportEmbed]});
 }
