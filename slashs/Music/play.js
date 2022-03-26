@@ -59,40 +59,39 @@ module.exports = {
         let searchString = arg;
         let url = arg.replace(/<(.+)>/g, '$1');
 
-        // if (MTC_state === true) {
-        //     var searchString = arg.slice(0).join(' ');
-        //     var url = arg[0] ? arg[0].replace(/<(.+)>/g, '$1') : '';
-        // } else {
-        //     var searchString = arg.slice(1).join(' ');
-        //     var url = arg[1] ? arg[1].replace(/<(.+)>/g, '$1') : '';
-        // }
-
-        await interaction.deferReply();
-        if (!interaction.member.roles.cache.some(role => role.id === (client.settings.get(interaction.guild.id, "djrole"))) && client.settings.get(interaction.guild.id, 'djrequired') === 'true') return interaction.followUp({ephemeral:true, embeds:[noDJroleEmbed]});
-        if (client.settings.get(interaction.guild.id, "musicchannelonly") === "true" && interaction.channel.id !== client.settings.get(interaction.guild.id, "musictextchannel")) return interaction.followUp({ephemeral:true, embeds:[mconlyEmbed]});
+        if (!interaction.member.roles.cache.some(role => role.id === (client.settings.get(interaction.guild.id, "djrole"))) && client.settings.get(interaction.guild.id, 'djrequired') === 'true') return interaction.reply({ephemeral:true, embeds:[noDJroleEmbed]});
+        if (client.settings.get(interaction.guild.id, "musicchannelonly") === "true" && interaction.channel.id !== client.settings.get(interaction.guild.id, "musictextchannel")) return interaction.reply({ephemeral:true, embeds:[mconlyEmbed]});
         const voiceChannel = interaction.member.voice.channel;
-        if (!voiceChannel) return interaction.followUp({ephemeral:true, embeds:[novcEmbed]});
+        if (!voiceChannel) return interaction.reply({ephemeral:true, embeds:[novcEmbed]});
         //queue limit
         const serverQueue = client.queue.get(interaction.guild.id);
-        if (!serverQueue && interaction.options.getBoolean('skipall')) return interaction.followUp({ephemeral:true, embeds:[noplayingEmbed]});
-        if (serverQueue && serverQueue.songs.length > config.music_queue_limit-1) return interaction.followUp({ephemeral:true, embeds:[queueLimit]});
+        if (!serverQueue && interaction.options.getBoolean('skipall')) return interaction.reply({ephemeral:true, embeds:[noplayingEmbed]});
+        if (serverQueue && serverQueue.songs.length > config.music_queue_limit-1) return interaction.reply({ephemeral:true, embeds:[queueLimit]});
         //playlist url
         if (url.match(/^.*(youtu.be\/|list=)([^#\&\?]*).*/gi)) {
+            let pladded = 0;
+            let plq = false;
             if (ytpl.validateID(url)) {
                 const playlist = await ytpl(url, {page: 1})
                 const videos = playlist.items;
                 if (interaction.options.getBoolean('skipall')) serverQueue.songs = serverQueue.songs.slice(-1); //clear queue except last song
                 for (const video of Object.values(videos)) {
+                    pladded++;
                     const serverQueue = client.queue.get(interaction.guild.id);
                     if (serverQueue && serverQueue.songs.length > config.music_queue_limit-1) {
-                        interaction.followUp({embeds:[playlistQueueLimit]});
+                        plq = true;
                         break;
                     }
                     play(video, interaction, voiceChannel, true);
                 }
+                const addPltoqueueEmbed = new Discord.MessageEmbed()
+                    .setColor('PURPLE')
+                    .setTitle(":musical_note: Music")
+                    .setDescription(`✅ ${pladded} songs from the playlist have been added to the queue${plq ? '\n⛔ Some songs in the playlist were not added due to the queue limit' : ''}`)
+                interaction.reply({embeds:[addPltoqueueEmbed]});
                 if (interaction.options.getBoolean('skipall')) return client.queue.get(interaction.guild.id).player.stop(); //skip to next/last song
                 return;
-            } else return interaction.followUp({ephemeral:true, embeds:[noresultEmbed]});
+            } else return interaction.reply({ephemeral:true, embeds:[noresultEmbed]});
         }
         //url
         else if (url.match(/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/gi)) {
@@ -108,8 +107,8 @@ module.exports = {
                     })
                 }
             } catch (err) {
-                console.error(err);
-                return interaction.followUp({ephemeral:true, embeds:[noresultEmbed]});
+                // console.error(err);
+                return interaction.reply({ephemeral:true, embeds:[noresultEmbed]});
             }       
         }
         //string
@@ -126,8 +125,8 @@ module.exports = {
                     else return play(result[0], interaction, voiceChannel);
                 }
             } catch (err) {
-                console.error(err);
-                return interaction.followUp({ephemeral:true, embeds:[noresultEmbed]});
+                // console.error(err);
+                return interaction.reply({ephemeral:true, embeds:[noresultEmbed]});
             }
         }
 
@@ -137,7 +136,7 @@ module.exports = {
                 id: video.id ? video.id : video.videoId,
                 title: Discord.Util.escapeMarkdown(video.title),
                 url: `https://www.youtube.com/watch?v=${video.id ? video.id : video.videoId}`,
-                duration: video.duration ? video.duration : new Date(video.lengthSeconds*1e3).toISOString().substring(11, 19).replace(/^[0:]+/, '')
+                duration: video.isLive ? 'LIVE' : video.duration ? video.duration : new Date(video.lengthSeconds*1e3).toISOString().substring(11, 19).replace(/^[0:]+/, '')
             };
         
             if (!serverQueue) {
@@ -158,7 +157,7 @@ module.exports = {
                         guildId: voiceChannel.guild.id,
                         adapterCreator: voiceChannel.guild.voiceAdapterCreator,
                     });
-                    nextResource(interaction.guild, client.queue.get(interaction.guild.id).songs[0]);
+                    nextResource(interaction.guild, client.queue.get(interaction.guild.id).songs[0], true);
                     client.queue.get(interaction.guild.id).player.on(AudioPlayerStatus.Idle, () => {
                         if (client.queue.get(interaction.guild.id).songs.length>1) {
                             client.queue.get(interaction.guild.id).songs.shift();
@@ -177,24 +176,25 @@ module.exports = {
                         .setColor('PURPLE')
                         .setTitle(":musical_note: Music")
                         .setDescription(`⛔ I couldn't join the voice channel: ${error}`)
-                    return interaction.followUp({ephemeral:true, embeds:[errjoinEmbed]});
+                    return interaction.reply({ephemeral:true, embeds:[errjoinEmbed]});
                 }
             } else {
-                
                 const addtoqueueEmbed = new Discord.MessageEmbed()
                     .setColor('PURPLE')
                     .setTitle(":musical_note: Music")
                     .setDescription(`✅ ${song.title} has been added to the queue`)
         
                 serverQueue.songs.push(song);
-                if (playlist) return undefined;
-                else return interaction.followUp({embeds:[addtoqueueEmbed]});
+                if (!playlist) return interaction.reply({embeds:[addtoqueueEmbed]});
             }
-            return undefined;
+            return;
         }
 
-        function nextResource(guild, song) {
-            const resource = createAudioResource(ytdl(song.url, { filter: 'audioonly', highWaterMark: 1048576 * 32}),{inlineVolume: true});
+        function nextResource(guild, song, first = false) {
+            const resource = createAudioResource(ytdl(song.url, {
+                quality: 'highest', // [18,93]
+                highWaterMark: 1<<25}),
+                {inlineVolume: true});
             resource.volume.setVolume(client.queue.get(guild.id).volume / 100);
 
             client.queue.get(interaction.guild.id).player.play(resource);
@@ -205,7 +205,9 @@ module.exports = {
                 .setTitle(`🎵 Music`)
                 .setDescription(`> ▶️ **${song.title}**`)
                 .setFooter({text:`🕒 ${song.duration}`})
-            interaction.followUp({embeds:[playEmbed]});
+            
+            if (first) interaction.reply({embeds:[playEmbed]});
+            else client.queue.get(interaction.guild.id).textChannel.send({embeds:[playEmbed]});
         }
     }
 }
