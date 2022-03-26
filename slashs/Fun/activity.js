@@ -3,26 +3,31 @@ const fetch = require('node-fetch');
 
 module.exports = {
     name: "activities",
-    description: "Start a Discord Activity",
-    botPerms: ['ADMINISTRATOR'],
+    description: "Start a Discord Activity. Some of them may not work on your server due to Discord or missing Boost!",
+    botPerms: ['CREATE_INSTANT_INVITE'],
     options: [
         {
             name: 'game',
-            description: 'Choose a party game',
+            description: 'Choose an activity. (max players) [server boost tier]',
             type: 'STRING',
             required: true,
             choices:[
-                {name: 'Youtube Watch Together',value: '880218394199220334'},
-                {name: 'Poker Night',value: '755827207812677713'},
-                {name: 'Chess In The Park',value: '832012774040141894'},
-                {name: 'Betrayal.io',value: '773336526917861400'},
-                {name: 'Fishington.io',value: '814288819477020702'},
-                {name: 'Letter Tile',value: '879863686565621790'},
-                {name: 'Word Snacks',value: '879863976006127627'},
-                {name: 'Doodle Crew',value: '878067389634314250'},
-                {name: 'SpellCast',value: '852509694341283871'},
-                {name: 'Awkword',value: '879863881349087252'},
-                {name: 'Checkers In The Park',value: '832013003968348200'},
+                // free
+                {name: 'Sketch Heads ( 8 )',value: '902271654783242291'},
+                {name: 'Word Snacks ( 8 )',value: '879863976006127627'},
+                {name: 'Watch Together ( ∞ )',value: '880218394199220334'},
+                {name: 'Betrayal.io ( ∞ )',value: '773336526917861400'},
+                {name: 'Fishington.io ( ∞ )',value: '814288819477020702'},
+                {name: 'Sketchy Artist ( 12 )',value: '879864070101172255'},
+                {name: 'Awkword ( 12 )',value: '879863881349087252'},
+                // tier 1
+                {name: 'Poker Night ( 8 ) [ 1 ]',value: '755827207812677713'},
+                {name: 'Chess In The Park ( ∞ ) [ 1 ]',value: '832012774040141894'},
+                {name: 'Checkers In The Park ( ∞ ) [ 1 ]',value: '832013003968348200'},
+                {name: 'Blazing 8s ( 8 ) [ 1 ]',value: '832025144389533716'},
+                {name: 'Letter League ( 8 ) [ 1 ]',value: '879863686565621790'},
+                {name: 'SpellCast ( 6 ) [ 1 ]',value: '852509694341283871'},
+                // {name: 'Doodle Crew',value: '878067389634314250'},
             ]
         },
     ],
@@ -37,17 +42,22 @@ module.exports = {
         if (!interaction.member.voice.channel) return interaction.reply({ephemeral:true, embeds:[noVoiceEmbed]});
         
         const activityNames = {
-            '880218394199220334':'Youtube Watch Together',
-            '755827207812677713':'Poker Night',
-            '832012774040141894':'Chess In The Park',
+            // free
+            '902271654783242291':'Sketch Heads',
+            '879863976006127627':'Word Snacks',
+            '880218394199220334':'Watch Together',
             '773336526917861400':'Betrayal.io',
             '814288819477020702':'Fishington.io',
-            '879863686565621790':'Letter Tile',
-            '879863976006127627':'Word Snacks',
-            '878067389634314250':'Doodle Crew',
-            '852509694341283871':'SpellCast',
-            '879863881349087252':'SpellCast',
+            '879864070101172255':'Sketchy Artist',
+            '879863881349087252':'Awkword',
+            // tier 1 boost
+            '755827207812677713':'Poker Night',
+            '832012774040141894':'Chess In The Park',
             '832013003968348200':'Checkers In The Park',
+            '832025144389533716':'Blazing 8s',
+            '879863686565621790':'Letter League',
+            '852509694341283871':'SpellCast',
+            // '878067389634314250':'Doodle Crew', // removed at 26/03/22, still works but not on the official discord list
         }
         try {
             await fetch(`https://discord.com/api/v8/channels/${interaction.member.voice.channelId}/invites`, {
