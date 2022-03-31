@@ -1,0 +1,783 @@
+exports.commands = {
+	'8ball': {
+		too_long: `La domanda deve essere più corta di 3072 caratteri`,
+		title: `🎱 **8 Ball**`,
+		fortunes: [
+			`È certo.`,
+			`È decisamente così.`,
+			`Senza alcun dubbio.`,
+			`Sì, senza dubbio.`,
+			`Ci puoi contare.`,
+			`Per quanto posso vedere, sì.`,
+			`Molto probabilmente.`,
+			`Le prospettive sono buone.`,
+			`Sì.`,
+			`I segni indicano di sì.`,
+			`È difficile rispondere, prova di nuovo.`,
+			`Ask again later`,
+			`Meglio non risponderti adesso.`,
+			`Non posso predirlo ora.`,
+			`Concentrate and ask again`,
+			`Non ci contare.`,
+			`La mia risposta è no.`,
+			`Le mie fonti dicono di no.`,
+			`Le prospettive non sono buone.`,
+			`Very doubtful`
+		]
+	},
+	achievement: {
+		too_long: `Titolo e Descrizione non possono essere più lunghi di 25 caratteri`,
+		error: `Si è verificato un errore durante il tentativo di generare l'immagine dell'obiettivo`,
+		default_title: `Obiettivo Sbloccato!`
+	},
+	activities: {
+		error: `Si è verificato un errore durante l'avvio di questa attività.`,
+		not_in_vc: `Devi essere in un Canale Vocale per avviare un'attività.`,
+		title: `Attività di Discord`,
+		description: (invite_code, activity) => `[CLICCA QUI](https://discord.com/invite/${ invite_code }) per avviare **${ activity }**`,
+		by: username => `Richiesta da: ${ username }`
+	},
+	akinator: {
+		already_in_game: `Stai già giocando a una partita di Akinator!`,
+		yes: `Sì`,
+		no: `No`,
+		idk: `Non lo so`,
+		probably: `Probabilmente`,
+		probably_not: `Probabilmente no`,
+		questions: `Domande`,
+		progress: aki => `Progresso: ${ aki.progress.toFixed(2) }%\n${ `▬`.repeat(Math.round(aki.progress / 5)) + `🔘` + `▬`.repeat(20 - Math.round(aki.progress / 5)) }`,
+		guessed_footer: round => `Indovinato in ${ round } turni`,
+		wp: `Ben fatto!`,
+		defeated: `Mi hai sconfitto...`,
+		inactivity: `Partita interrotta a causa di inattività.`
+	},
+	announce: {
+		too_long: `Si prega di rispettare la lunghezza massima per il titolo (256) e la descrizione (2048).`,
+		no_channel: `Canale degli annunci non trovato.`,
+		success: bcchannel => `✅ Annuncio inviato correttamente in ${ bcchannel }`,
+		error: `Non ho il permesso di farlo. Per favore controlla i miei permessi.`
+	},
+	ascii: {
+		too_long: `Il testo non può essere più lungo di 50 caratteri`,
+		error: `Si è verificato un errore durante il tentativo di generare il testo ASCII`
+	},
+	autovocal_create: {
+		channel_name: `auto-vocale`,
+		title: `Auto-Vocale`,
+		description: channel => `Un nuovo canale vocale automatico ${ channel } è stato creato.\nOra puoi rinominarlo, impostare i permessi, il limite degli utenti, il bitrate, ecc...`
+	},
+	autovocal: {
+		already_locked: `Questo canale Auto-Vocale è già bloccato.`,
+		locked: `🔒Canale Bloccato`,
+		locked_description: `Ora puoi invitare altri utenti a unirsi a questo canale vocale automatico facendo \`.autovocalinvite @user\`.`,
+		no_owner: `Non hai il permesso di bloccare o cacciare le persone!\nSolo il creatore di questo canale Auto-Vocale può farlo.`,
+		not_in_av: `Non sei in un canale Auto-Vocale.`,
+		already_whitelisted: invited => `${ invited } è già nella whitelist.`,
+		whitelisted: invited => `${ invited } è stato aggiunto alla whitelist del tuo canale Auto-Vocale`,
+		by: username => `da ${ username }`,
+		cannot_whitelist: `Non puoi aggiungere altre persone alla whitelist dal momento che non fai parte di essa. Come sei entrato qui?!`,
+		not_locked: `Questo canale Auto-Vocale non è ancora bloccato.`,
+		not_whitelisted: `Quella persona non è ancora nella whitelist.`,
+		kicked: invited => `${ invited } è stato rimosso dalla whitelist del tuo canale Auto-Vocale.`
+	},
+	avatar: { title: username => `${ username }avatar` },
+	Avatar: {
+		// avatar context menu
+		title: username => `${ username }avatar`
+	},
+	ban: {
+		no_channel: `canale mod-logs non trovato`,
+		not_self: `Non puoi bandire te stesso`,
+		hierarchy: `Non posso bandire quella persona a causa della gerarchia dei ruoli.`,
+		not_in_guild: `Quell'utente non fa parte di questa Gilda`,
+		not_provided: `*non fornito*`,
+		title: `BAN`,
+		by: `Da`,
+		reason: `Motivo`,
+		error: err => `Errore: **${ err }**`,
+		banned: (toBan, puchannel) => `✅ ${ toBan } è stato bannato e loggato ${ puchannel }`
+	},
+	bot: {
+		guilds: `Gilde`,
+		users: `Utenti`,
+		channels: `Canali`,
+		bot: `Bot`,
+		djs: `Discord.js`,
+		nodejs: `Node.js`,
+		usage: `Utilizzo`,
+		uptime: `Tempo di attività`,
+		// unused above this comment, fomratting reasons maybe add more, missing
+		created_at: `Creato il`,
+		counters: `Contatori`,
+		versions: `Versioni`,
+		system: `Sistema`
+	},
+	bug: {
+		cooldown: `Hai già segnalato un problema di recente, devi aspettare 30 minuti tra le segnalazioni di bug.`,
+		too_short: `Fornisci un messaggio abbastanza lungo (50 caratteri).`,
+		success: `✅ La tua segnalazione di bug è stata inviata. Grazie!\nConsidera di unirti al [Server di supporto](https://discord.gg/2ktWcAb) per discuterne e rimanere aggiornato su qualsiasi changelog.`
+	},
+	calc: {
+		invalid: `L'espressione fornita non è valida!`,
+		too_long: `L'espressione deve essere più corta di 512 caratteri`,
+		service_down: `La calcolatrice non è disponibile al momento, per favore riprova tra pochi secondi!`,
+		title: `Calcolatrice`
+	},
+	channel: {
+		too_long: `Il nome del canale non può essere più lungo di 100 caratteri.`,
+		created: (channeltype, channel) => `✅ Creato con successo un nuovo **\`${ channeltype }\`** canale: **${ channel }**`,
+		deleted: channel_name => `✅ Eliminato con successo il canale: **${ channel_name }**`
+	},
+	clear: {
+		success: deleted_size => `♻️ ${ deleted_size } messaggi eliminati`,
+		old: `*Alcuni messaggi non sono stati eliminati perché sono più vecchi di 14 giorni*`
+	},
+	coinflip: {
+		coin: [
+			`Testa`,
+			`Croce`
+		],
+		title: `Lancia un Moneta`,
+		flipping: `Lanciando . . . `,
+		flipped: ` flipped **`,
+		flipped: (member, result) => `${ member } flipped **${ result }**`
+	},
+	command: {
+		not_valid_command: _command => `\`${ _command }\` non è un comando valido. Controlla \`/help\` per una lista completa.`,
+		enabled: command_name => `✅ \`${ command_name }\` è stato nuovamente abilitato su questo server.`,
+		already_enabled: _command => `\`${ _command }\` è già abilitato sul server!`,
+		disabled: command_name => `❌ \`${ command_name }\` è stato disabilitato su questo server.`,
+		already_disabled: _command => `\`${ _command }\` è già disabilitato sul server.`,
+		no_commands: `Non ci sono comandi disabilitati nel server.`,
+		disabled_commands: `Comandi Disabilitati`
+	},
+	connect4: {
+		title: `Forza 4`,
+		react: `Reagisci per inserire una pedina`,
+		won: (turn, p1, p2) => `${ turn === `🔴` ? p1.displayName : p2.displayName } HA VINTO! 🏆`,
+		draw: `PAREGGIO! 😐`,
+		turn: (player, turn) => `${ player }Turno ${ turn }`,
+		inactivity: `Partita interrotta a causa di inattività`
+	},
+	customcommand_list: {
+		error: command => `\`${ command }\` non è un comando personalizzato valido. Controlla \`/customcommand_list\` per un elenco completo.`,
+		no_custom_commands: `Questo server non ha ancora impostato alcun comando personalizzato!`,
+		title: `Comandi Personalizzati`
+	},
+	customcommand: {
+		no_override: `Non puoi sovrascrivere i comandi del bot.`,
+		bad_args: `Il comando personalizzato deve essere più corto di 32 caratteri.\nLa risposta deve essere più corta di 512 caratteri`,
+		title: `Comandi Personalizzati`,
+		created: (command, response) => `Nuovo comando personalizzato creato\n**Comando:** \`${ command }\`\n**Risposta:** \`${ response }\``,
+		error: command => `\`${ command }\` non è un comando personalizzato valido. Controlla \`/customcommand_list\` per un elenco completo.`,
+		deleted: command => `Comando personalizzato \`${ command }\` è stato eliminato.`
+	},
+	drop: {
+		no_channel: `Canale Giveaway non trovato.`,
+		too_long: `La lunghezza del premio deve essere inferiore a 3072 caratteri.`,
+		title: `🎁 Drop`,
+		prize: prize => `**Premio:** ${ prize }`,
+		winner: `**Vincitore:**`,
+		footer: `Clicca sul pulsante qui sotto per Rivendicare questo Drop`,
+		claim: `Rivendica`,
+		claimed: `Rivendicato`,
+		started: gachannel => `✅ Drop avviato in ${ gachannel }`
+	},
+	emojifind: {
+		no_result: query => `Nessun risultato trovato per \`${ query }\``,
+		favourited_key: `Preferito`,
+		favourited_value: faves => `${ faves } ${ faves !== 1 ? `volte` : `volta` }`,
+		animated_key: `Animato`,
+		animated_value: category => `${ category == 8 ? `Sì` : `No` }`,
+		created: `✅ Nuova emoji creata con successo!`,
+		add: `Aggiungi`,
+		error: `Si è verificato un errore durante il tentativo di creare una nuova emoji. Gli slot emoji del server sono pieni?`
+	},
+	flood: {
+		turns: turn => `Turni: ${ turn }`,
+		inactivity: `Partita interrotta a causa di inattività!`,
+		won: `VINTO`
+	},
+	github: {
+		no_result: (username, repo) => `⛔ Nessun risultato trovato per \`${ username }\\${ repo }\``,
+		stars: `⭐ Stelle`,
+		forks: `⤵️ Forks`,
+		watchers: `👁️ Osservatori`,
+		language: `Linguaggio`,
+		created_at: `Creato il`,
+		last_update: `Ultimo aggiornamento`,
+		tags: `Etichette`,
+		forked: `Fork di`
+	},
+	giveaway: {
+		no_channel: `Canale Giveaway non trovato.`,
+		too_long: `Il premio non può essere più lungo di 250 caratteri`,
+		started: `🎉 Giveaway Iniziato`,
+		react: `*Reagisci Con 🎉 Per Entrare!*`,
+		prize: `🎁 Premio`,
+		ends_at: time => `🕒 Termina **<t:${ time }:R>**`,
+		max_winners: winnersnum => `Vincitori massimi: ${ winnersnum }`,
+		footer_start: host_tag => `Organizzato da ${ host_tag }\nIl`,
+		success: gachannel => `✅ Giveaway iniziato in ${ gachannel }`,
+		ended: `🎉 Giveaway Terminato`,
+		winners_key: winners => `**${ winners > 1 ? `Vincitori` : `Vincitore` }**`,
+		winners_value: winner => `**${ winner == 0 ? `Nessun Partecipante` : winner }**`,
+		footer_end: host_tag => `Organizzato da ${ host_tag }\nTerminato il`,
+		winner_msg: (winner, prize) => `**Congratulazioni ${ winner }!\nHai vinto: \`${ prize }\`**`,
+		error: `Non ho il permesso di farlo. Per favore controlla i miei permessi.`
+	},
+	hangman: {
+		hangman: `Impiccato`,
+		player: `Giocatore`,
+		inactivity: `Partita interrotta a causa di inattività!`,
+		won: (player, lastGuesser) => `\nCongratulazioni ${ player || lastGuesser }! Hai vinto!`,
+		lost: (player, lastGuesser, word) => `\n${ player || lastGuesser } ha perso!\nLa parola era ${ word }`
+	},
+	help: {
+		title: `❓ Chill Bot AIUTO❓`,
+		description: `Digita \`/help <comando>\` per maggiori informazioni su un comando specifico.`,
+		admin: `🚫 Amministrazione`,
+		av: `🔊 Auto-Vocale`,
+		bot: `🤖 Bot`,
+		commands: `🛃 Comandi`,
+		fun: `🎲 Divertimento`,
+		games: `🎮 Giochi`,
+		info: `ℹ️ Info`,
+		moderation: `🔨 Moderazione`,
+		other: `💡 Altro`,
+		owner: `⚙️ Proprietario`,
+		roles: `🎚️ Ruoli`,
+		settings: `💾 Impostazioni`,
+		xp: `🏆 Xp`,
+		cmd_description: cmd => `\n**Descrizione**\n> ${ cmd.description }`,
+		cmd_usage: cmd => `\n**Info**\n> ${ cmd.usage }`,
+		cmd_userPerms: cmd => `\n\n**Permessi Utente**\n> \`${ cmd.userPerms.join(`\`, \``) }\``,
+		cmd_botPerms: cmd => `\n\n**Permessi Bot**\n> \`${ cmd.botPerms.join(`\`, \``) }\``
+	},
+	kick: {
+		no_channel: `canale mod-logs non trovato`,
+		not_self: `Non puoi espellere te stesso`,
+		hierarchy: `Non posso espellere quella persona a causa della gerarchia dei ruoli.`,
+		not_in_guild: `Quell'utente non fa parte di questa Gilda`,
+		not_provided: `*non fornito*`,
+		title: `ESPULSO`,
+		by: `Da`,
+		reason: `Motivo`,
+		error: err => `Errore: **${ err }**`,
+		kicked: (toKick, puchannel) => `✅ ${ toKick } è stato espulso e loggato in ${ puchannel }`
+	},
+	leaderboard: {
+		disabled: `Questo modulo è disabilitato in questo server!`,
+		author: guild_name => `${ guild_name } 🏆 Classifica 🏆`
+	},
+	level: {
+		disabled: `Questo modulo è disabilitato in questo server!`,
+		level: `Livello`,
+		experience: `Esperienza`,
+		rank: `Rango`,
+		to_next_level: xptolevelup => `*${ xptolevelup } per aumentare di livello*`,
+		n_a: `N/D`
+	},
+	match: {
+		title: `Abbina le Coppie`,
+		inactivity: `Partita interrotta a causa di inattività!`,
+		won: member => `Congratulazioni ${ member }! Hai vinto!`
+	},
+	mcstat: { author: `Stato Server Minecraft` },
+	nickname: {
+		hierarchy: `Non posso cambiare il soprannome di quella persona a causa della gerarchia dei ruoli`,
+		not_in_guild: `Quell'utente non fa parte di questa Gilda`,
+		success: `✅ Soprannome impostato con successo!`,
+		new_nick: (newnickname, member) => `${ newnickname } ora è il soprannome di ${ member }`
+	},
+	nowplaying: {
+		title: `🎵 Musica`,
+		mco: channel => `Solo Canale Musicale è attivo!\nPuoi usare il modulo musica solo in: <#${ client.settings.get(interaction.guild.id, `musictextchannel`) }>.`,
+		no_dj: `Non hai il ruolo DJ.`,
+		no_playing: `Non c'è niente in riproduzione.`,
+		not_vc: `Devi essere in un canale vocale.`
+	},
+	pause: {
+		title: `🎵 Musica`,
+		mco: channel => `Solo Canale Musicale è attivo!\nPuoi usare il modulo musica solo in: <#${ client.settings.get(interaction.guild.id, `musictextchannel`) }>.`,
+		no_dj: `Non hai il ruolo DJ.`,
+		no_playing: `Non c'è niente in riproduzione.`,
+		not_vc: `Devi essere in un canale vocale.`,
+		paused: `⏸ Pausa`
+	},
+	percentage: {
+		title: `Percentuale`,
+		description: (x, y) => `${ x } è **${ (x / y * 100).toFixed(2) } %** di ${ y }`,
+		error: err => `Errore: ${ err }`
+	},
+	ping: { calculating: `📶 Calcolando . . .` },
+	play: {
+		title: `🎵 Musica`,
+		mco: channel => `Solo Canale Musicale è attivo!\nPuoi usare il modulo musica solo in: <#${ client.settings.get(interaction.guild.id, `musictextchannel`) }>.`,
+		no_dj: `Non hai il ruolo DJ.`,
+		no_playing: `Non c'è niente in riproduzione.`,
+		not_vc: `Devi essere in un canale vocale.`,
+		no_result: `Non ho potuto ottenere alcun risultato di ricerca o il link fornito non era valido.`,
+		queue_limit: `Non puoi mettere in coda più di 10 canzoni.`,
+		playlist_queued: (pladded, plq) => `✅ ${ pladded } brani della playlist sono stati aggiunti alla coda${ plq ? `\n⚠️ Alcuni brani della playlist non sono stati aggiunti a causa del limite di coda` : `` }`,
+		live: `IN DIRETTA`,
+		queued: song_title => `✅ ${ song_title } è stato aggiunto alla coda`,
+		by: username => `Richiesta da: ${ username }`,
+		couldnt_join: error => `Non sono riuscito ad entrare nel canale vocale: ${ error }`
+	},
+	poll: {
+		no_channel: `Canale dei Sondaggi non trovato.`,
+		question_too_long: `La domanda deve essere più corta di 256 caratteri`,
+		bad_choices: `Si prega di fornire almeno 2 scelte per avviare un sondaggio (max 10 scelte, utilizza virgole per separare le scelte)`,
+		description: choicemsg => `**Reagisci per votare**\n${ choicemsg }`,
+		choices_too_long: `La somma di tutte le scelte non può essere più lunga di 4096 caratteri`,
+		success: pollchannel => `✅ Sondaggio avviato in ${ pollchannel }`
+	},
+	qr: {},
+	queue: {
+		title: `🎵 Musica`,
+		mco: channel => `Solo Canale Musicale è attivo!\nPuoi usare il modulo musica solo in: <#${ channel }>.`,
+		no_dj: `Non hai il ruolo DJ.`,
+		no_playing: `Non c'è niente in riproduzione.`,
+		not_vc: `Devi essere in un canale vocale.`,
+		queue: (song_list, playing) => `🔀 Queue:\n\n${ song_list }\n\n🎶 **${ playing }**`
+	},
+	reactionroles: {
+		title: `Reaction Roles`,
+		setup_input: `**Please enter 1 emoji and mention a role**`,
+		setup_footer: `Click the Confirm button when you are done to create the reaction roles\nThis setup becomes invalid after 60 seconds of inactivity`,
+		confirm: `Confirm`,
+		abort: `Abort`,
+		bad_input_key: `\`⛔ INVALID EMOJI OR ROLE ⛔\``,
+		bad_input_value: `> \`Please try again...\``,
+		too_long_key: `⛔ Embed Description limit reached ⛔`,
+		too_long_value: `> You can't add any more role`,
+		inactivity: `Setup aborted due to inactivity`,
+		react: rolestext => `React to get the roles\n\n${ rolestext }`,
+		aborted: `Reaction Roles setup has been aborted.`
+	},
+	remindme: {
+		title: `**Reminder**`,
+		set: time => `Your reminder has been set, I will remind you in ${ time }.`
+	},
+	report: {
+		no_channel: `Reports channel not found`,
+		no_bots: `You can't report bots`,
+		not_self: `You can't report yourself`,
+		success: reported => `✅ Thanks for reporting ${ reported }.\nA staff member will review your report as soon as possible`,
+		too_long: `Description must be shorter than 3072 characters`,
+		user_report: `User Report`,
+		member: `**Member:**`,
+		by: `**Reported by:**`,
+		channel: `**Channel:**`,
+		reason: `**Reason:**`,
+		message_report: `Message Report`,
+		message_author: `Message author:`,
+		message: `**Message:**`,
+		preview: `Message Preview`,
+		char: content => `${ content.slice(0, 1000) }\n\`${ content.length - 1000 > 1 ? `characters` : `character` }\``
+	},
+	Report: {
+		// report context menu
+		no_channel: `Reports channel not found`,
+		no_bots: `You can't report bots`,
+		not_self: `You can't report yourself`,
+		success: reported => `✅ Thanks for reporting ${ reported }.\nA staff member will review your report as soon as possible`,
+		too_long: `Description must be shorter than 3072 characters`,
+		user_report: `User Report`,
+		member: `**Member:**`,
+		by: `**Reported by:**`,
+		channel: `**Channel:**`,
+		reason: `**Reason:**`,
+		message_report: `Message Report`,
+		message_author: `Message author:`,
+		message: `**Message:**`,
+		preview: `Message Preview`,
+		char: content => `${ content.slice(0, 1000) }\n\`${ content.length - 1000 > 1 ? `characters` : `character` }\``
+	},
+	resetconfig: {
+		title: `💾Guild Settings`,
+		description: `Server settings have been resetted to default values.`
+	},
+	resume: {
+		title: `🎵 Musica`,
+		mco: channel => `Solo Canale Musicale è attivo!\nPuoi usare il modulo musica solo in: <#${ channel }>.`,
+		no_dj: `Non hai il ruolo DJ.`,
+		no_playing: `Non c'è niente in riproduzione.`,
+		not_vc: `Devi essere in un canale vocale.`,
+		resumed: `⏯️ Resumed`
+	},
+	rewards: {
+		disabled: `Questo modulo è disabilitato in questo server!`,
+		no_perms: `You need the \`ADMINISTRATOR\` permission to use this command!`,
+		invalid_reward: `That reward doesn't exist`,
+		rewards_limit: `You have reached the maximum number of rewards you can have at the same time. Delete some of them to add new ones.`,
+		title: `Level Rewards`,
+		no_rewards: `No rewards have been set yet.`,
+		set: (role, level) => `Set ${ role } to be awarded at level **${ level }**.`,
+		removed: role => `Removed ${ role } from the Rewards.`
+	},
+	rockpaperscissors: {
+		title: `Rock Paper Scissors`,
+		react: `React to play!`,
+		won: `You won!`,
+		tie: `It's a tie!`,
+		lost: `You lost!`
+	},
+	roleinfo: {
+		title: `Role Info`,
+		created_at: `Created At`,
+		mentionable: `Mentionable`,
+		position: `Position`,
+		category: `Separate Category`,
+		counter: `Users counter`,
+		color: `Hex Color`,
+		perms: `Permissions`
+	},
+	rolelist: { title: size => `Server Roles [${ size }]` },
+	say: { sucess: `✅ Message correctly sent.` },
+	serveremojis: {
+		no_emojis: `Server has no emojis`,
+		title: `Server Emojis`,
+		trimmed: `Some emojis are missing in this list due to Discord 4096 characters limit.`
+	},
+	serverinfo: {
+		filter_obj: {
+			DISABLED: `Off`,
+			MEMBERS_WITHOUT_ROLES: `No Role`,
+			ALL_MEMBERS: `Everyone`,
+			0: `Off`,
+			1: `No Role`,
+			2: `Everyone`
+		},
+		verification_obj: {
+			NONE: `None`,
+			LOW: `Low`,
+			MEDIUM: `Medium`,
+			HIGH: `High`,
+			VERY_HIGH: `Highest`,
+			0: `None`,
+			1: `Low`,
+			2: `Medium`,
+			3: `High`,
+			4: `Highest`
+		},
+		tier_obj: {
+			NONE: `None`,
+			TIER_1: `1`,
+			TIER_2: `2`,
+			TIER_3: `3`
+		},
+		// keep same string length inside each group
+		// group1
+		text: `Text  ::`,
+		voice: `Voice ::`,
+		// group2
+		count: `Count ::`,
+		tier: `Tier  ::`,
+		// group3
+		online: `Online ::`,
+		total: `Total  ::`,
+		// group4
+		owner: `Owner              ::`,
+		created_at: `Created at         ::`,
+		verification: `Verification Level ::`,
+		filter: `Explicit Filter    ::`,
+		roles: `Roles Count        ::`,
+		// end groups
+		members: `Members`,
+		channels: `Canali`,
+		boost: `Boost`,
+		other: `Other`
+	},
+	setconfig: {
+		title: `💾Guild Settings`,
+		invalid_key: `Couldn't find that key! Do \`/showconfig\` to get key names`,
+		success: (config_key, value) => `**${ config_key }** has been changed to: \`${ value }\``
+	},
+	setup: {
+		title: `SETUP`,
+		channels: `**Channels**`,
+		roles: `**Roles**`,
+		categories: `**Categories**`,
+		footer: `✅ Created\n❌ Already exists`
+	},
+	ship: {
+		title: emoji => `${ emoji } SHIP ${ emoji }`,
+		0: (user1, user2) => `🔻 ${ user1 }\n🔺 ${ user2 }\n**Do not match at all**`,
+		20: (user1, user2) => `🔻 ${ user1 }\n🔺 ${ user2 }\n**Do not match well**`,
+		50: (user1, user2) => `🔻 ${ user1 }\n🔺 ${ user2 }\n**Match very well**`,
+		90: (user1, user2) => `🔻 ${ user1 }\n🔺 ${ user2 }\n**Are meant to eachother**`
+	},
+	showconfig: {
+		// missing key translations
+		title: `💾Guild Settings`,
+		channels: `> Channels`,
+		roles: `> Roles`,
+		toggles: `> Toggles`,
+		other: `> Other`,
+		not_found: `❌❌❌ NOT FOUND ❌❌❌`,
+		warning_key: `⚠️ ⚠️ ⚠️ WARNING ⚠️ ⚠️ ⚠️`,
+		warning_value: `One or more keys are missing in the settings and some features won't work, this probably happened because you deleted bot roles or channels\n**Do \`/setup\` to fix the missing keys, it will recreate missing roles and channels. \nOr use \`/setconfig\` to manually set the them.**`,
+		dashboard: `Dashboard`
+	},
+	skip: {
+		title: `🎵 Musica`,
+		mco: channel => `Solo Canale Musicale è attivo!\nPuoi usare il modulo musica solo in: <#${ channel }>.`,
+		no_dj: `Non hai il ruolo DJ.`,
+		no_playing: `Non c'è niente in riproduzione.`,
+		not_vc: `Devi essere in un canale vocale.`,
+		skipped: `⏭️ Skipped`
+	},
+	slotmachine: {
+		reroll: `Spin Again`,
+		won: member => `Wow! ${ member } won great job!`,
+		lost: member => `Awww ${ member } lost that sucks!`
+	},
+	slowmode: {
+		title: `Slow-Mode`,
+		description: (delay, formatted_delay) => delay > 0 ? `Set to ${ formatted_delay }` : `Disabled`
+	},
+	stop: {
+		title: `🎵 Musica`,
+		mco: channel => `Solo Canale Musicale è attivo!\nPuoi usare il modulo musica solo in: <#${ channel }>.`,
+		no_dj: `Non hai il ruolo DJ.`,
+		no_playing: `Non c'è niente in riproduzione.`,
+		not_vc: `Devi essere in un canale vocale.`,
+		stopped: `⏹️ Stopped`
+	},
+	summon: {
+		title: `🎵 Musica`,
+		mco: channel => `Solo Canale Musicale è attivo!\nPuoi usare il modulo musica solo in: <#${ channel }>.`,
+		no_dj: `Non hai il ruolo DJ.`,
+		not_vc: `Devi essere in un canale vocale.`,
+		summoned: channel => `✅ I joined ${ channel }`,
+		couldnt_summon: channel => `Non sono riuscito ad entrare nel canale vocale: ${ channel }`
+	},
+	ticket: {
+		no_channel: `You are not in a ticket channel!`,
+		no_staff: `You need the be part of the Staff or an Administrator to use this command!`,
+		ticket_already_opened: `You already have an opened ticket!`,
+		channel_prefix: `ticket`,
+		title: `🎟️ TICKET 🎟️`,
+		description: member => `**${ member } someone will be with you shortly.**`,
+		opened: channel => `✅ Ticket opened, go to ${ channel }`,
+		closed: `❌ The ticket has been closed.`
+	},
+	tictactoe: {
+		turn: (player, turn) => `${ player }Turno ${ turn }`,
+		title: `Tic Tac Toe`,
+		win: winner => `${ winner } HA VINTO! 🏆`,
+		draw: `It's a draw!`,
+		inactivity: `Partita interrotta a causa di inattività`
+	},
+	timeout: {
+		no_channel: `canale mod-logs non trovato`,
+		not_moderatable: member => `${ member } can't be timed out!`,
+		not_self: `You can't timeout yourself`,
+		not_in_guild: `Quell'utente non fa parte di questa Gilda`,
+		not_provided: `*non fornito*`,
+		error: err => `Errore: **${ err }**`,
+		timeout_title: `TIMEOUT`,
+		by: `Da`,
+		duration: `Duration`,
+		reason: `Motivo`,
+		not_timed_out: member => `${ member } is not currently timed out`,
+		removed_title: `TIMEOUT REMOVED`,
+		description: (member, mode, puchannel) => `✅ ${ member }${ mode === `add` ? ` has been timed out` : `'s time out has been removed` } and logged in ${ puchannel }`
+	},
+	today: { boring_day: `*Nothing happened. Just a normal boring day...*` },
+	translate: {
+		title: `Translator`,
+		error: err => `Errore: **${ err }**`
+	},
+	'Translate to EN': {
+		message_invalid: `Not a valid message!`,
+		context_to_en: `Translated to English`,
+		footer: user_tag => `Requested by ${ user_tag }`
+	},
+	urban: {
+		no_result: `Couldn't find any result`,
+		author: `Urban Dictionary`,
+		example: `Example`,
+		error: err => `Errore: ${ err }`
+	},
+	usercounter: {
+		already_enabled: channel => `Server Stats is already enabled and bound to ${ channel }`,
+		channel_name: memberCount => `👥・${ memberCount } users`,
+		title: `User Counter`,
+		enabled: created => `**✅ Enabled and bound to ${ created }**`,
+		footer: `From now on it will track user counter and automatically update whenever a new user joins/leaves, with a 30 minutes cooldown`,
+		disabled: `**Disabled**`,
+		already_disabled: `User Counter is already disabled`
+	},
+	userinfo: {
+		guild: `Guild Info`,
+		nickname: `**> Display name:**`,
+		joined_at: `**> Joined at:**`,
+		boosting: `**> Boosting since:**`,
+		no: `No`,
+		roles: `**> Roles:**`,
+		none: `None`,
+		personal: `Personal Info`,
+		id: `**> ID:**`,
+		username: `**> Username:**`,
+		tag: `**> Tag:**`,
+		created_at: `**> Created at:**`,
+		activity_type: {
+			PLAYING: `Playing`,
+			STREAMING: `Streaming`,
+			LISTENING: `Listening`,
+			WATCHING: `Watching`,
+			CUSTOM: `Custom`,
+			COMPETING: `Competing`
+		},
+		activities: `Activities`
+	},
+	'User Info': {
+		// userinfo context menu
+		guild: `Guild Info`,
+		nickname: `**> Display name:**`,
+		joined_at: `**> Joined at:**`,
+		boosting: `**> Boosting since:**`,
+		no: `No`,
+		roles: `**> Roles:**`,
+		none: `None`,
+		personal: `Personal Info`,
+		id: `**> ID:**`,
+		username: `**> Username:**`,
+		tag: `**> Tag:**`,
+		created_at: `**> Created at:**`,
+		activity_type: {
+			PLAYING: `Playing`,
+			STREAMING: `Streaming`,
+			LISTENING: `Listening`,
+			WATCHING: `Watching`,
+			CUSTOM: `Custom`,
+			COMPETING: `Competing`
+		},
+		activities: `Activities`
+	},
+	userrole: {
+		hierarchy: role => `I can't manage the role ${ role } due to roles hierarchy.`,
+		already: member => `${ member } already has that role.`,
+		not_yet: member => `${ member } doesn't have that role.`,
+		success: (role, mode, member) => `✅ **${ role }** has been ${ mode === `give` ? `given to` : `taken from` } ${ member }`
+	},
+	volume: {
+		title: `🎵 Musica`,
+		no_playing: `Non c'è niente in riproduzione.`,
+		not_vc: `Devi essere in un canale vocale.`,
+		volume: volume => `🔈 Current volume: **${ volume } %**`,
+		new_volume: newvolume => `🔈 New volume: **${ newvolume } %**`
+	},
+	weather: {
+		no_location: `There was an error trying to find your location. Please try again.`,
+		winds: {
+			North: `N`,
+			South: `S`,
+			West: `W`,
+			East: `E`,
+			Northwest: `NW`,
+			Northeast: `NE`,
+			Southwest: `SW`,
+			Southeast: `SE`
+		},
+		author: `Weather`,
+		temperature: `🌡️Temperature`,
+		feels_like: `♨️Feels like`,
+		low: `📉Low:`,
+		high: `📈High:`,
+		wind: `🌬️Wind`,
+		humidity: `💧Humidity`,
+		precipitations: `☔Precipitations`,
+		forecast: f => `**${ f.skytextday }**\nLow: ${ f.low } °C | ${ Math.round(f.low * 1.8) + 32 } °F\nHigh: ${ f.high } °C | ${ Math.round(f.high * 1.8) + 32 } °F\nPrecipitations: ${ f.precip.length > 0 ? f.precip : `0` }%`
+	},
+	xp: {
+		disabled: `⛔ This module is disabled on this server.`,
+		no_negative: `⛔ User experience can't go negative.`,
+		set_to: `Set to`,
+		author: username => `${ username }'s experience`,
+		title: (xpmsg, pointsToAdd) => `${ xpmsg } **${ client.chill.fancyNumber(pointsToAdd) }** ${ pointsToAdd > 1 || pointsToAdd == 0 ? `points` : `point` }`,
+		by: username => `da ${ username }`,
+		levelup_title: (xpmsg, pointsToAdd, newLevel) => `**${ xpmsg } ${ client.chill.fancyNumber(pointsToAdd) }** ${ pointsToAdd > 1 || pointsToAdd == 0 ? `points` : `point` }\n*New level is: ${ newLevel }*`,
+		unlocked: unlocked => `***Unlocked roles:\n${ unlocked }***`,
+		taken: unlocked => `***Taken roles:\n${ unlocked }***`
+	}
+};
+exports.events = {
+	interactionCreate: {
+		no_dm: `You can't use slash commands in DMs.`,
+		get_cmd_error: `An error occured while trying to execute that command.`,
+		dev_disabled: command_name => `Command \`${ command_name }\` has been temporarily disabled by the dev.`,
+		dev_only: `This command is limited to the bot Developer!`,
+		user_perms: command => `You need the \`${ command.userPerms.join(`\` \``) }\` permission${ command.userPerms.length > 1 ? `s` : `` } to use this command!`,
+		bot_perms: (command, interaction) => `I need \`${ command.botPerms.filter(perm => !interaction.guild.me.permissions.toArray().includes(perm)).join(`\` \``) }\` ${ command.botPerms.length > 1 ? `permissionss` : `permission` } to use this command!`,
+		guild_disabled: command_name => `\`${ command_name }\` has been disabled on this server by an Administrator.`,
+		error: err => `**ERROR:** ${ err.message }`
+	},
+	messageCreate: {
+		bot_mention: msg_author => `Hi ${ msg_author }! Type \`/help\` for more info! 😃`,
+		guild_disabled: command => `\`${ command.name }\` has been disabled on this server by an Administrator.`
+	}
+};
+exports.functions = {
+	welcomeMessage: {
+		messages: (member, guild, count) => [
+			`${ member.user } has joined.`,
+			`${ member.user } joined ${ guild.name }.`,
+			`Welcome, ${ member.user }.`,
+			`${ member.user } is our 1,000,000th visitor. React for a free iPhone.`,
+			`Let's all give a warm welcome to ${ member.user }.`,
+			`A Wild ${ member.user } appeared!`,
+			`👋 ${ member.user } 👋`,
+			`Welcome ${ member.user }, you are the ${ count } member.`,
+			`Hi ${ member.user }, hope you will enjoy staying in our server. `,
+			`Hello ${ member.user }, we were expecting you.`,
+			`●●●${ member.user } is typing...`,
+			`${ member.user } joined your party.`,
+			`Swoooosh. ${ member.user } just landed.`,
+			`${ member.user } hopped into the server.`,
+			`Where’s ${ member.user }? In the server!`,
+			`${ member.user } just showed up. Hold my beer.`,
+			`Big ${ member.user } showed up!`,
+			`A ${ member.user } has spawned in the server!`,
+			`Welcome, ${ member.user }. Hope you brought pizza.`,
+			`${ member.user } just joined the server - glhf!`,
+			`${ member.user } just joined. Everyone, look busy!`,
+			`${ member.user } just joined. Can I get a heal?`,
+			`${ member.user } joined. You must construct additional pylons.`,
+			`Ermagherd. ${ member.user } is here.`,
+			`Welcome, ${ member.user }. Stay awhile and listen.`,
+			`Welcome, ${ member.user }. We were expecting you ( ͡° ͜ʖ ͡°)`,
+			`Welcome ${ member.user }. Leave your weapons by the door.`,
+			`Brace yourselves. ${ member.user } just joined the server.`,
+			`${ member.user } just slid into the server.`,
+			`Challenger approaching - ${ member.user } has appeared!`,
+			`It's a bird! It's a plane! Nevermind, it's just ${ member.user }.`,
+			`Ha! ${ member.user } has joined! You activated my trap card!`,
+			`Cheers, love! ${ member.user }'s here!`,
+			`Hey! Listen! ${ member.user } has joined!`,
+			`We've been expecting you ${ member.user }`,
+			`It's dangerous to go alone, take ${ member.user }!`,
+			`${ member.user } has joined the server! It's super effective!`,
+			`${ member.user } is here, as the prophecy foretold.`,
+			`${ member.user } has arrived. Party's over.`,
+			`Ready player ${ member.user }.`,
+			`${ member.user } is here to kick butt and chew bubblegum. And ${ member.user } is all out of gum.`,
+			`Hello. Is it ${ member.user } you're looking for?`,
+			`Roses are red, violets are blue, ${ member.user } joined this server with you.`,
+			`${ member.user } just arrived. Seems OP - please nerf.`,
+			`${ member.user } just joined. Hide your bananas.`,
+			`It's ${ member.user }! Praise the sun!`,
+			`Never gonna give ${ member.user } up. Never gonna let ${ member.user } down.`,
+			`${ member.user } has joined. Stay a while and listen!`
+		],
+		left: user => `${ user } left the game.`
+	},
+	xpAdd: {
+		congratulations: `Congratulations`,
+		description: (user, curLevel) => `${ user } **leveled up to Lvl ${ curLevel }**!`,
+		rewards: (user, curLevel, unlocked) => `${ user } **leveled up to Lvl ${ curLevel }**\n*and unlocked these roles:*\n***${ unlocked }***`
+	}
+};
