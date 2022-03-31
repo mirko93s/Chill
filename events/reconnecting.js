@@ -1,3 +1,3 @@
 module.exports = (client) => {
-    console.log('Chill BOT Reconnecting!');
+	console.log(`Chill BOT Reconnecting!`);
 };
