@@ -37,5 +37,37 @@ Crediting is always a good habit within the opensource community and they are al
 There are also other usueful info on how to properly set the bot and a small guide on how to self-host the bot.
 
 # [🗺️ Help translating!](https://translate.chill.ovh/) [![Crowdin](https://badges.crowdin.net/chillbot/localized.svg)](https://translate.chill.ovh/project/chillbot)
-
+<details>
+  <summary>Supported Languages (using discord ones)</summary>
+  🇩🇰 Dansk<br>
+  🇩🇪 Deutsch<br>
+  🇺🇸 English<br>
+  🇪🇸 Español<br>
+  🇫🇷 Français<br>
+  🇭🇷 Hrvatski<br>
+  🇮🇹 Italiano<br>
+  🇱🇹 Lietuviškai<br>
+  🇭🇺 Magyar<br>
+  🇳🇱 Nederlands<br>
+  🇳🇴 Norsk<br>
+  🇵🇱 Polski<br>
+  🇧🇷 Português do Brasil<br>
+  🇷🇴 Română<br>
+  🇫🇮 Suomi<br>
+  🇸🇪 Svenska<br>
+  🇻🇳 Tiếng Việt<br>
+  🇹🇷 Türkçe<br>
+  🇨🇿 Čeština<br>
+  🇬🇷 Ελληνικά<br>
+  🇧🇬 български<br>
+  🇷🇺 Pусский<br>
+  🇺🇦 Українська<br>
+  🇮🇳 हिन्दी<br>
+  🇹🇭 ไทย<br>
+  🇨🇳 中文<br>
+  🇯🇵 日本語<br>
+  🇹🇼 繁體中文<br>
+  🇰🇷 한국어<br>
+</details>
+<br>
 #### For any other question join the [Support server](https://discord.gg/2ktWcAb).
