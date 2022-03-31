@@ -69,5 +69,5 @@ There are also other usueful info on how to properly set the bot and a small gui
   🇹🇼 繁體中文<br>
   🇰🇷 한국어<br>
 </details>
-<br>
+
 #### For any other question join the [Support server](https://discord.gg/2ktWcAb).
