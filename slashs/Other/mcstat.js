@@ -1,31 +1,27 @@
-const Discord = require("discord.js");
-const config = require('../../config.json');
+const Discord = require(`discord.js`);
+const config = require(`../../config.json`);
 
 module.exports = {
-    name: "mcstat",
-    description: "Get Minecraft server banners",
-    options: [
-        {
-            name: "server",
-            description: "IP of the server",
-            type: 'STRING',
-            required: true,
-        },
-    ],
-    run: async (client, interaction, arg) => {
-        
-        let serverip = interaction.options.getString('server');
-        if (!serverip) serverip = config.mc_default_ip;
+	name: `mcstat`,
+	description: `Get Minecraft server banners`,
+	options: [
+		{
+			name: `server`,
+			description: `IP of the server`,
+			type: `STRING`,
+			required: true,
+		},
+	],
+	run: async (client, interaction, LANG) => {
 
-        if (serverip.includes(':')) serverip=serverip.replace(/:/g, '/');
-            else serverip+='/25565';
-        
-        const embed = new Discord.MessageEmbed()
-            .setAuthor({name: 'Minecraft Server Status', iconURL: 'https://i.imgur.com/BupabSS.png'})
-            .setTitle(`***${serverip}***`)
-            .setColor(`RANDOM`)
-            .setImage("http://status.mclive.eu/Server/" + serverip + "/banner.png")
+		const ip = interaction.options.getString(`server`);
 
-        interaction.reply({embeds:[embed]});
-    }
-}
+		const embed = new Discord.MessageEmbed()
+			.setAuthor({ name: LANG.author, iconURL: `https://i.imgur.com/BupabSS.png` })
+			.setTitle(`\`${ip.includes(`:`) && ip.split(`:`)[1] == 25565 ? ip.split(`:`)[0] : ip}\``)
+			.setColor(`RANDOM`)
+			.setImage(`http://status.mclive.eu/Server/` + ip + `/banner.png`);
+
+		interaction.reply({ embeds: [embed] });
+	},
+};

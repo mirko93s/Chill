@@ -1,26 +1,24 @@
-const Discord = require("discord.js");
+const Discord = require(`discord.js`);
 
 module.exports = {
-    name: "serveremojis",
-    description: "Returns a list with all the emojis in this server",
-    options: null,
-    run: async (client, interaction, arg) => {
+	name: `serveremojis`,
+	description: `Returns a list with all the emojis in this server`,
+	options: null,
+	run: async (client, interaction, LANG) => {
 
-        const noemojiEmbed = new Discord.MessageEmbed()
-            .setColor(`RED`)
-            .setTitle(`⛔ Server has no emojis`)
-        const emojiEmbed = new Discord.MessageEmbed()
-            .setColor('RANDOM')
-            .setTitle('Server Emojis')
+		const emojiEmbed = new Discord.MessageEmbed()
+			.setColor(`RANDOM`)
+			.setTitle(cLANG.title);
 
-        let emojis = await interaction.guild.emojis.cache.map((e) => `${e}`).join(' ').toString();
-        if (emojis.length < 1) return interaction.reply({ephemeral:true, embeds:[noemojiEmbed]});
-        else if (emojis.length > 4096) {
-            emojis = emojis.slice(0, 4096).split(' ');
-            if (!emojis[emojis.length-1].endsWith('>')) emojis = emojis.splice(0, emojis.length-1).join(' ');
-            emojiEmbed.setFooter({text:'Some emojis are missing in this list due to Discord 4096 characters limit.'})
-        }
-        emojiEmbed.setDescription(emojis.replace(/\s/g,''));
-        interaction.reply({embeds:[emojiEmbed]});
-    }
-}
+		let emojis = await interaction.guild.emojis.cache.map((e) => `${e}`).join(` `).toString();
+		if (emojis.length < 1) {
+			return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.no_emojis)] });
+		} else if (emojis.length > 4096) {
+			emojis = emojis.slice(0, 4096).split(` `);
+			if (!emojis[emojis.length - 1].endsWith(`>`)) emojis = emojis.splice(0, emojis.length - 1).join(` `);
+			emojiEmbed.setFooter({ text: LANG.trimmed });
+		}
+		emojiEmbed.setDescription(emojis.replace(/\s/g, ``));
+		interaction.reply({ embeds: [emojiEmbed] });
+	},
+};

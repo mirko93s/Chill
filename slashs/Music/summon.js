@@ -1,34 +1,28 @@
-const Discord = require("discord.js");
-const { joinVoiceChannel } = require ('@discordjs/voice');
+const Discord = require(`discord.js`);
+const { joinVoiceChannel, getVoiceConnection } = require (`@discordjs/voice`);
 
 module.exports = {
-    name: "summon",
-    description: "Summon/move the bot in your voice channel",
-    botPerms: ['ADMINISTRATOR'],
-    options: null,
-    run: async (client, interaction, arg) => {
+	name: `summon`,
+	description: `Summon/move the bot in your voice channel`,
+	// botPerms: [`ADMINISTRATOR`],
+	options: null,
+	run: async (client, interaction, LANG) => {
 
-        const noDJroleEmbed = new Discord.MessageEmbed()
-            .setColor('PURPLE')
-            .setTitle(":musical_note: Music")
-            .setDescription(`⛔ You don't have DJ role`)
-        const notinvcEmbed = new Discord.MessageEmbed()
-            .setColor('PURPLE')
-            .setTitle(":musical_note: Music")
-            .setDescription(`⛔ You are not in a voice channel`)
-        const mconlyEmbed = new Discord.MessageEmbed()
-            .setColor(`RANDOM`)
-            .setTitle(":musical_note: Music")
-            .setDescription(`Music Channel Only is active!\nYou can only use the music module in: <#${client.settings.get(interaction.guild.id, "musictextchannel")}>`)
+		if (!interaction.member.roles.cache.some(role => role.id === (client.settings.get(interaction.guild.id, `djrole`))) && client.settings.get(interaction.guild.id, `djrequired`) === `true`) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.no_dj)] });
+		if (client.settings.get(interaction.guild.id, `musicchannelonly`) === `true` && interaction.channel.id !== client.settings.get(interaction.guild.id, `musictextchannel`)) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.mco(client.settings.get(interaction.guild.id, `musictextchannel`)))] });
+		if (!interaction.member.voice.channel) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.not_vc)] });
 
-        if (!interaction.member.roles.cache.some(role => role.id === (client.settings.get(interaction.guild.id, "djrole"))) && client.settings.get(interaction.guild.id, 'djrequired') === 'true') return interaction.reply({ephemeral:true, embeds:[noDJroleEmbed]});
-        if (client.settings.get(interaction.guild.id, "musicchannelonly") === "true" && interaction.channel.id !== client.settings.get(interaction.guild.id, "musictextchannel")) return interaction.reply({ephemeral:true, embeds:[mconlyEmbed]});
-        if (!interaction.member.voice.channel) return interaction.reply({ephemeral:true, embeds:[notinvcEmbed]});
+		joinVoiceChannel({
+			channelId: interaction.member.voice.channel.id,
+			guildId: interaction.member.voice.channel.guild.id,
+			adapterCreator: interaction.member.voice.channel.guild.voiceAdapterCreator,
+		});
 
-        await joinVoiceChannel({
-            channelId: interaction.member.voice.channel.id,
-            guildId: interaction.member.voice.channel.guild.id,
-            adapterCreator: interaction.member.voice.channel.guild.voiceAdapterCreator,
-        });
-    }
-}
+		if (interaction.guild.me.voice.channel) {
+			return interaction.reply({ ephemeral: true, embeds: [new Discord.MessageEmbed().setColor(`RANDOM`).setTitle(LANG.title).setDescription(LANG.summoned(interaction.member.voice.channel))] });
+		} else {
+			getVoiceConnection(interaction.guild.id).destroy();
+			return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.couldnt_summon(interaction.member.voice.channel))] });
+		}
+	},
+};

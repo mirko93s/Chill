@@ -1,32 +1,33 @@
-const Discord = require("discord.js");
+const Discord = require(`discord.js`);
 
 module.exports = {
-	name: "resetconfig",
-	description: "Reset Guild's config to default values",
-    userPerms: ['ADMINISTRATOR'],
+	name: `resetconfig`,
+	description: `Reset Guild's config to default values. (WARNING: This cannot be undone!)`,
+	userPerms: [`ADMINISTRATOR`],
 	options: null,
-    run: async (client, interaction, arg) => {
-		
-        const resetEmbed = new Discord.MessageEmbed()
-			.setColor('RANDOM')
-			.setTitle("💾Guild Settings")
-			.setDescription("Settings resetted to default values!")
-		
-        client.settings.update(interaction.guild.id , defaultSettings);
-        interaction.reply({embeds:[resetEmbed]});
-    }
-}
+	run: async (client, interaction, LANG) => {
+
+		const resetEmbed = new Discord.MessageEmbed()
+			.setColor(`RANDOM`)
+			.setTitle(LANG.title)
+			.setDescription(LANG.description);
+
+		client.settings.update(interaction.guild.id, defaultSettings);
+		interaction.reply({ embeds: [resetEmbed] });
+	},
+};
 
 const defaultSettings = {
-	prefix: ".",
-	musicchannelonly: "false",
+	prefix: `.`,
+	musicchannelonly: `false`,
 	xpcooldown: 5,
-	autodeletecmds: "true",
-	xpmodule: "true",
-	welcomemessage: "true",
-	welcomerole: "true",
-	djrequired: "true",
+	lang: `en_US`,
+	autodeletecmds: `true`,
+	xpmodule: `true`,
+	welcomemessage: `true`,
+	welcomerole: `true`,
+	djrequired: `true`,
 	autovocalchannels: [],
 	autovocalcloned: [],
-	disabledcommands: []
-}
+	disabledcommands: [],
+};

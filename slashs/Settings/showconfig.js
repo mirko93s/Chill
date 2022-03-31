@@ -1,25 +1,25 @@
-const Discord = require("discord.js");
-const { stripIndent } = require('common-tags');
+const Discord = require(`discord.js`);
+const { stripIndent } = require(`common-tags`);
 
 module.exports = {
-	name: "showconfig",
-	description: "Show server settings",
+	name: `showconfig`,
+	description: `Show server settings`,
 	options: null,
-    run: async (client, interaction, arg) => {
-		
-		client.chill.ensureGuildSettings(client,interaction.guild.id);
+	run: async (client, interaction, LANG) => {
 
-		let guildConf = client.settings.get(interaction.guild.id);
-		
+		client.chill.ensureGuildSettings(client, interaction.guild.id);
+
+		const guildConf = client.settings.get(interaction.guild.id);
+
 		function channel(toFind) {
-			var text = interaction.guild.channels.cache.find(ch => ch.id === toFind) ? interaction.guild.channels.cache.get(toFind).name : "❌❌❌ NOT FOUND ❌❌❌";
+			const text = interaction.guild.channels.cache.find(ch => ch.id === toFind) ? interaction.guild.channels.cache.get(toFind).name : client.lang(interaction.guild, `showconfig.not_found`);
 			return text;
 		}
 		function role(toFind) {
-			var text = interaction.guild.roles.cache.find(r => r.id === toFind) ? interaction.guild.roles.cache.get(toFind).name : "❌❌❌ NOT FOUND ❌❌❌";
+			const text = interaction.guild.roles.cache.find(r => r.id === toFind) ? interaction.guild.roles.cache.get(toFind).name : client.lang(interaction.guild, `showconfig.not_found`);
 			return text;
 		}
-		
+
 		const channels = stripIndent`
 		Join/Leave log  :: ${channel(guildConf.welcomechannel)}
 		Announcements   :: ${channel(guildConf.bcchannel)}
@@ -30,13 +30,13 @@ module.exports = {
 		Song-Request    :: ${channel(guildConf.musictextchannel)}
 		Music Voice     :: ${channel(guildConf.musicvocalchannel)}
 		Ticket Category :: ${channel(guildConf.ticketcategory)}
-		`;		
+		`;
 		const roles = stripIndent`
 		Music Temp :: ${role(guildConf.musictemprole)}
 		DJ         :: ${role(guildConf.djrole)}
 		Staff      :: ${role(guildConf.supportrole)}
 		Welcome    :: ${role(guildConf.roleonjoin)}
-		`;		
+		`;
 		const toggles = stripIndent`
 		Music Text Only  :: ${guildConf.musicchannelonly}
 		Auto-Delete cmds :: ${guildConf.autodeletecmds}
@@ -48,18 +48,28 @@ module.exports = {
 		const other = stripIndent`
 		Prefix      :: ${guildConf.prefix}
 		XP Cooldown :: ${guildConf.xpcooldown}
+		Language    :: ${guildConf.lang} ${langs[guildConf.lang]}
         `;
-		
+
 		const settingsEmbed = new Discord.MessageEmbed()
-			.setColor('BLUE')
-			.setTitle("💾Guild Settings")
-			.addField('> Channels', `\`\`\`asciidoc\n${channels}\`\`\``, false)
-			.addField('> Roles', `\`\`\`asciidoc\n${roles}\`\`\``, false)
-			.addField('> Toggles',`\`\`\`asciidoc\n${toggles}\`\`\``, true)
-			.addField('> Other', `\`\`\`asciidoc\n${other}\`\`\``, true)
-					
-		if (channels.includes("❌❌❌ NOT FOUND ❌❌❌") || roles.includes("❌❌❌ NOT FOUND ❌❌❌")) settingsEmbed.addField('⚠️ ⚠️ ⚠️ WARNING ⚠️ ⚠️ ⚠️','One or more keys are missing in the settings and some features won\'t work, this probably happened because you deleted bot roles or channels\n**Do `/setup` to fix the missing keys, it will recreate missing roles and channels. \nOr use `/setconfig` to manually set the them.**',false);
-		
-		interaction.reply({embeds:[settingsEmbed]});
-    }
-}
+			.setColor(`BLUE`)
+			.setTitle(LANG.title)
+			.addField(LANG.channels, `\`\`\`asciidoc\n${channels}\`\`\``, false)
+			.addField(LANG.roles, `\`\`\`asciidoc\n${roles}\`\`\``, false)
+			.addField(LANG.toggles, `\`\`\`asciidoc\n${toggles}\`\`\``, true)
+			.addField(LANG.other, `\`\`\`asciidoc\n${other}\`\`\``, true);
+
+		if (channels.includes(LANG.not_found) || roles.includes(LANG.not_found)) settingsEmbed.addField(LANG.warning_key, LANG.warning_value, false);
+
+		const dashboardLink = new Discord.MessageActionRow()
+			.addComponents(
+				new Discord.MessageButton()
+					.setLabel(LANG.dashboard)
+					.setStyle(`LINK`)
+					.setURL(require(`../../config.json`).bot_dashboard_link)
+					.setEmoji(`⚙️`),
+			);
+
+		interaction.reply({ embeds: [settingsEmbed], components: [dashboardLink] });
+	},
+};
