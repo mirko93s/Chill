@@ -50,13 +50,10 @@
 
 ### You can find a list of all commands with a detailed explanation of each one and a small guide on how to self-host.
 
-#### For any other question join the [Support server](https://discord.gg/2ktWcAb).  
+<h1 align="center">
+ 🗺️<a href="https://translate.chill.ovh/"> Help translating! </a🗺️
+</h1>
 
-<h2 align="center">
-  Commands
-</h2>
-<p align="center">
-  <a href="#">
-    <img src="https://i.imgur.com/0XPUQBq.png">
-  </a>
-</p>
+<a title="Crowdin" target="_blank" href="https://translate.chill.ovh/"><img src="https://badges.crowdin.net/chillbot/localized.svg"></a>
+
+#### For any other question join the [Support server](https://discord.gg/2ktWcAb).  
