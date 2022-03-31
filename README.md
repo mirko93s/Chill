@@ -1,59 +1,41 @@
 <p align="center">
-  <a href="https://opensource.org/licenses/Apache-2.0"> <!--LICENSE-->
-    <img src="https://img.shields.io/github/license/mirko93s/chill?logo=apache&style=for-the-badge">
-  </a>
-  <a href="https://github.com/mirko93s/Chill/releases"> <!--RELEASES-->
-    <img src="https://img.shields.io/github/v/release/mirko93s/chill?color=8a2be2&include_prereleases&style=for-the-badge">
-  </a>
-  <a href="#"> <!--LANGUAGE-->
-    <img src="https://img.shields.io/github/languages/top/mirko93s/chill?logo=javascript&style=for-the-badge">
-  </a>
-  <a href="https://github.com/discordjs/discord.js/"> <!--DISCORDJS-->
-    <img src="https://img.shields.io/github/package-json/dependency-version/mirko93s/chill/discord.js?logo=discord&logoColor=blue&style=for-the-badge">
-  </a>
-  <a href="#"> <!--BUILD-->
-    <img src="https://img.shields.io/appveyor/build/mirko93s/chill?logo=appveyor&style=for-the-badge">
-  </a>
-  <a href="#"> <!--CODEQUALITY-->
-    <img src="https://img.shields.io/codefactor/grade/github/mirko93s/chill/master?logo=codefactor&style=for-the-badge">
-  </a>
-  <a href="#"> <!--LINES-->
-    <img src="https://img.shields.io/tokei/lines/github/mirko93s/chill?style=for-the-badge">
-  </a>
-  <a href="#"> <!--LASTCOMMIT-->
-    <img src="https://img.shields.io/github/last-commit/mirko93s/chill?style=for-the-badge">
-  </a>
-</p>  
- 
-<img src="https://i.imgur.com/Ekzr8tX.gif" data-canonical-src="https://i.imgur.com/Ekzr8tX.gif" />
-
-<p align="center">
+  <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/github/license/mirko93s/chill?logo=apache&style=for-the-badge"></a>
+  <a href="https://github.com/mirko93s/Chill/releases"><img src="https://img.shields.io/github/v/release/mirko93s/chill?color=8a2be2&include_prereleases&style=for-the-badge"></a>
+  <a href="#"><img src="https://img.shields.io/github/languages/top/mirko93s/chill?logo=javascript&style=for-the-badge"></a>
+  <a href="https://github.com/discordjs/discord.js/"><img src="https://img.shields.io/github/package-json/dependency-version/mirko93s/chill/discord.js?logo=discord&logoColor=blue&style=for-the-badge"></a>
+  <a href="#"><img src="https://img.shields.io/appveyor/build/mirko93s/chill?logo=appveyor&style=for-the-badge"></a>
+  <a href="#"><img src="https://img.shields.io/codefactor/grade/github/mirko93s/chill/master?logo=codefactor&style=for-the-badge"></a>
+  <a href="#"><img src="https://img.shields.io/tokei/lines/github/mirko93s/chill?style=for-the-badge"></a>
+  <a href="#"><img src="https://img.shields.io/github/last-commit/mirko93s/chill?style=for-the-badge"></a>
+  <br><br>
+  <img src="https://i.imgur.com/Ekzr8tX.gif" data-canonical-src="https://i.imgur.com/Ekzr8tX.gif" />
+  <br><br>
   <a href="https://discord.gg/2ktWcAb">
-    <img src="https://i.imgur.com/d7Eet0y.png">
-  </a>
+    <img src="https://i.imgur.com/d7Eet0y.png"></a>
   <a href="https://discord.com/api/oauth2/authorize?client_id=945659412817772575&permissions=8&scope=bot%20applications.commands&response_type=code&redirect_uri=https%3A%2F%2Fdiscord.com%2Finvite%2F2ktWcAb">
-    <img src="https://i.imgur.com/OJpg8dD.png">
-  </a>
+    <img src="https://i.imgur.com/OJpg8dD.png"></a>
   <a href="https://github.com/mirko93s/Chill/releases">
-    <img src="https://i.imgur.com/xN1Y074.png">
-  </a>
-</p>
-<p align="center">
+    <img src="https://i.imgur.com/xN1Y074.png"></a>
+  <br><br>
   <a href="https://top.gg/bot/945659412817772575">
-    <img src="https://top.gg/api/widget/status/945659412817772575.svg">
-  </a>
+    <img src="https://top.gg/api/widget/status/945659412817772575.svg"></a>
+  <br><br>
 </p>
 
-<h1 align="center">
-  👉<a href="https://docs.chill.ovh/"> Documentation </a>👈
-</h1>
+# ⭐ Find this repo useful?
+### Don't forget you can star it to show your appreciation!
+Add it to your watch list so you won't miss future updates or even fork if you want to contribute or start your own project using this as a base.
 
-### You can find a list of all commands with a detailed explanation of each one and a small guide on how to self-host.
+# ❤️ Credits
+### While this repo is opensource if you use any part or snippets of my code, **YOU MUST GIVE CREDITS**.
+#### A **LINK TO THIS REPO**, in a place which is readable by other people (in a readme file for example), is more than enough. Thank you!
+Crediting is always a good habit within the opensource community and they are always welcome.
 
-<h1 align="center">
- 🗺️<a href="https://translate.chill.ovh/"> Help translating! </a🗺️
-</h1>
+# [🖥️ Documentation](https://docs.chill.ovh/)
 
-<a title="Crowdin" target="_blank" href="https://translate.chill.ovh/"><img src="https://badges.crowdin.net/chillbot/localized.svg"></a>
+### Here you can find a list of all commands with a detailed explanation of each one
+There are also other usueful info on how to properly set the bot and a small guide on how to self-host the bot.
 
-#### For any other question join the [Support server](https://discord.gg/2ktWcAb).  
+# [🗺️ Help translating!](https://translate.chill.ovh/) [![Crowdin](https://badges.crowdin.net/chillbot/localized.svg)](https://translate.chill.ovh/project/chillbot)
+
+#### For any other question join the [Support server](https://discord.gg/2ktWcAb).
