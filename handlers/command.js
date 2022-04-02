@@ -10,12 +10,12 @@ module.exports = (client) => {
 		barIncompleteChar: `\u2591`,
 		hideCursor: true,
 		noTTYOutput: true,
-		stream: process.stdout,
 	});
 	const b1 = multibar.create(0, 0);
 	const b2 = multibar.create(0, 0);
 
-	const slashs = [];
+	const globals = [], locals = [], devs = [];
+	// load slash commands
 	readdirSync(`./slashs/`).forEach(dir => {
 		const commands = readdirSync(`./slashs/${dir}/`).filter(file => file.endsWith(`.js`));
 		b1.setTotal((b1.getTotal()) + commands.length);
@@ -23,16 +23,21 @@ module.exports = (client) => {
 			const pull = require(`../slashs/${dir}/${file}`);
 			try {
 				client.slashs.set(pull.name, pull);
-				slashs.push(pull);
+				if (pull.dev) {
+					locals.push(pull);
+					devs.push(pull.name);
+				} else {
+					globals.push(pull);
+				}
 				client.cmdstats.ensure(`usage`, 0, pull.name);
 				if (pull.user) { // if command also has user context menu load it
 					client.slashs.set(pull.user.name, pull.user);
-					slashs.push(pull.user);
+					globals.push(pull.user);
 					client.cmdstats.ensure(`usage`, 0, pull.user.name);
 				}
 				if (pull.message) { // if command also has message context menu load it
 					client.slashs.set(pull.message.name, pull.message);
-					slashs.push(pull.message);
+					globals.push(pull.message);
 					client.cmdstats.ensure(`usage`, 0, pull.message.name);
 				}
 				b1.increment();
@@ -42,15 +47,28 @@ module.exports = (client) => {
 			}
 		}
 	});
+	// update slash commands
 	client.once(`ready`, async () => {
 		try {
-			await client.guilds.cache.get(`765365684036304906`).commands.set(slashs); // chillest test server
-			await client.guilds.cache.get(`878276639455338570`).commands.set(slashs); // kirona test server
+			await client.application.commands.set(globals);
+			await client.guilds.cache.get(require(`../config.json`).dev_guild_id).commands.set(locals);
+			await client.guilds.cache.get(require(`../config.json`).dev_guild_id).commands.fetch().then(cmds => {
+				const permissions = [
+					{
+						id: require(`../config.json`).bot_owner,
+						type: `USER`,
+						permission: true,
+					},
+				];
+				cmds.forEach(cmd => {
+					if (devs.includes(cmd.name)) cmd.permissions.set({ permissions });
+				});
+			});
 		} catch (err) {
 			console.error(err);
 		}
 	});
-
+	// load chat commands (deprecated)
 	readdirSync(`./commands/`).forEach(dir => {
 		const commands = readdirSync(`./commands/${dir}/`).filter(file => file.endsWith(`.js`));
 		b2.setTotal((b2.getTotal()) + commands.length);
