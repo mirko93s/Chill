@@ -47,7 +47,7 @@ async function getProfile(client, interaction, member, LANG) {
 		member.presence.activities.forEach(activity => {
 			activitystring += `\n> **${activitytype[activity.type]}**${activity.name == `Custom Status` ? `\n${activity.state}` : `\n${activity.name} ${activity.details ? `- *${activity.details}*` : ``}`}`;
 		});
-		embed.addField(LANG.activities, activitystring);
+		if (activitystring.length > 0) embed.addField(LANG.activities, activitystring);
 	}
 	interaction.reply({ embeds: [embed] });
 }
