@@ -225,6 +225,7 @@ exports.commands = {
 		winners_key_p: `**Vincitori**`,
 		no_participants: `Nessun Partecipante`,
 		footer_end: host_tag => `Ospitato da ${host_tag}\nTerminato il`,
+		footer_end_resumeInterval_fn: (oldtext) => `${oldtext}\nTerminato il`,
 		winner_msg: (winner, prize) => `**Congratulazioni ${winner}!\nHai vinto: \`${prize}\`**`,
 		error: `Non ho il permesso di farlo. Per favore controlla i miei permessi.`,
 	},
@@ -246,6 +247,7 @@ exports.commands = {
 		games: `🎮 Giochi`,
 		info: `ℹ️ Info`,
 		moderation: `🔨 Moderazione`,
+		music: `🎵 Musica`,
 		other: `💡 Altro`,
 		owner: `⚙️ Proprietario`,
 		roles: `🎚️ Ruoli`,
@@ -440,7 +442,7 @@ exports.commands = {
 		perms: `Permessi`,
 	},
 	rolelist: { title: size => `Ruoli del server [${size}]` },
-	say: { sucess: `✅ Messaggio inviato con successo.` },
+	say: { success: `✅ Messaggio inviato con successo.` },
 	serveremojis: {
 		no_emojis: `Il server non ha emoji`,
 		title: `Emoji del Server`,
@@ -498,7 +500,7 @@ exports.commands = {
 	setconfig: {
 		title: `💾Impostazioni del Server`,
 		invalid_key: `Impossibile trovare quella chiave! Digita \`/showconfig\` per ottenere i nomi delle chiavi`,
-		success: (config_key, value, flag) => `**${config_key}** è stato modificato in: ${flag}\`${value}\``,
+		success: (config_key, flag, value) => `**${config_key}** è stato modificato in: ${flag}\`${value}\``,
 	},
 	setup: {
 		title: `INSTALLAZIONE`,
