@@ -94,8 +94,8 @@ module.exports = {
 				.setURL(`https://discordemoji.com/emoji/` + matches[page].slug)
 				.setColor(`RANDOM`)
 				.setThumbnail(matches[page].image)
-				.addField(LANG.favourited_key, LANG.favourited_value(matches[page].faves), true)
-				.addField(LANG.animated_key, LANG.animated_value(matches[page].category), true)
+				.addField(LANG.favourited_key, matches[page].faves !== 1 ? LANG.favourited_value_p(matches[page].faves) : LANG.favourited_value_s(matches[page].faves), true)
+				.addField(LANG.animated_key, matches[page].category == 8 ? LANG.yes : LANG.no, true)
 				.setFooter({ text: `${page + 1} / ${matches.length}` });
 			if (success) embed.setAuthor({ name: LANG.created });
 			return embed;
