@@ -51,7 +51,7 @@ module.exports = {
 			.setColor(`RANDOM`)
 			.setAuthor({ name: `FLOOD` })
 			.setDescription(boardToString(boardarray))
-			.setFooter({ text: LANG.turn(turn) });
+			.setFooter({ text: LANG.turns(turn) });
 		return interaction.reply({ embeds: [gameEmbed], components: [row], fetchReply: true }).then(sent => {
 			const filter = (i) => {
 				i.deferUpdate();
