@@ -22,7 +22,7 @@ module.exports = {
 				const collector = sent.createMessageComponentCollector({ filter, componentType: `BUTTON`, time: 60e3 });
 				collector.on(`collect`, collected => {
 					collector.resetTimer({ time: 60e3 });
-					if (collected.customId == `spin`) return sent.edit({ embeds: [slot(interaction)] });
+					if (collected.customId == `spin`) return sent.edit({ embeds: [slot(interaction, LANG)] });
 				});
 				collector.on(`end`, (collected, reason) => {
 					if (reason === `time`) return sent.edit({ components: [] });
@@ -35,7 +35,7 @@ module.exports = {
 	},
 };
 
-function slot(interaction) {
+function slot(interaction, LANG) {
 	const choices = [`🍇`, `🍒`, `🍋`, `🍊`];
 	const slots = [];
 	for (i = 1; i < 10; i++) {
