@@ -9,20 +9,20 @@ module.exports = {
 		{
 			name: `question`,
 			description: `What is the poll about?`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 		},
 		{
 			name: `choices`,
 			description: `Provide at least 2 choices (max 10) separated by commas`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 		},
 		{
 			name: `channel`,
 			description: `Channel to send the poll to. If blank defaults to Guild Config Poll channel`,
-			type: `CHANNEL`,
-			channelTypes: [`GUILD_TEXT`],
+			type: Discord.ApplicationCommandOptionType.Channel,
+			channelTypes: [Discord.ChannelType.GuildText],
 		},
 	],
 	run: async (client, interaction, LANG) => {
@@ -52,8 +52,8 @@ module.exports = {
 		for (let i = 0; i < choices.length; i++) { // prepare choice msg
 			choicemsg += `${emoji[i]} ${choices[i]}\n`;
 		}
-		const pollEmbed = new Discord.MessageEmbed()
-			.setColor(`RANDOM`)
+		const pollEmbed = new Discord.EmbedBuilder()
+			.setColor(`Random`)
 			.setTitle(`${question}`)
 			.setDescription(LANG.description(choicemsg))
 			.setTimestamp();
@@ -61,8 +61,8 @@ module.exports = {
 		if (pollEmbed.description.length > 4096) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.choices_too_long)] });
 
 		pollchannel.send({ embeds: [pollEmbed] }).then(msg => {
-			const doneEmbed = new Discord.MessageEmbed()
-				.setColor(`RANDOM`)
+			const doneEmbed = new Discord.EmbedBuilder()
+				.setColor(`Random`)
 				.setDescription(LANG.success(pollchannel));
 			interaction.reply({ ephemeral: true, embeds: [doneEmbed] });
 			for (let i = 0; i < choices.length; i++) {

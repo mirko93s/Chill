@@ -9,13 +9,13 @@ module.exports = {
 		{
 			name: `user`,
 			description: `User to report`,
-			type: `USER`,
+			type: Discord.ApplicationCommandOptionType.User,
 			required: true,
 		},
 		{
 			name: `reason`,
 			description: `Why are you reporting this user?`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 		},
 	],
@@ -26,7 +26,7 @@ module.exports = {
 
 module.exports.message = {
 	name: `Report`,
-	type: `MESSAGE`,
+	type: Discord.ApplicationCommandType.Message,
 	botPerms: [`VIEW_CHANNEL`, `SEND_MESSAGES`, `EMBED_LINKS`],
 	contextdescription: `Report a message (and its author) for breaking the rules`,
 	run: async (client, interaction, LANG) => {
@@ -47,12 +47,12 @@ async function report(client, interaction, reported, LANG, isMessage = false) {
 	const reportchannel = interaction.guild.channels.cache.find(c => c.id === (client.settings.get(interaction.guild.id, `reportchannel`)));
 	if (!reportchannel) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.no_channel)] });
 
-	const thanksEmbed = new Discord.MessageEmbed()
-		.setColor(`GREEN`)
+	const thanksEmbed = new Discord.EmbedBuilder()
+		.setColor(`Green`)
 		.setTitle(LANG.success(reported));
 	interaction.reply({ ephemeral: true, embeds: [thanksEmbed] });
 
-	const reportEmbed = new Discord.MessageEmbed()
+	const reportEmbed = new Discord.EmbedBuilder()
 		.setColor(`#ff0000`)
 		.setTimestamp()
 		.setFooter({ text: interaction.guild.name, iconURL: interaction.guild.iconURL() });
@@ -80,8 +80,23 @@ async function report(client, interaction, reported, LANG, isMessage = false) {
                 ${LANG.message}
                 > [LINK](https://discord.com/channels/${interaction.targetMessage.guildId}/${interaction.targetMessage.channelId}/${interaction.targetMessage.id}/)`);
 
-		if (interaction.targetMessage.content.length > 1e3) reportEmbed.addField(LANG.preview, LANG.char(interaction.targetMessage.content));
-		else reportEmbed.addField(LANG.preview, interaction.targetMessage.content);
+		if (interaction.targetMessage.content.length > 1e3) {
+			reportEmbed.addFields([
+				{
+					name: LANG.preview,
+					value: (content.length - 1e3) > 1 ? LANG.chars(interaction.targetMessage.content.slice(0, 1e3), (content.length - 1e3)) : LANG.char(interaction.targetMessage.content.slice(0, 1e3), (content.length - 1e3)),
+					inline: false,
+				},
+			]);
+		} else {
+			reportEmbed.addFields([
+				{
+					name: LANG.preview,
+					value: interaction.targetMessage.content,
+					inline: false,
+				},
+			]);
+		}
 	}
 	reportchannel.send({ embeds: [reportEmbed] });
 }

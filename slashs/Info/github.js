@@ -8,13 +8,13 @@ module.exports = {
 		{
 			name: `username`,
 			description: `Username`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 		},
 		{
 			name: `repo`,
 			description: `Repository name`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 		},
 	],
@@ -27,21 +27,63 @@ module.exports = {
 		if (res.status !== 200) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.no_result(username, repo))] });
 		const json = await res.json();
 
-		const embed = new Discord.MessageEmbed()
+		const embed = new Discord.EmbedBuilder()
 			.setAuthor({ name: json.owner.login, url: `https://github.com/${username}` })
 			.setTitle(`/${repo}`)
 			.setURL(`https://github.com/${json.full_name}`)
 			.setDescription(json.description)
-			.addField(LANG.stars, `[${json.stargazers_count}](https://github.com/${json.full_name}/stargazers)`, true)
-			.addField(LANG.forks, `[${json.forks_count}](https://github.com/${json.full_name}/network/members)`, true)
-			.addField(LANG.watchers, `[${json.subscribers_count}](https://github.com/${json.full_name}/watchers)`, true)
-			.addField(LANG.language, json.language || json?.parent.language, true)
-			.addField(LANG.created_at, `<t:${Date.parse(json.created_at) / 1e3}:R>`, true)
-			.addField(LANG.last_update, `<t:${Date.parse(json.updated_at) / 1e3}:R>`, true)
+			.addFields([
+				{
+					name: LANG.stars,
+					value: `[${json.stargazers_count}](https://github.com/${json.full_name}/stargazers)`,
+					inline: true,
+				},
+				{
+					name: LANG.forks,
+					value: `[${json.forks_count}](https://github.com/${json.full_name}/network/members)`,
+					inline: true,
+				},
+				{
+					name: LANG.watchers,
+					value: `[${json.subscribers_count}](https://github.com/${json.full_name}/watchers)`,
+					inline: true,
+				},
+				{
+					name: LANG.language,
+					value: json.language || json?.parent.language,
+					inline: true,
+				},
+				{
+					name: LANG.created_at,
+					value: `<t:${Date.parse(json.created_at) / 1e3}:R>`,
+					inline: true,
+				},
+				{
+					name: LANG.last_update,
+					value: `<t:${Date.parse(json.updated_at) / 1e3}:R>`,
+					inline: true,
+				},
+			])
 			.setThumbnail(json.owner.avatar_url)
-			.setColor(`RANDOM`);
-		if (json.topics.length > 0) embed.addField(LANG.tags, `\`${json.topics.join(`\` \``)}\``, true);
-		if (json.parent) embed.addField(LANG.forked, `[${json.parent.full_name}](https://github.com/${json.parent.full_name})`, true);
+			.setColor(`Random`);
+		if (json.topics.length > 0) {
+			embed.addFields([
+				{
+					name: LANG.tags,
+					value: `\`${json.topics.join(`\` \``)}\``,
+					inline: true,
+				},
+			]);
+		}
+		if (json.parent) {
+			embed.addFields([
+				{
+					name: LANG.forked,
+					value: `[${json.parent.full_name}](https://github.com/${json.parent.full_name})`,
+					inline: true,
+				},
+			]);
+		}
 
 		interaction.reply({ embeds: [embed] });
 	},

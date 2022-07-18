@@ -7,7 +7,7 @@ module.exports = {
 		{
 			name: `command`,
 			description: `Custom command name to check`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 		},
 	],
 	run: async (client, interaction, LANG) => {
@@ -22,8 +22,8 @@ module.exports = {
 				cmdmsg += (`\`${key}\` `);
 			};
 			if (cmdmsg.length <= 0) return interaction.reply({ ephemeral: true, embeds: [LANG.no_custom_commands] });
-			const ccEmbed = new Discord.MessageEmbed()
-				.setColor(`RANDOM`)
+			const ccEmbed = new Discord.EmbedBuilder()
+				.setColor(`Random`)
 				.setTitle(LANG.title)
 				.setDescription(cmdmsg);
 			return interaction.reply({ embeds: [ccEmbed] });

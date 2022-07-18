@@ -14,8 +14,8 @@ module.exports = {
 			client.queue.get(interaction.guild.id).songs = [];
 			client.queue.get(interaction.guild.id).player.stop();
 
-			const stopEmbed = new Discord.MessageEmbed()
-				.setColor(`PURPLE`)
+			const stopEmbed = new Discord.EmbedBuilder()
+				.setColor(`Purple`)
 				.setTitle(LANG.title)
 				.setDescription(LANG.stopped);
 

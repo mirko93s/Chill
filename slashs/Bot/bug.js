@@ -9,7 +9,7 @@ module.exports = {
 		{
 			name: `bug`,
 			description: `Please provide a good explanation of the bug and if you can the steps to reproduce it`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 		},
 	],
@@ -20,8 +20,8 @@ module.exports = {
 		const bug = interaction.options.getString(`bug`);
 		if (bug.length < 50 || bug.length > 4096) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.too_short)] });
 
-		const bugembed = new Discord.MessageEmbed()
-			.setColor(`RED`)
+		const bugembed = new Discord.EmbedBuilder()
+			.setColor(`Red`)
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() })
 			.setTitle(`🪲 Bug Report`)
 			.setDescription(bug)
@@ -33,8 +33,8 @@ module.exports = {
 				.then (() => sentEmbed.react(`❌`));
 		});
 
-		const thanksEmbed = new Discord.MessageEmbed()
-			.setColor(`GREEN`)
+		const thanksEmbed = new Discord.EmbedBuilder()
+			.setColor(`Green`)
 			.setTitle(LANG.success);
 		interaction.reply({ ephemeral: true, embeds: [thanksEmbed] });
 

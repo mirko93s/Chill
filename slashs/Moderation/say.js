@@ -9,25 +9,25 @@ module.exports = {
 		{
 			name: `text`,
 			description: `What do i have to say? (use \\n to create new lines)`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 		},
 		{
 			name: `embed`,
 			description: `Send the message as embed`,
-			type: `BOOLEAN`,
+			type: Discord.ApplicationCommandOptionType.Boolean,
 		},
 		{
 			name: `anonymous`,
 			description: `If you want the bot message to be anonymous`,
-			type: `BOOLEAN`,
+			type: Discord.ApplicationCommandOptionType.Boolean,
 		},
 	],
 	run: async (client, interaction, LANG) => {
 
 		if (interaction.options.getBoolean(`anonymous`)) {
-			const anonymousEmbed = new Discord.MessageEmbed()
-				.setColor(`RANDOM`)
+			const anonymousEmbed = new Discord.EmbedBuilder()
+				.setColor(`Random`)
 				.setDescription(LANG.success);
 			interaction.reply({ ephemeral: true, embeds: [anonymousEmbed] });
 		}
@@ -36,8 +36,8 @@ module.exports = {
 			text += x + `\n`;
 		});
 
-		const sayEmbed = new Discord.MessageEmbed()
-			.setColor(`RANDOM`)
+		const sayEmbed = new Discord.EmbedBuilder()
+			.setColor(`Random`)
 			.setDescription(text);
 
 		if (interaction.options.getBoolean(`embed`)) {

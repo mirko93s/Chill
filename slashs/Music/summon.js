@@ -18,8 +18,8 @@ module.exports = {
 			adapterCreator: interaction.member.voice.channel.guild.voiceAdapterCreator,
 		});
 
-		if (interaction.guild.me.voice.channel) {
-			return interaction.reply({ ephemeral: true, embeds: [new Discord.MessageEmbed().setColor(`RANDOM`).setTitle(LANG.title).setDescription(LANG.summoned(interaction.member.voice.channel))] });
+		if (interaction.guild.members.me.voice.channel) {
+			return interaction.reply({ ephemeral: true, embeds: [new Discord.EmbedBuilder().setColor(`Random`).setTitle(LANG.title).setDescription(LANG.summoned(interaction.member.voice.channel))] });
 		} else {
 			getVoiceConnection(interaction.guild.id).destroy();
 			return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.couldnt_summon(interaction.member.voice.channel))] });

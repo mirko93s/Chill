@@ -9,26 +9,26 @@ module.exports = {
 		{
 			name: `user`,
 			description: `User to ban`,
-			type: `USER`,
+			type: Discord.ApplicationCommandOptionType.User,
 			required: true,
 		},
 		{
 			name: `reason`,
 			description: `Reason of the ban`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 		},
 		{
 			name: `deletemessages`,
 			description: `Number of days of messages to delete`,
-			type: `INTEGER`,
+			type: Discord.ApplicationCommandOptionType.Integer,
 			minValue: 1,
 			maxValue: 7,
 		},
 		{
 			name: `logchannel`,
 			description: `Choose where to log this ban. If blank defaults to Guild Config Punishments channel`,
-			type: `CHANNEL`,
-			channelTypes: [`GUILD_TEXT`],
+			type: Discord.ApplicationCommandOptionType.Channel,
+			channelTypes: [Discord.ChannelType.GuildText],
 		},
 	],
 	run: async (client, interaction, LANG) => {
@@ -44,20 +44,30 @@ module.exports = {
 
 		const reason = interaction.options.getString(`reason`)?.substring(0, 1024) || LANG.not_provided;
 
-		const banEmbed = new Discord.MessageEmbed()
-			.setColor(`RED`)
+		const banEmbed = new Discord.EmbedBuilder()
+			.setColor(`Red`)
 			.setThumbnail(toBan.user.displayAvatarURL())
 			.setTitle(LANG.title)
 			.setDescription(toBan.user.tag)
-			.addField(LANG.by, interaction.member.user.username, true)
-			.addField(LANG.reason, reason, false)
+			.addFields([
+				{
+					name: LANG.by,
+					value: interaction.member.user.username,
+					inline: true,
+				},
+				{
+					name: LANG.reason,
+					value: reason,
+					inline: false,
+				},
+			])
 			.setTimestamp();
 
 		toBan.ban({ days: 0, reason: reason }).catch(err => {
 			if (err) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.error(err))] });
 		});
-		const doneEmbed = new Discord.MessageEmbed()
-			.setColor(`RED`)
+		const doneEmbed = new Discord.EmbedBuilder()
+			.setColor(`Red`)
 			.setDescription(LANG.banned(toBan, puchannel));
 		interaction.reply({ ephemeral: true, embeds: [doneEmbed] });
 		return puchannel.send({ embeds: [banEmbed] });

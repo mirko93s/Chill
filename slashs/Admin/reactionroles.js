@@ -8,22 +8,22 @@ module.exports = {
 	options: null,
 	run: async (client, interaction, LANG) => {
 
-		const rrEmbed = new Discord.MessageEmbed()
-			.setColor(`RANDOM`)
+		const rrEmbed = new Discord.EmbedBuilder()
+			.setColor(`Random`)
 			.setTitle(LANG.title)
 			.setDescription(LANG.setup_input)
 			.setFooter({ text: LANG.setup_footer });
 		// buttons
-		const confirmButton = new Discord.MessageButton()
+		const confirmButton = new Discord.ButtonBuilder()
 			.setCustomId(`confirm`)
 			.setLabel(LANG.confirm)
-			.setStyle(`SUCCESS`)
+			.setStyle(Discord.ButtonStyle.Success)
 			.setDisabled(true);
-		const abortButton = new Discord.MessageButton()
+		const abortButton = new Discord.ButtonBuilder()
 			.setCustomId(`abort`)
 			.setLabel(LANG.abort)
-			.setStyle(`DANGER`);
-		let row = new Discord.MessageActionRow().addComponents(confirmButton, abortButton);
+			.setStyle(Discord.ButtonStyle.Danger);
+		let row = new Discord.ActionRowBuilder().addComponents(confirmButton, abortButton);
 
 		const rr = {};
 		interaction.reply({ embeds: [rrEmbed], components: [row] }).then(() => { // send setup message
@@ -35,7 +35,7 @@ module.exports = {
 				};
 
 				const rrCollector = interaction.channel.createMessageCollector({ filter: rrFilter, time: 60e3, errors: [`time`] });
-				const buttonCollector = sent.createMessageComponentCollector({ filter: buttonFilter, componentType: `BUTTON`, time: 60e3 });
+				const buttonCollector = sent.createMessageComponentCollector({ filter: buttonFilter, componentType: Discord.ComponentType.Button, time: 60e3 });
 
 				rrCollector.on(`collect`, async collected => {
 					collected.delete();
@@ -49,7 +49,13 @@ module.exports = {
 						try { // try to react to check if the emoji is supported by Discord
 							await sent.react(emoji[0].name);
 						} catch (err) {
-							rrEmbed.addField(LANG.bad_input_key, LANG.bad_input_value);
+							rrEmbed.addFields([
+								{
+									name: LANG.bad_input_key,
+									value: LANG.bad_input_value,
+									inline: false,
+								},
+							]);
 							return interaction.editReply({ embeds: [rrEmbed] });
 						}
 						rr[`${emoji[0].name}`] = {
@@ -58,17 +64,29 @@ module.exports = {
 						};
 						rrEmbed.setDescription(rrEmbed.description + `\n> ${emoji[0].name} ${role}\n${description}`);
 						if (rrEmbed.description.length > 4096) {
-							rrEmbed.addField(LANG.too_long_key, LANG.too_long_value);
+							rrEmbed.addFields([
+								{
+									name: LANG.too_long_key,
+									value: LANG.too_long_value,
+									inline: false,
+								},
+							]);
 							return interaction.editReply({ embeds: [rrEmbed] });
 						}
 						interaction.editReply({ embeds: [rrEmbed] }); // edit setup message adding new rrole
 						if (Object.keys(rr).length > 0) {
 							confirmButton.disabled = false;
-							row = new Discord.MessageActionRow().addComponents(confirmButton, abortButton);
+							row = new Discord.ActionRowBuilder().addComponents(confirmButton, abortButton);
 							interaction.editReply({ components: [row] });
 						}
 					} else {
-						rrEmbed.addField(LANG.bad_input_key, LANG.bad_input_value);
+						rrEmbed.addFields([
+							{
+								name: LANG.bad_input_key,
+								value: LANG.bad_input_value,
+								inline: false,
+							},
+						]);
 						interaction.editReply({ embeds: [rrEmbed] });
 					}
 				});

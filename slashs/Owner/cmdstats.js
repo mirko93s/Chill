@@ -5,6 +5,7 @@ module.exports = {
 	name: `cmdstats`,
 	description: `Get command uses ranking`,
 	dev: true,
+	defaultPermission: false,
 	options: null,
 	run: async (client, interaction, LANG) => {
 
@@ -32,8 +33,8 @@ module.exports = {
 			table.addRow(i, cmd, count);
 		}
 
-		const cmdEmbed = new Discord.MessageEmbed()
-			.setColor(`RANDOM`)
+		const cmdEmbed = new Discord.EmbedBuilder()
+			.setColor(`Random`)
 			.setTitle(`Command Uses`)
 			.setDescription(`\`\`\`console\n${table.toString()}\n\`\`\``);
 

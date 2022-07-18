@@ -10,7 +10,7 @@ module.exports = {
 		{
 			name: `delay`,
 			description: `Select slow-mode delay`,
-			type: `INTEGER`,
+			type: Discord.ApplicationCommandOptionType.Integer,
 			required: true,
 			choices: [
 				{ name: `OFF`, value: 0 },
@@ -36,10 +36,10 @@ module.exports = {
 
 		interaction.channel.setRateLimitPerUser(delay);
 
-		const slowmoEmbed = new Discord.MessageEmbed()
-			.setColor(delay > 0 ? `GREEN` : `RED`)
+		const slowmoEmbed = new Discord.EmbedBuilder()
+			.setColor(delay > 0 ? `Green` : `Red`)
 			.setTitle(LANG.title)
-			.setDescription(LANG.description(delay, ms(delay * 1e3, { long: true })));
+			.setDescription(delay > 0 ? LANG.set_to(ms(delay * 1e3, { long: true })) : LANG.disabled);
 
 		interaction.reply({ embeds: [slowmoEmbed] });
 

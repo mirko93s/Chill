@@ -9,7 +9,7 @@ module.exports = {
 		{
 			name: `mode`,
 			description: `Select a mode`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 			choices: [
 				{ name: `give`, value: `give` },
@@ -19,13 +19,13 @@ module.exports = {
 		{
 			name: `user`,
 			description: `User to edit the roles to`,
-			type: `USER`,
+			type: Discord.ApplicationCommandOptionType.User,
 			required: true,
 		},
 		{
 			name: `role`,
 			description: `Select a role`,
-			type: `ROLE`,
+			type: Discord.ApplicationCommandOptionType.Role,
 			required: true,
 		},
 	],
@@ -36,7 +36,7 @@ module.exports = {
 		const role = interaction.options.getRole(`role`);
 		const checkrole = user.roles.cache.some(r => r === role);
 
-		if (interaction.guild.me.roles.highest.position < role.rawPosition) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.hierarch(role))] });
+		if (interaction.guild.members.me.roles.highest.position < role.rawPosition) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.hierarch(role))] });
 
 		if (mode === `give`) {
 			if (checkrole) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.already(user))] });
@@ -47,9 +47,9 @@ module.exports = {
 			await user.roles.remove(role);
 		}
 
-		const doneEmbed = new Discord.MessageEmbed()
-			.setColor(`GREEN`)
-			.setDescription(LANG.success(role, mode, user));
+		const doneEmbed = new Discord.EmbedBuilder()
+			.setColor(`Green`)
+			.setDescription(mode === `give` ? LANG.role_given(role, user) : LANG.role_taken(role, user));
 		return interaction.reply({ embeds: [doneEmbed] });
 	},
 };

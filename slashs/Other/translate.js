@@ -8,13 +8,13 @@ module.exports = {
 		{
 			name: `text`,
 			description: `text to translate`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 		},
 		{
 			name: `languages__a-e`,
 			description: `Languages from A to E. Choose only one target language! If omitted defaults to English`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			choices: [
 				{ name: `Automatic`, value: `auto` },
 				{ name: `Afrikaans`, value: `af` },
@@ -46,7 +46,7 @@ module.exports = {
 		{
 			name: `languages__f-j`,
 			description: `Languages from F to J. Choose only one target language! If omitted defaults to English`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			choices: [
 				{ name: `Filipino`, value: `tl` },
 				{ name: `Finnish`, value: `fi` },
@@ -76,7 +76,7 @@ module.exports = {
 		{
 			name: `languages__k-n`,
 			description: `Languages from K to N. Choose only one target language! If omitted defaults to English`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			choices: [
 				{ name: `Kannada`, value: `kn` },
 				{ name: `Kazakh`, value: `kk` },
@@ -105,7 +105,7 @@ module.exports = {
 		{
 			name: `languages__p-s`,
 			description: `Languages from P to S. Choose only one target language! If omitted defaults to English`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			choices: [
 				{ name: `Pashto`, value: `ps` },
 				{ name: `Persian`, value: `fa` },
@@ -133,7 +133,7 @@ module.exports = {
 		{
 			name: `languages__t-z`,
 			description: `Languages from T to Z. Choose only one target language! If omitted defaults to English`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			choices: [
 				{ name: `Tajik`, value: `tg` },
 				{ name: `Tamil`, value: `ta` },
@@ -159,8 +159,8 @@ module.exports = {
 		const lang = interaction.options.getString(`languages__a-e`) || interaction.options.getString(`languages__f-j`) || interaction.options.getString(`languages__k-n`) || interaction.options.getString(`languages__p-s`) || interaction.options.getString(`languages__t-z`) || `en`;
 
 		translate(text, { to: lang }).then(res => {
-			const translatedEmbed = new Discord.MessageEmbed()
-				.setColor(`RANDOM`)
+			const translatedEmbed = new Discord.EmbedBuilder()
+				.setColor(`Random`)
 				.setTitle(LANG.title)
 				.setDescription(res.text)
 				.setFooter({ text: `${_lang[res.from.language.iso]} ➜ ${_lang[lang]}` });
@@ -173,7 +173,7 @@ module.exports = {
 
 module.exports.message = {
 	name: `Translate to EN`,
-	type: `MESSAGE`,
+	type: Discord.ApplicationCommandType.Message,
 	botPerms: [`VIEW_CHANNEL`, `SEND_MESSAGES`, `EMBED_LINKS`, `READ_MESSAGE_HISTORY`],
 	contextdescription: `Translate a message to English`,
 	run: async (client, interaction, LANG) => {
@@ -183,8 +183,8 @@ module.exports.message = {
 		if (!interaction.targetMessage.content) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.message_invalid)] });
 
 		translate(interaction.targetMessage.content, { to: `en` }).then(res => {
-			const translatedEmbed = new Discord.MessageEmbed()
-				.setColor(`RANDOM`)
+			const translatedEmbed = new Discord.EmbedBuilder()
+				.setColor(`Random`)
 				.setAuthor({ name: LANG.context_to_en })
 				.setDescription(res.text)
 				.setFooter({ text: LANG.footer(interaction.user.tag) });

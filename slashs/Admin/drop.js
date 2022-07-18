@@ -10,14 +10,14 @@ module.exports = {
 		{
 			name: `prize`,
 			description: `What will the prize be?`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 		},
 		{
 			name: `channel`,
 			description: `Channel to send the drop to, if blank defaults to Guild Config Giveaway channel`,
-			type: `CHANNEL`,
-			channelTypes: [`GUILD_TEXT`],
+			type: Discord.ApplicationCommandOptionType.Channel,
+			channelTypes: [Discord.ChannelType.GuildText],
 		},
 	],
 	run: async (client, interaction, LANG) => {
@@ -28,20 +28,20 @@ module.exports = {
 		const prize = interaction.options.getString(`prize`);
 		if (prize.length > 3072) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.too_long)] });
 
-		const dropEmbed = new Discord.MessageEmbed()
-			.setColor(`RANDOM`)
+		const dropEmbed = new Discord.EmbedBuilder()
+			.setColor(`Random`)
 			.setTitle(LANG.title)
-			.setDescription(LANG.prize, prize)
+			.setDescription(LANG.prize(prize))
 			.setFooter({ text: LANG.footer });
 
-		const claimbutton = new Discord.MessageButton()
+		const claimbutton = new Discord.ButtonBuilder()
 			.setCustomId(`claim`)
-			.setLabel(LANGdrop.claim)
-			.setStyle(`PRIMARY`);
-		let buttonrow = new Discord.MessageActionRow().addComponents(claimbutton);
+			.setLabel(LANG.claim)
+			.setStyle(Discord.ButtonStyle.Primary);
+		let buttonrow = new Discord.ActionRowBuilder().addComponents(claimbutton);
 
-		const doneEmbed = new Discord.MessageEmbed()
-			.setColor(`RANDOM`)
+		const doneEmbed = new Discord.EmbedBuilder()
+			.setColor(`Random`)
 			.setDescription(LANG.started(gachannel));
 		interaction.reply({ ephemeral: true, embeds: [doneEmbed] });
 
@@ -50,13 +50,13 @@ module.exports = {
 				_interaction.deferUpdate();
 				if (!_interaction.user.bot) return true;
 			};
-			const collector = sent.createMessageComponentCollector({ filter, max: 1, componentType: `BUTTON` });
+			const collector = sent.createMessageComponentCollector({ filter, max: 1, componentType: Discord.ComponentType.Button });
 			collector.on(`collect`, collected => {
-				claimbutton.setLabel(LANG.claimed).setStyle(`SECONDARY`).setDisabled(true);
-				buttonrow = new Discord.MessageActionRow().addComponents(claimbutton);
+				claimbutton.setLabel(LANG.claimed).setStyle(Discord.ButtonStyle.Secondary).setDisabled(true);
+				buttonrow = new Discord.ActionRowBuilder().addComponents(claimbutton);
 
-				const winnerEmbed = new Discord.MessageEmbed()
-					.setColor(`RANDOM`)
+				const winnerEmbed = new Discord.EmbedBuilder()
+					.setColor(`Random`)
 					.setTitle(`🎁 Drop`)
 					.setDescription(stripIndent`
                     ${LANG.prize(prize)}

@@ -7,20 +7,27 @@ module.exports = {
 	options: null,
 	run: async (client, interaction, LANG) => {
 
-		const embed = new Discord.MessageEmbed()
-			.setColor(`RANDOM`)
+		const embed = new Discord.EmbedBuilder()
+			.setColor(`Random`)
 			.setTitle(LANG.title)
 			.setFooter({ text: interaction.user.username, iconURL: interaction.member.displayAvatarURL() })
 			.setDescription(LANG.react);
 
 		const chooseArr = [`🪨`, `📰`, `✂️`];
-		interaction.reply({ embeds: [embed] });
-		await interaction.fetchReply().then(async sent => {
+		interaction.reply({ embeds: [embed], fetchReply: true }).then(async sent => {
 			const reacted = await client.chill.promptMessage(sent, interaction.member, 30, chooseArr);
 			const botChoice = chooseArr[Math.floor(Math.random() * chooseArr.length)];
 			const result = await getResult(reacted, botChoice);
 			await sent.reactions.removeAll();
-			embed.setDescription(``).addField(result, `${reacted} vs ${botChoice}`);
+			embed
+				.setDescription(null)
+				.addFields([
+					{
+						name: result,
+						value: `${reacted} vs ${botChoice}`,
+						inline: false,
+					},
+				]);
 			sent.edit({ embeds: [embed] });
 		});
 

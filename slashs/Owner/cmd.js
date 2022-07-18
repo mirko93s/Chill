@@ -4,11 +4,12 @@ module.exports = {
 	name: `cmd`,
 	description: `Enable/disable a command globally`,
 	dev: true,
+	defaultPermission: false,
 	options: [
 		{
 			name: `mode`,
 			description: `Enable / Disable a command`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 			choices: [
 				{ name: `Enable`, value: `enable` },
@@ -19,7 +20,7 @@ module.exports = {
 		{
 			name: `command`,
 			description: `command name`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 		},
 	],
 	run: async (client, interaction, LANG) => {
@@ -27,34 +28,34 @@ module.exports = {
 		const mode = interaction.options.getString(`mode`);
 		const command = interaction.options.getString(`command`);
 
-		const noCmdEmbed = new Discord.MessageEmbed()
-			.setColor(`RED`)
+		const noCmdEmbed = new Discord.EmbedBuilder()
+			.setColor(`Red`)
 			.setDescription(`⛔ No command found for \`${command}\``);
 		if (!client.slashs.get(command) && mode !== `list`) return interaction.reply({ ephemeral: true, embeds: [noCmdEmbed] });
 
 		if (mode === `disable`) {
 			if (!client.cmdstats.includes(`disabled`, command)) {
 				client.cmdstats.push(`disabled`, command);
-				const disabledEmbed = new Discord.MessageEmbed()
-					.setColor(`ORANGE`)
+				const disabledEmbed = new Discord.EmbedBuilder()
+					.setColor(`Orange`)
 					.setDescription(`✅ Successfully disabled command \`${command}\``);
 				return interaction.reply({ ephemeral: true, embeds: [disabledEmbed] });
 			} else {
-				const alreadyDisabledEmbed = new Discord.MessageEmbed()
-					.setColor(`RED`)
+				const alreadyDisabledEmbed = new Discord.EmbedBuilder()
+					.setColor(`Red`)
 					.setDescription(`⛔ \`${command}\` is already disabled`);
 				return interaction.reply({ ephemeral: true, embeds: [alreadyDisabledEmbed] });
 			}
 		} else if (mode === `enable`) {
 			if (client.cmdstats.includes(`disabled`, command)) {
 				client.cmdstats.remove(`disabled`, command);
-				const enabledEmbed = new Discord.MessageEmbed()
-					.setColor(`GREEN`)
+				const enabledEmbed = new Discord.EmbedBuilder()
+					.setColor(`Green`)
 					.setDescription(`✅ Successfully enabled command \`${command}\``);
 				return interaction.reply({ ephemeral: true, embeds: [enabledEmbed] });
 			} else {
-				const alreadyEnabledEmbed = new Discord.MessageEmbed()
-					.setColor(`RED`)
+				const alreadyEnabledEmbed = new Discord.EmbedBuilder()
+					.setColor(`Red`)
 					.setDescription(`⛔ \`${command}\` is already enabled`);
 				return interaction.reply({ ephemeral: true, embeds: [alreadyEnabledEmbed] });
 			}
@@ -64,8 +65,8 @@ module.exports = {
 				list += `\`${cmd}\` `;
 			});
 			if (list.length < 1) list = `**None**`;
-			const listEmbed = new Discord.MessageEmbed()
-				.setColor(`YELLOW`)
+			const listEmbed = new Discord.EmbedBuilder()
+				.setColor(`Yellow`)
 				.setTitle(`Disabled Commands`)
 				.setDescription(list);
 			return interaction.reply({ ephemeral: true, embeds: [listEmbed] });

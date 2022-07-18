@@ -4,11 +4,12 @@ module.exports = {
 	name: `botactivity`,
 	description: `Set Bot's activity`,
 	dev: true,
+	defaultPermission: false,
 	options: [
 		{
 			name: `type`,
 			description: `Choose activity type`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 			choices: [
 				{ name: `Playing`, value: `PLAYING` },
@@ -21,7 +22,7 @@ module.exports = {
 		{
 			name: `activity`,
 			description: `Set new activity, max 128 characters`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 		},
 	],
@@ -29,8 +30,8 @@ module.exports = {
 
 		if (interaction.options.getString(`activity`).length > 128) return interaction.reply({ ephemeral: true, content: `⛔**ERROR** Activity must be long 128 characters or less` });
 
-		const baEmbed = new Discord.MessageEmbed()
-			.setColor(`RANDOM`)
+		const baEmbed = new Discord.EmbedBuilder()
+			.setColor(`Random`)
 			.setTitle(`Bot Activity Updated`);
 
 		client.user.setActivity({ type: interaction.options.getString(`type`), name: interaction.options.getString(`activity`) });

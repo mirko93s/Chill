@@ -2,7 +2,7 @@ module.exports = (client, oldUser, newUser) => {
 	// music temp role
 	const musictemprole = newUser.guild.roles.cache.find(role => role.id === (client.settings.get(newUser.guild.id, `musictemprole`)));
 	if (musictemprole && !newUser.member.user.bot) {
-		if (newUser.guild.me.roles.highest.position < musictemprole.rawPosition) return; // check hierarchy
+		if (newUser.guild.members.me.roles.highest.position < musictemprole.rawPosition) return; // check hierarchy
 		if (newUser.channel !== null && newUser.channel.id === client.settings.get(newUser.guild.id, `musicvocalchannel`)) {
 			newUser.member.roles.add(musictemprole);
 		} else {
@@ -26,7 +26,7 @@ module.exports = (client, oldUser, newUser) => {
 	// delete queue if bot is kicked from a vc while playing
 	if ((client.queue.get(oldUser.guild.id)) && (
 		(newUser.channel === null && newUser.member.user.bot) || // bot kicked
-		(oldUser.channel !== null && oldUser.guild.me.voice.channelId === oldUser.channelId && oldUser.channel.members.size === 1) || // users leave bot alone in a channel
+		(oldUser.channel !== null && oldUser.guild.members.me.voice.channelId === oldUser.channelId && oldUser.channel.members.size === 1) || // users leave bot alone in a channel
 		(newUser.channel !== null && newUser.member.user.bot && newUser.channel.members.size === 1)	// bot is moved to a new empty channel
 	)) {
 		const { getVoiceConnection } = require (`@discordjs/voice`);

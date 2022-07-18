@@ -10,30 +10,30 @@ module.exports = {
 		{
 			name: `name`,
 			description: `Search new emoji by name`,
-			type: `SUB_COMMAND`,
+			type: Discord.ApplicationCommandOptionType.Subcommand,
 			options: [
 				{
 					name: `name`,
 					description: `Emoji to search`,
-					type: `STRING`,
+					type: Discord.ApplicationCommandOptionType.String,
 					required: true,
 				},
 				{
 					name: `animated`,
 					description: `Get only animated emojis`,
-					type: `BOOLEAN`,
+					type: Discord.ApplicationCommandOptionType.Boolean,
 				},
 			],
 		},
 		{
 			name: `category`,
 			description: `Search new emojis by category`,
-			type: `SUB_COMMAND`,
+			type: Discord.ApplicationCommandOptionType.Subcommand,
 			options: [
 				{
 					name: `category`,
 					description: `Select a category`,
-					type: `INTEGER`,
+					type: Discord.ApplicationCommandOptionType.Integer,
 					required: true,
 					choices: [
 						{ name: `ALL`, value: 0 },
@@ -89,36 +89,46 @@ module.exports = {
 		let page = 0;
 		// eslint-disable-next-line no-shadow
 		function embedUpdate(matches, page, success = false) {
-			const embed = new Discord.MessageEmbed()
+			const embed = new Discord.EmbedBuilder()
 				.setTitle(matches[page].title)
 				.setURL(`https://discordemoji.com/emoji/` + matches[page].slug)
-				.setColor(`RANDOM`)
+				.setColor(`Random`)
 				.setThumbnail(matches[page].image)
-				.addField(LANG.favourited_key, matches[page].faves !== 1 ? LANG.favourited_value_p(matches[page].faves) : LANG.favourited_value_s(matches[page].faves), true)
-				.addField(LANG.animated_key, matches[page].category == 8 ? LANG.yes : LANG.no, true)
+				.addFields([
+					{
+						name: LANG.favourited_key,
+						value: matches[page].faves !== 1 ? LANG.favourited_value_p(matches[page].faves) : LANG.favourited_value_s(matches[page].faves),
+						inline: true,
+					},
+					{
+						name: LANG.animated_key,
+						value: matches[page].category == 8 ? LANG.yes : LANG.no,
+						inline: true,
+					},
+				])
 				.setFooter({ text: `${page + 1} / ${matches.length}` });
 			if (success) embed.setAuthor({ name: LANG.created });
 			return embed;
 		}
 
-		const prevButton = new Discord.MessageButton()
+		const prevButton = new Discord.ButtonBuilder()
 			.setCustomId(`previous`)
 			.setEmoji(`◀️`)
-			.setStyle(`PRIMARY`)
+			.setStyle(Discord.ButtonStyle.Primary)
 			.setDisabled(true);
-		const nextButton = new Discord.MessageButton()
+		const nextButton = new Discord.ButtonBuilder()
 			.setCustomId(`next`)
 			.setEmoji(`▶️`)
-			.setStyle(`PRIMARY`);
-		const addButton = new Discord.MessageButton()
+			.setStyle(Discord.ButtonStyle.Primary);
+		const addButton = new Discord.ButtonBuilder()
 			.setCustomId(`add`)
 			.setLabel(LANG.add)
 			.setEmoji(`➕`)
-			.setStyle(`SUCCESS`);
+			.setStyle(Discord.ButtonStyle.Success);
 
 		if (matches.length == 1) nextButton.setDisabled(true);
 
-		const row = new Discord.MessageActionRow().addComponents(prevButton, nextButton, addButton);
+		const row = new Discord.ActionRowBuilder().addComponents(prevButton, nextButton, addButton);
 
 		interaction.followUp({ embeds: [embedUpdate(matches, page)], components: [row], fetchReply: true }).then(sent => {
 			const filter = (i) => {
@@ -126,7 +136,7 @@ module.exports = {
 				if (i.user.id === interaction.user.id) return true;
 				else return false;
 			};
-			const collector = sent.createMessageComponentCollector({ filter, componentType: `BUTTON`, time: 60e3 });
+			const collector = sent.createMessageComponentCollector({ filter, componentType: Discord.ComponentType.Button, time: 60e3 });
 
 			collector.on(`collect`, b => {
 				addButton.setDisabled(false); // reset add button in case an emoji was added
@@ -151,7 +161,7 @@ module.exports = {
 					case `add`:
 						const res = matches[page];
 						try {
-							interaction.guild.emojis.create(res.image, res.title);
+							interaction.guild.emojis.create({ attachment: res.image, name: res.title });
 							addButton.setDisabled(true);
 							sent.edit({ ephemeral: true, embeds: [embedUpdate(matches, page, true)], components: [row] });
 						} catch (error) {

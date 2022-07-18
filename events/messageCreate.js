@@ -1,6 +1,8 @@
+const { ChannelType } = require(`discord.js`);
 const talkedRecently = new Set();
 
 module.exports = async (client, msg) => {
+	if (msg.channel.type === ChannelType.DM) return;
 	const LANG = client.lang(msg.guild.preferredLocale, `events`, `messageCreate`);
 	if (!msg.guild || msg.author.bot) return;
 	prefix = client.settings.get(msg.guild.id, `prefix`);

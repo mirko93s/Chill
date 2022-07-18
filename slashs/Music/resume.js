@@ -13,8 +13,8 @@ module.exports = {
 		if (serverQueue && !serverQueue.playing) {
 			serverQueue.playing = true;
 			client.queue.get(interaction.guild.id).player.unpause();
-			const resumeEmbed = new Discord.MessageEmbed()
-				.setColor(`PURPLE`)
+			const resumeEmbed = new Discord.EmbedBuilder()
+				.setColor(`Purple`)
 				.setTitle(LANG.title)
 				.setDescription(LANG.resumed);
 

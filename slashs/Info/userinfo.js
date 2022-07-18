@@ -8,7 +8,7 @@ module.exports = {
 		{
 			name: `user`,
 			description: `User to get info about`,
-			type: `USER`,
+			type: Discord.ApplicationCommandOptionType.User,
 		},
 	],
 	run: async (client, interaction, LANG) => {
@@ -18,7 +18,7 @@ module.exports = {
 
 module.exports.user = {
 	name: `User Info`,
-	type: `USER`,
+	type: Discord.ApplicationCommandType.User,
 	contextdescription: `Shows some user statistics`,
 	run: async (client, interaction, LANG) => {
 		getProfile(client, interaction, interaction.targetMember, LANG);
@@ -26,20 +26,30 @@ module.exports.user = {
 };
 
 async function getProfile(client, interaction, member, LANG) {
-	const embed = new Discord.MessageEmbed()
+	const embed = new Discord.EmbedBuilder()
 		.setAuthor({ name: member.user.tag, iconURL: member.displayAvatarURL() })
 		.setThumbnail(member.user.displayAvatarURL())
 		.setColor(member.displayHexColor)
-		.addField(LANG.guild, stripIndents`
-        ${LANG.nickname} ${member.displayName}
-        ${LANG.joined_at} <t:${(member.joinedTimestamp / 1e3).toFixed(0)}>
-        ${LANG.boosting} ${member.premiumSinceTimestamp ? `<t:${(member.premiumSinceTimestamp / 1e3).toFixed(0)}>` : LANG.no}
-        ${LANG.roles} ${member.roles.cache.filter(r => r.id !== interaction.guild.id).map(r => r).join(`, `) || LANG.none}`, true)
-		.addField(LANG.personal, stripIndents`
-        ${LANG.id} ${member.user.id}
-        ${LANG.username} ${member.user.username}
-        ${LANG.tag} ${member.user.tag}
-        ${LANG.created_at} <t:${(member.user.createdTimestamp / 1e3).toFixed(0)}>`, true);
+		.addFields([
+			{
+				name: LANG.guild,
+				value: stripIndents`
+					${LANG.nickname} ${member.displayName}
+					${LANG.joined_at} <t:${(member.joinedTimestamp / 1e3).toFixed(0)}>
+					${LANG.boosting} ${member.premiumSinceTimestamp ? `<t:${(member.premiumSinceTimestamp / 1e3).toFixed(0)}>` : LANG.no}
+					${LANG.roles} ${member.roles.cache.filter(r => r.id !== interaction.guild.id).map(r => r).join(`, `) || LANG.none}`,
+				inline: true,
+			},
+			{
+				name: LANG.personal,
+				value: stripIndents`
+					${LANG.id} ${member.user.id}
+					${LANG.username} ${member.user.username}
+					${LANG.tag} ${member.user.tag}
+					${LANG.created_at} <t:${(member.user.createdTimestamp / 1e3).toFixed(0)}>`,
+				inline: true,
+			},
+		]);
 
 	if (member.presence?.activities) {
 		const activitytype = LANG.activity_type;
@@ -47,7 +57,15 @@ async function getProfile(client, interaction, member, LANG) {
 		member.presence.activities.forEach(activity => {
 			activitystring += `\n> **${activitytype[activity.type]}**${activity.name == `Custom Status` ? `\n${activity.state}` : `\n${activity.name} ${activity.details ? `- *${activity.details}*` : ``}`}`;
 		});
-		if (activitystring.length > 0) embed.addField(LANG.activities, activitystring);
+		if (activitystring.length > 0) {
+			embed.addFields([
+				{
+					name: LANG.activities,
+					value: activitystring,
+					inline: false,
+				},
+			]);
+		}
 	}
 	interaction.reply({ embeds: [embed] });
 }

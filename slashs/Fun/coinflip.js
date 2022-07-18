@@ -7,12 +7,12 @@ module.exports = {
 	run: async (client, interaction, LANG) => {
 
 		const coin = LANG.coin;
-		const flippingEmbed = new Discord.MessageEmbed()
-			.setColor(`RANDOM`)
+		const flippingEmbed = new Discord.EmbedBuilder()
+			.setColor(`Random`)
 			.setTitle(LANG.title)
 			.setDescription(LANG.flipping);
-		const flippedEmbed = new Discord.MessageEmbed()
-			.setColor(`RANDOM`)
+		const flippedEmbed = new Discord.EmbedBuilder()
+			.setColor(`Random`)
 			.setTitle(LANG.title)
 			.setDescription(LANG.flipped(interaction.member, coin[Math.floor(Math.random() * coin.length)]));
 

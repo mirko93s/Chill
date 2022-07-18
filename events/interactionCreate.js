@@ -1,8 +1,10 @@
+const { ChannelType } = require (`discord.js`);
+
 module.exports = async (client, interaction) => {
-	const LANG = client.lang(interaction.guild.preferredLocale, `events`, `interactionCreate`);
+	const LANG = client.lang(interaction.guild?.preferredLocale || `en-US`, `events`, `interactionCreate`);
 	const devID = require(`../config.json`).bot_owner;
-	if (!interaction.isApplicationCommand()) return;
-	if (interaction.channel.type === `DM`) return interaction.reply({ embeds: [client.chill.error(LANG.no_dm)] });
+	if (interaction.type !== 2) return;
+	if (interaction.channel.type === ChannelType.DM) return interaction.reply({ embeds: [client.chill.error(LANG.no_dm)] });
 	// get command
 	const command = client.slashs.get(interaction.commandName);
 	if (!command) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.get_cmd_error)] });
@@ -12,11 +14,11 @@ module.exports = async (client, interaction) => {
 	if (command.dev && interaction.member.user.id !== devID) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.dev_only)] });
 	// check user perms
 	if (command.userPerms) {
-		if (!client.guilds.cache.get(interaction.guild.id).members.cache.get(interaction.member.id).permissions.has(command.userPerms || [])) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.user_perms(command))] });
+		if (!client.guilds.cache.get(interaction.guild.id).members.cache.get(interaction.member.id).permissions.has(command.userPerms || [])) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(command.userPerms.length > 1 ? LANG.user_perms_p(command.userPerms.join(`\` \``)) : LANG.user_perms_s(command.userPerms.join(`\` \``)))] });
 	}
 	// check bot perms
 	if (command.botPerms) {
-		if (!interaction.guild.me.permissions.has(command.botPerms || [])) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.bot_perms(command, interaction))] });
+		if (!interaction.guild.members.me.permissions.has(command.botPerms || [])) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(command.botPerms.length > 1 ? LANG.bot_perms_p(command.botPerms.filter(perm => !interaction.guild.members.me.permissions.toArray().includes(perm)).join(`\` \``)) : LANG.bot_perms_s(command.botPerms.filter(perm => !interaction.guild.members.me.permissions.toArray().includes(perm)).join(`\` \``)))] });
 	}
 	// subcommand check
 	const args = [];

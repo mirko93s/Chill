@@ -8,7 +8,7 @@ module.exports = {
 		{
 			name: `difficulty`,
 			description: `Choose the difficulty. If omitted it will default to Impossible (what the game was designed for)`,
-			type: `INTEGER`,
+			type: Discord.ApplicationCommandOptionType.Integer,
 			choices: [
 				{ name: `Easy`, value: 7 },
 				{ name: `Medium`, value: 9 },
@@ -29,12 +29,12 @@ module.exports = {
 		let guessed = 1;
 		let lastColor;
 		// create buttons
-		const row = new Discord.MessageActionRow();
+		const row = new Discord.ActionRowBuilder();
 		for (let i = 0; i < emojis.length; i++) {
-			button[i] = new Discord.MessageButton()
+			button[i] = new Discord.ButtonBuilder()
 				.setCustomId(emojis[i])
 				.setLabel(` `)
-				.setStyle(`SECONDARY`)
+				.setStyle(Discord.ButtonStyle.Secondary)
 				.setEmoji(emojis[i]);
 			row.addComponents(button[i]);
 		}
@@ -47,8 +47,8 @@ module.exports = {
 		}
 		// set starting square
 		boardarray[0][0] = `⬜`;
-		const gameEmbed = new Discord.MessageEmbed()
-			.setColor(`RANDOM`)
+		const gameEmbed = new Discord.EmbedBuilder()
+			.setColor(`Random`)
 			.setAuthor({ name: `FLOOD` })
 			.setDescription(boardToString(boardarray))
 			.setFooter({ text: LANG.turns(turn) });
@@ -58,7 +58,7 @@ module.exports = {
 				if (i.user.id === interaction.user.id) return true;
 				else return false;
 			};
-			const collector = sent.createMessageComponentCollector({ filter, componentType: `BUTTON`, time: 60e3 });
+			const collector = sent.createMessageComponentCollector({ filter, componentType: Discord.ComponentType.Button, time: 60e3 });
 			collector.on(`collect`, async c => {
 				collector.resetTimer({ time: 60e3 });
 				// first turn color filter

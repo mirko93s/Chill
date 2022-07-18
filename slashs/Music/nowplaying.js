@@ -13,8 +13,8 @@ module.exports = {
 		if (!interaction.member.voice.channel) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.not_vc)] });
 		if (!serverQueue) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.no_playing)] });
 
-		const nowplayingEmbed = new Discord.MessageEmbed()
-			.setColor(`PURPLE`)
+		const nowplayingEmbed = new Discord.EmbedBuilder()
+			.setColor(`Purple`)
 			.setTitle(LANG.title)
 			.setDescription(`🎶 **${serverQueue.songs[0].title}**`);
 

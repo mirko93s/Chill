@@ -8,13 +8,13 @@ module.exports = {
 		{
 			name: `description`,
 			description: `Achievement description, max 25 characters`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 		},
 		{
 			name: `icon`,
 			description: `Choose an icon`,
-			type: `INTEGER`,
+			type: Discord.ApplicationCommandOptionType.Integer,
 			choices: [
 				{ name: `Grass`, value: 1 },
 				{ name: `Stone`, value: 20 },
@@ -46,7 +46,7 @@ module.exports = {
 		{
 			name: `title`,
 			description: `Achievement title, max 25 characters`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 		},
 	],
 	run: async (client, interaction, LANG) => {

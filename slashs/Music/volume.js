@@ -8,7 +8,7 @@ module.exports = {
 		{
 			name: `volume`,
 			description: `Set new volume`,
-			type: `INTEGER`,
+			type: Discord.ApplicationCommandOptionType.Integer,
 			minValue: 1,
 			maxValue: 1000,
 		},
@@ -22,8 +22,8 @@ module.exports = {
 
 		if (!interaction.member.voice.channel) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.not_vc)] });
 
-		const currentvolumeEmbed = new Discord.MessageEmbed()
-			.setColor(`PURPLE`)
+		const currentvolumeEmbed = new Discord.EmbedBuilder()
+			.setColor(`Purple`)
 			.setTitle(LANG.title)
 			.setDescription(LANG.volume(serverQueue.volume));
 
@@ -32,8 +32,8 @@ module.exports = {
 		serverQueue.volume = newvolume;
 		client.queue.get(interaction.guild.id).player.state.resource.volume.setVolume(newvolume / 100);
 
-		const newvolumeEmbed = new Discord.MessageEmbed()
-			.setColor(`PURPLE`)
+		const newvolumeEmbed = new Discord.EmbedBuilder()
+			.setColor(`Purple`)
 			.setTitle(LANG.title)
 			.setDescription(LANG.new_volume(newvolume));
 

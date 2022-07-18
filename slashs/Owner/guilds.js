@@ -4,6 +4,7 @@ module.exports = {
 	name: `guilds`,
 	description: `Get a list of all guilds the bot is in.`,
 	dev: true,
+	defaultPermission: false,
 	options: null,
 	run: async (client, interaction, LANG) => {
 

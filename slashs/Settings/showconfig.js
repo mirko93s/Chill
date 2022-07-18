@@ -11,12 +11,16 @@ module.exports = {
 
 		const guildConf = client.settings.get(interaction.guild.id);
 
+		// const locales = { da: `🇩🇰 Dansk`, de: `🇩🇪 Deutsch`, 'en-US': `🇺🇸 English`, 'es-ES': `🇪🇸 Español`, fr: `🇫🇷 Français`, hr: `🇭🇷 Hrvatski`, it: `🇮🇹 Italiano`, lt: `🇱🇹 Lietuviškai`, hu: `🇭🇺 Magyar`, nl: `🇳🇱 Nederlands`, no: `🇳🇴 Norsk`, pl: `🇵🇱 Polski`, 'pt-BR': `🇧🇷 Português do Brasil`, ro: `🇷🇴 Română`, fi: `🇫🇮 Suomi`, 'sv-SE': `🇸🇪 Svenska`, vi: `🇻🇳 Tiếng Việt`, tr: `🇹🇷 Türkçe`, cs: `🇨🇿 Čeština`, el: `🇬🇷 Ελληνικά`, bg: `🇧🇬 български`, ru: `🇷🇺 Pусский`, uk: `🇺🇦 Українська`, hi: `🇮🇳 हिन्दी`, th: `🇹🇭 ไทย`, 'zh-CN': `🇨🇳 中文`, ja: `🇯🇵 日本語`, 'zh-TW': `🇹🇼 繁體中文`, ko: `🇰🇷 한국어` };
+
+		const locales = { da: { flag: `🇩🇰`, text: `Dansk` }, de: { flag: `🇩🇪`, text: `Deutsch` }, 'en-US': { flag: `🇺🇸`, text: `English` }, 'es-ES': { flag: `🇪🇸`, text: `Español` }, fr: { flag: `🇫🇷`, text: `Français` }, hr: { flag: `🇭🇷`, text: `Hrvatski` }, it: { flag: `🇮🇹`, text: `Italiano` }, lt: { flag: `🇱🇹`, text: `Lietuviškai` }, hu: { flag: `🇭🇺`, text: `Magyar` }, nl: { flag: `🇳🇱`, text: `Nederlands` }, no: { flag: `🇳🇴`, text: `Norsk` }, pl: { flag: `🇵🇱`, text: `Polski` }, 'pt-BR': { flag: `🇧🇷`, text: `Português do Brasil` }, ro: { flag: `🇷🇴`, text: `Română` }, fi: { flag: `🇫🇮`, text: `Suomi` }, 'sv-SE': { flag: `🇸🇪`, text: `Svenska` }, vi: { flag: `🇻🇳`, text: `Tiếng Việt` }, tr: { flag: `🇹🇷`, text: `Türkçe` }, cs: { flag: `🇨🇿`, text: `Čeština` }, el: { flag: `🇬🇷`, text: `Ελληνικά` }, bg: { flag: `🇧🇬`, text: `български` }, ru: { flag: `🇷🇺`, text: `Pусский` }, uk: { flag: `🇺🇦`, text: `Українська` }, hi: { flag: `🇮🇳`, text: `हिन्दी` }, th: { flag: `🇹🇭`, text: `ไทย` }, 'zh-CN': { flag: `🇨🇳`, text: `中文` }, ja: { flag: `🇯🇵`, text: `日本語` }, 'zh-TW': { flag: `🇹🇼`, text: `繁體中文` }, ko: { flag: `🇰🇷`, text: `한국어` } };
+
 		function channel(toFind) {
-			const text = interaction.guild.channels.cache.find(ch => ch.id === toFind) ? interaction.guild.channels.cache.get(toFind).name : client.lang(interaction.guild, `showconfig.not_found`);
+			const text = interaction.guild.channels.cache.find(ch => ch.id === toFind) ? interaction.guild.channels.cache.get(toFind).name : LANG.not_found;
 			return text;
 		}
 		function role(toFind) {
-			const text = interaction.guild.roles.cache.find(r => r.id === toFind) ? interaction.guild.roles.cache.get(toFind).name : client.lang(interaction.guild, `showconfig.not_found`);
+			const text = interaction.guild.roles.cache.find(r => r.id === toFind) ? interaction.guild.roles.cache.get(toFind).name : LANG.not_found;
 			return text;
 		}
 
@@ -48,24 +52,50 @@ module.exports = {
 		const other = stripIndent`
 		Prefix      :: ${guildConf.prefix}
 		XP Cooldown :: ${guildConf.xpcooldown}
-		Language    :: ${guildConf.lang} ${langs[guildConf.lang]}
         `;
 
-		const settingsEmbed = new Discord.MessageEmbed()
-			.setColor(`BLUE`)
+		const settingsEmbed = new Discord.EmbedBuilder()
+			.setColor(`Blue`)
 			.setTitle(LANG.title)
-			.addField(LANG.channels, `\`\`\`asciidoc\n${channels}\`\`\``, false)
-			.addField(LANG.roles, `\`\`\`asciidoc\n${roles}\`\`\``, false)
-			.addField(LANG.toggles, `\`\`\`asciidoc\n${toggles}\`\`\``, true)
-			.addField(LANG.other, `\`\`\`asciidoc\n${other}\`\`\``, true);
+			.setDescription(`${locales[interaction.guild.preferredLocale || `en-US`].flag} \`${locales[interaction.guild.preferredLocale || `en-US`].text}\``)
+			.addFields([
+				{
+					name: LANG.channels,
+					value: `\`\`\`asciidoc\n${channels}\`\`\``,
+					inline: false,
+				},
+				{
+					name: LANG.roles,
+					value: `\`\`\`asciidoc\n${roles}\`\`\``,
+					inline: false,
+				},
+				{
+					name: LANG.toggles,
+					value: `\`\`\`asciidoc\n${toggles}\`\`\``,
+					inline: true,
+				},
+				{
+					name: LANG.other,
+					value: `\`\`\`asciidoc\n${other}\`\`\``,
+					inline: true,
+				},
+			]);
 
-		if (channels.includes(LANG.not_found) || roles.includes(LANG.not_found)) settingsEmbed.addField(LANG.warning_key, LANG.warning_value, false);
+		if (channels.includes(LANG.not_found) || roles.includes(LANG.not_found)) {
+			settingsEmbed.addFields([
+				{
+					name: LANG.warning_key,
+					value: LANG.warning_value,
+					inline: false,
+				},
+			]);
+		}
 
-		const dashboardLink = new Discord.MessageActionRow()
+		const dashboardLink = new Discord.ActionRowBuilder()
 			.addComponents(
-				new Discord.MessageButton()
+				new Discord.ButtonBuilder()
 					.setLabel(LANG.dashboard)
-					.setStyle(`LINK`)
+					.setStyle(Discord.ButtonStyle.Link)
 					.setURL(require(`../../config.json`).bot_dashboard_link)
 					.setEmoji(`⚙️`),
 			);

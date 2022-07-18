@@ -9,7 +9,7 @@ module.exports = {
 		{
 			name: `time`,
 			description: `Time (automatically caps at approximately 25 days)`,
-			type: `INTEGER`,
+			type: Discord.ApplicationCommandOptionType.Integer,
 			required: true,
 			minValue: 1,
 			maxValue: 60,
@@ -17,7 +17,7 @@ module.exports = {
 		{
 			name: `unit`,
 			description: `Time unit`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 			choices: [
 				{
@@ -41,7 +41,7 @@ module.exports = {
 		{
 			name: `text`,
 			description: `What do I have to remind you?`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 		},
 	],
@@ -56,8 +56,8 @@ module.exports = {
 		const id_time = `${interaction.member.id}-${Date.now() + time}`;
 
 		function reminder() {
-			const reminderEmbed = new Discord.MessageEmbed()
-				.setColor(`RANDOM`)
+			const reminderEmbed = new Discord.EmbedBuilder()
+				.setColor(`Random`)
 				.setTitle(LANG.title)
 				.setDescription(CryptoJS.AES.decrypt(encrypted, require(`../../config.json`).crypto_key).toString(CryptoJS.enc.Utf8));
 			client.intervals.delete(`reminders`, id_time);

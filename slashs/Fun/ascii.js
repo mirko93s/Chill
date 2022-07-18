@@ -8,7 +8,7 @@ module.exports = {
 		{
 			name: `text`,
 			description: `Text to convert to ascii art`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 		},
 	],

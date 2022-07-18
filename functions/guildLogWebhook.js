@@ -10,8 +10,8 @@ const config = require(`../config.json`);
 module.exports = async function(client, guild, join) {
 	const webhook = new Discord.WebhookClient({ url: config.guild_log_webhook_link });
 	await webhook.edit({ name: guild.name });
-	const webhookEmbed = new Discord.MessageEmbed()
-		.setColor(join === true ? `GREEN` : `RED`)
+	const webhookEmbed = new Discord.EmbedBuilder()
+		.setColor(join === true ? `Green` : `Red`)
 		.setTitle(`${join === true ? `Joined` : `Left`} ・ \`${client.guilds.cache.size}\``)
 		.setDescription(stripIndent`
         \`\`\`asciidoc

@@ -8,13 +8,13 @@ module.exports = {
 		{
 			name: `user`,
 			description: `User to change the xp to`,
-			type: `USER`,
+			type: Discord.ApplicationCommandOptionType.User,
 			required: true,
 		},
 		{
 			name: `mode`,
 			description: `Select a mode`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 			choices: [
 				{ name: `give`, value: `give` },
@@ -25,7 +25,7 @@ module.exports = {
 		{
 			name: `amount`,
 			description: `Amount of xp points`,
-			type: `INTEGER`,
+			type: Discord.ApplicationCommandOptionType.Integer,
 			required: true,
 			minValue: 0,
 		},
@@ -64,7 +64,7 @@ module.exports = {
 			for (const [key, value] of Object.entries(rewards)) {
 				if (value <= newLevel && value > userScore.level) {
 					const checkrole = interaction.guild.roles.cache.find(r => r.id === key); // check if role exists
-					if (checkrole && interaction.guild.me.roles.highest.position > checkrole.rawPosition) { // give role checking hierarchy
+					if (checkrole && interaction.guild.members.me.roles.highest.position > checkrole.rawPosition) { // give role checking hierarchy
 						interaction.member.roles.add(checkrole.id);
 						unlocked += `${interaction.guild.roles.cache.find(r => r.id === key).name}\n`;
 					}
@@ -74,7 +74,7 @@ module.exports = {
 			for (const [key, value] of Object.entries(rewards)) {
 				if (value <= userScore.level && value > newLevel) {
 					const checkrole = interaction.guild.roles.cache.find(r => r.id === key); // check if role exists
-					if (checkrole && interaction.guild.me.roles.highest.position > checkrole.rawPosition) { // remove role checking hierarchy
+					if (checkrole && interaction.guild.members.me.roles.highest.position > checkrole.rawPosition) { // remove role checking hierarchy
 						interaction.member.roles.remove(checkrole.id);
 						unlocked += `${interaction.guild.roles.cache.find(r => r.id === key).name}\n`;
 					}
@@ -83,13 +83,13 @@ module.exports = {
 		}
 
 		client.settings.set(interaction.guild.id, { level: newLevel, points: newPoints }, `xp.${user.id}`);
-		const xpEmbed = new Discord.MessageEmbed()
-			.setColor(`RANDOM`)
+		const xpEmbed = new Discord.EmbedBuilder()
+			.setColor(`Random`)
 			.setAuthor({ name: LANG.author(user.username), iconURL: user.displayAvatarURL() })
-			.setTitle(LANG.title(xpmsg, pointsToAdd))
+			.setTitle(pointsToAdd > 1 || pointsToAdd == 0 ? LANG.title_p(xpmsg, pointsToAdd) : LANG.title_s(xpmsg, pointsToAdd))
 			.setFooter({ text: LANG.by(interaction.user.username) });
 
-		if (newLevel != userScore.level) xpEmbed.setTitle(LANG.levelup_title(xpmsg, pointsToAdd, newLevel));
+		if (newLevel != userScore.level) xpEmbed.setTitle(pointsToAdd > 1 || pointsToAdd == 0 ? LANG.levelup_p(xpmsg, pointsToAdd, newLevel) : LANG.levelup_s(xpmsg, pointsToAdd, newLevel));
 		if (unlocked.length > 0) {
 			if (newLevel > userScore.level) xpEmbed.setDescription(LANG.unlocked(unlocked));
 			else if (newLevel < userScore.level) xpEmbed.setDescription(LANG.taken(unlocked));

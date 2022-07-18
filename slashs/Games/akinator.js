@@ -10,7 +10,7 @@ module.exports = {
 		{
 			name: `language`,
 			description: `Select a language. If omitted it defaults to english`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			choices: [
 				{ name: `English`, value: `en` },
 				{ name: `English Objects`, value: `en_objects` },
@@ -46,44 +46,44 @@ module.exports = {
 
 		interaction.deferReply();
 
-		const b0 = new Discord.MessageButton()
+		const b0 = new Discord.ButtonBuilder()
 			.setCustomId(`0`)
 			.setLabel(LANG.yes)
-			.setStyle(`SUCCESS`)
+			.setStyle(Discord.ButtonStyle.Success)
 			.setEmoji(`👍`);
-		const b1 = new Discord.MessageButton()
+		const b1 = new Discord.ButtonBuilder()
 			.setCustomId(`1`)
 			.setLabel(LANG.no)
-			.setStyle(`DANGER`)
+			.setStyle(Discord.ButtonStyle.Danger)
 			.setEmoji(`👎`);
-		const b2 = new Discord.MessageButton()
+		const b2 = new Discord.ButtonBuilder()
 			.setCustomId(`2`)
 			.setLabel(LANG.idk)
-			.setStyle(`SECONDARY`)
+			.setStyle(Discord.ButtonStyle.Secondary)
 			.setEmoji(`❓`);
-		const b3 = new Discord.MessageButton()
+		const b3 = new Discord.ButtonBuilder()
 			.setCustomId(`3`)
 			.setLabel(LANG.probably)
-			.setStyle(`PRIMARY`)
+			.setStyle(Discord.ButtonStyle.Primary)
 			.setEmoji(`🤔`);
-		const b4 = new Discord.MessageButton()
+		const b4 = new Discord.ButtonBuilder()
 			.setCustomId(`4`)
 			.setLabel(LANG.probably_not)
-			.setStyle(`PRIMARY`)
+			.setStyle(Discord.ButtonStyle.Primary)
 			.setEmoji(`🙄`);
-		const row = new Discord.MessageActionRow().addComponents(b0, b1, b2, b3, b4);
+		const row = new Discord.ActionRowBuilder().addComponents(b0, b1, b2, b3, b4);
 
-		const yes = new Discord.MessageButton()
+		const yes = new Discord.ButtonBuilder()
 			.setCustomId(`yes`)
 			.setLabel(` `)
-			.setStyle(`SUCCESS`)
+			.setStyle(Discord.ButtonStyle.Success)
 			.setEmoji(`✅`);
-		const no = new Discord.MessageButton()
+		const no = new Discord.ButtonBuilder()
 			.setCustomId(`no`)
 			.setLabel(` `)
-			.setStyle(`DANGER`)
+			.setStyle(Discord.ButtonStyle.Danger)
 			.setEmoji(`❌`);
-		const rowwin = new Discord.MessageActionRow().addComponents(yes, no);
+		const rowwin = new Discord.ActionRowBuilder().addComponents(yes, no);
 
 		const region = interaction.options.getString(`language`) || `en`;
 		const childMode = true;
@@ -97,12 +97,18 @@ module.exports = {
 		const aki = new Aki({ region, childMode, proxy });
 		await aki.start();
 
-		const gameEmbed = new Discord.MessageEmbed()
-			.setColor(`RANDOM`)
+		const gameEmbed = new Discord.EmbedBuilder()
+			.setColor(`Random`)
 			.setAuthor({ name: `Akinator`, iconURL: `https://i.imgur.com/SGdaKmd.png` })
 			.setDescription(aki.question)
-			.addField(LANG.questions, round.toString())
-			.setFooter({ text: LANG.progress(aki) });
+			.addFields([
+				{
+					name: LANG.questions,
+					value: round.toString(),
+					inline: false,
+				},
+			])
+			.setFooter({ text: LANG.progress(aki.progress.toFixed(2), (`▬`.repeat((Math.round(aki.progress / 5))) + `🔘` + `▬`.repeat(20 - (Math.round(aki.progress / 5))))) });
 
 		interaction.followUp({ embeds: [gameEmbed], components: [row], fetchReply: true }).then(sent => {
 			const filter = (i) => {
@@ -110,14 +116,14 @@ module.exports = {
 				if (i.user.id === interaction.user.id) return true;
 				else return false;
 			};
-			const collector = sent.createMessageComponentCollector({ filter, componentType: `BUTTON`, time: 60e3 });
+			const collector = sent.createMessageComponentCollector({ filter, componentType: Discord.ComponentType.Button, time: 60e3 });
 			collector.on(`collect`, async c => {
 				collector.resetTimer({ time: 60e3 });
 				if (!guess) {
 					await aki.step(c.customId);
 					sinceLastGuess++;
 					round++;
-					gameEmbed.setDescription(aki.question).setFooter({ text: LANG.progress(aki) });
+					gameEmbed.setDescription(aki.question).setFooter({ text: LANG.progress(aki.progress.toFixed(2), (`▬`.repeat((Math.round(aki.progress / 5))) + `🔘` + `▬`.repeat(20 - (Math.round(aki.progress / 5))))) });
 					gameEmbed.fields[0].value = round.toString();
 					if ((aki.progress >= 80 && (hasGuessed === false || sinceLastGuess >= 5)) || aki.currentStep >= 78) {
 						hasGuessed = true;
@@ -126,8 +132,8 @@ module.exports = {
 						const guessed = aki.answers.filter(g => !wrongGuess.includes(g.id));
 						if (guessed.length > 0) {
 							guess = true;
-							const guessEmbed = new Discord.MessageEmbed()
-								.setColor(`RANDOM`)
+							const guessEmbed = new Discord.EmbedBuilder()
+								.setColor(`Random`)
 								.setAuthor({ name: `Akinator`, iconURL: `https://i.imgur.com/SGdaKmd.png` })
 								.setTitle(guessed[0].name)
 								.setDescription(guessed[0].description)
@@ -148,8 +154,8 @@ module.exports = {
 						wrongGuess.push(aki.answers.filter(g => !wrongGuess.includes(g.id))[0].id);
 						if (aki.currentStep >= 78) {
 							collector.stop(`defeated`);
-							const defeatedEmbed = new Discord.MessageEmbed()
-								.setColor(`RANDOM`)
+							const defeatedEmbed = new Discord.EmbedBuilder()
+								.setColor(`Random`)
 								.setAuthor({ name: `Akinator`, iconURL: `https://i.imgur.com/SGdaKmd.png` })
 								.setTitle(LANG.wp)
 								.setDescription(LANG.defeated);

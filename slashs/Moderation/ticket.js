@@ -8,32 +8,32 @@ module.exports = {
 		{
 			name: `create`,
 			description: `Create a ticket to get assistance from server Staff`,
-			type: `SUB_COMMAND`,
+			type: Discord.ApplicationCommandOptionType.Subcommand,
 			options: null,
 		},
 		{
 			name: `close`,
 			description: `Close a ticket. Mark the ticket as solved, can be used by user or staff.`,
-			type: `SUB_COMMAND`,
+			type: Discord.ApplicationCommandOptionType.Subcommand,
 			options: null,
 		},
 		{
 			name: `delete`,
 			description: `Delete this Ticket.`,
-			type: `SUB_COMMAND`,
+			type: Discord.ApplicationCommandOptionType.Subcommand,
 			options: null,
 		},
 	],
 	run: async (client, interaction, LANG) => {
 
-		const noticketchannelEmbed = new Discord.MessageEmbed()
-			.setColor(`RED`)
+		const noticketchannelEmbed = new Discord.EmbedBuilder()
+			.setColor(`Red`)
 			.setTitle(`⛔ You are not in a ticket channel!`);
-		const noPermEmbed = new Discord.MessageEmbed()
-			.setColor(`RED`)
+		const noPermEmbed = new Discord.EmbedBuilder()
+			.setColor(`Red`)
 			.setDescription(`⛔ You need the be part of the Staff or an Administrator to use this command!`);
-		const alreadyEmbed = new Discord.MessageEmbed()
-			.setColor(`RED`)
+		const alreadyEmbed = new Discord.EmbedBuilder()
+			.setColor(`Red`)
 			.setTitle(`⛔ You already have an opened ticket!`);
 
 		if (interaction.options.getSubcommand() === `create`) {
@@ -66,14 +66,14 @@ module.exports = {
 						READ_MESSAGE_HISTORY: true,
 					});
 				}
-				const ticketEmbed = new Discord.MessageEmbed()
-					.setColor(`RANDOM`)
+				const ticketEmbed = new Discord.EmbedBuilder()
+					.setColor(`Random`)
 					.setTitle(LANG.title)
 					.setDescription(LANG.description(interaction.member));
 				channel.send({ embeds: [ticketEmbed] });
 
-				const doneEmbed = new Discord.MessageEmbed()
-					.setColor(`RANDOM`)
+				const doneEmbed = new Discord.EmbedBuilder()
+					.setColor(`Random`)
 					.setDescription(LANG.opened(channel));
 				return interaction.reply({ ephemeral: true, embeds: [doneEmbed] });
 			});
@@ -89,8 +89,8 @@ module.exports = {
 				SEND_MESSAGES: false,
 			});
 
-			const ticketclosed = new Discord.MessageEmbed()
-				.setColor(`GREEN`)
+			const ticketclosed = new Discord.EmbedBuilder()
+				.setColor(`Green`)
 				.setTitle(LANG.closed)
 				.setDescription(`<@${user.id}>`);
 

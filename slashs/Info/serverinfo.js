@@ -34,14 +34,32 @@ module.exports = {
 		${LANG.roles} ${interaction.guild.roles.cache.size}
         `;
 
-		const embed = new Discord.MessageEmbed()
+		const embed = new Discord.EmbedBuilder()
 			.setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
-			.setColor(`RANDOM`)
+			.setColor(`Random`)
 			.setThumbnail(interaction.guild.iconURL())
-			.addField(LANG.members, `\`\`\`asciidoc\n${members}\`\`\``, true)
-			.addField(LANG.channels, `\`\`\`asciidoc\n${channels}\`\`\``, true)
-			.addField(LANG.boost, `\`\`\`asciidoc\n${boost}\`\`\``, false)
-			.addField(LANG.other, `\`\`\`asciidoc\n${other}\`\`\``, false);
+			.addFields([
+				{
+					name: LANG.members,
+					value: `\`\`\`asciidoc\n${members}\`\`\``,
+					inline: true,
+				},
+				{
+					name: LANG.channels,
+					value: `\`\`\`asciidoc\n${channels}\`\`\``,
+					inline: true,
+				},
+				{
+					name: LANG.boost,
+					value: `\`\`\`asciidoc\n${boost}\`\`\``,
+					inline: false,
+				},
+				{
+					name: LANG.other,
+					value: `\`\`\`asciidoc\n${other}\`\`\``,
+					inline: false,
+				},
+			]);
 
 		interaction.reply({ embeds: [embed] });
 	},

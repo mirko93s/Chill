@@ -9,7 +9,7 @@ module.exports = {
 		{
 			name: `game`,
 			description: `Choose an activity. (max players) [server boost tier]`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 			choices: [
 				// free
@@ -71,8 +71,8 @@ module.exports = {
 			})
 				.then((res) => res.json()).then(invite => {
 					if (invite.error || !invite.code || invite.code == 50013) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.error)] });
-					const inviteEmbed = new Discord.MessageEmbed()
-						.setColor(`RANDOM`)
+					const inviteEmbed = new Discord.EmbedBuilder()
+						.setColor(`Random`)
 						.setTitle(LANG.title)
 						.setDescription(LANG.description(invite.code, activityNames[interaction.options.getString(`game`)]))
 						.setFooter({ text: LANG.by(interaction.user.username), iconURL: interaction.user.displayAvatarURL({ size: 4096, dynamic: true }) });

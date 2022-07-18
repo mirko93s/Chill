@@ -7,7 +7,7 @@ module.exports = {
 		{
 			name: `role`,
 			description: `Role you want to get info about`,
-			type: `ROLE`,
+			type: Discord.ApplicationCommandOptionType.Role,
 			required: true,
 		},
 	],
@@ -15,17 +15,53 @@ module.exports = {
 
 		const role = interaction.options.getRole(`role`);
 
-		const embed = new Discord.MessageEmbed()
+		const embed = new Discord.EmbedBuilder()
 			.setColor(role.hexColor)
 			.setTitle(LANG.title)
 			.setDescription(`${role} \`${role.id}\``)
-			.addField(LANG.created_at, role.createdAt.toDateString(), true)
-			.addField(LANG.mentionable, role.mentionable ? `Yes` : `No`, true)
-			.addField(LANG.position, role.position.toString(), true)
-			.addField(LANG.category, role.hoist.toString(), true)
-			.addField(LANG.counter, role.members.size.toString(), true)
-			.addField(LANG.color, role.hexColor, true)
-			.addField(LANG.perms, `\`${role.permissions.toArray().join(`, `)}\``);
+			.addFields([
+				{
+					name: LANG.created_at,
+					value: role.createdAt.toDateString(),
+					inline: true,
+				},
+				{
+					name: LANG.mentionable,
+					value: role.mentionable ? `Yes` : `No`,
+					inline: true,
+				},
+				{
+					name: LANG.position,
+					value: role.position.toString(),
+					inline: true,
+				},
+				{
+					name: LANG.category,
+					value: role.hoist.toString(),
+					inline: true,
+				},
+				{
+					name: LANG.counter,
+					value: role.members.size.toString(),
+					inline: true,
+				},
+				{
+					name: LANG.color,
+					value: role.hexColor,
+					inline: true,
+				},
+			]);
+
+		if (role.permissions.bitfield !== 0n) {
+			embed.addFields([
+				{
+					name: LANG.perms,
+					value: `\`${role.permissions.toArray().join(`, `)}\``,
+					inline: false,
+				},
+			]);
+		}
+
 		interaction.reply({ embeds: [embed] });
 	},
 };

@@ -9,19 +9,19 @@ module.exports = {
 		{
 			name: `user`,
 			description: `User to kick`,
-			type: `USER`,
+			type: Discord.ApplicationCommandOptionType.User,
 			required: true,
 		},
 		{
 			name: `reason`,
 			description: `Reason of the kick`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 		},
 		{
 			name: `logchannel`,
 			description: `Choose where to log this kick. If blank defaults to Guild Config Punishments channel`,
-			type: `CHANNEL`,
-			channelTypes: [`GUILD_TEXT`],
+			type: Discord.ApplicationCommandOptionType.Channel,
+			channelTypes: [Discord.ChannelType.GuildText],
 		},
 	],
 	run: async (client, interaction, LANG) => {
@@ -37,20 +37,30 @@ module.exports = {
 
 		const reason = interaction.options.getString(`reason`)?.substring(0, 1024) || LANG.not_provided;
 
-		const kickEmbed = new Discord.MessageEmbed()
-			.setColor(`ORANGE`)
+		const kickEmbed = new Discord.EmbedBuilder()
+			.setColor(`Orange`)
 			.setThumbnail(toKick.user.displayAvatarURL())
 			.setTitle(LANG.title)
 			.setDescription(toKick.user.tag)
-			.addField(LANG.by, interaction.member.user.username, true)
-			.addField(LANG.reason, reason, false)
+			.addFields([
+				{
+					name: LANG.by,
+					value: interaction.member.user.username,
+					inline: tr,
+				},
+				{
+					name: LANG.reason,
+					value: reason,
+					inline: false,
+				},
+			])
 			.setTimestamp();
 
 		toKick.kick({ reason: reason }).catch(err => {
 			if (err) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.error(err))] });
 		});
-		const doneEmbed = new Discord.MessageEmbed()
-			.setColor(`ORANGE`)
+		const doneEmbed = new Discord.EmbedBuilder()
+			.setColor(`Orange`)
 			.setDescription(LANG.kicked(toKick, puchannel));
 		interaction.reply({ ephemeral: true, embeds: [doneEmbed] });
 		return puchannel.send({ embeds: [kickEmbed] });

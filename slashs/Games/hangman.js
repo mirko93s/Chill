@@ -8,13 +8,13 @@ module.exports = {
 		{
 			name: `word`,
 			description: `Word to guess`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 		},
 		{
 			name: `player`,
 			description: `User to play against. If omitted (or if you choose yourself) everyone can play.`,
-			type: `USER`,
+			type: Discord.ApplicationCommandOptionType.User,
 		},
 	],
 	run: async (client, interaction, LANG) => {
@@ -30,45 +30,45 @@ module.exports = {
 		let lastGuesser;
 		// create buttons with letters
 		for (let i = 0; i < alphabet.length; i++) {
-			button[i] = new Discord.MessageButton()
+			button[i] = new Discord.ButtonBuilder()
 				.setCustomId(i.toString())
 				.setLabel(alphabet[i])
-				.setStyle(`PRIMARY`);
+				.setStyle(Discord.ButtonStyle.Primary);
 		};
 		// create rows with letter buttons
 		for (let i = 0; i < alphabet.length; i += 5) {
-			if (i < 25) row[i / 5] = new Discord.MessageActionRow().addComponents(button[i], button[i + 1], button[i + 2], button[i + 3], button[i + 4]);
-			else row[i / 5] = new Discord.MessageActionRow().addComponents(button[i]);
+			if (i < 25) row[i / 5] = new Discord.ActionRowBuilder().addComponents(button[i], button[i + 1], button[i + 2], button[i + 3], button[i + 4]);
+			else row[i / 5] = new Discord.ActionRowBuilder().addComponents(button[i]);
 		}
 		// create "footer" buttons
-		leftButton = new Discord.MessageButton()
+		leftButton = new Discord.ButtonBuilder()
 			.setCustomId(`left`)
 			.setLabel(``)
 			.setEmoji(`⬅️`)
-			.setStyle(`SECONDARY`);
-		rightButton = new Discord.MessageButton()
+			.setStyle(Discord.ButtonStyle.Secondary);
+		rightButton = new Discord.ButtonBuilder()
 			.setCustomId(`right`)
 			.setLabel(``)
 			.setEmoji(`➡️`)
-			.setStyle(`SECONDARY`);
-		livesButton = new Discord.MessageButton()
+			.setStyle(Discord.ButtonStyle.Secondary);
+		livesButton = new Discord.ButtonBuilder()
 			.setCustomId(`lives`)
 			.setLabel(lives.toString())
 			.setEmoji(`❤️`)
-			.setStyle(`SECONDARY`)
+			.setStyle(Discord.ButtonStyle.Secondary)
 			.setDisabled(true);
-		disabledButton1 = new Discord.MessageButton()
+		disabledButton1 = new Discord.ButtonBuilder()
 			.setCustomId(`d1`)
 			.setLabel(` `)
-			.setStyle(`SECONDARY`)
+			.setStyle(Discord.ButtonStyle.Secondary)
 			.setDisabled(true);
-		disabledButton2 = new Discord.MessageButton()
+		disabledButton2 = new Discord.ButtonBuilder()
 			.setCustomId(`d2`)
 			.setLabel(` `)
-			.setStyle(`SECONDARY`)
+			.setStyle(Discord.ButtonStyle.Secondary)
 			.setDisabled(true);
 
-		const footerRow = new Discord.MessageActionRow().addComponents(leftButton, disabledButton1, livesButton, disabledButton2, rightButton);
+		const footerRow = new Discord.ActionRowBuilder().addComponents(leftButton, disabledButton1, livesButton, disabledButton2, rightButton);
 		// menu pages
 		const menu1 = [row[0], row[1], row[2], footerRow];
 		const menu2 = [row[3], row[4], row[5], footerRow];
@@ -83,12 +83,20 @@ module.exports = {
 			`┏━━━━┓\n┃    ┃\n┃   😵\n┃   /|\\\n┃   / \\\n┃\n┗━━━━━━━━┛`,
 		];
 
-		const embed = new Discord.MessageEmbed()
-			.setColor(`RANDOM`)
+		const embed = new Discord.EmbedBuilder()
+			.setColor(`Random`)
 			.setAuthor({ name: LANG.title })
 			.setTitle(guess.join(``))
 			.setDescription(`\`\`\`${ascii[7 - (lives + 1)]}\`\`\``);
-		if (player) embed.addField(LANG.player, `${player}`);
+		if (player) {
+			embed.addFields([
+				{
+					name: LANG.player,
+					value: `${player}`,
+					inline: false,
+				},
+			]);
+		}
 
 		interaction.reply({ embeds: [embed], components: menu1 });
 		interaction.fetchReply().then(sent => {
@@ -98,7 +106,7 @@ module.exports = {
 				else if (!player && i.user.id !== interaction.member.id) return true;
 				else return false;
 			};
-			const collector = sent.createMessageComponentCollector({ filter, componentType: `BUTTON`, time: 60e3 });
+			const collector = sent.createMessageComponentCollector({ filter, componentType: Discord.ComponentType.Button, time: 60e3 });
 			collector.on(`collect`, c => {
 				collector.resetTimer({ time: 60e3 });
 				lastGuesser = c.member;
@@ -135,8 +143,8 @@ module.exports = {
 			});
 			collector.on(`end`, (collected, reason) => {
 				if (reason === `time`) embed.setTitle(LANG.inactivity);
-				if (reason === `won`) embed.setDescription(embed.description + LANG.won(player, lastGuesser));
-				if (reason === `lost`) embed.setDescription(embed.description + LANG.lost(player, lastGuesser, word));
+				if (reason === `won`) embed.setDescription(embed.description + LANG.won(player || lastGuesser));
+				if (reason === `lost`) embed.setDescription(embed.description + LANG.lost(player || lastGuesser, word));
 				if (player && reason !== `time`) embed.fields = [];
 				sent.edit({ embeds: [embed], components: [] });
 			});

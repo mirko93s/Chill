@@ -9,25 +9,25 @@ module.exports = {
 		{
 			name: `list`,
 			description: `List all roles awarded by leveling up`,
-			type: `SUB_COMMAND`,
+			type: Discord.ApplicationCommandOptionType.Subcommand,
 			options: null,
 		},
 		{
 			name: `set`,
 			description: `Set a new reward`,
-			type: `SUB_COMMAND`,
+			type: Discord.ApplicationCommandOptionType.Subcommand,
 			options: [
 				{
 					name: `level`,
 					description: `Select a channel`,
-					type: `INTEGER`,
+					type: Discord.ApplicationCommandOptionType.Integer,
 					required: true,
 					minValue: 1,
 				},
 				{
 					name: `role`,
 					description: `Choose the role to award`,
-					type: `ROLE`,
+					type: Discord.ApplicationCommandOptionType.Role,
 					required: true,
 				},
 			],
@@ -35,12 +35,12 @@ module.exports = {
 		{
 			name: `delete`,
 			description: `Delete an existing reward`,
-			type: `SUB_COMMAND`,
+			type: Discord.ApplicationCommandOptionType.Subcommand,
 			options: [
 				{
 					name: `role`,
 					description: `Choose the role to delete`,
-					type: `ROLE`,
+					type: Discord.ApplicationCommandOptionType.Role,
 					required: true,
 				},
 			],
@@ -63,8 +63,8 @@ module.exports = {
 					sorted[key] = rewards[key];
 				});
 
-			const rewardsEmbed = new Discord.MessageEmbed()
-				.setColor(`RANDOM`)
+			const rewardsEmbed = new Discord.EmbedBuilder()
+				.setColor(`Random`)
 				.setTitle(`Level Rewards`);
 			let rolelist = ``;
 			for (const [key, value] of Object.entries(sorted)) {
@@ -86,8 +86,8 @@ module.exports = {
 			if (Object.keys(rewards).length > config.rewards_limit - 1) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.rewards_limit)] });
 			// set
 			client.settings.set(interaction.guild.id, level, `rewards.${role.id}`);
-			const setEmbed = new Discord.MessageEmbed()
-				.setColor(`RANDOM`)
+			const setEmbed = new Discord.EmbedBuilder()
+				.setColor(`Random`)
 				.setTitle(LANG.title)
 				.setDescription(LANG.set(role, level));
 			return interaction.reply({ ephemeral: true, embeds: [setEmbed] });
@@ -98,8 +98,8 @@ module.exports = {
 			const role = interaction.options.getRole(`role`);
 			if (client.settings.has(interaction.guild.id, `rewards.${role.id}`)) {
 				client.settings.delete(interaction.guild.id, `rewards.${role.id}`);
-				const deletedEmbed = new Discord.MessageEmbed()
-					.setColor(`RANDOM`)
+				const deletedEmbed = new Discord.EmbedBuilder()
+					.setColor(`Random`)
 					.setTitle(LANG.title)
 					.setDescription(LANG.removed(role));
 				return interaction.reply({ embeds: [deletedEmbed] });

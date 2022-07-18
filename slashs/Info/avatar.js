@@ -7,7 +7,7 @@ module.exports = {
 		{
 			name: `user`,
 			description: `User to get the avatar of`,
-			type: `USER`,
+			type: Discord.ApplicationCommandOptionType.User,
 		},
 	],
 	run: async (client, interaction, LANG) => {
@@ -17,7 +17,7 @@ module.exports = {
 
 module.exports.user = {
 	name: `Avatar`,
-	type: `USER`,
+	type: Discord.ApplicationCommandType.User,
 	contextdescription: `Display user's Avatar`,
 	run: async (client, interaction, LANG) => {
 		getPfp(interaction, interaction.targetMember, LANG);
@@ -25,8 +25,8 @@ module.exports.user = {
 };
 
 async function getPfp(interaction, user, LANG) {
-	const avatarEmbed = new Discord.MessageEmbed()
-		.setColor(`RANDOM`)
+	const avatarEmbed = new Discord.EmbedBuilder()
+		.setColor(`Random`)
 		.setTitle(LANG.title(user.user.username))
 		.setImage(user.displayAvatarURL({ size: 4096, dynamic: true }))
 		.setURL(user.displayAvatarURL({ size: 4096, dynamic: true }));

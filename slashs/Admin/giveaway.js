@@ -10,7 +10,7 @@ module.exports = {
 		{
 			name: `time`,
 			description: `Time (automatically caps at approximately 25 days)`,
-			type: `INTEGER`,
+			type: Discord.ApplicationCommandOptionType.Integer,
 			required: true,
 			minValue: 1,
 			maxValue: 60,
@@ -18,7 +18,7 @@ module.exports = {
 		{
 			name: `unit`,
 			description: `Time unit`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 			choices: [
 				{
@@ -42,21 +42,21 @@ module.exports = {
 		{
 			name: `prize`,
 			description: `What will the prize be?`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 		},
 		{
 			name: `winners`,
 			description: `How many winners? If blank defaults to 1`,
-			type: `INTEGER`,
+			type: Discord.ApplicationCommandOptionType.Integer,
 			minValue: 1,
 			maxValue: 10,
 		},
 		{
 			name: `channel`,
 			description: `Channel to start the Giveaway in. If blank defaults to Guild Config Giveaway channel`,
-			type: `CHANNEL`,
-			channelTypes: [`GUILD_TEXT`],
+			type: Discord.ApplicationCommandOptionType.Channel,
+			channelTypes: [Discord.ChannelType.GuildText],
 		},
 	],
 	run: async (client, interaction, LANG) => {
@@ -71,18 +71,28 @@ module.exports = {
 		const host = interaction.user;
 
 		try {
-			const startEmbed = new Discord.MessageEmbed()
-				.setColor(`RANDOM`)
+			const startEmbed = new Discord.EmbedBuilder()
+				.setColor(`Random`)
 				.setTitle(LANG.started)
 				.setDescription(LANG.react)
-				.addField(LANG.prize, `**${prize}**`, false)
-				.addField(LANG.ends_at(((Date.now() + time) / 1e3).toFixed()), LANG.max_winners(winnersnum))
+				.addFields([
+					{
+						name: LANG.prize,
+						value: `**${prize}**`,
+						inline: false,
+					},
+					{
+						name: LANG.ends_at(((Date.now() + time) / 1e3).toFixed()),
+						value: LANG.max_winners(winnersnum),
+						inline: false,
+					},
+				])
 				.setFooter({ text: LANG.footer_start(host.tag), iconURL: host.displayAvatarURL() })
 				.setTimestamp();
 			gachannel.send({ embeds: [startEmbed] }).then(sent => {
 				client.intervals.set(`giveaways`, { timestamp: Date.now() + time, channel: gachannel.id }, sent.id);
-				const doneEmbed = new Discord.MessageEmbed()
-					.setColor(`RANDOM`)
+				const doneEmbed = new Discord.EmbedBuilder()
+					.setColor(`Random`)
 					.setDescription(LANG.success(gachannel));
 				interaction.reply({ ephemeral: true, embeds: [doneEmbed] });
 				sent.react(`🎉`);
@@ -90,11 +100,21 @@ module.exports = {
 					sent.reactions.cache.get(`🎉`).users.fetch().then(r => {
 						if (r.size < winnersnum) winnersnum = r.size;
 						const winner = r.filter(u => u.id !== client.user.id).random(winnersnum);
-						const endEmbed = new Discord.MessageEmbed()
-							.setColor(`RANDOM`)
+						const endEmbed = new Discord.EmbedBuilder()
+							.setColor(`Random`)
 							.setTitle(LANG.ended)
-							.addField(LANG.prize, `**${prize}**`, false)
-							.addField(LANG.winners_key(winner.length), LANG.winners_value(winner))
+							.addFields([
+								{
+									name: LANG.prize,
+									value: `**${prize}**`,
+									inline: false,
+								},
+								{
+									name: winner.length > 1 ? LANG.winners_key_p : LANG.winners_key_s,
+									value: winner == 0 ? LANG.no_participants : winner.toString(),
+									inline: false,
+								},
+							])
 							.setFooter({ text: LANG.footer_end(host.tag), iconURL: host.displayAvatarURL() })
 							.setTimestamp();
 						sent.edit({ embeds: [endEmbed] });

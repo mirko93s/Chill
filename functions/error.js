@@ -1,10 +1,10 @@
 const Discord = require(`discord.js`);
 /**
  * @param {String} description
- * @returns {MessageEmbed}
+ * @returns {EmbedBuilder}
  */
 module.exports = function(description) {
-	return new Discord.MessageEmbed()
-		.setColor(`RED`)
+	return new Discord.EmbedBuilder()
+		.setColor(`Red`)
 		.setDescription(`⛔ ` + description);
 };

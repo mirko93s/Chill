@@ -5,8 +5,8 @@ const Discord = require(`discord.js`);
  * @param {Object} guild
  */
 module.exports = function(client, guild) {
-	const dmonweronjoinEmbed = new Discord.MessageEmbed()
-		.setColor(`RANDOM`)
+	const dmonweronjoinEmbed = new Discord.EmbedBuilder()
+		.setColor(`Random`)
 		.setAuthor({ name: `Chill - Discord Bot` })
 		.setURL(`https://www.mirko93s.it/`)
 		.setThumbnail(client.user.displayAvatarURL())

@@ -9,7 +9,7 @@ module.exports = {
 		{
 			name: `mode`,
 			description: `Enable or disable User Counter channel`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 			choices: [
 				{ name: `Enable`, value: `enable` },
@@ -30,7 +30,7 @@ module.exports = {
 					type: `GUILD_VOICE`,
 					permissionOverwrites: [
 						{
-							id: interaction.guild.me.id,
+							id: interaction.guild.members.me.id,
 							allow: [`CONNECT`],
 						},
 						{
@@ -41,8 +41,8 @@ module.exports = {
 					],
 				}).then(created => {
 					client.settings.set(interaction.guild.id, created.id, `usercounter`);
-					const enabledEmbed = new Discord.MessageEmbed()
-						.setColor(`GREEN`)
+					const enabledEmbed = new Discord.EmbedBuilder()
+						.setColor(`Green`)
 						.setTitle(LANG.title)
 						.setDescription(LANG.enabled(created))
 						.setFooter({ text: LANG.footer });
@@ -53,8 +53,8 @@ module.exports = {
 				client.settings.delete(interaction.guild.id, `usercounter`);
 				if (channel) {
 					channel.delete();
-					const disabledEmbed = new Discord.MessageEmbed()
-						.setColor(`RED`)
+					const disabledEmbed = new Discord.EmbedBuilder()
+						.setColor(`Red`)
 						.setTitle(LANG.title)
 						.setDescription(LANG.disabled);
 					return interaction.reply({ embeds: [disabledEmbed] });

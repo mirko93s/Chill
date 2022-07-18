@@ -13,14 +13,14 @@ module.exports = {
 		{
 			name: `song`,
 			description: `Song/Playlist name or link from YouTube`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 			focused: false,
 		},
 		{
 			name: `skipall`,
 			description: `Clear the queue and play this song now`,
-			type: `BOOLEAN`,
+			type: Discord.ApplicationCommandOptionType.Boolean,
 			required: false,
 		},
 	],
@@ -54,10 +54,10 @@ module.exports = {
 					}
 					play(video, interaction, voiceChannel, true);
 				}
-				const addPltoqueueEmbed = new Discord.MessageEmbed()
-					.setColor(`PURPLE`)
+				const addPltoqueueEmbed = new Discord.EmbedBuilder()
+					.setColor(`Purple`)
 					.setTitle(LANG.title)
-					.setDescription(LANG.playlist_queued(pladded, plq));
+					.setDescription(plq ? LANG.playlist_trimmed(pladded) : LANG.playlist_queued(pladded));
 				interaction.reply({ embeds: [addPltoqueueEmbed] });
 				if (interaction.options.getBoolean(`skipall`)) return client.queue.get(interaction.guild.id).player.stop();
 				return;
@@ -146,8 +146,8 @@ module.exports = {
 					return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.couldnt_join(error))] });
 				}
 			} else {
-				const addtoqueueEmbed = new Discord.MessageEmbed()
-					.setColor(`PURPLE`)
+				const addtoqueueEmbed = new Discord.EmbedBuilder()
+					.setColor(`Purple`)
 					.setTitle(LANG.title)
 					.setDescription(LANG.queued(song.title));
 
@@ -190,8 +190,8 @@ module.exports = {
 
 			client.queue.get(interaction.guild.id).player.play(resource);
 
-			const playEmbed = new Discord.MessageEmbed()
-				.setColor(`PURPLE`)
+			const playEmbed = new Discord.EmbedBuilder()
+				.setColor(`Purple`)
 				.setImage(`https://i.ytimg.com/vi/${song.id}/hqdefault.jpg`)
 				.setAuthor({ name: LANG.title })
 				.setDescription(`**[${song.title}](${song.url})**\n\`🕒${song.duration}\``)

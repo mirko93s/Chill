@@ -9,13 +9,13 @@ module.exports = {
 		{
 			name: `user`,
 			description: `User to chnage the nick to`,
-			type: `USER`,
+			type: Discord.ApplicationCommandOptionType.User,
 			required: true,
 		},
 		{
 			name: `nick`,
 			description: `New nickname, max 32 characters`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 		},
 
@@ -25,15 +25,21 @@ module.exports = {
 		const user = interaction.options.getMember(`user`);
 		if (!user) return interaction.reply({ ephemeral: true, embeds: [LANG.not_in_guild] });
 
-		if (user.roles.highest.position > interaction.guild.me.roles.highest.position || user.id === interaction.guild.ownerId) {
+		if (user.roles.highest.position > interaction.guild.members.me.roles.highest.position || user.id === interaction.guild.ownerId) {
 			return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.hierarchy)] });
 		}
 
 		const newnickname = interaction.options.getString(`nick`).substring(0, 32);
 		interaction.guild.members.cache.get(user.user.id).setNickname(newnickname);
-		const embed = new Discord.MessageEmbed()
-			.setColor(`RANDOM`)
-			.addField(LANG.success, LANG.new_nick(newnickname, user.user.username));
+		const embed = new Discord.EmbedBuilder()
+			.setColor(`Random`)
+			.addFields([
+				{
+					name: LANG.success,
+					value: LANG.new_nick(newnickname, user.user.username),
+					inline: false,
+				},
+			]);
 
 		return interaction.reply({ embeds: [embed] });
 	},

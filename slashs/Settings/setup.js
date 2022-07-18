@@ -190,13 +190,27 @@ module.exports = {
 		${ticketmsg} | Ticket | ${interaction.guild.channels.cache.find(c => c.id === (client.settings.get(interaction.guild.id, `ticketcategory`))).name}
 		`;
 
-		const setupembed = new Discord.MessageEmbed()
+		const setupembed = new Discord.EmbedBuilder()
 			.setTitle(LANG.title)
-			.setColor(`RANDOM`)
+			.setColor(`Random`)
 			.setThumbnail(client.user.displayAvatarURL())
-			.addField(LANG.channels, `\`\`\`${channels}\`\`\``, false)
-			.addField(LANG.roles, `\`\`\`${roles}\`\`\``, false)
-			.addField(LANG.categories, `\`\`\`${categories}\`\`\``, false)
+			.addFields([
+				{
+					name: LANG.channels,
+					value: `\`\`\`${channels}\`\`\``,
+					inline: false,
+				},
+				{
+					name: LANG.roles,
+					value: `\`\`\`${roles}\`\`\``,
+					inline: false,
+				},
+				{
+					name: LANG.categories,
+					value: `\`\`\`${categories}\`\`\``,
+					inline: false,
+				},
+			])
 			.setFooter({ text: LANG.footer });
 		interaction.reply({ embeds: [setupembed] });
 	},

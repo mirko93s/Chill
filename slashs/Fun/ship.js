@@ -7,13 +7,13 @@ module.exports = {
 		{
 			name: `user1`,
 			description: `Select 1st user`,
-			type: `USER`,
+			type: Discord.ApplicationCommandOptionType.User,
 			required: true,
 		},
 		{
 			name: `user2`,
 			description: `Select 2nd user`,
-			type: `USER`,
+			type: Discord.ApplicationCommandOptionType.User,
 			required: true,
 		},
 	],
@@ -31,7 +31,7 @@ module.exports = {
 			bar += `🔳`;
 		}
 
-		const shipEmbed = new Discord.MessageEmbed()
+		const shipEmbed = new Discord.EmbedBuilder()
 			.setFooter({ text: `${bar} ${ship}%` });
 
 		switch (true) {

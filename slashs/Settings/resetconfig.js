@@ -7,8 +7,8 @@ module.exports = {
 	options: null,
 	run: async (client, interaction, LANG) => {
 
-		const resetEmbed = new Discord.MessageEmbed()
-			.setColor(`RANDOM`)
+		const resetEmbed = new Discord.EmbedBuilder()
+			.setColor(`Random`)
 			.setTitle(LANG.title)
 			.setDescription(LANG.description);
 
@@ -21,7 +21,6 @@ const defaultSettings = {
 	prefix: `.`,
 	musicchannelonly: `false`,
 	xpcooldown: 5,
-	lang: `en_US`,
 	autodeletecmds: `true`,
 	xpmodule: `true`,
 	welcomemessage: `true`,

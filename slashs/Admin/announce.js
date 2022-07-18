@@ -9,20 +9,20 @@ module.exports = {
 		{
 			name: `title`,
 			description: `Announcement title, max 256 characters`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 		},
 		{
 			name: `description`,
 			description: `Announcement description, max 2048 characters`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 		},
 		{
 			name: `channel`,
 			description: `Channel to send the announcement in. If blank defaults to Guild Config Broadcast channel`,
-			type: `CHANNEL`,
-			channelTypes: [`GUILD_TEXT`, `GUILD_NEWS`],
+			type: Discord.ApplicationCommandOptionType.Channel,
+			channelTypes: [Discord.ChannelType.GuildText, Discord.ChannelType.GuildNews],
 		},
 	],
 	run: async (client, interaction) => {
@@ -32,7 +32,7 @@ module.exports = {
 		if (title.length > 256 || description.length > 4096) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.too_long)] });
 
 		try {// send broadcast
-			const bcEmbed = new Discord.MessageEmbed()
+			const bcEmbed = new Discord.EmbedBuilder()
 				.setTitle(title)
 				.setDescription(description)
 				.setColor(`#00ff00`)
@@ -41,8 +41,8 @@ module.exports = {
 			if (!bcchannel) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.no_channel)] });
 			bcchannel.send(`@everyone`);
 			bcchannel.send({ embeds: [bcEmbed] });
-			const sentEmbed = new Discord.MessageEmbed()
-				.setColor(`GREEN`)
+			const sentEmbed = new Discord.EmbedBuilder()
+				.setColor(`Green`)
 				.setDescription(LANG.success(bcchannel));
 			interaction.reply({ ephemeral: true, embeds: [sentEmbed] });
 		} catch (err) {// bot no perm error

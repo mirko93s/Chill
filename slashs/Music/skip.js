@@ -14,8 +14,8 @@ module.exports = {
 
 		client.queue.get(interaction.guild.id).player.stop();
 
-		const skipEmbed = new Discord.MessageEmbed()
-			.setColor(`PURPLE`)
+		const skipEmbed = new Discord.EmbedBuilder()
+			.setColor(`Purple`)
 			.setTitle(LANG.title)
 			.setDescription(LANG.skipped);
 

@@ -37,14 +37,32 @@ module.exports = {
             Uptime    :: ${ms(process.uptime().toFixed() * 1e3)}
         `;
 
-			const embed = new Discord.MessageEmbed()
+			const embed = new Discord.EmbedBuilder()
 				.setAuthor({ name: client.user.username, iconURL: client.user.displayAvatarURL() })
-				.setColor(`RANDOM`)
+				.setColor(`Random`)
 				.setThumbnail(client.user.avatarURL())
-				.addField(LANG.created_at, `<t:${(client.user.createdTimestamp / 1e3).toFixed(0)}>`, false)
-				.addField(LANG.counters, `\`\`\`asciidoc\n${counters}\`\`\``, true)
-				.addField(LANG.versions, `\`\`\`asciidoc\n${versions}\`\`\``, true)
-				.addField(LANG.system, `\`\`\`asciidoc\n${system}\`\`\``, false)
+				.addFields([
+					{
+						name: LANG.created_at,
+						value: `<t:${(client.user.createdTimestamp / 1e3).toFixed(0)}>`,
+						inline: false,
+					},
+					{
+						name: LANG.counters,
+						value: `\`\`\`asciidoc\n${counters}\`\`\``,
+						inline: true,
+					},
+					{
+						name: LANG.versions,
+						value: `\`\`\`asciidoc\n${versions}\`\`\``,
+						inline: true,
+					},
+					{
+						name: LANG.system,
+						value: `\`\`\`asciidoc\n${system}\`\`\``,
+						inline: false,
+					},
+				])
 				.setTimestamp()
 				.setFooter({ text: client.user.username, iconURL: client.user.displayAvatarURL() });
 

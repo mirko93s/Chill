@@ -1,28 +1,28 @@
-const Discord = require(`discord.js`);
-const client = new Discord.Client({
+const { Collection, Client, GatewayIntentBits, Partials } = require(`discord.js`);
+const client = new Client({
 	intents: [
-		`GUILDS`,
-		`GUILD_MEMBERS`,
-		`GUILD_BANS`,
-		`GUILD_EMOJIS_AND_STICKERS`,
-		`GUILD_VOICE_STATES`,
-		`GUILD_PRESENCES`,
-		`GUILD_MESSAGES`,
-		`GUILD_MESSAGE_REACTIONS`,
-		`DIRECT_MESSAGES`,
-		`GUILD_WEBHOOKS`,
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMembers,
+		GatewayIntentBits.GuildBans,
+		GatewayIntentBits.GuildEmojisAndStickers,
+		GatewayIntentBits.GuildVoiceStates,
+		GatewayIntentBits.GuildPresences,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.GuildMessageReactions,
+		GatewayIntentBits.DirectMessages,
+		GatewayIntentBits.GuildWebhooks,
 	],
 	partials: [
-		`MESSAGE`,
-		`REACTION`,
-		`CHANNEL`,
+		Partials.Message,
+		Partials.Reaction,
+		Partials.Channel,
 	],
 });
 client.serverstatscooldown = new Set();
 client.queue = new Map();
-client.slashs = new Discord.Collection();
-client.commands = new Discord.Collection();
-client.aliases = new Discord.Collection();
+client.slashs = new Collection();
+client.commands = new Collection();
+client.aliases = new Collection();
 // load modules
 client.chill = require(`./handlers/module.js`);
 client.chill.setupDatabases(client);

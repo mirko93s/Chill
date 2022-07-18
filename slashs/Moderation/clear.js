@@ -9,7 +9,7 @@ module.exports = {
 		{
 			name: `amount`,
 			description: `Number of messages to delete`,
-			type: `INTEGER`,
+			type: Discord.ApplicationCommandOptionType.Integer,
 			required: true,
 			minValue: 2,
 			maxValue: 100,
@@ -20,8 +20,8 @@ module.exports = {
 		const fetched = await interaction.channel.messages.fetch({ limit: interaction.options.getInteger(`amount`), before: interaction.id });
 
 		await interaction.channel.bulkDelete(fetched, true).then(deleted => {
-			const purgeEmbed = new Discord.MessageEmbed()
-				.setColor(`GREEN`)
+			const purgeEmbed = new Discord.EmbedBuilder()
+				.setColor(`Green`)
 				.setTitle(LANG.success(deleted.size));
 			if (fetched.size > deleted.size) purgeEmbed.setDescription(LANG.old);
 			interaction.reply({ embeds: [purgeEmbed] });

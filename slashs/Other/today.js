@@ -11,15 +11,15 @@ module.exports = {
 			.then(response => response.json());
 		const events = text.data.Events;
 		if (!events) {
-			const noEventEmbed = new Discord.MessageEmbed()
-				.setColor(`RANDOM`)
+			const noEventEmbed = new Discord.EmbedBuilder()
+				.setColor(`Random`)
 				.setTitle(text.date)
 				.setDescription(LANG.boring_day);
 			return interaction.reply({ embeds: [noEventEmbed] });
 		} else {
 			const event = events[Math.floor(Math.random() * events.length)];
-			const embed = new Discord.MessageEmbed()
-				.setColor(`RANDOM`)
+			const embed = new Discord.EmbedBuilder()
+				.setColor(`Random`)
 				.setURL(text.url)
 				.setTitle(text.date)
 				.setDescription(`${event.year}: ${event.text}`);

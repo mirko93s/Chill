@@ -8,7 +8,7 @@ module.exports = {
 		{
 			name: `expression`,
 			description: `Expression to calculate`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 		},
 	],
@@ -24,8 +24,8 @@ module.exports = {
 				case 200: // OK
 					try {
 						response.json().then(result => {
-							const calcEmbed = new Discord.MessageEmbed()
-								.setColor(`RANDOM`)
+							const calcEmbed = new Discord.EmbedBuilder()
+								.setColor(`Random`)
 								.setTitle(LANG.title)
 								.setDescription(`${expression} = **${result}**`);
 							return interaction.followUp({ embeds: [calcEmbed] });

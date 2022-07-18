@@ -12,8 +12,8 @@ module.exports = function(client, msg, talkedRecently) {
 	const curLevel = Math.floor(0.3163 * Math.sqrt(client.settings.get(msg.guild.id, `xp.${msg.author.id}.points`)));
 	if (client.settings.get(msg.guild.id, `xp.${msg.author.id}.level`) < curLevel) { // level up
 		client.settings.set(msg.guild.id, curLevel, `xp.${msg.author.id}.level`);
-		const newlevelembed = new Discord.MessageEmbed()
-			.setColor(`RANDOM`)
+		const newlevelembed = new Discord.EmbedBuilder()
+			.setColor(`Random`)
 			.setAuthor({ name: LANG.congratulations, iconURL: msg.author.displayAvatarURL() })
 			.setDescription(LANG.description(msg.member.user, curLevel));
 		// check rewards
@@ -22,7 +22,7 @@ module.exports = function(client, msg, talkedRecently) {
 		for (const [key, value] of Object.entries(rewards)) {
 			if (value == curLevel) {
 				const checkrole = msg.guild.roles.cache.find(r => r.id === key); // check if role exists
-				if (checkrole && msg.guild.me.roles.highest.position > checkrole.rawPosition) msg.member.roles.add(checkrole.id); // give role
+				if (checkrole && msg.guild.members.me.roles.highest.position > checkrole.rawPosition) msg.member.roles.add(checkrole.id); // give role
 				unlocked += `${msg.guild.roles.cache.find(r => r.id === key).name}\n`;
 			}
 		};

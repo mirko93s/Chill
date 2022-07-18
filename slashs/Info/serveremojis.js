@@ -6,8 +6,8 @@ module.exports = {
 	options: null,
 	run: async (client, interaction, LANG) => {
 
-		const emojiEmbed = new Discord.MessageEmbed()
-			.setColor(`RANDOM`)
+		const emojiEmbed = new Discord.EmbedBuilder()
+			.setColor(`Random`)
 			.setTitle(cLANG.title);
 
 		let emojis = await interaction.guild.emojis.cache.map((e) => `${e}`).join(` `).toString();

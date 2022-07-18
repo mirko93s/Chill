@@ -14,8 +14,8 @@ module.exports = {
 			serverQueue.playing = false;
 			client.queue.get(interaction.guild.id).player.pause();
 
-			const pauseEmbed = new Discord.MessageEmbed()
-				.setColor(`PURPLE`)
+			const pauseEmbed = new Discord.EmbedBuilder()
+				.setColor(`Purple`)
 				.setTitle(LANG.title)
 				.setDescription(LANG.paused);
 

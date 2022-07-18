@@ -8,17 +8,17 @@ module.exports = {
 		{
 			name: `lock`,
 			description: `Lock your auto-vocal channel so only the users you whitelist will be able to join`,
-			type: `SUB_COMMAND`,
+			type: Discord.ApplicationCommandOptionType.Subcommand,
 		},
 		{
 			name: `invite`,
 			description: `Whitelist a friend in your auto-vocal channel`,
-			type: `SUB_COMMAND`,
+			type: Discord.ApplicationCommandOptionType.Subcommand,
 			options: [
 				{
 					name: `user`,
 					description: `User to invite`,
-					type: `USER`,
+					type: Discord.ApplicationCommandOptionType.User,
 					required: true,
 				},
 			],
@@ -26,12 +26,12 @@ module.exports = {
 		{
 			name: `kick`,
 			description: `Kick somoene out of your auto-vocal channel, removing him from the whitelist`,
-			type: `SUB_COMMAND`,
+			type: Discord.ApplicationCommandOptionType.Subcommand,
 			options: [
 				{
 					name: `user`,
 					description: `User to kick`,
-					type: `USER`,
+					type: Discord.ApplicationCommandOptionType.User,
 					required: true,
 				},
 			],
@@ -62,8 +62,8 @@ module.exports = {
 								CONNECT: false,
 							});
 						});
-						const lockedEmbed = new Discord.MessageEmbed()
-							.setColor(`RANDOM`)
+						const lockedEmbed = new Discord.EmbedBuilder()
+							.setColor(`Random`)
 							.setTitle(LANG.locked)
 							.setDescription(LANG.locked_description);
 						interaction.reply({ embeds: [lockedEmbed] });
@@ -81,8 +81,8 @@ module.exports = {
 						const invited = interaction.options.getMember(`user`);
 						if (invited.roles.cache.some(r => r.id === temprole.id)) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.already_whitelisted(invited))] });
 						invited.roles.add(temprole.id);
-						const invitedEmbed = new Discord.MessageEmbed()
-							.setColor(`RANDOM`)
+						const invitedEmbed = new Discord.EmbedBuilder()
+							.setColor(`Random`)
 							.setDescription(LANG.whitelisted(invited))
 							.setFooter({ text: LANG.by(interaction.user.username), iconURL: interaction.user.displayAvatarURL() });
 						interaction.reply({ embeds: [invitedEmbed] });
@@ -101,8 +101,8 @@ module.exports = {
 						if (!invited.roles.cache.some(r => r.id === temprole.id)) return interaction.reply({ ephemeral: true, emebds: [client.chill.error(LANG.not_whitelisted)] });
 						invited.roles.remove(temprole.id);
 						invited.voice.disconnect();
-						const kickedEmbed = new Discord.MessageEmbed()
-							.setColor(`RANDOM`)
+						const kickedEmbed = new Discord.EmbedBuilder()
+							.setColor(`Random`)
 							.setDescription(LANG.kicked(invited))
 							.setFooter({ text: LANG.by(interaction.user.username), iconURL: interaction.user.displayAvatarURL() });
 						interaction.reply({ embeds: [kickedEmbed] });

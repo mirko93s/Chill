@@ -9,18 +9,18 @@ module.exports = {
 		{
 			name: `create`,
 			description: `Create a new channel`,
-			type: `SUB_COMMAND`,
+			type: Discord.ApplicationCommandOptionType.Subcommand,
 			options: [
 				{
 					name: `name`,
 					description: `New channel name`,
-					type: `STRING`,
+					type: Discord.ApplicationCommandOptionType.String,
 					required: true,
 				},
 				{
 					name: `type`,
 					description: `Select a channel type`,
-					type: `STRING`,
+					type: Discord.ApplicationCommandOptionType.String,
 					required: true,
 					choices: [
 						{ name: `Text`, value: `GUILD_TEXT` },
@@ -35,12 +35,12 @@ module.exports = {
 		{
 			name: `delete`,
 			description: `Delete a channel. Careful with this, you can't get back your channel.`,
-			type: `SUB_COMMAND`,
+			type: Discord.ApplicationCommandOptionType.Subcommand,
 			options: [
 				{
 					name: `channel`,
 					description: `Channel to delete`,
-					type: `CHANNEL`,
+					type: Discord.ApplicationCommandOptionType.Channel,
 					required: true,
 				},
 			],
@@ -56,16 +56,16 @@ module.exports = {
 			if (channelname.length > 100) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.too_long)] });
 
 			interaction.guild.channels.create(channelname, { type: channeltype }).then(channel => {
-				const createdEmbed = new Discord.MessageEmbed()
-					.setColor(`GREEN`)
+				const createdEmbed = new Discord.EmbedBuilder()
+					.setColor(`Green`)
 					.setDescription(LANG.created(channeltype.split(`_`)[1], channel));
 				interaction.reply({ embeds: [createdEmbed] });
 			});
 		} else {
 			const channel = interaction.options.getChannel(`channel`);
 			channel.delete();
-			const deletedEmbed = new Discord.MessageEmbed()
-				.setColor(`GREEN`)
+			const deletedEmbed = new Discord.EmbedBuilder()
+				.setColor(`Green`)
 				.setDescription(LANG.deleted(channel.name));
 			interaction.reply({ embeds: [deletedEmbed] });
 		}

@@ -8,7 +8,7 @@ module.exports = {
 		{
 			name: `user`,
 			description: `2nd player`,
-			type: `USER`,
+			type: Discord.ApplicationCommandOptionType.User,
 			required: true,
 		},
 	],
@@ -27,13 +27,12 @@ module.exports = {
 			[`1️⃣`, `2️⃣`, `3️⃣`, `4️⃣`, `5️⃣`, `6️⃣`, `7️⃣`],
 		];
 		let turn = `🔴`;
-		const boardEmbed = new Discord.MessageEmbed()
-			.setColor(`RANDOM`)
+		const boardEmbed = new Discord.EmbedBuilder()
+			.setColor(`Random`)
 			.setAuthor({ name: `${p1.displayName}'s Turn ${turn}`, iconURL: p1.displayAvatarURL() })
 			.setTitle(LANG.title)
 			.setDescription(boardToString(boardarray))
 			.setFooter({ text: LANG.react });
-		// .addField(`1️⃣ 2️⃣ 3️⃣ 4️⃣ 5️⃣ 6️⃣ 7️⃣`,`*React to place a chip*`)
 		interaction.reply({ embeds: [boardEmbed] }).then(() => {
 			interaction.fetchReply().then(sent => {
 				// add reactions
@@ -69,7 +68,7 @@ module.exports = {
 					// //check if player won
 					if (haswon(turn, boardarray, x, y) == true) {
 						collector.stop(`hasWon`);
-						boardEmbed.setAuthor({ name: LANG.won(turn, p1, p2), iconURL: turn === `🔴` ? p1.displayAvatarURL() : p2.displayAvatarURL() });
+						boardEmbed.setAuthor({ name: LANG.won(turn === `🔴` ? p1.displayName : p2.displayName), iconURL: turn === `🔴` ? p1.displayAvatarURL() : p2.displayAvatarURL() });
 						return sent.edit({ embeds: [boardEmbed] });
 					} else if (checkDraw(boardarray) == true) {
 						collector.stop(`draw`);

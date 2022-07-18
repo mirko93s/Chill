@@ -4,10 +4,11 @@ module.exports = {
 	name: `blast`,
 	description: `DM to all server owners`,
 	dev: true,
+	defaultPermission: false,
 	permissions: [
 		{
 			id: require(`../../config.json`).bot_owner,
-			type: `USER`,
+			type: Discord.ApplicationCommandOptionType.User,
 			permission: true,
 		},
 	],
@@ -15,7 +16,7 @@ module.exports = {
 		{
 			name: `text`,
 			description: `Message to send`,
-			type: `STRING`,
+			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 		},
 	],
@@ -26,8 +27,8 @@ module.exports = {
 			text += x + `\n`;
 		});
 
-		const blastEmbed = new Discord.MessageEmbed()
-			.setColor(`PURPLE`)
+		const blastEmbed = new Discord.EmbedBuilder()
+			.setColor(`Purple`)
 			.setTitle(`📢 **BOT UPDATE**`)
 			.setDescription(text)
 			.setFooter({ text: `by ${interaction.member.user.tag}`, iconURL: interaction.member.displayAvatarURL() });
@@ -40,12 +41,12 @@ module.exports = {
 
 		owners.forEach((owner, delay) => {
 			setTimeout(() => {
-				client.users.cache.get(owner).send({ embeds:[blastEmbed] }).catch(err => {
+				client.users.cache.get(owner).send({ embeds: [blastEmbed] }).catch(err => {
 					return;
 				});
 			}, delay * 5e3);
 		});
 
-		return interaction.reply({ ephemeral:true, content:`**Blasted all owners!**` });
+		return interaction.reply({ ephemeral: true, content: `**Blasted all owners!**` });
 	},
 };

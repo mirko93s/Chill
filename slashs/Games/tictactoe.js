@@ -8,7 +8,7 @@ module.exports = {
 		{
 			name: `user`,
 			description: `2nd player`,
-			type: `USER`,
+			type: Discord.ApplicationCommandOptionType.User,
 			required: true,
 		},
 	],
@@ -19,23 +19,23 @@ module.exports = {
 		let turn = `❌`;
 		let _turn = 0;
 
-		const embed = new Discord.MessageEmbed()
-			.setColor(`RANDOM`)
+		const embed = new Discord.EmbedBuilder()
+			.setColor(`Random`)
 			.setAuthor({ name: LANG.turn(p1.displayName, turn), iconURL: p1.displayAvatarURL() })
 			.setTitle(LANG.title);
 
 		const buttons = [];
 
 		for (let i = 0; i < 9; i++) {
-			buttons[i] = new Discord.MessageButton()
+			buttons[i] = new Discord.ButtonBuilder()
 				.setCustomId((i + 1).toString())
 				.setLabel(` `)
-				.setStyle(`SECONDARY`);
+				.setStyle(Discord.ButtonStyle.Secondary);
 		};
 
-		const row1 = new Discord.MessageActionRow().addComponents(buttons[0], buttons[1], buttons[2]);
-		const row2 = new Discord.MessageActionRow().addComponents(buttons[3], buttons[4], buttons[5]);
-		const row3 = new Discord.MessageActionRow().addComponents(buttons[6], buttons[7], buttons[8]);
+		const row1 = new Discord.ActionRowBuilder().addComponents(buttons[0], buttons[1], buttons[2]);
+		const row2 = new Discord.ActionRowBuilder().addComponents(buttons[3], buttons[4], buttons[5]);
+		const row3 = new Discord.ActionRowBuilder().addComponents(buttons[6], buttons[7], buttons[8]);
 
 		interaction.reply({ embeds: [embed], components: [row1, row2, row3] }).then(() => {
 			interaction.fetchReply().then(sent => {
@@ -45,7 +45,7 @@ module.exports = {
 					else return false;
 				};
 
-				const collector = sent.createMessageComponentCollector({ filter, componentType: `BUTTON`, time: 60e3 });
+				const collector = sent.createMessageComponentCollector({ filter, componentType: Discord.ComponentType.Button, time: 60e3 });
 
 				collector.on(`collect`, collected => {
 					_turn++;
@@ -55,7 +55,7 @@ module.exports = {
 					const id = collected.customId;
 					buttons[id - 1].setEmoji(turn);
 					buttons[id - 1].setDisabled(true);
-					buttons[id - 1].setStyle(turn === `❌` ? `SUCCESS` : `PRIMARY`);
+					buttons[id - 1].setStyle(turn === `❌` ? Discord.ButtonStyle.Success : Discord.ButtonStyle.Primary);
 					// check win
 					if (checkWin(buttons) === true) {
 						collector.stop(`win`);

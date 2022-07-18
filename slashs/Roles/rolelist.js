@@ -7,8 +7,8 @@ module.exports = {
 	run: async (client, interaction, LANG) => {
 
 		const role = interaction.guild.roles.cache;
-		const embed = new Discord.MessageEmbed()
-			.setColor(`RANDOM`)
+		const embed = new Discord.EmbedBuilder()
+			.setColor(`Random`)
 			.setTitle(LANG.title(role.size))
 			.setDescription(role.map((e) => e).join(`\n`));
 		interaction.reply({ embeds: [embed] });

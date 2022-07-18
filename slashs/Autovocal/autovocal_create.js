@@ -11,8 +11,8 @@ module.exports = {
 		interaction.guild.channels.create(LANG.channel_name, { type: `GUILD_VOICE` }).then(channel => {
 			client.settings.ensure(interaction.guild.id, defaultSettings);
 			client.settings.push(interaction.guild.id, channel.id, `autovocalchannels`);
-			const doneEmbed = new Discord.MessageEmbed()
-				.setColor(`RANDOM`)
+			const doneEmbed = new Discord.EmbedBuilder()
+				.setColor(`Random`)
 				.setTitle(LANG.title)
 				.setDescription(LANG.description(channel));
 			interaction.reply({ embeds: [doneEmbed] });

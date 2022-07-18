@@ -18,13 +18,31 @@ module.exports = {
 		const xptolevelup = (Math.round(math.evaluate(`((${level}+1)^2)/(0.3163^2)`)) - Math.round(math.evaluate(`(${level}^2)/(0.3163^2)`))) - (points - Math.round(math.evaluate(`(${level}^2)/(0.3163^2)`)));
 		const levelprogress = Math.round((points - Math.round(math.evaluate(`(${level}^2)/(0.3163^2)`))) * 100 / (Math.round(math.evaluate(`((${level}+1)^2)/(0.3163^2)`)) - Math.round(math.evaluate(`(${level}^2)/(0.3163^2)`))));
 		const bar = `▬`.repeat((Math.round(levelprogress / 10))) + `🔘` + `▬`.repeat(10 - (Math.round(levelprogress / 10)));
-		const levelembed = new Discord.MessageEmbed()
-			.setColor(`RANDOM`)
+		const levelembed = new Discord.EmbedBuilder()
+			.setColor(`Random`)
 			.setAuthor({ name: `${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() })
-			.addField(LANG.level, `**${level}**`, true)
-			.addField(LANG.experience, `**${client.chill.fancyNumber(points)}**`, true)
-			.addField(LANG.rank, `**${await getRank(client, interaction, LANG)}**`, true)
-			.addField(`${bar} **${levelprogress}%**`, LANG.to_next_level(xptolevelup), false);
+			.addFields([
+				{
+					name: LANG.level,
+					value: `**${level}**`,
+					inline: true,
+				},
+				{
+					name: LANG.experience,
+					value: `**${client.chill.fancyNumber(points)}**`,
+					inline: true,
+				},
+				{
+					name: LANG.rank,
+					value: `**${await getRank(client, interaction, LANG)}**`,
+					inline: true,
+				},
+				{
+					name: `${bar} **${levelprogress}%**`,
+					value: LANG.to_next_level(xptolevelup),
+					inline: false,
+				},
+			]);
 		interaction.reply({ embeds: [levelembed] });
 	},
 };

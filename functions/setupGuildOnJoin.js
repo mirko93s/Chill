@@ -5,8 +5,8 @@
  */
 module.exports = async function(client, guild) {
 
-	if (!guild.me.permissions.toArray().includes(`ADMINISTRATOR`)) return;
-	if (!guild.me.permissions.toArray().includes(`MANAGE_ROLES`) && !guild.me.permissions.toArray().includes(`MANAGE_CHANNELS`)) return;
+	if (!guild.members.me.permissions.toArray().includes(`ADMINISTRATOR`)) return;
+	if (!guild.members.me.permissions.toArray().includes(`MANAGE_ROLES`) && !guild.members.me.permissions.toArray().includes(`MANAGE_CHANNELS`)) return;
 	// roles
 	await guild.roles.create({ name: `Listening`, permissions: [], color: `CCCC00` })
 		.then(role => {

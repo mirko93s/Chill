@@ -12,8 +12,8 @@ module.exports = {
 		if (!interaction.member.voice.channel) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.not_vc)] });
 		if (!serverQueue) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.no_playing)] });
 
-		const queueEmbed = new Discord.MessageEmbed()
-			.setColor(`PURPLE`)
+		const queueEmbed = new Discord.EmbedBuilder()
+			.setColor(`Purple`)
 			.setTitle(LANG.title)
 			.setDescription(LANG.queue(serverQueue.songs.map(song => `**-** ${song.title}`).join(`\n`), serverQueue.songs[0].title));
 
