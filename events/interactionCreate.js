@@ -1,9 +1,9 @@
-const { ChannelType } = require (`discord.js`);
+const { ChannelType, ApplicationCommandOptionType, InteractionType } = require (`discord.js`);
 
 module.exports = async (client, interaction) => {
 	const LANG = client.lang(interaction.guild?.preferredLocale || `en-US`, `events`, `interactionCreate`);
 	const devID = require(`../config.json`).bot_owner;
-	if (interaction.type !== 2) return;
+	if (interaction.type !== InteractionType.ApplicationCommand) return;
 	if (interaction.channel.type === ChannelType.DM) return interaction.reply({ embeds: [client.chill.error(LANG.no_dm)] });
 	// get command
 	const command = client.slashs.get(interaction.commandName);
@@ -23,7 +23,7 @@ module.exports = async (client, interaction) => {
 	// subcommand check
 	const args = [];
 	for (const option of interaction.options.data) {
-		if (option.type === `SUB_COMMAND`) {
+		if (option.type === ApplicationCommandOptionType.Subcommand) {
 			if (option.name) args.push(option.name);
 			option.options?.forEach(x => {
 				if (x.value) args.push(x.value);
