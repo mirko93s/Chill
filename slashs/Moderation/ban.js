@@ -3,8 +3,8 @@ const Discord = require(`discord.js`);
 module.exports = {
 	name: `ban`,
 	description: `Ban someone from your server`,
-	userPerms: [`BAN_MEMBERS`],
-	botPerms: [`VIEW_CHANNEL`, `BAN_MEMBERS`, `SEND_MESSAGES`, `EMBED_LINKS`],
+	userPerms: [`BanMembers`],
+	botPerms: [`ViewChannel`, `BanMembers`, `SendMessages`, `EmbedLinks`],
 	options: [
 		{
 			name: `user`,

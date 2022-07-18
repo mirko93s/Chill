@@ -3,7 +3,7 @@ const Discord = require(`discord.js`);
 module.exports = {
 	name: `command`,
 	description: `Enable/Disable a command on this server`,
-	userPerms: [`ADMINISTRATOR`],
+	userPerms: [`Administrator`],
 	options: [
 		{
 			name: `enable`,

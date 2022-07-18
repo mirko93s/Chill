@@ -8,7 +8,7 @@ const { createAudioPlayer, joinVoiceChannel, createAudioResource, AudioPlayerSta
 module.exports = {
 	name: `play`,
 	description: `Play a song from Youtube`,
-	botPerms: [`ADMINISTRATOR`],
+	botPerms: [`Administrator`],
 	options: [
 		{
 			name: `song`,

@@ -4,8 +4,8 @@ const fetch = require(`node-fetch`);
 module.exports = {
 	name: `emojifind`,
 	description: `Find emojis online and add them directly in your server!`,
-	userPerms: [`MANAGE_EMOJIS_AND_STICKERS`],
-	botPerms: [`VIEW_CHANNEL`, `EMBED_LINKS`, `MANAGE_EMOJIS_AND_STICKERS`],
+	userPerms: [`ManageEmojisAndStickers`],
+	botPerms: [`ViewChannel`, `EmbedLinks`, `ManageEmojisAndStickers`],
 	options: [
 		{
 			name: `name`,

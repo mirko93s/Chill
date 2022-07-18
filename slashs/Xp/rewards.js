@@ -4,7 +4,7 @@ const config = require(`../../config.json`);
 module.exports = {
 	name: `rewards`,
 	description: `Unlockable roles based on XP level`,
-	botPerms: [`MANAGE_ROLES`],
+	botPerms: [`ManageRoles`],
 	options: [
 		{
 			name: `list`,
@@ -78,7 +78,7 @@ module.exports = {
 		}
 		// set
 		if (interaction.options.getSubcommand() === `set`) { // create a new reward or change its level
-			if (!interaction.member.permissions.has(`ADMINISTRATOR`)) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.no_perms)] });
+			if (!interaction.member.permissions.has(`Administrator`)) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.no_perms)] });
 			const level = interaction.options.getInteger(`level`);
 			const role = interaction.options.getRole(`role`);
 			// check rewards limit
@@ -94,7 +94,7 @@ module.exports = {
 		}
 		// delete
 		if (interaction.options.getSubcommand() === `delete`) { // delete a reward
-			if (!interaction.member.permissions.has(`ADMINISTRATOR`)) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.no_perms)] });
+			if (!interaction.member.permissions.has(`Administrator`)) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.no_perms)] });
 			const role = interaction.options.getRole(`role`);
 			if (client.settings.has(interaction.guild.id, `rewards.${role.id}`)) {
 				client.settings.delete(interaction.guild.id, `rewards.${role.id}`);

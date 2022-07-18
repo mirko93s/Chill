@@ -3,8 +3,8 @@ const Discord = require(`discord.js`);
 module.exports = {
 	name: `clear`,
 	description: `Get rid of mutiple messages at once`,
-	userPerms: [`MANAGE_MESSAGES`],
-	botPerms: [`VIEW_CHANNEL`, `MANAGE_MESSAGES`, `READ_MESSAGE_HISTORY`],
+	userPerms: [`ManageMessages`],
+	botPerms: [`ViewChannel`, `ManageMessages`, `ReadMessageHistory`],
 	options: [
 		{
 			name: `amount`,

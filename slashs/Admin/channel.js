@@ -3,8 +3,8 @@ const Discord = require(`discord.js`);
 module.exports = {
 	name: `channel`,
 	description: `Create or Delete a channel`,
-	userPerms: [`MANAGE_CHANNELS`],
-	botPerms: [`MANAGE_CHANNELS`],
+	userPerms: [`ManageChannels`],
+	botPerms: [`ManageChannels`],
 	options: [
 		{
 			name: `create`,
@@ -23,11 +23,11 @@ module.exports = {
 					type: Discord.ApplicationCommandOptionType.String,
 					required: true,
 					choices: [
-						{ name: `Text`, value: `GUILD_TEXT` },
-						{ name: `Voice`, value: `GUILD_VOICE` },
-						{ name: `Stage Voice`, value: `GUILD_STAGE_VOICE` },
-						{ name: `Category`, value: `GUILD_CATEGORY` },
-						{ name: `News`, value: `GUILD_NEWS` },
+						{ name: `Text`, value: `GuildText` }, // 0
+						{ name: `Voice`, value: `GuildVoice` }, // 2
+						{ name: `Stage Voice`, value: `GuildStageVoice` }, // 13
+						{ name: `Category`, value: `GuildCategory` }, // 4
+						{ name: `News`, value: `GuildNews` }, // 5
 					],
 				},
 			],
@@ -55,10 +55,10 @@ module.exports = {
 
 			if (channelname.length > 100) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.too_long)] });
 
-			interaction.guild.channels.create(channelname, { type: channeltype }).then(channel => {
+			interaction.guild.channels.create({ name: channelname, type: Discord.ChannelType[channeltype] }).then(channel => {
 				const createdEmbed = new Discord.EmbedBuilder()
 					.setColor(`Green`)
-					.setDescription(LANG.created(channeltype.split(`_`)[1], channel));
+					.setDescription(LANG.created(channeltype, channel));
 				interaction.reply({ embeds: [createdEmbed] });
 			});
 		} else {

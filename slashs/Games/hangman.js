@@ -3,7 +3,7 @@ const Discord = require(`discord.js`);
 module.exports = {
 	name: `hangman`,
 	description: `Play the classic hangman`,
-	botPerms: [`VIEW_CHANNEL`, `EMBED_LINKS`],
+	botPerms: [`ViewChannel`, `EmbedLinks`],
 	options: [
 		{
 			name: `word`,

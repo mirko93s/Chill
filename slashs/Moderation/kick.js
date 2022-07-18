@@ -3,8 +3,8 @@ const Discord = require(`discord.js`);
 module.exports = {
 	name: `kick`,
 	description: `Kick someone from your server`,
-	userPerms: [`KICK_MEMBERS`],
-	botPerms: [`VIEW_CHANNEL`, `KICK_MEMBERS`, `SEND_MESSAGES`, `EMBED_LINKS`],
+	userPerms: [`KickMembers`],
+	botPerms: [`ViewChannel`, `KickMembers`, `SendMessages`, `EmbedLinks`],
 	options: [
 		{
 			name: `user`,

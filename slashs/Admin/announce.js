@@ -3,8 +3,8 @@ const Discord = require(`discord.js`);
 module.exports = {
 	name: `announce`,
 	description: `Announce a message mentioning @everyone in the server`,
-	userPerms: [`ADMINISTRATOR`],
-	botPerms: [`VIEW_CHANNEL`, `SEND_MESSAGES`, `EMBED_LINKS`],
+	userPerms: [`Administrator`],
+	botPerms: [`ViewChannel`, `SendMessages`, `EmbedLinks`],
 	options: [
 		{
 			name: `title`,

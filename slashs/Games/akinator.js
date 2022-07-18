@@ -5,7 +5,7 @@ const isPlaying = new Set();
 module.exports = {
 	name: `akinator`,
 	description: `Play Akinator`,
-	botPerms: [`VIEW_CHANNEL`, `EMBED_LINKS`],
+	botPerms: [`ViewChannel`, `EmbedLinks`],
 	options: [
 		{
 			name: `language`,

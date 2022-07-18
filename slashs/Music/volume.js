@@ -3,7 +3,7 @@ const Discord = require(`discord.js`);
 module.exports = {
 	name: `volume`,
 	description: `Set music volume (default: 100%)`,
-	userPerms: [`ADMINISTRATOR`],
+	userPerms: [`Administrator`],
 	options: [
 		{
 			name: `volume`,

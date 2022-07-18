@@ -4,8 +4,8 @@ const ms = require(`ms`);
 module.exports = {
 	name: `slowmode`,
 	description: `Enable/Disable slow-mode in the channel you are in`,
-	userPerms: [`MANAGE_CHANNELS`],
-	botPerms: [`VIEW_CHANNEL`, `MANAGE_CHANNELS`],
+	userPerms: [`ManageChannels`],
+	botPerms: [`ViewChannel`, `ManageChannels`],
 	options: [
 		{
 			name: `delay`,

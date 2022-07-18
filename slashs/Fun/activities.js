@@ -4,7 +4,7 @@ const fetch = require(`node-fetch`);
 module.exports = {
 	name: `activities`,
 	description: `Start a Discord Activity. Some of them may not work on your server due to Discord or missing Boost!`,
-	botPerms: [`CREATE_INSTANT_INVITE`],
+	botPerms: [`CreateInstantInvite`],
 	options: [
 		{
 			name: `game`,

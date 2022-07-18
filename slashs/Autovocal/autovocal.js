@@ -3,7 +3,7 @@ const Discord = require(`discord.js`);
 module.exports = {
 	name: `autovocal`,
 	description: `Lock your Auto-Vocal channel and invite/kick people to/from it`,
-	botPerms: [`ADMINISTRATOR`],
+	botPerms: [`Administrator`],
 	options: [
 		{
 			name: `lock`,
@@ -51,14 +51,14 @@ module.exports = {
 								member.roles.add(role.id);
 							});
 							interaction.member.voice.channel.permissionOverwrites.edit(role.id, {
-								VIEW_CHANNEL: true,
-								SPEAK: true,
+								ViewChannel: true,
+								Speak: true,
 								STREAM: true,
 								CONNECT: true,
 							});
 							interaction.member.voice.channel.permissionOverwrites.edit(interaction.guild.roles.everyone.id, {
-								VIEW_CHANNEL: false,
-								SPEAK: false,
+								ViewChannel: false,
+								Speak: false,
 								CONNECT: false,
 							});
 						});

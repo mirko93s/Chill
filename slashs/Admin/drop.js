@@ -4,8 +4,8 @@ const { stripIndent } = require(`common-tags`);
 module.exports = {
 	name: `drop`,
 	description: `Host a Drop`,
-	userPerms: [`MANAGE_GUILD`],
-	botPerms: [`VIEW_CHANNEL`, `SEND_MESSAGES`, `EMBED_LINKS`],
+	userPerms: [`ManageGuild`],
+	botPerms: [`ViewChannel`, `SendMessages`, `EmbedLinks`],
 	options: [
 		{
 			name: `prize`,

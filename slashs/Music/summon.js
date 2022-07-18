@@ -4,7 +4,7 @@ const { joinVoiceChannel, getVoiceConnection } = require (`@discordjs/voice`);
 module.exports = {
 	name: `summon`,
 	description: `Summon/move the bot in your voice channel`,
-	// botPerms: [`ADMINISTRATOR`],
+	// botPerms: [`Administrator`],
 	options: null,
 	run: async (client, interaction, LANG) => {
 

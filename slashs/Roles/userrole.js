@@ -3,8 +3,8 @@ const Discord = require(`discord.js`);
 module.exports = {
 	name: `userrole`,
 	description: `Give or take a role to/from someone`,
-	userPerms: [`MANAGE_ROLES`],
-	botPerms: [`MANAGE_ROLES`],
+	userPerms: [`ManageRoles`],
+	botPerms: [`ManageRoles`],
 	options: [
 		{
 			name: `mode`,

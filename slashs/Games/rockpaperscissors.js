@@ -3,7 +3,7 @@ const Discord = require(`discord.js`);
 module.exports = {
 	name: `rockpaperscissors`,
 	description: `Rock Paper Scissors`,
-	botPerms: [`VIEW_CHANNEL`, `EMBED_LINKS`, `ADD_REACTIONS`, `MANAGE_MESSAGES`, `READ_MESSAGE_HISTORY`],
+	botPerms: [`ViewChannel`, `EmbedLinks`, `AddReactions`, `ManageMessages`, `ReadMessageHistory`],
 	options: null,
 	run: async (client, interaction, LANG) => {
 

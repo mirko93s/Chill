@@ -4,8 +4,8 @@ const ms = require(`ms`);
 module.exports = {
 	name: `giveaway`,
 	description: `Host a Giveaway`,
-	userPerms: [`MANAGE_GUILD`],
-	botPerms: [`VIEW_CHANNEL`, `SEND_MESSAGES`, `EMBED_LINKS`, `ADD_REACTIONS`, `READ_MESSAGE_HISTORY`],
+	userPerms: [`ManageGuild`],
+	botPerms: [`ViewChannel`, `SendMessages`, `EmbedLinks`, `AddReactions`, `ReadMessageHistory`],
 	options: [
 		{
 			name: `time`,

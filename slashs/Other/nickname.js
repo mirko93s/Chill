@@ -3,8 +3,8 @@ const Discord = require(`discord.js`);
 module.exports = {
 	name: `nickname`,
 	description: `Change users's nicknames`,
-	botPerms: [`MANAGE_NICKNAMES`],
-	userPerms: [`MANAGE_NICKNAMES`],
+	botPerms: [`ManageNicknames`],
+	userPerms: [`ManageNicknames`],
 	options: [
 		{
 			name: `user`,

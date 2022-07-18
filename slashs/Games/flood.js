@@ -3,7 +3,7 @@ const Discord = require(`discord.js`);
 module.exports = {
 	name: `flood`,
 	description: `Flood the board with a single color. You start in the top left corner with the white square`,
-	botPerms: [`VIEW_CHANNEL`, `EMBED_LINKS`],
+	botPerms: [`ViewChannel`, `EmbedLinks`],
 	options: [
 		{
 			name: `difficulty`,

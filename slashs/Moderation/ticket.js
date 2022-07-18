@@ -3,7 +3,7 @@ const Discord = require(`discord.js`);
 module.exports = {
 	name: `ticket`,
 	description: `Create and manage Tickets`,
-	botPerms: [`ADMINISTRATOR`],
+	botPerms: [`Administrator`],
 	options: [
 		{
 			name: `create`,
@@ -26,16 +26,6 @@ module.exports = {
 	],
 	run: async (client, interaction, LANG) => {
 
-		const noticketchannelEmbed = new Discord.EmbedBuilder()
-			.setColor(`Red`)
-			.setTitle(`⛔ You are not in a ticket channel!`);
-		const noPermEmbed = new Discord.EmbedBuilder()
-			.setColor(`Red`)
-			.setDescription(`⛔ You need the be part of the Staff or an Administrator to use this command!`);
-		const alreadyEmbed = new Discord.EmbedBuilder()
-			.setColor(`Red`)
-			.setTitle(`⛔ You already have an opened ticket!`);
-
 		if (interaction.options.getSubcommand() === `create`) {
 
 			const langPrefix = LANG.channel_prefix;
@@ -47,23 +37,23 @@ module.exports = {
 			const supportrole = interaction.guild.roles.cache.find(r => r.id === (client.settings.get(interaction.guild.id, `supportrole`)))?.id || null;
 
 			interaction.guild.channels.create(`${langPrefix}-${interaction.user.username}`, {
-				type: `GUILD_TEXT`,
+				type: Discord.ChannelType.GuildText,
 				parent: category,
 				permissionOverwrites: [
-					{ id: interaction.guild.id, deny: [`VIEW_CHANNEL`] },
-					{ id: interaction.user.id, allow: [`VIEW_CHANNEL`, `SEND_MESSAGES`, `EMBED_LINKS`, `ATTACH_FILES`, `READ_MESSAGE_HISTORY`] },
+					{ id: interaction.guild.id, deny: [`ViewChannel`] },
+					{ id: interaction.user.id, allow: [`ViewChannel`, `SendMessages`, `EmbedLinks`, `AttachFiles`, `ReadMessageHistory`] },
 				],
 			}).then(channel => {
 				if (supportrole) {
 					channel.permissionOverwrites.create(supportrole, {
-						VIEW_CHANNEL: true,
-						SEND_MESSAGES: true,
-						MANAGE_CHANNELS: true,
-						EMBED_LINKS: true,
-						ATTACH_FILES: true,
-						ATTACH_FILES: true,
-						MANAGE_MESSAGES: true,
-						READ_MESSAGE_HISTORY: true,
+						ViewChannel: true,
+						SendMessages: true,
+						ManageChannels: true,
+						EmbedLinks: true,
+						AttachFiles: true,
+						AttachFiles: true,
+						ManageMessages: true,
+						ReadMessageHistory: true,
 					});
 				}
 				const ticketEmbed = new Discord.EmbedBuilder()
@@ -78,15 +68,15 @@ module.exports = {
 				return interaction.reply({ ephemeral: true, embeds: [doneEmbed] });
 			});
 		} else if (interaction.options.getSubcommand() === `delete`) {
-			if (interaction.member.roles.cache.find(supportrole => supportrole.id === (client.settings.get(interaction.guild.id, `supportrole`))) || interaction.member.permissions.has(`ADMINISTRATOR`)) return interaction.channel.delete();
+			if (interaction.member.roles.cache.find(supportrole => supportrole.id === (client.settings.get(interaction.guild.id, `supportrole`))) || interaction.member.permissions.has(`Administrator`)) return interaction.channel.delete();
 			else return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.no_staff)] });
 		} else if (interaction.channel.name.startsWith(langPrefix)) {
 			const user = client.users.cache.find(u => u.username == `${interaction.channel.name.split(`${langPrefix}-`)[1]}`);
 
 			interaction.channel.permissionOverwrites.create(user.id, {
-				VIEW_CHANNEL: true,
-				READ_MESSAGE_HISTORY: true,
-				SEND_MESSAGES: false,
+				ViewChannel: true,
+				ReadMessageHistory: true,
+				SendMessages: false,
 			});
 
 			const ticketclosed = new Discord.EmbedBuilder()

@@ -12,8 +12,8 @@ module.exports = {
 		const tierLevels = LANG.tier_obj;
 
 		const channels = stripIndent`
-		${LANG.text} ${interaction.guild.channels.cache.filter(chan => chan.type === `GUILD_TEXT`).size}
-		${LANG.voice} ${interaction.guild.channels.cache.filter(chan => chan.type === `GUILD_VOICE`).size}
+		${LANG.text} ${interaction.guild.channels.cache.filter(chan => chan.type === Discord.ChannelType.GuildText).size}
+		${LANG.voice} ${interaction.guild.channels.cache.filter(chan => chan.type === Discord.ChannelType.GuildVoice).size}
         `;
 
 		const boost = stripIndent`

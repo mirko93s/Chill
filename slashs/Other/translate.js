@@ -174,7 +174,7 @@ module.exports = {
 module.exports.message = {
 	name: `Translate to EN`,
 	type: Discord.ApplicationCommandType.Message,
-	botPerms: [`VIEW_CHANNEL`, `SEND_MESSAGES`, `EMBED_LINKS`, `READ_MESSAGE_HISTORY`],
+	botPerms: [`ViewChannel`, `SendMessages`, `EmbedLinks`, `ReadMessageHistory`],
 	contextdescription: `Translate a message to English`,
 	run: async (client, interaction, LANG) => {
 

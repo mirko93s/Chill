@@ -3,7 +3,7 @@ const Discord = require(`discord.js`);
 module.exports = {
 	name: `connect4`,
 	description: `Play the classic Connect 4 game with a friend`,
-	botPerms: [`VIEW_CHANNEL`, `EMBED_LINKS`, `ADD_REACTIONS`, `MANAGE_MESSAGES`, `READ_MESSAGE_HISTORY`],
+	botPerms: [`ViewChannel`, `EmbedLinks`, `AddReactions`, `ManageMessages`, `ReadMessageHistory`],
 	options: [
 		{
 			name: `user`,

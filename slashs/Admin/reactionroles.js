@@ -3,8 +3,8 @@ const Discord = require(`discord.js`);
 module.exports = {
 	name: `reactionroles`,
 	description: `Create a reaction role message. Users will be able to get these roles by reacting to the message`,
-	userPerms: [`MANAGE_ROLES`],
-	botPerms: [`VIEW_CHANNEL`, `MANAGE_ROLES`, `ADD_REACTIONS`, `MANAGE_MESSAGES`, `READ_MESSAGE_HISTORY`],
+	userPerms: [`ManageRoles`],
+	botPerms: [`ViewChannel`, `ManageRoles`, `AddReactions`, `ManageMessages`, `ReadMessageHistory`],
 	options: null,
 	run: async (client, interaction, LANG) => {
 

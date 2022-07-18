@@ -3,8 +3,8 @@ const Discord = require(`discord.js`);
 module.exports = {
 	name: `setconfig`,
 	description: `Change a config's value`,
-	userPerms: [`ADMINISTRATOR`],
-	botPerms: [`MANAGE_GUILD`],
+	userPerms: [`Administrator`],
+	botPerms: [`ManageGuild`],
 	options: [
 		{
 			name: `text`,

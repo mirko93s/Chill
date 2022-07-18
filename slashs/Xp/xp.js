@@ -3,7 +3,7 @@ const Discord = require(`discord.js`);
 module.exports = {
 	name: `xp`,
 	description: `Change user's XP points`,
-	userPerms: [`ADMINISTRATOR`],
+	userPerms: [`Administrator`],
 	options: [
 		{
 			name: `user`,

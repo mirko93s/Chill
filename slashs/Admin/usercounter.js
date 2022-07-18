@@ -3,8 +3,8 @@ const Discord = require(`discord.js`);
 module.exports = {
 	name: `usercounter`,
 	description: `Create a User Counter channel to keep tracking how many people are in your server`,
-	userPerms: [`ADMINISTRATOR`],
-	botPerms: [`VIEW_CHANNEL`, `MANAGE_CHANNELS`, `CONNECT`],
+	userPerms: [`Administrator`],
+	botPerms: [`ViewChannel`, `ManageChannels`, `Connect`],
 	options: [
 		{
 			name: `mode`,
@@ -27,7 +27,7 @@ module.exports = {
 				let memberCount = interaction.guild.members.cache.filter(member => !member.user.bot).size; // filtering bots
 				memberCount = client.chill.fancyNumber(memberCount);
 				interaction.guild.channels.create(LANG.channel_name(memberCount), {
-					type: `GUILD_VOICE`,
+					type: Discord.ChannelType.GuildVoice,
 					permissionOverwrites: [
 						{
 							id: interaction.guild.members.me.id,
@@ -36,7 +36,7 @@ module.exports = {
 						{
 							id: interaction.guild.roles.everyone.id,
 							deny: [`CONNECT`],
-							allow: [`VIEW_CHANNEL`],
+							allow: [`ViewChannel`],
 						},
 					],
 				}).then(created => {

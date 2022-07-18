@@ -3,7 +3,7 @@ const Discord = require(`discord.js`);
 module.exports = {
 	name: `slotmachine`,
 	description: `Play a slot machine`,
-	botPerms: [`VIEW_CHANNEL`, `EMBED_LINKS`],
+	botPerms: [`ViewChannel`, `EmbedLinks`],
 	options: null,
 	run: async (client, interaction, LANG) => {
 

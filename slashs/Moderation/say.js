@@ -3,8 +3,8 @@ const Discord = require(`discord.js`);
 module.exports = {
 	name: `say`,
 	description: `Let the bot say something for you`,
-	userPerms: [`MANAGE_MESSAGES`],
-	botPerms: [`VIEW_CHANNEL`, `SEND_MESSAGES`, `EMBED_LINKS`],
+	userPerms: [`ManageMessages`],
+	botPerms: [`ViewChannel`, `SendMessages`, `EmbedLinks`],
 	options: [
 		{
 			name: `text`,

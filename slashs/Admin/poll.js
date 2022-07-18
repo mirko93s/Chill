@@ -3,8 +3,8 @@ const Discord = require(`discord.js`);
 module.exports = {
 	name: `poll`,
 	description: `Start a multiple choice poll`,
-	userPerms: [`MANAGE_GUILD`],
-	botPerms: [`VIEW_CHANNEL`, `SEND_MESSAGES`, `EMBED_LINKS`, `ADD_REACTIONS`, `READ_MESSAGE_HISTORY`],
+	userPerms: [`ManageGuild`],
+	botPerms: [`ViewChannel`, `SendMessages`, `EmbedLinks`, `AddReactions`, `ReadMessageHistory`],
 	options: [
 		{
 			name: `question`,

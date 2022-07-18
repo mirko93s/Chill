@@ -4,7 +4,7 @@ const { stripIndents } = require(`common-tags`);
 module.exports = {
 	name: `report`,
 	description: `Report a member for breaking the rules (also available right-clicking a message)`,
-	botPerms: [`VIEW_CHANNEL`, `SEND_MESSAGES`, `EMBED_LINKS`],
+	botPerms: [`ViewChannel`, `SendMessages`, `EmbedLinks`],
 	options: [
 		{
 			name: `user`,
@@ -27,7 +27,7 @@ module.exports = {
 module.exports.message = {
 	name: `Report`,
 	type: Discord.ApplicationCommandType.Message,
-	botPerms: [`VIEW_CHANNEL`, `SEND_MESSAGES`, `EMBED_LINKS`],
+	botPerms: [`ViewChannel`, `SendMessages`, `EmbedLinks`],
 	contextdescription: `Report a message (and its author) for breaking the rules`,
 	run: async (client, interaction, LANG) => {
 		interaction.guild.members.fetch(interaction.targetMessage.author.id).then(reported => {
