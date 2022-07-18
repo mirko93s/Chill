@@ -105,7 +105,7 @@ module.exports = {
 			const serverQueue = client.queue.get(interaction.guild.id);
 			const song = {
 				id: video.id ? video.id : video.videoId,
-				title: Discord.Util.escapeMarkdown(video.title),
+				title: Discord.escapeMarkdown(video.title),
 				url: `https://www.youtube.com/watch?v=${video.id ? video.id : video.videoId}`,
 				duration: video.isLive ? LANG.live : video.duration ? video.duration : new Date(video.lengthSeconds * 1e3).toISOString().substring(11, 19).replace(/^[0:]+/, ``),
 				requester: interaction.user,

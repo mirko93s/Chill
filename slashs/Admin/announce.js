@@ -35,7 +35,7 @@ module.exports = {
 			const bcEmbed = new Discord.EmbedBuilder()
 				.setTitle(title)
 				.setDescription(description)
-				.setColor(`#00ff00`)
+				.setColor(`Green`)
 				.setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL() });
 			const bcchannel = interaction.options.getChannel(`channel`) || interaction.guild.channels.cache.find(c => c.id === (client.settings.get(interaction.guild.id, `bcchannel`)));
 			if (!bcchannel) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.no_channel)] });
