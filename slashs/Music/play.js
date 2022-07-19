@@ -14,8 +14,8 @@ module.exports = {
 			name: `song`,
 			description: `Song/Playlist name or link from YouTube`,
 			type: Discord.ApplicationCommandOptionType.String,
+			maxLength: 1024,
 			required: true,
-			focused: false,
 		},
 		{
 			name: `skipall`,

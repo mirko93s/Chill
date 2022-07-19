@@ -1,6 +1,5 @@
 exports.commands = {
 	'8ball': {
-		too_long: `La domanda deve essere più corta di 3072 caratteri`,
 		title: `🎱 **Palla 8**`,
 		fortunes: [
 			`È certo.`,
@@ -26,7 +25,6 @@ exports.commands = {
 		],
 	},
 	achievement: {
-		too_long: `Il titolo e la descrizione non possono essere più lunghi di 25 caratteri`,
 		error: `Si è verificato un errore provando a generare l'immagine dell'obiettivo`,
 		default_title: `Obiettivo Sbloccato!`,
 	},
@@ -52,13 +50,11 @@ exports.commands = {
 		inactivity: `Partita interrotta a causa di inattività.`,
 	},
 	announce: {
-		too_long: `Si prega di rispettare le lunghezze massime del titolo (256) e della descrizione (2048).`,
 		no_channel: `Canale degli annunci non trovato.`,
 		success: bcchannel => `✅ Annuncio inviato correttamente in ${bcchannel}`,
 		error: `Non ho il permesso di farlo. Per favore controlla i miei permessi.`,
 	},
 	ascii: {
-		too_long: `Il testo non può essere più lungo di 50 caratteri`,
 		error: `Si è verificato un errore provando a generare il testo ASCII`,
 	},
 	autovocal_create: {
@@ -114,17 +110,14 @@ exports.commands = {
 	},
 	bug: {
 		cooldown: `Hai già segnalato un problema di recente, devi aspettare 30 minuti tra una segnalazione e l'altra.`,
-		too_short: `Fornisci un messaggio abbastanza lungo (50 caratteri).`,
 		success: `✅ La tua segnalazione di bug è stata inviata. Grazie!\nConsidera di unirti al [Server di supporto](https://discord.gg/2ktWcAb) per discuterne e rimanere aggiornato su qualsiasi changelog.`,
 	},
 	calc: {
 		invalid: `L'espressione fornita non è valida!`,
-		too_long: `L'espressione deve essere più corta di 512 caratteri`,
 		service_down: `La calcolatrice non è disponibile al momento, per favore riprova tra pochi secondi!`,
 		title: `Calcolatrice`,
 	},
 	channel: {
-		too_long: `Il nome del canale non può essere più lungo di 100 caratteri.`,
 		created: (channeltype, channel) => `✅Nuovo canale **\`${channeltype}\`** create con successo: **${channel}**`,
 		deleted: channel_name => `✅ Canale eliminato con successo: **${channel_name}**`,
 	},
@@ -165,7 +158,6 @@ exports.commands = {
 	},
 	customcommand: {
 		no_override: `Non puoi sovrascrivere i comandi del bot.`,
-		bad_args: `Il comando personalizzato deve essere più corto di 32 caratteri.\nLa risposta deve essere più corta di 512 caratteri`,
 		title: `Comandi Personalizzati`,
 		created: (command, response) => `Nuovo comando personalizzato creato\n**Comando:** \`${command}\`\n**Risposta:** \`${response}\``,
 		error: command => `\`${command}\` non è un comando personalizzato valido. Controlla \`/customcommand_list\` per un elenco completo.`,
@@ -173,7 +165,6 @@ exports.commands = {
 	},
 	drop: {
 		no_channel: `Canale Giveaway non trovato.`,
-		too_long: `La lunghezza del premio deve essere inferiore a 3072 caratteri.`,
 		title: `🎁 Drop`,
 		prize: prize => `**Premio:** ${prize}`,
 		winner: `**Vincitore:**`,
@@ -212,7 +203,6 @@ exports.commands = {
 	},
 	giveaway: {
 		no_channel: `Canale Giveaway non trovato.`,
-		too_long: `Il premio non può essere più lungo di 250 caratteri`,
 		started: `🎉 Giveaway Iniziato`,
 		react: `*Reagisci Con 🎉 Per Entrare!*`,
 		prize: `🎁 Premio`,
@@ -332,10 +322,8 @@ exports.commands = {
 	},
 	poll: {
 		no_channel: `Canale dei Sondaggi non trovato.`,
-		question_too_long: `La domanda deve essere più corta di 256 caratteri`,
 		bad_choices: `Si prega di fornire almeno 2 scelte per avviare un sondaggio (max 10 scelte, utilizza virgole per separare le scelte)`,
 		description: choicemsg => `**Reagisci per votare**\n${choicemsg}`,
-		choices_too_long: `La somma di tutte le scelte non può essere più lunga di 4096 caratteri`,
 		success: pollchannel => `✅ Sondaggio iniziato in ${pollchannel}`,
 	},
 	qr: {},
@@ -389,7 +377,6 @@ exports.commands = {
 		no_bots: `Non puoi segnalare i bot`,
 		not_self: `Non puoi segnalare te stesso`,
 		success: reported => `✅ Grazie per aver segnalato ${reported}.\nUn membro dello staff esaminerà la tua segnalazione il prima possibile`,
-		too_long: `La descrizione deve essere più corta di 3072 caratteri`,
 		user_report: `Utente Segnalato`,
 		member: `**Membro:**`,
 		by: `**Segnalato da:**`,

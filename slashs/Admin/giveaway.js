@@ -43,6 +43,7 @@ module.exports = {
 			name: `prize`,
 			description: `What will the prize be?`,
 			type: Discord.ApplicationCommandOptionType.String,
+			maxLength: 250,
 			required: true,
 		},
 		{
@@ -66,7 +67,6 @@ module.exports = {
 		let time = ms(interaction.options.getInteger(`time`) + interaction.options.getString(`unit`));
 		time > 2147483647 ? time = 2147483647 : time = time;
 		const prize = interaction.options.getString(`prize`);
-		if (prize.length > 250) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.too_long)] });
 		let winnersnum = interaction.options.getInteger(`winners`) || 1;
 		const host = interaction.user;
 

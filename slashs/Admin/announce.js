@@ -10,12 +10,14 @@ module.exports = {
 			name: `title`,
 			description: `Announcement title, max 256 characters`,
 			type: Discord.ApplicationCommandOptionType.String,
+			maxLength: 256,
 			required: true,
 		},
 		{
 			name: `description`,
 			description: `Announcement description, max 2048 characters`,
 			type: Discord.ApplicationCommandOptionType.String,
+			maxLength: 4096,
 			required: true,
 		},
 		{

@@ -16,6 +16,7 @@ module.exports = {
 			name: `reason`,
 			description: `Why are you reporting this user?`,
 			type: Discord.ApplicationCommandOptionType.String,
+			maxLength: 3072,
 			required: true,
 		},
 	],
@@ -41,8 +42,6 @@ async function report(client, interaction, reported, LANG, isMessage = false) {
 
 	if (reported.user.bot) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.no_bots)] });
 	if (reported.user.id === interaction.user.id) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.not_self)] });
-
-	if (interaction.options.getString(`reason`)?.length > 3072) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.too_long)] });
 
 	const reportchannel = interaction.guild.channels.cache.find(c => c.id === (client.settings.get(interaction.guild.id, `reportchannel`)));
 	if (!reportchannel) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.no_channel)] });

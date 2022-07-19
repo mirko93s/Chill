@@ -16,6 +16,7 @@ module.exports = {
 			name: `reason`,
 			description: `Reason of the ban`,
 			type: Discord.ApplicationCommandOptionType.String,
+			maxLength: 1024,
 		},
 		{
 			name: `deletemessages`,
@@ -42,7 +43,7 @@ module.exports = {
 		if (toBan.id === interaction.member.id) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.not_self)] });
 		if (!toBan.bannable) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.hierarchy)] });
 
-		const reason = interaction.options.getString(`reason`)?.substring(0, 1024) || LANG.not_provided;
+		const reason = interaction.options.getString(`reason`) || LANG.not_provided;
 
 		const banEmbed = new Discord.EmbedBuilder()
 			.setColor(`Red`)

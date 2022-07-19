@@ -9,13 +9,13 @@ module.exports = {
 			name: `text`,
 			description: `Text to convert to ascii art`,
 			type: Discord.ApplicationCommandOptionType.String,
+			maxLength: 50,
 			required: true,
 		},
 	],
 	run: async (client, interaction, LANG) => {
 
 		const string = interaction.options.getString(`text`).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, ``); // remove emojis
-		if (string.length > 50) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.too_long)] });
 
 		figlet.text(string, {
 			font: `Standard`,

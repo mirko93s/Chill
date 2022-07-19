@@ -42,6 +42,7 @@ module.exports = {
 			name: `text`,
 			description: `What do I have to remind you?`,
 			type: Discord.ApplicationCommandOptionType.String,
+			maxLength: 3072,
 			required: true,
 		},
 	],
@@ -51,7 +52,7 @@ module.exports = {
 		let time = ms(interaction.options.getInteger(`time`) + interaction.options.getString(`unit`));
 		time > 2147483647 ? time = 2147483647 : time = time;
 
-		const encrypted = CryptoJS.AES.encrypt(interaction.options.getString(`text`).substring(0, 3072), require(`../../config.json`).crypto_key).toString();
+		const encrypted = CryptoJS.AES.encrypt(interaction.options.getString(`text`), require(`../../config.json`).crypto_key).toString();
 
 		const id_time = `${interaction.member.id}-${Date.now() + time}`;
 

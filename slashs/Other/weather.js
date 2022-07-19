@@ -10,6 +10,7 @@ module.exports = {
 			name: `city`,
 			description: `City to get weather of`,
 			type: Discord.ApplicationCommandOptionType.String,
+			maxLength: 100,
 			required: true,
 		},
 	],

@@ -8,6 +8,7 @@ module.exports = {
 		{
 			name: `description`,
 			description: `Achievement description, max 25 characters`,
+			maxLength: 25,
 			type: Discord.ApplicationCommandOptionType.String,
 			required: true,
 		},
@@ -46,12 +47,11 @@ module.exports = {
 		{
 			name: `title`,
 			description: `Achievement title, max 25 characters. Defaults to "Achievement Unlocked!"`,
+			maxLength: 25,
 			type: Discord.ApplicationCommandOptionType.String,
 		},
 	],
 	run: async (client, interaction, LANG) => {
-
-		if (interaction.options.getString(`title`)?.length > 25 || interaction.options.getString(`description`).length > 25) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.too_long)] });
 
 		try {
 			const { body } = await superagent

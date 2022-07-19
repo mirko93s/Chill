@@ -8,6 +8,7 @@ module.exports = {
 			name: `text`,
 			description: `Usually a link`,
 			type: Discord.ApplicationCommandOptionType.String,
+			maxLength: 512,
 			required: true,
 		},
 	],

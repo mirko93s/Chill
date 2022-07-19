@@ -10,12 +10,14 @@ module.exports = {
 			name: `question`,
 			description: `What is the poll about?`,
 			type: Discord.ApplicationCommandOptionType.String,
+			maxLength: 256,
 			required: true,
 		},
 		{
 			name: `choices`,
 			description: `Provide at least 2 choices (max 10) separated by commas`,
 			type: Discord.ApplicationCommandOptionType.String,
+			maxLength: 2048,
 			required: true,
 		},
 		{
@@ -34,8 +36,6 @@ module.exports = {
 		if (!pollchannel) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.no_channel)] });
 
 		const question = interaction.options.getString(`question`);
-		if (question.length > 256) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.too_long)] });
-
 		let choices = interaction.options.getString(`choices`);
 
 		if (choices.endsWith(`,`) === true) choices = choices.slice(0, (choices.length - 1)); // remove last "," from choices string
@@ -57,8 +57,6 @@ module.exports = {
 			.setTitle(`${question}`)
 			.setDescription(LANG.description(choicemsg))
 			.setTimestamp();
-
-		if (choicemsg > 4e3) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.choices_too_long)] });
 
 		pollchannel.send({ embeds: [pollEmbed] }).then(msg => {
 			const doneEmbed = new Discord.EmbedBuilder()

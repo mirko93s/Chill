@@ -11,6 +11,7 @@ module.exports = {
 			name: `prize`,
 			description: `What will the prize be?`,
 			type: Discord.ApplicationCommandOptionType.String,
+			maxLength: 3072,
 			required: true,
 		},
 		{
@@ -26,7 +27,6 @@ module.exports = {
 		if (!gachannel) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.no_channel)] });
 
 		const prize = interaction.options.getString(`prize`);
-		if (prize.length > 3072) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.too_long)] });
 
 		const dropEmbed = new Discord.EmbedBuilder()
 			.setColor(`Random`)

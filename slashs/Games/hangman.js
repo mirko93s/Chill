@@ -9,6 +9,7 @@ module.exports = {
 			name: `word`,
 			description: `Word to guess`,
 			type: Discord.ApplicationCommandOptionType.String,
+			maxLength: 100,
 			required: true,
 		},
 		{

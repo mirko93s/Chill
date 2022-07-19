@@ -15,6 +15,7 @@ module.exports = {
 					name: `name`,
 					description: `New channel name`,
 					type: Discord.ApplicationCommandOptionType.String,
+					maxLength: 100,
 					required: true,
 				},
 				{
@@ -52,8 +53,6 @@ module.exports = {
 
 			const channeltype = interaction.options.getString(`type`);
 			const channelname = interaction.options.getString(`name`);
-
-			if (channelname.length > 100) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.too_long)] });
 
 			interaction.guild.channels.create({ name: channelname, type: Discord.ChannelType[channeltype] }).then(channel => {
 				const createdEmbed = new Discord.EmbedBuilder()

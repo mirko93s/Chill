@@ -9,6 +9,7 @@ module.exports = {
 			name: `expression`,
 			description: `Expression to calculate`,
 			type: Discord.ApplicationCommandOptionType.String,
+			maxLength: 512,
 			required: true,
 		},
 	],
@@ -17,7 +18,6 @@ module.exports = {
 		await interaction.deferReply();
 
 		const expression = interaction.options.getString(`expression`);
-		if (expression.length > 512) return interaction.followUp({ ephemeral: true, embeds: [client.chill.error(LANG.too_long)] });
 
 		fetch(`http://api.mathjs.org/v4/?expr=${encodeURIComponent(expression)}`).then(response => {
 			switch (response.status) {

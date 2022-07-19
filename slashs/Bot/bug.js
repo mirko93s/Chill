@@ -10,6 +10,8 @@ module.exports = {
 			name: `bug`,
 			description: `Please provide a good explanation of the bug and if you can the steps to reproduce it`,
 			type: Discord.ApplicationCommandOptionType.String,
+			minLength: 50,
+			maxLength: 4096,
 			required: true,
 		},
 	],
@@ -18,7 +20,6 @@ module.exports = {
 
 		if (talkedRecently.has(interaction.user.id)) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.cooldown)] });
 		const bug = interaction.options.getString(`bug`);
-		if (bug.length < 50 || bug.length > 4096) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.too_short)] });
 
 		const bugembed = new Discord.EmbedBuilder()
 			.setColor(`Red`)

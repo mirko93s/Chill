@@ -7,6 +7,7 @@ module.exports = {
 		{
 			name: `command`,
 			description: `Which command to get info about`,
+			maxLength: 256,
 			type: Discord.ApplicationCommandOptionType.String,
 		},
 	],

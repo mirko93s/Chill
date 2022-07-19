@@ -9,6 +9,7 @@ module.exports = {
 			name: `question`,
 			description: `Ask a question`,
 			type: Discord.ApplicationCommandOptionType.String,
+			maxLength: 3072,
 			required: true,
 		},
 	],
@@ -17,7 +18,6 @@ module.exports = {
 		const fortunes = LANG.fortunes;
 
 		const question = interaction.options.getString(`question`);
-		if (question.length > 3072) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.too_long)] });
 		const answer = fortunes[Math.floor(Math.random() * fortunes.length)];
 		const embed = new Discord.EmbedBuilder()
 			.setColor(`Random`)

@@ -9,6 +9,7 @@ module.exports = {
 			name: `text`,
 			description: `text to translate`,
 			type: Discord.ApplicationCommandOptionType.String,
+			maxLength: 1024,
 			required: true,
 		},
 		{

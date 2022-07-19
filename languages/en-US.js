@@ -1,6 +1,5 @@
 exports.commands = {
 	'8ball': {
-		too_long: `Question must be shorter than 3072 characters`,
 		title: `🎱 **8 Ball**`,
 		fortunes: [
 			`It is certain.`,
@@ -26,7 +25,6 @@ exports.commands = {
 		],
 	},
 	achievement: {
-		too_long: `Title and Description can't be longer than 25 characters`,
 		error: `An error occured while trying to generate the achievement image`,
 		default_title: `Achievement Unlocked!`,
 	},
@@ -52,13 +50,11 @@ exports.commands = {
 		inactivity: `Game stopped due to inactivity.`,
 	},
 	announce: {
-		too_long: `Please respect max lengths for title (256) and description (2048).`,
 		no_channel: `Announcement channel not found.`,
 		success: (bcchannel) => `✅ Announcement correctly sent in ${bcchannel}`,
 		error: `I don't have permission to do this. Please check my permissions.`,
 	},
 	ascii: {
-		too_long: `Text can't be longer than 50 characters`,
 		error: `An error occured while trying to generate the ascii art text`,
 	},
 	autovocal_create: {
@@ -115,17 +111,14 @@ exports.commands = {
 	},
 	bug: {
 		cooldown: `You already reported an issue recently, you have to wait 30 minutes between bug reports.`,
-		too_short: `Please provide a long enough message (50 characters).`,
 		success: `✅ Your bug report has been sent. Thank you!\nConsider joining the [Support Server](https://discord.gg/2ktWcAb) to discuss about it and stay updated about any changelog.`,
 	},
 	calc: {
 		invalid: `The expression provided was invalid!`,
-		too_long: `Expression must be shorter than 512 characters`,
 		service_down: `Calculator is not available at the moment, please try again in a few seconds!`,
 		title: `Calculator`,
 	},
 	channel: {
-		too_long: `Channel name can't be longer than 100 characters.`,
 		created: (channeltype, channel) => `✅ Successfully created a new **\`${channeltype}\`** channel: **${channel}**`,
 		deleted: (channel_name) => `✅ Successfully deleted channel: **${channel_name}**`,
 	},
@@ -163,7 +156,6 @@ exports.commands = {
 	},
 	customcommand: {
 		no_override: `You can't override bot commands.`,
-		bad_args: `Custom command must be shorter than 32 characters.\nResponse must be shorter than 512 characters`,
 		title: `Custom Commands`,
 		created: (command, response) => `New custom command created\n**Command:** \`${command}\`\n**Response:** \`${response}\``,
 		error: (command) => `\`${command}\` is not a valid custom command. Check \`/customcommand_list\` for a full list.`,
@@ -171,7 +163,6 @@ exports.commands = {
 	},
 	drop: {
 		no_channel: `Giveaway channel not found.`,
-		too_long: `Prize length must be lower than 3072 characters.`,
 		title: `🎁 Drop`,
 		prize: (prize) => `**Prize:** ${prize}`,
 		winner: `**Winner:**`,
@@ -210,7 +201,6 @@ exports.commands = {
 	},
 	giveaway: {
 		no_channel: `Giveaway channel not found.`,
-		too_long: `Prize can't be longer than 250 chatacters`,
 		started: `🎉 Giveaway Started`,
 		react: `*React With 🎉 To Enter!*`,
 		prize: `🎁 Prize`,
@@ -334,10 +324,8 @@ exports.commands = {
 	},
 	poll: {
 		no_channel: `Poll channel not found.`,
-		question_too_long: `Question must be shorter than 256 characters`,
 		bad_choices: `Please provide at least 2 choices to start a poll (max 10 choices, use commas to separate choices)`,
 		description: (choicemsg) => `**React to vote**\n${choicemsg}`,
-		choices_too_long: `The sum of all choices can't be longer than 4096 characters`,
 		success: (pollchannel) => `✅ Poll started in ${pollchannel}`,
 	},
 	qr: {
@@ -374,7 +362,6 @@ exports.commands = {
 		no_bots: `You can't report bots`,
 		not_self: `You can't report yourself`,
 		success: (reported) => `✅ Thanks for reporting ${reported}.\nA staff member will review your report as soon as possible`,
-		too_long: `Description must be shorter than 3072 characters`,
 		user_report: `User Report`,
 		member: `**Member:**`,
 		by: `**Reported by:**`,

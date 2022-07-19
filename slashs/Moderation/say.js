@@ -10,6 +10,7 @@ module.exports = {
 			name: `text`,
 			description: `What do i have to say? (use \\n to create new lines)`,
 			type: Discord.ApplicationCommandOptionType.String,
+			maxLength: 2048,
 			required: true,
 		},
 		{
@@ -32,7 +33,7 @@ module.exports = {
 			interaction.reply({ ephemeral: true, embeds: [anonymousEmbed] });
 		}
 		let text = ``;
-		interaction.options.getString(`text`).substring(0, 2048).split(`\\n`).forEach(x => {
+		interaction.options.getString(`text`).split(`\\n`).forEach(x => {
 			text += x + `\n`;
 		});
 

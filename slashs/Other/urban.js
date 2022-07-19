@@ -10,6 +10,7 @@ module.exports = {
 			name: `text`,
 			description: `Word or Sentence to look for`,
 			type: Discord.ApplicationCommandOptionType.String,
+			maxLength: 100,
 			required: true,
 		},
 	],

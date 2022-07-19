@@ -16,6 +16,7 @@ module.exports = {
 					name: `name`,
 					description: `Emoji to search`,
 					type: Discord.ApplicationCommandOptionType.String,
+					maxLength: 100,
 					required: true,
 				},
 				{

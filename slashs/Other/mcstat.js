@@ -9,6 +9,7 @@ module.exports = {
 			name: `server`,
 			description: `IP of the server`,
 			type: Discord.ApplicationCommandOptionType.String,
+			maxLength: 1024,
 			required: true,
 		},
 	],

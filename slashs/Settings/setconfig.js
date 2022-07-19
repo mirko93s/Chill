@@ -207,6 +207,7 @@ module.exports = {
 					name: `newvalue`,
 					description: `Set new value`,
 					type: Discord.ApplicationCommandOptionType.String,
+					maxLength: 10,
 					required: true,
 				},
 			],
@@ -235,7 +236,7 @@ module.exports = {
 				break;
 			case `prefix`:
 				config_key = `prefix`;
-				value = interaction.options.getString(`newvalue`).substring(0, 10);
+				value = interaction.options.getString(`newvalue`);
 				break;
 			case `numbers`:
 				config_key = `xpcooldown`;

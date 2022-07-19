@@ -16,6 +16,7 @@ module.exports = {
 			name: `reason`,
 			description: `Reason of the kick`,
 			type: Discord.ApplicationCommandOptionType.String,
+			maxLength: 1024,
 		},
 		{
 			name: `logchannel`,
@@ -35,7 +36,7 @@ module.exports = {
 		if (toKick.id === interaction.member.id) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.not_self)] });
 		if (!toKick.kickable) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.hierarchy)] });
 
-		const reason = interaction.options.getString(`reason`)?.substring(0, 1024) || LANG.not_provided;
+		const reason = interaction.options.getString(`reason`) || LANG.not_provided;
 
 		const kickEmbed = new Discord.EmbedBuilder()
 			.setColor(`Orange`)

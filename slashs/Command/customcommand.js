@@ -15,11 +15,13 @@ module.exports = {
 					name: `command`,
 					description: `Set custom command name`,
 					type: Discord.ApplicationCommandOptionType.String,
+					maxLength: 32,
 					required: true,
 				},
 				{
 					name: `response`,
 					description: `Set custom command response`,
+					maxLength: 512,
 					type: Discord.ApplicationCommandOptionType.String,
 					required: true,
 				},
@@ -45,7 +47,6 @@ module.exports = {
 			const command = interaction.options.getString(`command`);
 			if (client.commands.has(command) || client.aliases.has(command)) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.no_override)] });
 			const response = interaction.options.getString(`response`);
-			if (command.length > 32 || response.length > 512) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.bad_args)] });
 			client.settings.ensure(interaction.guild.id, { customcmd: {} });
 			client.settings.set(interaction.guild.id, response, `customcmd.${command}`);
 			const ccEmbed = new Discord.EmbedBuilder()

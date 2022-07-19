@@ -16,6 +16,7 @@ module.exports = {
 			name: `nick`,
 			description: `New nickname, max 32 characters`,
 			type: Discord.ApplicationCommandOptionType.String,
+			maxLength: 32,
 			required: true,
 		},
 
@@ -29,7 +30,7 @@ module.exports = {
 			return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.hierarchy)] });
 		}
 
-		const newnickname = interaction.options.getString(`nick`).substring(0, 32);
+		const newnickname = interaction.options.getString(`nick`);
 		interaction.guild.members.cache.get(user.user.id).setNickname(newnickname);
 		const embed = new Discord.EmbedBuilder()
 			.setColor(`Random`)
