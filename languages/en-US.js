@@ -653,21 +653,31 @@ exports.commands = {
 	},
 	weather: {
 		no_location: `There was an error trying to find your location. Please try again.`,
-		winds: { North: `N`, South: `S`, West: `W`, East: `E`, Northwest: `NW`, Northeast: `NE`, Southwest: `SW`, Southeast: `SE` },
+		service_down: `Weather is not available at the moment, please try again later!`,
 		author: `Weather`,
 		temperature: `🌡️Temperature`,
 		feels_like: `♨️Feels like`,
-		low: `📉Low:`,
-		high: `📈High:`,
-		wind: `🌬️Wind`,
+		lowhigh: `📉Low-📈High`,
+		wind: `🌪️Wind`,
 		humidity: `💧Humidity`,
 		precipitations: `☔Precipitations`,
-		forecast: (skytext, low_c, low_f, high_c, high_f, precip) => `**${skytext}**\nLow: ${low_c} °C | ${low_f} °F\nHigh: ${high_c} °C | ${high_f} °F\nPrecipitations: ${precip}%`,
-	/**
-	 * https://docs.microsoft.com/en-us/bingmaps/rest-services/common-parameters-and-types/supported-culture-codes
-	 * ^^^^ weather supported languages ^^^^
-	 * api lang also translates wind which breaks my formatting object
-	 */
+		pressure: `💨Pressure`,
+		airquality: `🌬️Air Quality`,
+		airindexes: { // round up
+			0: `N/A`,
+			1: `🟢 Good`,
+			2: `🟡 Moderate`,
+			3: `🟠 Unhealthy`,
+			4: `🔴 Hazardous`,
+		},
+		uv: `☀️UV`,
+		uvindexes: { // round down
+			0: `🟢 Low`,
+			1: `🟡 Moderate`,
+			2: `🟠 High`,
+			3: `🔴 Extreme`,
+		},
+		forecast: (skytext, low_c, low_f, high_c, high_f, precip) => `**${skytext}**\n${low_c}-${high_c} °C\n${low_f}-${high_f} °F\nPrecipitations: ${precip}%`,
 	},
 	xp: {
 		disabled: `This module is disabled on this server.`,

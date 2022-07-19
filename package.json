@@ -35,7 +35,6 @@
     "node-fetch": "^2.6.7",
     "npm-check-updates": "^15.3.4",
     "superagent": "^8.0.0",
-    "weather-js": "^2.0.0",
     "ytdl-core": "^4.11.0",
     "ytpl": "^2.3.0",
     "ytsr": "^3.8.0"

@@ -1,5 +1,6 @@
 const Discord = require(`discord.js`);
-const weather = require(`weather-js`);
+const apikey = require(`../../config.json`).weather_key;
+const fetch = require(`node-fetch`);
 
 module.exports = {
 	name: `weather`,
@@ -14,66 +15,98 @@ module.exports = {
 	],
 	run: async (client, interaction, LANG) => {
 
-		const windDirection = LANG.winds;
+		await interaction.deferReply();
 
-		weather.find({
-			search: interaction.options.getString(`city`),
-			degreeType: `C`,
-			lang: `en_US`,
-		}, function(err, result) {
-			console.log(result);
-			if (result === undefined || result.length === 0 || err) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.no_location)] });
-			const current = result[0].current;
-			const embed = new Discord.EmbedBuilder()
-				.setDescription(`**${current.skytext.toUpperCase()}**`)
-				.setAuthor({ name: LANG.author })
-				.setTitle(`${current.observationpoint} <t:${Date.parse(`${current.date} ${current.observationtime}`) / 1e3}:D>`)
-				.setThumbnail(current.imageUrl)
-				.setColor(0x00AE86)
-				.addFields([
-					{
-						name: LANG.temperature,
-						value: `${current.temperature} °C | ${Math.round(current.temperature * 1.8) + 32} °F`,
-						inline: true,
-					},
-					{
-						name: LANG.feels_like,
-						value: `${current.feelslike} °C | ${Math.round(current.feelslike * 1.8) + 32} °F`,
-						inline: true,
-					},
-					{
-						name: `${LANG.low} ${result[0].forecast[1].low} °C | ${Math.round(result[0].forecast[1].low * 1.8) + 32} °F`,
-						value: `${LANG.high} ${result[0].forecast[1].high} °C | ${Math.round(result[0].forecast[1].high * 1.8) + 32} °F`,
-						inline: true,
-					},
-					{
-						name: LANG.wind,
-						value: `${windDirection[current.winddisplay.split(` `)[2]]} ${current.windspeed} | ${(current.windspeed.replace(/\D/g, ``) / 1.609).toFixed()} mp/h`,
-						inline: true,
-					},
-					{
-						name: LANG.humidity,
-						value: `${current.humidity}%`,
-						inline: true,
-					},
-					{
-						name: LANG.precipitations,
-						value: `${result[0].forecast[1].precip}%`,
-						inline: true,
-					},
-				]);
+		const city = interaction.options.getString(`city`);
 
-			for (let i = 2; i < 5; i++) {
-				const f = result[0].forecast[i];
-				embed.addFields([
-					{
-						name: `<t:${Date.parse(f.date) / 1e3}:D>`,
-						value: LANG.forecast(f.skytextday, f.low, (Math.round(f.low * 1.8) + 32), f.high, (Math.round(f.high * 1.8) + 32), f.precip.length > 0 ? f.precip : `0`),
-						inline: true,
-					},
-				]);
+		fetch(`http://api.weatherapi.com/v1/forecast.json?key=${apikey}&q=${city}&aqi=yes&days=3`).then(response => {
+			switch (response.status) {
+				case 200: // OK
+					try {
+						response.json().then(json => {
+							const weatherEmbed = new Discord.EmbedBuilder()
+								.setAuthor({ name: LANG.author })
+								.setTitle(`${json.location.name.toUpperCase()}, ${json.location.region}, ${json.location.country}`)
+								.setDescription(`**${json.current.condition.text.toUpperCase()}**\n<t:${json.current.last_updated_epoch}>`)
+								.setThumbnail(`http:` + json.current.condition.icon)
+								.setColor(0x00AE86)
+								.setFooter({ text: `Powered by WeatherAPI.com`, iconURL: `https://i.imgur.com/zjyRSzK.png` })
+								.addFields([
+									{
+										name: LANG.temperature,
+										value: `${json.current.temp_c.toFixed()} °C\n${json.current.temp_f.toFixed()} °F`,
+										inline: true,
+									},
+									{
+										name: LANG.feels_like,
+										value: `${json.current.feelslike_c.toFixed()} °C\n${json.current.feelslike_f.toFixed()} °F`,
+										inline: true,
+									},
+									{
+										name: LANG.lowhigh,
+										value: `${json.forecast.forecastday[0].day.mintemp_c.toFixed()}-${json.forecast.forecastday[0].day.maxtemp_c.toFixed()} °C\n${json.forecast.forecastday[0].day.mintemp_f.toFixed()}-${json.forecast.forecastday[0].day.maxtemp_f.toFixed()} °F`,
+										inline: true,
+									},
+									{
+										name: LANG.wind,
+										value: `${json.current.wind_dir}\n${json.current.wind_kph.toFixed()} kph | ${json.current.wind_mph.toFixed()} mph`,
+										inline: true,
+									},
+									{
+										name: LANG.pressure,
+										value: `${json.current.pressure_mb} mb\n${json.current.pressure_in} in`,
+										inline: true,
+									},
+									{
+										name: LANG.precipitations,
+										value: `${json.forecast.forecastday[0].day.daily_chance_of_rain} %\n${json.current.precip_mm.toFixed()} mm | ${json.current.precip_in.toFixed()} in`,
+										inline: true,
+									},
+									{
+										name: LANG.humidity,
+										value: `${json.current.humidity} %`,
+										inline: true,
+									},
+									{
+										name: LANG.airquality,
+										value: `${LANG.airindexes[Math.ceil(json.current.air_quality[`gb-defra-index`] / 3)]} ${json.current.air_quality[`gb-defra-index`]}/10`,
+										inline: true,
+									},
+									{
+										name: LANG.uv,
+										value: `${LANG.uvindexes[Math.floor(json.current.uv / 3)]} ${json.current.uv}`,
+										inline: true,
+									},
+									{
+										name: `\u200b`,
+										value: `> **Forecast**`,
+										inline: false,
+									},
+								]);
+
+							for (let i = 1; i < 3; i++) {
+								const f = json.forecast.forecastday[i];
+								weatherEmbed.addFields([
+									{
+										name: `<t:${f.date_epoch}:D>`,
+										value: LANG.forecast(f.day.condition.text, f.day.mintemp_c.toFixed(), f.day.mintemp_f.toFixed(), f.day.maxtemp_c.toFixed(), f.day.maxtemp_f.toFixed(), f.day.daily_chance_of_rain),
+										inline: true,
+									},
+								]);
+							}
+							return interaction.followUp({ embeds: [weatherEmbed] });
+						});
+					} catch (err) {
+						return interaction.followUp({ ephemeral: true, embeds: [client.chill.error(LANG.no_location)] });
+					}
+					break;
+				case 400: // bad request, probably invalid city
+					return interaction.followUp({ ephemeral: true, embeds: [client.chill.error(LANG.no_location)] });
+					break;
+				case 403: // rate limited, exceeded monthly quota
+					return interaction.followUp({ ephemeral: true, embeds: [client.chill.error(LANG.service_down)] });
+					break;
 			}
-			return interaction.reply({ embeds: [embed] });
 		});
 	},
 };
