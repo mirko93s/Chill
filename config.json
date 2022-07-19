@@ -12,5 +12,6 @@
 	"rewards_limit": 15, (must be a number between 1 and 25, delete this message including brackets)
   	"guild_log_webhook_link": "create a webhook in a channel and psate the link here",
 	"crypto_key": "used to encrypt /remindme text, write andy random string here using lower/uppercase letters, number, symbols... the longer it is the safer it will be",
+	"weather_key": "get one at https://www.weatherapi.com/",
 	"dev_guild_id": "dev-only commands will be registered only in this guild and not globally"
   }
