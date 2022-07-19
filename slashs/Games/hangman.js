@@ -43,12 +43,12 @@ module.exports = {
 		// create "footer" buttons
 		leftButton = new Discord.ButtonBuilder()
 			.setCustomId(`left`)
-			.setLabel(``)
+			.setLabel(` `)
 			.setEmoji(`⬅️`)
 			.setStyle(Discord.ButtonStyle.Secondary);
 		rightButton = new Discord.ButtonBuilder()
 			.setCustomId(`right`)
-			.setLabel(``)
+			.setLabel(` `)
 			.setEmoji(`➡️`)
 			.setStyle(Discord.ButtonStyle.Secondary);
 		livesButton = new Discord.ButtonBuilder()
@@ -85,7 +85,7 @@ module.exports = {
 
 		const embed = new Discord.EmbedBuilder()
 			.setColor(`Random`)
-			.setAuthor({ name: LANG.title })
+			.setAuthor({ name: LANG.hangman })
 			.setTitle(guess.join(``))
 			.setDescription(`\`\`\`${ascii[7 - (lives + 1)]}\`\`\``);
 		if (player) {

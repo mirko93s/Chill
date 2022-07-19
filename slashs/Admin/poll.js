@@ -58,7 +58,7 @@ module.exports = {
 			.setDescription(LANG.description(choicemsg))
 			.setTimestamp();
 
-		if (pollEmbed.description.length > 4096) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.choices_too_long)] });
+		if (choicemsg > 4e3) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.choices_too_long)] });
 
 		pollchannel.send({ embeds: [pollEmbed] }).then(msg => {
 			const doneEmbed = new Discord.EmbedBuilder()

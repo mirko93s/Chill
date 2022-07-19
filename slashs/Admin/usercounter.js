@@ -1,3 +1,4 @@
+const { PermissionFlagsBits, ChannelType } = require(`discord.js`);
 const Discord = require(`discord.js`);
 
 module.exports = {
@@ -26,17 +27,18 @@ module.exports = {
 				if (channel) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.already_enabled(channel))] });
 				let memberCount = interaction.guild.members.cache.filter(member => !member.user.bot).size; // filtering bots
 				memberCount = client.chill.fancyNumber(memberCount);
-				interaction.guild.channels.create(LANG.channel_name(memberCount), {
-					type: Discord.ChannelType.GuildVoice,
+				interaction.guild.channels.create({
+					name: LANG.channel_name(memberCount),
+					type: ChannelType.GuildVoice,
 					permissionOverwrites: [
 						{
 							id: interaction.guild.members.me.id,
-							allow: [`CONNECT`],
+							allow: [PermissionFlagsBits.Connect],
 						},
 						{
 							id: interaction.guild.roles.everyone.id,
-							deny: [`CONNECT`],
-							allow: [`ViewChannel`],
+							deny: [PermissionFlagsBits.Connect],
+							allow: [PermissionFlagsBits.ViewChannel],
 						},
 					],
 				}).then(created => {

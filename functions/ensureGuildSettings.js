@@ -30,7 +30,7 @@ module.exports = function(client, guild) {
 		// other
 		prefix: `.`,
 		xpcooldown: 5,
-		lang: `en_US`,
+		lang: `en-US`,
 		// array & objects
 		autovocalchannels: [],
 		autovocalcloned: [],

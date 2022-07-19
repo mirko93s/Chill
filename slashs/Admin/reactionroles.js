@@ -26,60 +26,28 @@ module.exports = {
 		let row = new Discord.ActionRowBuilder().addComponents(confirmButton, abortButton);
 
 		const rr = {};
-		interaction.reply({ embeds: [rrEmbed], components: [row] }).then(() => { // send setup message
-			interaction.fetchReply().then(sent => { // fetch reply/msg from the interaction reply
-				const rrFilter = u => u.author.id === interaction.user.id;
-				const buttonFilter = i => {
-					i.deferUpdate();
-					return i.user.id === interaction.user.id;
-				};
+		interaction.reply({ embeds: [rrEmbed], components: [row], fetchReply: true }).then(sent => { // fetch reply/msg from the interaction reply
+			const rrFilter = u => u.author.id === interaction.user.id;
+			const buttonFilter = i => {
+				i.deferUpdate();
+				return i.user.id === interaction.user.id;
+			};
 
-				const rrCollector = interaction.channel.createMessageCollector({ filter: rrFilter, time: 60e3, errors: [`time`] });
-				const buttonCollector = sent.createMessageComponentCollector({ filter: buttonFilter, componentType: Discord.ComponentType.Button, time: 60e3 });
+			const rrCollector = interaction.channel.createMessageCollector({ filter: rrFilter, time: 60e3, errors: [`time`] });
+			const buttonCollector = sent.createMessageComponentCollector({ filter: buttonFilter, componentType: Discord.ComponentType.Button, time: 60e3 });
 
-				rrCollector.on(`collect`, async collected => {
-					collected.delete();
-					rrCollector.resetTimer({ time: 60e3 });
-					buttonCollector.resetTimer({ time: 60e3 });
-					const emoji = getEmoji(collected.content);
-					const role = collected.mentions.roles.first();
-					const description = collected.content.replace(/(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])|<@&?\d+>/g, ``);
-					rrEmbed.fields = []; // clear embed fields in case there was an invalid emoji message
-					if (emoji.length === 1 && collected.mentions.roles.size === 1) {
-						try { // try to react to check if the emoji is supported by Discord
-							await sent.react(emoji[0].name);
-						} catch (err) {
-							rrEmbed.addFields([
-								{
-									name: LANG.bad_input_key,
-									value: LANG.bad_input_value,
-									inline: false,
-								},
-							]);
-							return interaction.editReply({ embeds: [rrEmbed] });
-						}
-						rr[`${emoji[0].name}`] = {
-							role: role.id,
-							description: description.trim(),
-						};
-						rrEmbed.setDescription(rrEmbed.description + `\n> ${emoji[0].name} ${role}\n${description}`);
-						if (rrEmbed.description.length > 4096) {
-							rrEmbed.addFields([
-								{
-									name: LANG.too_long_key,
-									value: LANG.too_long_value,
-									inline: false,
-								},
-							]);
-							return interaction.editReply({ embeds: [rrEmbed] });
-						}
-						interaction.editReply({ embeds: [rrEmbed] }); // edit setup message adding new rrole
-						if (Object.keys(rr).length > 0) {
-							confirmButton.disabled = false;
-							row = new Discord.ActionRowBuilder().addComponents(confirmButton, abortButton);
-							interaction.editReply({ components: [row] });
-						}
-					} else {
+			rrCollector.on(`collect`, async collected => {
+				collected.delete();
+				rrCollector.resetTimer({ time: 60e3 });
+				buttonCollector.resetTimer({ time: 60e3 });
+				const emoji = getEmoji(collected.content);
+				const role = collected.mentions.roles.first();
+				const description = collected.content.replace(/(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])|<@&?\d+>/g, ``);
+				rrEmbed.fields = []; // clear embed fields in case there was an invalid emoji message
+				if (emoji.length === 1 && collected.mentions.roles.size === 1) {
+					try { // try to react to check if the emoji is supported by Discord
+						await sent.react(emoji[0].name);
+					} catch (err) {
 						rrEmbed.addFields([
 							{
 								name: LANG.bad_input_key,
@@ -87,39 +55,70 @@ module.exports = {
 								inline: false,
 							},
 						]);
-						interaction.editReply({ embeds: [rrEmbed] });
+						return interaction.editReply({ embeds: [rrEmbed] });
 					}
-				});
+					rr[`${emoji[0].name}`] = {
+						role: role.id,
+						description: description.trim(),
+					};
+					rrEmbed.setDescription(rrEmbed.data.description + `\n> ${emoji[0].name} ${role}\n${description}`);
 
-				rrCollector.once(`end`, (collected, reason) => {
-					if (reason === `time`) {
-						rrEmbed.setDescription(client.chill.error(LANG.inactivity)).fields = [];
-						delete rrEmbed.footer;
-						interaction.editReply({ embeds: [rrEmbed], components: [] });
+					if (rrEmbed.data.description.length > 4096) {
+						rrEmbed.addFields([
+							{
+								name: LANG.too_long_key,
+								value: LANG.too_long_value,
+								inline: false,
+							},
+						]);
+						return interaction.editReply({ embeds: [rrEmbed] });
 					}
-				});
+					interaction.editReply({ embeds: [rrEmbed] }); // edit setup message adding new rrole
+					if (Object.keys(rr).length > 0) {
+						confirmButton.data.disabled = false;
+						row = new Discord.ActionRowBuilder().addComponents(confirmButton, abortButton);
+						interaction.editReply({ components: [row] });
+					}
+				} else {
+					rrEmbed.addFields([
+						{
+							name: LANG.bad_input_key,
+							value: LANG.bad_input_value,
+							inline: false,
+						},
+					]);
+					interaction.editReply({ embeds: [rrEmbed] });
+				}
+			});
 
-				buttonCollector.on(`collect`, collected => {
-					if (collected.customId == `confirm`) {
-						rrCollector.stop();
-						buttonCollector.stop();
-						let rolestext = ``;
-						for (const [emoji, data] of Object.entries(rr)) {
-							rolestext += `> ${emoji} ${interaction.guild.roles.cache.find(r => r.id === (data.role))}${data.description.length > 0 ? `\n*${data.description}*` : ``}\n`;
-						}
-						rrEmbed
-							.setDescription(LANG.react(rolestext))
-							.fields = [];
-						delete rrEmbed.footer;
-						interaction.editReply({ embeds: [rrEmbed], components: [] }); // edit message with final embed
-						client.settings.set(interaction.guild.id, rr, `reactionroles.${sent.id}`); // save roles in db
-					} else if (collected.customId == `abort`) {
-						rrCollector.stop();
-						buttonCollector.stop();
-						interaction.deleteReply();
-						return interaction.followUp({ ephemeral: true, embeds: [client.chill.error(LANG.aborted)], components: [] });
+			rrCollector.once(`end`, (collected, reason) => {
+				if (reason === `time`) {
+					rrEmbed.setDescription(client.chill.error(LANG.inactivity)).fields = [];
+					delete rrEmbed.footer;
+					interaction.editReply({ embeds: [rrEmbed], components: [] });
+				}
+			});
+
+			buttonCollector.on(`collect`, collected => {
+				if (collected.customId == `confirm`) {
+					rrCollector.stop();
+					buttonCollector.stop();
+					let rolestext = ``;
+					for (const [emoji, data] of Object.entries(rr)) {
+						rolestext += `> ${emoji} ${interaction.guild.roles.cache.find(r => r.id === (data.role))}${data.description.length > 0 ? `\n*${data.description}*` : ``}\n`;
 					}
-				});
+					rrEmbed
+						.setDescription(LANG.react(rolestext))
+						.fields = [];
+					delete rrEmbed.footer;
+					interaction.editReply({ embeds: [rrEmbed], components: [] }); // edit message with final embed
+					client.settings.set(interaction.guild.id, rr, `reactionroles.${sent.id}`); // save roles in db
+				} else if (collected.customId == `abort`) {
+					rrCollector.stop();
+					buttonCollector.stop();
+					interaction.deleteReply();
+					return interaction.followUp({ ephemeral: true, embeds: [client.chill.error(LANG.aborted)], components: [] });
+				}
 			});
 		});
 	},

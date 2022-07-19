@@ -7,7 +7,7 @@ const Discord = require(`discord.js`);
  */
 module.exports = function(client, msg, cmd) {
 	if (client.settings.has(msg.guild.id, `customcmd.${cmd}`)) {
-		if (client.settings.get(msg.guild.id, `autodeletecmds`) === `true`) msg.delete();
+		if (client.settings.get(msg.guild.id, `autodeletecmds`)) msg.delete();
 		const customEmbed = new Discord.EmbedBuilder()
 			.setColor(`Random`)
 			.setDescription(client.settings.get(msg.guild.id, `customcmd.${cmd}`));

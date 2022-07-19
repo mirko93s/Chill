@@ -7,6 +7,7 @@
     "dev": "nodemon --trace-deprecation --trace-warnings --trace-uncaught",
     "check": "ncu -x node-fetch",
     "update": "ncu -u -x node-fetch && npm install",
+    "docs": "node ./docs/generatedocs.js && cd docs && mkdocs build && echo New Updated Docs have been built!"
   },
   "author": "mirko93s",
   "license": "Apache-2.0",
@@ -22,7 +23,9 @@
     "common-tags": "^1.8.2",
     "cpu-stat": "^2.0.1",
     "crypto-js": "^4.1.1",
-    "discord.js": "^14.0.1",
+    "dbd-dark-dashboard": "^1.6.491",
+    "discord-dashboard": "^2.3.40",
+    "discord.js": "^14.0.2",
     "enmap": "^5.9.0",
     "ffmpeg-static": "^5.0.2",
     "figlet": "^1.5.2",
@@ -36,5 +39,8 @@
     "ytdl-core": "^4.11.0",
     "ytpl": "^2.3.0",
     "ytsr": "^3.8.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.20.0"
   }
 }

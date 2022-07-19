@@ -97,7 +97,7 @@ module.exports = {
 			const timedoutEmbed = new Discord.EmbedBuilder()
 				.setColor(`Yellow`)
 				.setThumbnail(user.user.displayAvatarURL())
-				.setTitle(LANG.title)
+				.setTitle(LANG.timeout_title)
 				.setDescription(user.user.tag)
 				.addFields([
 					{
@@ -123,7 +123,7 @@ module.exports = {
 				.setColor(`Random`)
 				.setDescription(LANG.not_timed_out(user));
 			if (!user.isCommunicationDisabled()) return interaction.reply({ ephemeral: true, embeds: [notTimedoutEmbed] });
-			user.timeout(0, reason).catch(err => {
+			user.timeout(null, reason).catch(err => {
 				if (err) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.error(err))] });
 			});
 			const removedEmbed = new Discord.EmbedBuilder()

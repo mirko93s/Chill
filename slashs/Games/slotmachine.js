@@ -12,7 +12,7 @@ module.exports = {
 			.setLabel(LANG.reroll)
 			.setStyle(Discord.ButtonStyle.Primary);
 		let row = new Discord.ActionRowBuilder().addComponents(spinButton);
-		interaction.reply({ embeds: [slot(interaction)], components: [row] }).then(() => {
+		interaction.reply({ embeds: [slot(interaction, LANG)], components: [row] }).then(() => {
 			interaction.fetchReply().then(sent => {
 				const filter = (_interaction) => {
 					_interaction.deferUpdate();
@@ -48,11 +48,11 @@ function slot(interaction, LANG) {
         (slots[1] === slots[4] && slots[1] === slots[7] || slots[2] === slots[5] && slots[2] === slots[8] || slots[3] === slots[6] && slots[3] === slots[9]) ||
         (slots[1] === slots[5] && slots[1] === slots[9] || slots[3] === slots[5] && slots[3] === slots[7])) {
 		slotEmbed
-			.setFooter({ text: LANG.won(interaction.member) })
+			.setFooter({ text: LANG.won(interaction.member.displayName) })
 			.setColor(`Green`);
 	} else {
 		slotEmbed
-			.setFooter({ text: LANG.lost(interaction.member) })
+			.setFooter({ text: LANG.lost(interaction.member.displayName) })
 			.setColor(`Red`);
 	}
 	return slotEmbed;

@@ -69,7 +69,7 @@ exports.commands = {
 	autovocal: {
 		already_locked: `This Auto-Vocal channel is already locked.`,
 		locked: `🔒Channel Locked`,
-		locked_description: `You can now invite other users to join this auto-vocal channel by doing \`.autovocalinvite @user\`.`,
+		locked_description: `You can now invite other users to join this auto-vocal channel by doing \`/autovocal invite @user\`.`,
 		no_owner: `You don't have permission to lock or kick people!\nOnly the creator of this Auto-Vocal channel can.`,
 		not_in_av: `You are not in an Auto-Vocal channel.`,
 		already_whitelisted: (invited) => `${invited} is already whitelisted.`,
@@ -456,9 +456,9 @@ exports.commands = {
 		trimmed: `Some emojis are missing in this list due to Discord 4096 characters limit.`,
 	},
 	serverinfo: {
-		filter_obj: { DISABLED: `Off`, MEMBERS_WITHOUT_ROLES: `Without Role`, ALL_MEMBERS: `Everyone`, 0: `Off`, 1: `Without Role`, 2: `Everyone` },
-		verification_obj: { NONE: `None`, LOW: `Low`, MEDIUM: `Medium`, HIGH: `High`, VERY_HIGH: `Highest`, 0: `None`, 1: `Low`, 2: `Medium`, 3: `High`, 4: `Highest` },
-		tier_obj: { NONE: `None`, TIER_1: `1`, TIER_2: `2`, TIER_3: `3` },
+		filter_obj: { 0: `Off`, 1: `Without Role`, 2: `Everyone` },
+		verification_obj: { 0: `None`, 1: `Low`, 2: `Medium`, 3: `High`, 4: `Highest` },
+		tier_obj: { 0: `None`, 1: `1`, 2: `2`, 3: `3` },
 		// keep same string length inside each group
 		// group1
 		text: `Text  ::`,

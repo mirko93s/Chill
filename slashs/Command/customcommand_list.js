@@ -21,7 +21,7 @@ module.exports = {
 			for (const [key] of Object.entries(cmds)) {
 				cmdmsg += (`\`${key}\` `);
 			};
-			if (cmdmsg.length <= 0) return interaction.reply({ ephemeral: true, embeds: [LANG.no_custom_commands] });
+			if (cmdmsg.length <= 0) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.no_custom_commands)] });
 			const ccEmbed = new Discord.EmbedBuilder()
 				.setColor(`Random`)
 				.setTitle(LANG.title)

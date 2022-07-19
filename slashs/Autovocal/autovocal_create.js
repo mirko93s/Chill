@@ -8,7 +8,10 @@ module.exports = {
 	options: null,
 	run: async (client, interaction, LANG) => {
 
-		interaction.guild.channels.create(LANG.channel_name, { type: Discord.ChannelType.GuildVoice }).then(channel => {
+		interaction.guild.channels.create({
+			name: LANG.channel_name,
+			type: Discord.ChannelType.GuildVoice,
+		}).then(channel => {
 			client.settings.ensure(interaction.guild.id, defaultSettings);
 			client.settings.push(interaction.guild.id, channel.id, `autovocalchannels`);
 			const doneEmbed = new Discord.EmbedBuilder()

@@ -93,8 +93,8 @@ module.exports = {
 					button[previousId].setStyle(Discord.ButtonStyle.Danger);
 					sent.edit({ components: [row[0], row[1], row[2], row[3], row[4]] });
 					already = !already;
-					button[c.customId].setDisabled(false).setStyle(Discord.ButtonStyle.Secondary).setEmoji();
-					button[previousId].setDisabled(false).setStyle(Discord.ButtonStyle.Secondary).setEmoji();
+					button[c.customId].setDisabled(false).setStyle(Discord.ButtonStyle.Secondary).setEmoji({});
+					button[previousId].setDisabled(false).setStyle(Discord.ButtonStyle.Secondary).setEmoji({});
 				}
 			});
 			collector.on(`end`, (collected, reason) => {

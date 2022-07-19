@@ -69,7 +69,7 @@ exports.commands = {
 	autovocal: {
 		already_locked: `Questo canale Auto-Vocale è già bloccato.`,
 		locked: `🔒Canale Bloccato`,
-		locked_description: `Ora puoi invitare altri utenti a unirsi a questo canale Auto-Vocal facendo \`.autovocalinvite @user\`.`,
+		locked_description: `Ora puoi invitare altri utenti a unirsi a questo canale Auto-Vocal facendo \`/autovocal invite @user\`.`,
 		no_owner: `Non hai il permesso di bloccare o cacciare le persone!\nSolo il creatore di questo canale Auto-Vocale può farlo.`,
 		not_in_av: `Non sei in un canale Auto-Vocale.`,
 		already_whitelisted: invited => `${invited} è già nella whitelist.`,
@@ -450,19 +450,11 @@ exports.commands = {
 	},
 	serverinfo: {
 		filter_obj: {
-			DISABLED: `Spento`,
-			MEMBERS_WITHOUT_ROLES: `Senza Ruolo`,
-			ALL_MEMBERS: `Tutti`,
 			0: `Spento`,
 			1: `Senza Ruolo`,
 			2: `Tutti`,
 		},
 		verification_obj: {
-			NONE: `Nessuno`,
-			LOW: `Basso`,
-			MEDIUM: `Medio`,
-			HIGH: `Alto`,
-			VERY_HIGH: `Massimo`,
 			0: `Nessuno`,
 			1: `Basso`,
 			2: `Medio`,
@@ -470,10 +462,10 @@ exports.commands = {
 			4: `Massimo`,
 		},
 		tier_obj: {
-			NONE: `Nessuno`,
-			TIER_1: `1`,
-			TIER_2: `2`,
-			TIER_3: `3`,
+			0: `Nessuno`,
+			1: `1`,
+			2: `2`,
+			3: `3`,
 		},
 		// keep same string length inside each group
 		// group1

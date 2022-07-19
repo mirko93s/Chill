@@ -29,7 +29,7 @@ module.exports = {
 		const already = `❌`;
 		// categories
 		if (!ticketcategory) {
-			interaction.guild.channels.create(`🎫tickets`, { type: Discord.ChannelType.GuildCategory })
+			interaction.guild.channels.create({ name: `🎫tickets`, type: Discord.ChannelType.GuildCategory })
 				.then(channel => {
 					client.settings.set(interaction.guild.id, channel.id, `ticketcategory`);
 				});
@@ -77,7 +77,7 @@ module.exports = {
 		};
 		// channels
 		if (!welcomechannel) {
-			interaction.guild.channels.create(`👋welcome`, { type: Discord.ChannelType.GuildText,
+			interaction.guild.channels.create({ name: `👋welcome`, type: Discord.ChannelType.GuildText,
 				permissionOverwrites: [{ id: interaction.guild.roles.everyone.id,
 					deny: [`SendMessages`, `SendTTSMessages`, `EmbedLinks`, `AttachFiles`] }] })
 				.then(channel => {
@@ -88,7 +88,7 @@ module.exports = {
 			welcomemsg = already;
 		};
 		if (!bcchannel) {
-			interaction.guild.channels.create(`🔴broadcast`, { type: Discord.ChannelType.GuildText,
+			interaction.guild.channels.create({ name: `🔴broadcast`, type: Discord.ChannelType.GuildText,
 				permissionOverwrites: [{ id: interaction.guild.roles.everyone.id,
 					deny: [`SendMessages`, `SendTTSMessages`, `EmbedLinks`, `AttachFiles`] }] })
 				.then(channel => {
@@ -99,7 +99,7 @@ module.exports = {
 			bcmsg = already;
 		};
 		if (!puchannel) {
-			interaction.guild.channels.create(`🔨punishments`, { type: Discord.ChannelType.GuildText,
+			interaction.guild.channels.create({ name: `🔨punishments`, type: Discord.ChannelType.GuildText,
 				permissionOverwrites: [{ id: interaction.guild.roles.everyone.id,
 					deny: [`SendMessages`, `SendTTSMessages`, `EmbedLinks`, `AttachFiles`] }] })
 				.then(channel => {
@@ -110,7 +110,7 @@ module.exports = {
 			pumsg = already;
 		};
 		if (!reportchannel) {
-			interaction.guild.channels.create(`🚨reports`, { type: Discord.ChannelType.GuildText,
+			interaction.guild.channels.create({ name: `🚨reports`, type: Discord.ChannelType.GuildText,
 				permissionOverwrites: [{ id: interaction.guild.roles.everyone.id,
 					deny: [`ViewChannel`] }] })
 				.then(channel => {
@@ -121,7 +121,7 @@ module.exports = {
 			reportmsg = already;
 		};
 		if (!gachannel) {
-			interaction.guild.channels.create(`🎉giveaway`, { type: Discord.ChannelType.GuildText,
+			interaction.guild.channels.create({ name: `🎉giveaway`, type: Discord.ChannelType.GuildText,
 				permissionOverwrites: [{ id: interaction.guild.roles.everyone.id,
 					deny: [`SendMessages`, `SendTTSMessages`, `EmbedLinks`, `AttachFiles`] }] })
 				.then(channel => {
@@ -132,7 +132,7 @@ module.exports = {
 			gamsg = already;
 		};
 		if (!pollchannel) {
-			interaction.guild.channels.create(`💡poll`, { type: Discord.ChannelType.GuildText,
+			interaction.guild.channels.create({ name: `💡poll`, type: Discord.ChannelType.GuildText,
 				permissionOverwrites: [{ id: interaction.guild.roles.everyone.id,
 					deny: [`SendMessages`, `SendTTSMessages`, `EmbedLinks`, `AttachFiles`] }] })
 				.then(channel => {
@@ -143,7 +143,7 @@ module.exports = {
 			pollmsg = already;
 		};
 		if (!musicvocalchannel) {
-			interaction.guild.channels.create(`🔊music`, { type: Discord.ChannelType.GuildVoice,
+			interaction.guild.channels.create({ name: `🔊music`, type: Discord.ChannelType.GuildVoice,
 				permissionOverwrites: [{ id: interaction.guild.roles.everyone.id,
 					deny: [`Speak`] }] })
 				.then(channel => {
@@ -154,7 +154,7 @@ module.exports = {
 			musicvocalmsg = already;
 		};
 		if (!musictextchannel) {
-			interaction.guild.channels.create(`🎵song-request`, { type: Discord.ChannelType.GuildText,
+			interaction.guild.channels.create({ name: `🎵song-request`, type: Discord.ChannelType.GuildText,
 				permissionOverwrites: [
 					{ id: interaction.guild.roles.everyone.id,
 						deny: [`ViewChannel`] },

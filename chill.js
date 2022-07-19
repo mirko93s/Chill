@@ -1,6 +1,7 @@
 const { Collection, Client, GatewayIntentBits, Partials } = require(`discord.js`);
 const client = new Client({
 	intents: [
+		GatewayIntentBits.MessageContent,
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildMembers,
 		GatewayIntentBits.GuildBans,

@@ -26,9 +26,9 @@ module.exports = {
 	],
 	run: async (client, interaction, LANG) => {
 
-		if (interaction.options.getSubcommand() === `create`) {
+		const langPrefix = LANG.channel_prefix;
 
-			const langPrefix = LANG.channel_prefix;
+		if (interaction.options.getSubcommand() === `create`) {
 
 			const ticketalready = interaction.guild.channels.cache.find(c => c.name === `${langPrefix}-${interaction.user.username}`);
 			if (ticketalready) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.already_opened_ticket)] });
@@ -36,7 +36,8 @@ module.exports = {
 			const category = interaction.guild.channels.cache.find(c => c.id === (client.settings.get(interaction.guild.id, `ticketcategory`)))?.id || null;
 			const supportrole = interaction.guild.roles.cache.find(r => r.id === (client.settings.get(interaction.guild.id, `supportrole`)))?.id || null;
 
-			interaction.guild.channels.create(`${langPrefix}-${interaction.user.username}`, {
+			interaction.guild.channels.create({
+				name: `${langPrefix}-${interaction.user.username}`,
 				type: Discord.ChannelType.GuildText,
 				parent: category,
 				permissionOverwrites: [

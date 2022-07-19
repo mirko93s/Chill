@@ -30,8 +30,8 @@ module.exports = {
 		const searchString = arg;
 		const url = arg.replace(/<(.+)>/g, `$1`);
 
-		if (!interaction.member.roles.cache.some(role => role.id === (client.settings.get(interaction.guild.id, `djrole`))) && client.settings.get(interaction.guild.id, `djrequired`) === `true`) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.no_dj)] });
-		if (client.settings.get(interaction.guild.id, `musicchannelonly`) === `true` && interaction.channel.id !== client.settings.get(interaction.guild.id, `musictextchannel`)) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.mco(client.settings.get(interaction.guild.id, `musictextchannel`)))] });
+		if (!interaction.member.roles.cache.some(role => role.id === (client.settings.get(interaction.guild.id, `djrole`))) && client.settings.get(interaction.guild.id, `djrequired`)) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.no_dj)] });
+		if (client.settings.get(interaction.guild.id, `musicchannelonly`) && interaction.channel.id !== client.settings.get(interaction.guild.id, `musictextchannel`)) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.mco(client.settings.get(interaction.guild.id, `musictextchannel`)))] });
 		const voiceChannel = interaction.member.voice.channel;
 		if (!voiceChannel) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.not_vc)] });
 		// queue limit

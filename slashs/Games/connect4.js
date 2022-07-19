@@ -76,10 +76,10 @@ module.exports = {
 						return sent.edit({ embeds: [boardEmbed] });
 					} else if (turn == `🔴`) {
 						turn = `🟡`;
-						boardEmbed.setAuthor({ name: LANG.turn(player, turn), iconURL: p2.displayAvatarURL() });
+						boardEmbed.setAuthor({ name: LANG.turn(p2.displayName, turn), iconURL: p2.displayAvatarURL() });
 					} else {
 						turn = `🔴`;
-						boardEmbed.setAuthor({ name: LANG.turn(player, turn), iconURL: p1.displayAvatarURL() });
+						boardEmbed.setAuthor({ name: LANG.turn(p1.displayName, turn), iconURL: p1.displayAvatarURL() });
 					}
 					return sent.edit({ embeds: [boardEmbed] });
 				});

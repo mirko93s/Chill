@@ -3,16 +3,19 @@
  * @param {Object} guild @requires
  * @description creates deafult channels, roles, etc on guild join
  */
+
+const { ChannelType } = require(`discord.js`);
+
 module.exports = async function(client, guild) {
 
-	if (!guild.members.me.permissions.toArray().includes(`ADMINISTRATOR`)) return;
-	if (!guild.members.me.permissions.toArray().includes(`MANAGE_ROLES`) && !guild.members.me.permissions.toArray().includes(`MANAGE_CHANNELS`)) return;
+	if (!guild.members.me.permissions.toArray().includes(`Administrator`)) return;
+	if (!guild.members.me.permissions.toArray().includes(`ManageRoles`) && !guild.members.me.permissions.toArray().includes(`ManageChannels`)) return;
 	// roles
 	await guild.roles.create({ name: `Listening`, permissions: [], color: `CCCC00` })
 		.then(role => {
 			client.settings.set(guild.id, role.id, `musictemprole`);
 		});
-	guild.roles.create({ name: `DJ`, permissions: [`CONNECT`], color: `D00091` })
+	guild.roles.create({ name: `DJ`, permissions: [`Connect`], color: `D00091` })
 		.then(role => {
 			client.settings.set(guild.id, role.id, `djrole`);
 		});
@@ -20,63 +23,63 @@ module.exports = async function(client, guild) {
 		.then(role => {
 			client.settings.set(guild.id, role.id, `supportrole`);
 		});
-	guild.roles.create({ name: `Member`, permissions: [`VIEW_CHANNEL`], color: `33FFFF` })
+	guild.roles.create({ name: `Member`, permissions: [`ViewChannel`], color: `33FFFF` })
 		.then(role => {
 			client.settings.set(guild.id, role.id, `roleonjoin`);
 		});
 	// channels
-	guild.channels.create(`🎫tickets`, { type: `GUILD_CATEGORY` })
+	guild.channels.create(`🎫tickets`, { type: ChannelType.GuildCategory })
 		.then(channel => {
 			client.settings.set(guild.id, channel.id, `ticketcategory`);
 		});
-	guild.channels.create(`👋welcome`, { type: `GUILD_TEXT`,
+	guild.channels.create(`👋welcome`, { type: ChannelType.GuildText,
 		permissionOverwrites: [{ id: guild.roles.everyone.id,
-			deny: [`SEND_MESSAGES`, `SEND_TTS_MESSAGES`, `EMBED_LINKS`, `ATTACH_FILES`] }] })
+			deny: [`SendMessages`, `SendTTSMessages`, `EmbedLinks`, `AttachFiles`] }] })
 		.then(channel => {
 			client.settings.set(guild.id, channel.id, `welcomechannel`);
 		});
-	guild.channels.create(`📢announcements`, { type: `GUILD_TEXT`,
+	guild.channels.create(`📢announcements`, { type: ChannelType.GuildText,
 		permissionOverwrites: [{ id: guild.roles.everyone.id,
-			deny: [`SEND_MESSAGES`, `SEND_TTS_MESSAGES`, `EMBED_LINKS`, `ATTACH_FILES`] }] })
+			deny: [`SendMessages`, `SendTTSMessages`, `EmbedLinks`, `AttachFiles`] }] })
 		.then(channel => {
 			client.settings.set(guild.id, channel.id, `bcchannel`);
 		});
-	guild.channels.create(`🔨punishments`, { type: `GUILD_TEXT`,
+	guild.channels.create(`🔨punishments`, { type: ChannelType.GuildText,
 		permissionOverwrites: [{ id: guild.roles.everyone.id,
-			deny: [`SEND_MESSAGES`, `SEND_TTS_MESSAGES`, `EMBED_LINKS`, `ATTACH_FILES`] }] })
+			deny: [`SendMessages`, `SendTTSMessages`, `EmbedLinks`, `AttachFiles`] }] })
 		.then(channel => {
 			client.settings.set(guild.id, channel.id, `puchannel`);
 		});
-	guild.channels.create(`🚨reports`, { type: `GUILD_TEXT`,
+	guild.channels.create(`🚨reports`, { type: ChannelType.GuildText,
 		permissionOverwrites: [{ id: guild.roles.everyone.id,
-			deny: [`VIEW_CHANNEL`] }] })
+			deny: [`ViewChannel`] }] })
 		.then(channel => {
 			client.settings.set(guild.id, channel.id, `reportchannel`);
 		});
-	guild.channels.create(`🎉giveaway`, { type: `GUILD_TEXT`,
+	guild.channels.create(`🎉giveaway`, { type: ChannelType.GuildText,
 		permissionOverwrites: [{ id: guild.roles.everyone.id,
-			deny: [`SEND_MESSAGES`, `SEND_TTS_MESSAGES`, `EMBED_LINKS`, `ATTACH_FILES`] }] })
+			deny: [`SendMessages`, `SendTTSMessages`, `EmbedLinks`, `AttachFiles`] }] })
 		.then(channel => {
 			client.settings.set(guild.id, channel.id, `gachannel`);
 		});
-	guild.channels.create(`💡poll`, { type: `GUILD_TEXT`,
+	guild.channels.create(`💡poll`, { type: ChannelType.GuildText,
 		permissionOverwrites: [{ id: guild.roles.everyone.id,
-			deny: [`SEND_MESSAGES`, `SEND_TTS_MESSAGES`, `EMBED_LINKS`, `ATTACH_FILES`] }] })
+			deny: [`SendMessages`, `SendTTSMessages`, `EmbedLinks`, `AttachFiles`] }] })
 		.then(channel => {
 			client.settings.set(guild.id, channel.id, `pollchannel`);
 		});
-	guild.channels.create(`🔊music`, { type: `GUILD_VOICE`,
+	guild.channels.create(`🔊music`, { type: ChannelType.GuildVoice,
 		permissionOverwrites: [{ id: guild.roles.everyone.id,
-			deny: [`SPEAK`] }] })
+			deny: [`Speak`] }] })
 		.then(channel => {
 			client.settings.set(guild.id, channel.id, `musicvocalchannel`);
 		});
-	guild.channels.create(`🎵song-request`, { type: `GUILD_TEXT`,
+	guild.channels.create(`🎵song-request`, { type: ChannelType.GuildText,
 		permissionOverwrites: [
 			{ id: guild.id,
-				deny: [`VIEW_CHANNEL`] },
+				deny: [`ViewChannel`] },
 			{ id: client.settings.get(guild.id, `musictemprole`),
-				allow: [`VIEW_CHANNEL`, `SEND_MESSAGES`] }] })
+				allow: [`ViewChannel`, `SendMessages`] }] })
 		.then(channel => {
 			client.settings.set(guild.id, channel.id, `musictextchannel`);
 		});

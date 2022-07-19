@@ -124,7 +124,7 @@ module.exports = {
 					sinceLastGuess++;
 					round++;
 					gameEmbed.setDescription(aki.question).setFooter({ text: LANG.progress(aki.progress.toFixed(2), (`▬`.repeat((Math.round(aki.progress / 5))) + `🔘` + `▬`.repeat(20 - (Math.round(aki.progress / 5))))) });
-					gameEmbed.fields[0].value = round.toString();
+					gameEmbed.data.fields[0].value = round.toString();
 					if ((aki.progress >= 80 && (hasGuessed === false || sinceLastGuess >= 5)) || aki.currentStep >= 78) {
 						hasGuessed = true;
 						sinceLastGuess = 0;

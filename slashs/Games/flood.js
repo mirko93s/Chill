@@ -85,7 +85,7 @@ module.exports = {
 			});
 			collector.on(`end`, (collected, reason) => {
 				if (reason === `time`) gameEmbed.setTitle(LANG.inactivity);
-				if (reason === `won`) gameEmbed.setTitle(LANG.WON);
+				else if (reason === `won`) gameEmbed.setTitle(LANG.won);
 				sent.edit({ embeds: [gameEmbed], components: [] });
 			});
 		});

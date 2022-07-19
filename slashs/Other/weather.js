@@ -21,6 +21,7 @@ module.exports = {
 			degreeType: `C`,
 			lang: `en_US`,
 		}, function(err, result) {
+			console.log(result);
 			if (result === undefined || result.length === 0 || err) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.no_location)] });
 			const current = result[0].current;
 			const embed = new Discord.EmbedBuilder()

@@ -13,7 +13,7 @@ module.exports = {
 		},
 		{
 			name: `icon`,
-			description: `Choose an icon`,
+			description: `Choose an icon. Defaults to "Grass"`,
 			type: Discord.ApplicationCommandOptionType.Integer,
 			choices: [
 				{ name: `Grass`, value: 1 },
@@ -45,7 +45,7 @@ module.exports = {
 		},
 		{
 			name: `title`,
-			description: `Achievement title, max 25 characters`,
+			description: `Achievement title, max 25 characters. Defaults to "Achievement Unlocked!"`,
 			type: Discord.ApplicationCommandOptionType.String,
 		},
 	],

@@ -46,7 +46,7 @@ module.exports = {
 				{
 					name: LANG.by,
 					value: interaction.member.user.username,
-					inline: tr,
+					inline: true,
 				},
 				{
 					name: LANG.reason,

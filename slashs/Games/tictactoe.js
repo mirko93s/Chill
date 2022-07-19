@@ -90,21 +90,21 @@ module.exports = {
 function checkWin(buttons) {
 	for (let i = 0; i < 3; i++) {
 		// horizontal
-		if (buttons[i * 3].emoji?.name === buttons[i * 3 + 1].emoji?.name && buttons[i * 3].emoji?.name === buttons[i * 3 + 2].emoji?.name) {
-			if (buttons[i * 3].emoji && buttons[i * 3 + 1].emoji && buttons[i * 3 + 2].emoji) return true;
+		if (buttons[i * 3].data.emoji?.name === buttons[i * 3 + 1].data.emoji?.name && buttons[i * 3].data.emoji?.name === buttons[i * 3 + 2].data.emoji?.name) {
+			if (buttons[i * 3].data.emoji && buttons[i * 3 + 1].data.emoji && buttons[i * 3 + 2].data.emoji) return true;
 		}
 		// vertical
-		if (buttons[i].emoji?.name === buttons[i + 3].emoji?.name && buttons[i].emoji?.name === buttons[i + 6].emoji?.name) {
-			if (buttons[i].emoji && buttons[i + 3].emoji && buttons[i + 6].emoji) return true;
+		if (buttons[i].data.emoji?.name === buttons[i + 3].data.emoji?.name && buttons[i].data.emoji?.name === buttons[i + 6].data.emoji?.name) {
+			if (buttons[i].data.emoji && buttons[i + 3].data.emoji && buttons[i + 6].data.emoji) return true;
 		}
 	}
 	// ascending
-	if (buttons[0].emoji?.name === buttons[4].emoji?.name && buttons[0].emoji?.name === buttons[8].emoji?.name) {
-		if (buttons[0].emoji && buttons[4].emoji && buttons[8].emoji) return true;
+	if (buttons[0].data.emoji?.name === buttons[4].data.emoji?.name && buttons[0].data.emoji?.name === buttons[8].data.emoji?.name) {
+		if (buttons[0].data.emoji && buttons[4].data.emoji && buttons[8].data.emoji) return true;
 	}
 	// descending
-	if (buttons[2].emoji?.name === buttons[4].emoji?.name && buttons[2].emoji?.name === buttons[6].emoji?.name) {
-		if (buttons[2].emoji && buttons[4].emoji && buttons[6].emoji) return true;
+	if (buttons[2].data.emoji?.name === buttons[4].data.emoji?.name && buttons[2].data.emoji?.name === buttons[6].data.emoji?.name) {
+		if (buttons[2].data.emoji && buttons[4].data.emoji && buttons[6].data.emoji) return true;
 	}
 	return false;
 }

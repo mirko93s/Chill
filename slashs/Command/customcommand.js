@@ -50,7 +50,7 @@ module.exports = {
 			client.settings.set(interaction.guild.id, response, `customcmd.${command}`);
 			const ccEmbed = new Discord.EmbedBuilder()
 				.setColor(`Green`)
-				.setTitle(cLANG.title)
+				.setTitle(LANG.title)
 				.setDescription(LANG.created(command, response));
 			interaction.reply({ embeds: [ccEmbed] });
 		} else if (interaction.options.getSubcommand() === `delete`) {

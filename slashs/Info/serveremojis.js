@@ -8,7 +8,7 @@ module.exports = {
 
 		const emojiEmbed = new Discord.EmbedBuilder()
 			.setColor(`Random`)
-			.setTitle(cLANG.title);
+			.setTitle(LANG.title);
 
 		let emojis = await interaction.guild.emojis.cache.map((e) => `${e}`).join(` `).toString();
 		if (emojis.length < 1) {

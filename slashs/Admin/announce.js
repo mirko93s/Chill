@@ -25,7 +25,7 @@ module.exports = {
 			channelTypes: [Discord.ChannelType.GuildText, Discord.ChannelType.GuildNews],
 		},
 	],
-	run: async (client, interaction) => {
+	run: async (client, interaction, LANG) => {
 
 		const title = interaction.options.getString(`title`);
 		const description = interaction.options.getString(`description`);
