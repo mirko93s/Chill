@@ -7,13 +7,6 @@ module.exports = {
 	botPerms: [`ViewChannel`, `SendMessages`, `EmbedLinks`],
 	options: [
 		{
-			name: `text`,
-			description: `What do i have to say? (use \\n to create new lines)`,
-			type: Discord.ApplicationCommandOptionType.String,
-			maxLength: 2048,
-			required: true,
-		},
-		{
 			name: `embed`,
 			description: `Send the message as embed`,
 			type: Discord.ApplicationCommandOptionType.Boolean,
@@ -26,28 +19,45 @@ module.exports = {
 	],
 	run: async (client, interaction, LANG) => {
 
-		if (interaction.options.getBoolean(`anonymous`)) {
-			const anonymousEmbed = new Discord.EmbedBuilder()
+		const sayModal = new Discord.ModalBuilder()
+			.setCustomId(`bug`)
+			.setTitle(`Say`);
+		const _text = new Discord.TextInputBuilder()
+			.setCustomId(`text`)
+			.setLabel(`What should I say?`)
+			.setStyle(Discord.TextInputStyle.Paragraph)
+			.setMaxLength(2e3);
+		const row1 = new Discord.ActionRowBuilder().addComponents([_text]);
+		sayModal.addComponents([row1]);
+		await interaction.showModal(sayModal);
+
+		await interaction.awaitModalSubmit({
+			time: 60e3,
+			filter: i => i.user.id === interaction.user.id,
+		}).then(modal => {
+			const text = modal.fields.getTextInputValue(`text`);
+
+			if (interaction.options.getBoolean(`anonymous`)) {
+				const anonymousEmbed = new Discord.EmbedBuilder()
+					.setColor(`Random`)
+					.setDescription(LANG.success);
+				modal.reply({ ephemeral: true, embeds: [anonymousEmbed] });
+			}
+
+			const sayEmbed = new Discord.EmbedBuilder()
 				.setColor(`Random`)
-				.setDescription(LANG.success);
-			interaction.reply({ ephemeral: true, embeds: [anonymousEmbed] });
-		}
-		let text = ``;
-		interaction.options.getString(`text`).split(`\\n`).forEach(x => {
-			text += x + `\n`;
+				.setDescription(text);
+
+			if (interaction.options.getBoolean(`embed`)) {
+				if (interaction.options.getBoolean(`anonymous`)) return interaction.channel.send({ embeds: [sayEmbed] });
+				else return modal.reply({ embeds: [sayEmbed] });
+			} else if (interaction.options.getBoolean(`anonymous`)) {
+				return interaction.channel.send({ content: text });
+			} else {
+				return modal.reply({ content: text });
+			}
+		}).catch(err => {
+			return console.log(err);
 		});
-
-		const sayEmbed = new Discord.EmbedBuilder()
-			.setColor(`Random`)
-			.setDescription(text);
-
-		if (interaction.options.getBoolean(`embed`)) {
-			if (interaction.options.getBoolean(`anonymous`)) return interaction.channel.send({ embeds: [sayEmbed] });
-			else return interaction.reply({ embeds: [sayEmbed] });
-		} else if (interaction.options.getBoolean(`anonymous`)) {
-			return interaction.channel.send({ content: text });
-		} else {
-			return interaction.reply({ content: text });
-		}
 	},
 };
