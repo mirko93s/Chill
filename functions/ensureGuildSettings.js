@@ -21,12 +21,12 @@ module.exports = function(client, guild) {
 		supportrole: null,
 		roleonjoin: null,
 		// toggles
-		musicchannelonly: `false`,
-		autodeletecmds: `true`,
-		xpmodule: `true`,
-		welcomemessage: `true`,
-		welcomerole: `true`,
-		djrequired: `true`,
+		musicchannelonly: false,
+		autodeletecmds: true,
+		xpmodule: true,
+		welcomemessage: true,
+		welcomerole: true,
+		djrequired: true,
 		// other
 		prefix: `.`,
 		xpcooldown: 5,
