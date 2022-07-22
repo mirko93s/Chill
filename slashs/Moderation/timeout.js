@@ -90,7 +90,7 @@ module.exports = {
 
 		if (interaction.options.getSubcommand() === `add`) {
 			let time = ms(interaction.options.getInteger(`time`) + interaction.options.getString(`unit`));
-			time > 2419200000 ? time = 2419200000 : time = time; // cap time at 28 days
+			time > 2419199000 ? time = 2419199000 : time = time; // cap time at 28 days
 			user.timeout(time, reason).catch(err => {
 				if (err) return interaction.reply({ ephemeral: true, embeds: [client.chill.error(LANG.error(err))] });
 			});
